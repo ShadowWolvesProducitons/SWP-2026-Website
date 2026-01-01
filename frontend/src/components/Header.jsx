@@ -26,13 +26,11 @@ const Header = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="logo flex items-center gap-3 group">
-            <div className="w-12 h-12 bg-crimson-red rounded-full flex items-center justify-center group-hover:bg-crimson-red/80 transition-colors">
-              <span className="text-white font-bold text-xl">SW</span>
-            </div>
-            <div className="hidden md:block">
-              <div className="text-white font-bold text-lg leading-tight">SHADOW WOLVES</div>
-              <div className="text-gray-400 text-xs uppercase tracking-widest">Productions</div>
-            </div>
+            <img 
+              src="https://customer-assets.emergentagent.com/job_wolfmedia/artifacts/bifyh7bv_Black%20Logo%20Only.png" 
+              alt="Shadow Wolves Productions"
+              className="h-12 w-auto transition-opacity group-hover:opacity-80"
+            />
           </Link>
 
           {/* Desktop Navigation */}
@@ -43,7 +41,7 @@ const Header = () => {
                 to={link.path}
                 className={`nav-link text-sm uppercase tracking-widest font-mono transition-colors ${
                   isActive(link.path) 
-                    ? 'text-crimson-red' 
+                    ? 'text-electric-blue' 
                     : 'text-gray-300 hover:text-white'
                 }`}
               >
@@ -72,7 +70,7 @@ const Header = () => {
                 onClick={() => setIsMenuOpen(false)}
                 className={`block py-3 text-sm uppercase tracking-widest font-mono transition-colors ${
                   isActive(link.path) 
-                    ? 'text-crimson-red' 
+                    ? 'text-electric-blue' 
                     : 'text-gray-300 hover:text-white'
                 }`}
               >
