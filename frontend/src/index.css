@@ -89,23 +89,29 @@ code {
     .bg-smoke-gray {
         background-color: #1a1a1a;
     }
-    .bg-crimson-red {
-        background-color: #DC143C;
+    .bg-electric-blue {
+        background-color: #233dff;
     }
-    .bg-gold-accent {
-        background-color: #D4AF37;
+    .bg-navy-dark {
+        background-color: #050a30;
     }
-    .text-crimson-red {
-        color: #DC143C;
+    .bg-light-cream {
+        background-color: #f4f6fc;
     }
-    .text-gold-accent {
-        color: #D4AF37;
+    .text-electric-blue {
+        color: #233dff;
     }
-    .border-crimson-red {
-        border-color: #DC143C;
+    .text-navy-dark {
+        color: #050a30;
     }
-    .border-gold-accent {
-        border-color: #D4AF37;
+    .text-light-cream {
+        color: #f4f6fc;
+    }
+    .border-electric-blue {
+        border-color: #233dff;
+    }
+    .border-navy-dark {
+        border-color: #050a30;
     }
 }
 
