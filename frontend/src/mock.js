@@ -262,7 +262,7 @@ export const ebooks = [
     pages: 280,
     format: "PDF & EPUB",
     downloadLink: "#",
-    cover: "#8B0000",
+    cover: "#050a30",
     category: "Filmmaking"
   },
   {
@@ -272,7 +272,7 @@ export const ebooks = [
     pages: 195,
     format: "PDF & EPUB",
     downloadLink: "#",
-    cover: "#D4AF37",
+    cover: "#233dff",
     category: "Directing"
   },
   {
@@ -282,7 +282,7 @@ export const ebooks = [
     pages: 340,
     format: "PDF",
     downloadLink: "#",
-    cover: "#4a90e2",
+    cover: "#1a2ed8",
     category: "Post-Production"
   },
   {
@@ -302,7 +302,7 @@ export const ebooks = [
     pages: 218,
     format: "PDF",
     downloadLink: "#",
-    cover: "#5a3a1a",
+    cover: "#1a3a4a",
     category: "Cinematography"
   }
 ];
