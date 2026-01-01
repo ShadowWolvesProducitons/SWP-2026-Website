@@ -197,7 +197,7 @@ export const apps = [
     description: "Comprehensive production management tool for tracking shoots, schedules, and crew communications in real-time.",
     features: ["Real-time Scheduling", "Crew Management", "Budget Tracking", "Shot Lists"],
     downloadLink: "#",
-    color: "#DC143C"
+    color: "#233dff"
   },
   {
     id: 2,
@@ -206,7 +206,7 @@ export const apps = [
     description: "Digital storyboarding application with collaborative features and AI-assisted shot composition tools.",
     features: ["AI Shot Suggestions", "Collaboration Tools", "Asset Library", "Export Options"],
     downloadLink: "#",
-    color: "#D4AF37"
+    color: "#050a30"
   },
   {
     id: 3,
@@ -215,7 +215,7 @@ export const apps = [
     description: "Advanced screenplay analysis tool that provides insights on structure, pacing, character development, and dialogue.",
     features: ["Scene Analysis", "Character Tracking", "Pacing Metrics", "Industry Reports"],
     downloadLink: "#",
-    color: "#4a90e2"
+    color: "#1a2ed8"
   }
 ];
 
