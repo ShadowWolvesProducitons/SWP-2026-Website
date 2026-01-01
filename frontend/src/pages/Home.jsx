@@ -16,20 +16,20 @@ const Home = () => {
       <section className="hero-section relative flex items-center justify-center overflow-hidden">
         <div className="hero-background absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black">
           <div className="absolute inset-0 opacity-20">
-            <div className="absolute top-0 left-0 w-96 h-96 bg-crimson-red rounded-full filter blur-3xl"></div>
-            <div className="absolute bottom-0 right-0 w-96 h-96 bg-gold-accent rounded-full filter blur-3xl"></div>
+            <div className="absolute top-0 left-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl"></div>
+            <div className="absolute bottom-0 right-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl"></div>
           </div>
         </div>
         
         <div className="hero-content relative z-10 container mx-auto px-4 py-32 text-center">
-          <div className="inline-block mb-6 px-4 py-2 rounded-full border border-gold-accent/30 bg-gold-accent/10">
-            <span className="text-gold-accent text-sm font-mono uppercase tracking-widest">Award-Winning Production</span>
+          <div className="inline-block mb-6 px-4 py-2 rounded-full border border-electric-blue/30 bg-electric-blue/10">
+            <span className="text-electric-blue text-sm font-mono uppercase tracking-widest">Award-Winning Production</span>
           </div>
           
           <h1 className="hero-title text-6xl md:text-8xl font-bold text-white mb-6 leading-tight">
             SHADOW WOLVES
             <br />
-            <span className="text-crimson-red">PRODUCTIONS</span>
+            <span className="text-electric-blue">PRODUCTIONS</span>
           </h1>
           
           <p className="hero-subtitle text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto">
@@ -39,7 +39,7 @@ const Home = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
               to="/films" 
-              className="cta-button bg-crimson-red hover:bg-crimson-red/90 text-white px-8 py-4 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
+              className="cta-button bg-electric-blue hover:bg-electric-blue/90 text-white px-8 py-4 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
             >
               <Play size={18} />
               View Our Films
@@ -60,12 +60,12 @@ const Home = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="stat-item text-center">
-              <Film className="w-12 h-12 mx-auto mb-3 text-crimson-red" />
+              <Film className="w-12 h-12 mx-auto mb-3 text-electric-blue" />
               <div className="text-4xl font-bold text-white mb-2">50+</div>
               <div className="text-gray-400 text-sm uppercase tracking-wide">Films Produced</div>
             </div>
             <div className="stat-item text-center">
-              <Award className="w-12 h-12 mx-auto mb-3 text-gold-accent" />
+              <Award className="w-12 h-12 mx-auto mb-3 text-electric-blue" />
               <div className="text-4xl font-bold text-white mb-2">25+</div>
               <div className="text-gray-400 text-sm uppercase tracking-wide">Awards Won</div>
             </div>
@@ -75,7 +75,7 @@ const Home = () => {
               <div className="text-gray-400 text-sm uppercase tracking-wide">Team Members</div>
             </div>
             <div className="stat-item text-center">
-              <Star className="w-12 h-12 mx-auto mb-3 text-gold-accent" />
+              <Star className="w-12 h-12 mx-auto mb-3 text-electric-blue" />
               <div className="text-4xl font-bold text-white mb-2">15+</div>
               <div className="text-gray-400 text-sm uppercase tracking-wide">Years Experience</div>
             </div>
@@ -109,13 +109,13 @@ const Home = () => {
                 </div>
                 
                 <div className="film-info p-6">
-                  <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-crimson-red transition-colors">{film.title}</h3>
+                  <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-electric-blue transition-colors">{film.title}</h3>
                   <p className="text-gray-400 mb-3 italic">{film.tagline}</p>
                   <div className="flex flex-wrap gap-2 mb-3">
                     {film.genre.map((g, idx) => (
                       <span 
                         key={idx} 
-                        className="genre-tag px-3 py-1 text-xs rounded-full bg-gold-accent/20 text-gold-accent border border-gold-accent/30 uppercase tracking-wide font-mono"
+                        className="genre-tag px-3 py-1 text-xs rounded-full bg-electric-blue/20 text-electric-blue border border-electric-blue/30 uppercase tracking-wide font-mono"
                       >
                         {g}
                       </span>
@@ -130,7 +130,7 @@ const Home = () => {
           <div className="text-center mt-12">
             <Link 
               to="/films" 
-              className="inline-flex items-center gap-2 text-white hover:text-crimson-red transition-colors text-lg font-mono uppercase tracking-widest"
+              className="inline-flex items-center gap-2 text-white hover:text-electric-blue transition-colors text-lg font-mono uppercase tracking-widest"
             >
               View All Films
               <ArrowRight size={20} />
@@ -179,7 +179,7 @@ const Home = () => {
           <div className="text-center mt-12">
             <Link 
               to="/services" 
-              className="inline-flex items-center gap-2 text-white hover:text-gold-accent transition-colors text-lg font-mono uppercase tracking-widest"
+              className="inline-flex items-center gap-2 text-white hover:text-electric-blue transition-colors text-lg font-mono uppercase tracking-widest"
             >
               Learn More
               <ArrowRight size={20} />
@@ -191,21 +191,21 @@ const Home = () => {
       {/* CTA Section */}
       <section className="cta-section py-24 bg-black relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-crimson-red rounded-full filter blur-3xl"></div>
+          <div className="absolute top-0 right-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl"></div>
         </div>
         
         <div className="container mx-auto px-4 text-center relative z-10">
           <h2 className="text-5xl md:text-6xl font-bold text-white mb-6">
             Ready to Create
             <br />
-            <span className="text-crimson-red">Something Extraordinary?</span>
+            <span className="text-electric-blue">Something Extraordinary?</span>
           </h2>
           <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
             Let's bring your vision to life. Get in touch with our team today.
           </p>
           <Link 
             to="/contact" 
-            className="cta-button bg-crimson-red hover:bg-crimson-red/90 text-white px-10 py-5 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
+            className="cta-button bg-electric-blue hover:bg-electric-blue/90 text-white px-10 py-5 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
           >
             Get Started
             <ArrowRight size={20} />

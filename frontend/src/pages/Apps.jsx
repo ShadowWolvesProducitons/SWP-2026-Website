@@ -12,11 +12,11 @@ const Apps = () => {
       {/* Page Header */}
       <section className="page-header py-24 bg-gradient-to-br from-black via-smoke-gray to-black relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-gold-accent rounded-full filter blur-3xl"></div>
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl"></div>
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex items-center gap-3 mb-6">
-            <Smartphone className="text-crimson-red" size={48} />
+            <Smartphone className="text-electric-blue" size={48} />
           </div>
           <h1 className="text-6xl md:text-7xl font-bold text-white mb-6">Apps & Tools</h1>
           <p className="text-xl text-gray-400 max-w-2xl">
@@ -65,7 +65,7 @@ const Apps = () => {
                     </ul>
                   </div>
                   <button
-                    className="w-full bg-crimson-red hover:bg-crimson-red/90 text-white py-3 rounded-full font-mono text-sm uppercase tracking-widest transition-all flex items-center justify-center gap-2"
+                    className="w-full bg-electric-blue hover:bg-electric-blue/90 text-white py-3 rounded-full font-mono text-sm uppercase tracking-widest transition-all flex items-center justify-center gap-2"
                   >
                     <Download size={18} />
                     Download App
@@ -86,7 +86,7 @@ const Apps = () => {
           </p>
           <a
             href="/contact"
-            className="inline-flex items-center gap-2 text-white hover:text-crimson-red transition-colors text-lg font-mono uppercase tracking-widest"
+            className="inline-flex items-center gap-2 text-white hover:text-electric-blue transition-colors text-lg font-mono uppercase tracking-widest"
           >
             Request a Feature
             <ExternalLink size={20} />

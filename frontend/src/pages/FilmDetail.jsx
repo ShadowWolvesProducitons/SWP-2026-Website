@@ -49,7 +49,7 @@ const FilmDetail = () => {
                 {film.genre.map((g, idx) => (
                   <span
                     key={idx}
-                    className="px-3 py-1 text-xs rounded-full bg-gold-accent text-black uppercase tracking-wide font-mono"
+                    className="px-3 py-1 text-xs rounded-full bg-electric-blue text-black uppercase tracking-wide font-mono"
                   >
                     {g}
                   </span>
@@ -59,15 +59,15 @@ const FilmDetail = () => {
               <p className="text-2xl text-gray-300 italic mb-6">{film.tagline}</p>
               <div className="flex flex-wrap gap-6 text-gray-300">
                 <div className="flex items-center gap-2">
-                  <Calendar size={18} className="text-crimson-red" />
+                  <Calendar size={18} className="text-electric-blue" />
                   <span>{film.year}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Clock size={18} className="text-crimson-red" />
+                  <Clock size={18} className="text-electric-blue" />
                   <span>{film.duration}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Award size={18} className="text-crimson-red" />
+                  <Award size={18} className="text-electric-blue" />
                   <span>{film.rating}</span>
                 </div>
               </div>
@@ -85,7 +85,7 @@ const FilmDetail = () => {
               {/* Trailer */}
               <div className="mb-12">
                 <h2 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
-                  <Play className="text-crimson-red" />
+                  <Play className="text-electric-blue" />
                   Watch Trailer
                 </h2>
                 <div className="aspect-video bg-smoke-gray rounded-lg overflow-hidden">
@@ -117,8 +117,8 @@ const FilmDetail = () => {
                       className="cast-card bg-smoke-gray p-4 rounded-lg border border-gray-800 hover:border-gray-600 transition-colors"
                     >
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-full bg-crimson-red/20 border-2 border-crimson-red flex items-center justify-center flex-shrink-0">
-                          <User size={24} className="text-crimson-red" />
+                        <div className="w-12 h-12 rounded-full bg-electric-blue/20 border-2 border-electric-blue flex items-center justify-center flex-shrink-0">
+                          <User size={24} className="text-electric-blue" />
                         </div>
                         <div>
                           <div className="text-white font-bold">{actor.name}</div>
@@ -178,7 +178,7 @@ const FilmDetail = () => {
                       {film.genre.map((g, idx) => (
                         <span
                           key={idx}
-                          className="px-3 py-1 text-xs rounded-full bg-gold-accent/20 text-gold-accent border border-gold-accent/30 uppercase tracking-wide font-mono"
+                          className="px-3 py-1 text-xs rounded-full bg-electric-blue/20 text-electric-blue border border-electric-blue/30 uppercase tracking-wide font-mono"
                         >
                           {g}
                         </span>

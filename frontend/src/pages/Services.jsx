@@ -12,7 +12,7 @@ const Services = () => {
       {/* Page Header */}
       <section className="page-header py-24 bg-gradient-to-br from-black via-smoke-gray to-black relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-gold-accent rounded-full filter blur-3xl"></div>
+          <div className="absolute top-0 left-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl"></div>
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <h1 className="text-6xl md:text-7xl font-bold text-white mb-6">Our Services</h1>
@@ -110,14 +110,14 @@ const Services = () => {
           <h2 className="text-5xl md:text-6xl font-bold text-white mb-6">
             Ready to Start
             <br />
-            <span className="text-crimson-red">Your Project?</span>
+            <span className="text-electric-blue">Your Project?</span>
           </h2>
           <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
             Let's discuss how we can bring your creative vision to life with our comprehensive production services.
           </p>
           <a
             href="/contact"
-            className="cta-button bg-crimson-red hover:bg-crimson-red/90 text-white px-10 py-5 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
+            className="cta-button bg-electric-blue hover:bg-electric-blue/90 text-white px-10 py-5 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
           >
             Get in Touch
           </a>

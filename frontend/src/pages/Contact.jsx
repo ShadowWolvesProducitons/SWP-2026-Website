@@ -49,7 +49,7 @@ const Contact = () => {
       {/* Page Header */}
       <section className="page-header py-24 bg-gradient-to-br from-black via-smoke-gray to-black relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-crimson-red rounded-full filter blur-3xl"></div>
+          <div className="absolute top-0 right-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl"></div>
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <h1 className="text-6xl md:text-7xl font-bold text-white mb-6">Get in Touch</h1>
@@ -78,7 +78,7 @@ const Contact = () => {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-6 py-4 rounded-lg bg-smoke-gray border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-crimson-red transition-colors"
+                    className="w-full px-6 py-4 rounded-lg bg-smoke-gray border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-electric-blue transition-colors"
                     placeholder="John Doe"
                   />
                 </div>
@@ -94,7 +94,7 @@ const Contact = () => {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-6 py-4 rounded-lg bg-smoke-gray border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-crimson-red transition-colors"
+                    className="w-full px-6 py-4 rounded-lg bg-smoke-gray border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-electric-blue transition-colors"
                     placeholder="john@example.com"
                   />
                 </div>
@@ -109,7 +109,7 @@ const Contact = () => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    className="w-full px-6 py-4 rounded-lg bg-smoke-gray border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-crimson-red transition-colors"
+                    className="w-full px-6 py-4 rounded-lg bg-smoke-gray border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-electric-blue transition-colors"
                     placeholder="+61 XXX XXX XXX"
                   />
                 </div>
@@ -124,7 +124,7 @@ const Contact = () => {
                     value={formData.service}
                     onChange={handleChange}
                     required
-                    className="w-full px-6 py-4 rounded-lg bg-smoke-gray border border-gray-700 text-white focus:outline-none focus:border-crimson-red transition-colors"
+                    className="w-full px-6 py-4 rounded-lg bg-smoke-gray border border-gray-700 text-white focus:outline-none focus:border-electric-blue transition-colors"
                   >
                     <option value="">Select a service</option>
                     <option value="development">Development</option>
@@ -147,14 +147,14 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     rows={6}
-                    className="w-full px-6 py-4 rounded-lg bg-smoke-gray border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-crimson-red transition-colors resize-none"
+                    className="w-full px-6 py-4 rounded-lg bg-smoke-gray border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-electric-blue transition-colors resize-none"
                     placeholder="Tell us about your project..."
                   ></textarea>
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full bg-crimson-red hover:bg-crimson-red/90 text-white px-8 py-5 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
+                  className="w-full bg-electric-blue hover:bg-electric-blue/90 text-white px-8 py-5 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
                 >
                   <Send size={18} />
                   Send Message
@@ -178,8 +178,8 @@ const Contact = () => {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-crimson-red/20 rounded-lg flex items-center justify-center flex-shrink-0 border-2 border-crimson-red">
-                    <Mail size={24} className="text-crimson-red" />
+                  <div className="w-12 h-12 bg-electric-blue/20 rounded-lg flex items-center justify-center flex-shrink-0 border-2 border-electric-blue">
+                    <Mail size={24} className="text-electric-blue" />
                   </div>
                   <div>
                     <h3 className="text-white font-bold mb-2">Email</h3>
@@ -190,8 +190,8 @@ const Contact = () => {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-crimson-red/20 rounded-lg flex items-center justify-center flex-shrink-0 border-2 border-crimson-red">
-                    <Phone size={24} className="text-crimson-red" />
+                  <div className="w-12 h-12 bg-electric-blue/20 rounded-lg flex items-center justify-center flex-shrink-0 border-2 border-electric-blue">
+                    <Phone size={24} className="text-electric-blue" />
                   </div>
                   <div>
                     <h3 className="text-white font-bold mb-2">Phone</h3>

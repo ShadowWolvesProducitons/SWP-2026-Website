@@ -25,11 +25,11 @@ const Downloads = () => {
       {/* Page Header */}
       <section className="page-header py-24 bg-gradient-to-br from-black via-smoke-gray to-black relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-gold-accent rounded-full filter blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl"></div>
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex items-center gap-3 mb-6">
-            <BookOpen className="text-crimson-red" size={48} />
+            <BookOpen className="text-electric-blue" size={48} />
           </div>
           <h1 className="text-6xl md:text-7xl font-bold text-white mb-6">Downloads</h1>
           <p className="text-xl text-gray-400 max-w-2xl">
@@ -51,7 +51,7 @@ const Downloads = () => {
                   onClick={() => setSelectedCategory(category)}
                   className={`px-4 py-2 rounded-full text-xs font-mono uppercase tracking-widest transition-all ${
                     selectedCategory === category
-                      ? 'bg-crimson-red text-white'
+                      ? 'bg-electric-blue text-white'
                       : 'bg-black text-gray-400 hover:bg-gray-800 hover:text-white border border-gray-700'
                   }`}
                 >
@@ -80,7 +80,7 @@ const Downloads = () => {
                 </div>
                 <div className="ebook-content p-6">
                   <div className="mb-4">
-                    <span className="px-3 py-1 text-xs rounded-full bg-black text-crimson-red border border-crimson-red/30 uppercase tracking-wide font-mono">
+                    <span className="px-3 py-1 text-xs rounded-full bg-black text-electric-blue border border-electric-blue/30 uppercase tracking-wide font-mono">
                       {ebook.category}
                     </span>
                   </div>
@@ -91,7 +91,7 @@ const Downloads = () => {
                     <span>{ebook.format}</span>
                   </div>
                   <button
-                    className="w-full bg-crimson-red hover:bg-crimson-red/90 text-white py-3 rounded-full font-mono text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2"
+                    className="w-full bg-electric-blue hover:bg-electric-blue/90 text-white py-3 rounded-full font-mono text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2"
                   >
                     <Download size={16} />
                     Free Download
@@ -117,10 +117,10 @@ const Downloads = () => {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 px-6 py-4 rounded-full bg-black border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-crimson-red transition-colors"
+                className="flex-1 px-6 py-4 rounded-full bg-black border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-electric-blue transition-colors"
               />
               <button
-                className="bg-crimson-red hover:bg-crimson-red/90 text-white px-8 py-4 rounded-full font-mono text-xs uppercase tracking-widest transition-all"
+                className="bg-electric-blue hover:bg-electric-blue/90 text-white px-8 py-4 rounded-full font-mono text-xs uppercase tracking-widest transition-all"
               >
                 Subscribe
               </button>

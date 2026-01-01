@@ -66,17 +66,17 @@ const Footer = () => {
             <h3 className="text-white font-bold text-lg mb-6 uppercase tracking-wide">Contact</h3>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
-                <MapPin size={18} className="text-crimson-red mt-1 flex-shrink-0" />
+                <MapPin size={18} className="text-electric-blue mt-1 flex-shrink-0" />
                 <span className="text-sm">Sydney, Australia</span>
               </li>
               <li className="flex items-start gap-3">
-                <Mail size={18} className="text-crimson-red mt-1 flex-shrink-0" />
+                <Mail size={18} className="text-electric-blue mt-1 flex-shrink-0" />
                 <a href="mailto:info@shadowwolvesproductions.com.au" className="text-sm hover:text-white transition-colors">
                   info@shadowwolvesproductions.com.au
                 </a>
               </li>
               <li className="flex items-start gap-3">
-                <Phone size={18} className="text-crimson-red mt-1 flex-shrink-0" />
+                <Phone size={18} className="text-electric-blue mt-1 flex-shrink-0" />
                 <span className="text-sm">+61 (0)2 XXXX XXXX</span>
               </li>
             </ul>

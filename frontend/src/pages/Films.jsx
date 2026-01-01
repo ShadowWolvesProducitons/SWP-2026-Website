@@ -26,7 +26,7 @@ const Films = () => {
       {/* Page Header */}
       <section className="page-header py-24 bg-gradient-to-br from-black via-smoke-gray to-black relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-crimson-red rounded-full filter blur-3xl"></div>
+          <div className="absolute top-0 right-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl"></div>
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <h1 className="text-6xl md:text-7xl font-bold text-white mb-6">Our Films</h1>
@@ -47,7 +47,7 @@ const Films = () => {
                   onClick={() => setSelectedGenre(genre)}
                   className={`px-4 py-2 rounded-full text-xs font-mono uppercase tracking-widest transition-all ${
                     selectedGenre === genre
-                      ? 'bg-crimson-red text-white'
+                      ? 'bg-electric-blue text-white'
                       : 'bg-black text-gray-400 hover:bg-gray-800 hover:text-white border border-gray-700'
                   }`}
                 >
@@ -78,14 +78,14 @@ const Films = () => {
                     <Play className="w-16 h-16 text-white" />
                   </div>
                   {film.featured && (
-                    <div className="absolute top-4 right-4 px-3 py-1 bg-gold-accent text-black text-xs font-mono uppercase tracking-widest rounded-full">
+                    <div className="absolute top-4 right-4 px-3 py-1 bg-electric-blue text-black text-xs font-mono uppercase tracking-widest rounded-full">
                       Featured
                     </div>
                   )}
                 </div>
 
                 <div className="film-info p-6">
-                  <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-crimson-red transition-colors">
+                  <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-electric-blue transition-colors">
                     {film.title}
                   </h3>
                   <p className="text-gray-400 mb-3 italic">{film.tagline}</p>
@@ -93,7 +93,7 @@ const Films = () => {
                     {film.genre.map((g, idx) => (
                       <span
                         key={idx}
-                        className="genre-tag px-3 py-1 text-xs rounded-full bg-gold-accent/20 text-gold-accent border border-gold-accent/30 uppercase tracking-wide font-mono"
+                        className="genre-tag px-3 py-1 text-xs rounded-full bg-electric-blue/20 text-electric-blue border border-electric-blue/30 uppercase tracking-wide font-mono"
                       >
                         {g}
                       </span>
