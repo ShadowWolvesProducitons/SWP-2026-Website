@@ -21,29 +21,29 @@ code {
 
 @layer base {
     :root {
-        /* Cinematic Dark Theme */
-        --background: 0 0% 4%;
-        --foreground: 0 0% 98%;
+        /* Shadow Wolves Brand Theme */
+        --background: 210 83% 11%;
+        --foreground: 220 100% 98%;
         --card: 0 0% 10%;
-        --card-foreground: 0 0% 98%;
-        --popover: 0 0% 4%;
-        --popover-foreground: 0 0% 98%;
-        --primary: 0 100% 27%;
-        --primary-foreground: 0 0% 98%;
+        --card-foreground: 220 100% 98%;
+        --popover: 210 83% 11%;
+        --popover-foreground: 220 100% 98%;
+        --primary: 233 100% 56%;
+        --primary-foreground: 220 100% 98%;
         --secondary: 0 0% 16%;
-        --secondary-foreground: 0 0% 98%;
+        --secondary-foreground: 220 100% 98%;
         --muted: 0 0% 25%;
         --muted-foreground: 0 0% 50%;
-        --accent: 44 100% 55%;
-        --accent-foreground: 0 0% 9%;
+        --accent: 233 100% 56%;
+        --accent-foreground: 220 100% 98%;
         --destructive: 0 84.2% 60.2%;
-        --destructive-foreground: 0 0% 98%;
+        --destructive-foreground: 220 100% 98%;
         --border: 0 0% 25%;
         --input: 0 0% 16%;
-        --ring: 0 100% 27%;
-        --chart-1: 0 100% 27%;
-        --chart-2: 44 100% 55%;
-        --chart-3: 0 0% 50%;
+        --ring: 233 100% 56%;
+        --chart-1: 233 100% 56%;
+        --chart-2: 220 100% 98%;
+        --chart-3: 210 83% 11%;
         --chart-4: 0 0% 25%;
         --chart-5: 0 0% 10%;
         --radius: 0.5rem;
