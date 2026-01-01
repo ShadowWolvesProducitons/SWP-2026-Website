@@ -85,6 +85,30 @@ code {
     }
 }
 
+@layer utilities {
+    .bg-smoke-gray {
+        background-color: #1a1a1a;
+    }
+    .bg-crimson-red {
+        background-color: #DC143C;
+    }
+    .bg-gold-accent {
+        background-color: #D4AF37;
+    }
+    .text-crimson-red {
+        color: #DC143C;
+    }
+    .text-gold-accent {
+        color: #D4AF37;
+    }
+    .border-crimson-red {
+        border-color: #DC143C;
+    }
+    .border-gold-accent {
+        border-color: #D4AF37;
+    }
+}
+
 @layer base {
     [data-debug-wrapper="true"] {
         display: contents !important;
