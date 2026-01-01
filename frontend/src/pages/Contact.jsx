@@ -168,8 +168,8 @@ const Contact = () => {
               
               <div className="space-y-8 mb-12">
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-crimson-red/20 rounded-lg flex items-center justify-center flex-shrink-0 border-2 border-crimson-red">
-                    <MapPin size={24} className="text-crimson-red" />
+                  <div className="w-12 h-12 bg-electric-blue/20 rounded-lg flex items-center justify-center flex-shrink-0 border-2 border-electric-blue">
+                    <MapPin size={24} className="text-electric-blue" />
                   </div>
                   <div>
                     <h3 className="text-white font-bold mb-2">Address</h3>
