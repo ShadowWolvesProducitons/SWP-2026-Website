@@ -41,12 +41,12 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-crimson-red);
+  background: var(--color-electric-blue);
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-crimson-red-light);
+  background: var(--color-accent-blue);
 }
 
 /* Text Selection */
