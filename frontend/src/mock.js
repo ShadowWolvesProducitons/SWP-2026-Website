@@ -155,7 +155,7 @@ export const services = [
       "Pitch Deck Creation",
       "Screenplay Writing & Editing"
     ],
-    color: "#DC143C"
+    color: "#233dff"
   },
   {
     id: 2,
@@ -170,7 +170,7 @@ export const services = [
       "Crew Assembly",
       "Scheduling & Logistics"
     ],
-    color: "#D4AF37"
+    color: "#050a30"
   },
   {
     id: 3,
@@ -185,7 +185,7 @@ export const services = [
       "Music Composition & Licensing",
       "Final Mastering & Delivery"
     ],
-    color: "#4a90e2"
+    color: "#1a2ed8"
   }
 ];
 
