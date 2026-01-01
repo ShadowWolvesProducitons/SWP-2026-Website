@@ -10,28 +10,26 @@ const Footer = () => {
           {/* Company Info */}
           <div>
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 bg-crimson-red rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-xl">SW</span>
-              </div>
-              <div>
-                <div className="text-white font-bold text-lg">SHADOW WOLVES</div>
-                <div className="text-gray-500 text-xs uppercase tracking-widest">Productions</div>
-              </div>
+              <img 
+                src="https://customer-assets.emergentagent.com/job_wolfmedia/artifacts/bifyh7bv_Black%20Logo%20Only.png" 
+                alt="Shadow Wolves Productions"
+                className="h-12 w-auto"
+              />
             </div>
             <p className="text-sm text-gray-400 leading-relaxed mb-4">
               Crafting cinematic experiences that captivate audiences and tell unforgettable stories.
             </p>
             <div className="flex gap-4">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a href="#" className="text-gray-400 hover:text-electric-blue transition-colors">
                 <Facebook size={20} />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a href="#" className="text-gray-400 hover:text-electric-blue transition-colors">
                 <Twitter size={20} />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a href="#" className="text-gray-400 hover:text-electric-blue transition-colors">
                 <Instagram size={20} />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a href="#" className="text-gray-400 hover:text-electric-blue transition-colors">
                 <Youtube size={20} />
               </a>
             </div>
