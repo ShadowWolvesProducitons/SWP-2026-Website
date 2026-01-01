@@ -51,17 +51,21 @@ html {
 
 /* Text Selection */
 ::selection {
-  background-color: var(--color-crimson-red);
+  background-color: var(--color-electric-blue);
   color: white;
 }
 
 /* Utility Classes */
-.crimson-red {
-  color: var(--color-crimson-red-light);
+.electric-blue {
+  color: var(--color-electric-blue);
 }
 
-.gold-accent {
-  color: var(--color-gold-accent);
+.navy-dark {
+  color: var(--color-navy-dark);
+}
+
+.light-cream {
+  background-color: var(--color-light-cream);
 }
 
 .smoke-gray {
