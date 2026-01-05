@@ -26,22 +26,34 @@ const Contact = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // Mock form submission
-    console.log('Form submitted:', formData);
+    // Create mailto link with form data
+    const subject = encodeURIComponent(`Contact Form: ${formData.service || 'General Inquiry'}`);
+    const body = encodeURIComponent(
+      `Name: ${formData.name}\n` +
+      `Email: ${formData.email}\n` +
+      `Phone: ${formData.phone}\n` +
+      `Service: ${formData.service}\n\n` +
+      `Message:\n${formData.message}`
+    );
+    
+    // Open user's email client
+    window.location.href = `mailto:info@shadowwolvesproductions.com.au?subject=${subject}&body=${body}`;
     
     toast({
-      title: "Message Sent!",
-      description: "Thank you for contacting us. We'll get back to you soon.",
+      title: "Opening Email Client",
+      description: "Your message will be sent via your email application.",
     });
 
-    // Reset form
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      service: '',
-      message: ''
-    });
+    // Reset form after a delay
+    setTimeout(() => {
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        service: '',
+        message: ''
+      });
+    }, 1000);
   };
 
   return (
