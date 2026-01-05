@@ -1,0 +1,131 @@
+====================================================================
+SHADOW WOLVES PRODUCTIONS - PRODUCTION WEBSITE FILES
+====================================================================
+
+🎬 YOUR WEBSITE IS IN THIS FOLDER! 🎬
+
+These are your FINAL, PRODUCTION-READY website files.
+No building, no installation, no coding required!
+
+====================================================================
+WHAT'S IN THIS FOLDER:
+====================================================================
+
+✓ index.html              - Your main website file
+✓ asset-manifest.json     - Build manifest  
+✓ README-DEPLOYMENT.txt   - Detailed upload instructions
+✓ static/                 - Folder with CSS and JavaScript
+  ├── css/                - All your styles
+  └── js/                 - All your functionality
+
+====================================================================
+HOW TO UPLOAD TO VENTRAIP (3 EASY STEPS):
+====================================================================
+
+STEP 1: Download This Entire Folder
+----------------------------------------
+From GitHub:
+- Click the green "Code" button
+- Select "Download ZIP"
+- Extract the ZIP on your computer
+- Find the "shadowwolves-production" folder
+
+STEP 2: Upload to VentraIP
+----------------------------------------
+- Log into your VentraIP cPanel
+- Open "File Manager"
+- Navigate to "public_html" folder
+- Upload ALL files from shadowwolves-production:
+  → index.html
+  → asset-manifest.json  
+  → README-DEPLOYMENT.txt
+  → static folder (with everything inside)
+
+STEP 3: Test Your Website
+----------------------------------------
+Visit: www.shadowwolvesproductions.com.au
+
+Done! Your website is live! 🎉
+
+====================================================================
+YOUR FILE STRUCTURE IN PUBLIC_HTML SHOULD LOOK LIKE:
+====================================================================
+
+public_html/
+├── index.html
+├── asset-manifest.json
+├── README-DEPLOYMENT.txt
+└── static/
+    ├── css/
+    │   └── main.66fe7dba.css
+    └── js/
+        └── main.a989c3d3.js
+
+====================================================================
+IMPORTANT NOTES:
+====================================================================
+
+✓ These are FINAL files - not source code
+✓ NO installation or building required
+✓ Just upload and your website works
+✓ All 8 pages are included (Home, Films, Services, etc.)
+✓ Your logo is integrated
+✓ Brand colors applied
+✓ Mobile responsive
+
+====================================================================
+TROUBLESHOOTING:
+====================================================================
+
+Problem: Website shows but looks broken
+Solution: Make sure the "static" folder uploaded correctly
+         with the css and js subfolders intact
+
+Problem: Only homepage works, other pages show 404
+Solution: This is a Single Page App (SPA). You may need to add
+         an .htaccess file. See README-DEPLOYMENT.txt for details.
+
+Problem: Contact form doesn't work  
+Solution: The form opens the user's email client - this is normal
+         for static websites without a backend.
+
+====================================================================
+NEED THE .HTACCESS FILE FOR VENTRAIP?
+====================================================================
+
+Create a file called .htaccess in public_html with this content:
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-l
+  RewriteRule . /index.html [L]
+</IfModule>
+
+This ensures all pages work correctly.
+
+====================================================================
+YOUR WEBSITE FEATURES:
+====================================================================
+
+✓ Homepage with hero section
+✓ 6 films with detailed pages
+✓ Services page (Development, Pre/Post Production)
+✓ Apps showcase page
+✓ Templates download page
+✓ Downloads (ebooks) page
+✓ Contact form (opens email)
+✓ Professional header & footer
+✓ Your Shadow Wolves logo
+✓ Brand colors: #233dff, #050a30, #f4f6fc
+
+====================================================================
+
+Questions? Read the README-DEPLOYMENT.txt file for more details.
+
+Your website is ready to go live! 🚀
+
+====================================================================
