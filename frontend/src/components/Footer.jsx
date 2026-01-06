@@ -85,7 +85,7 @@ const Footer = () => {
 
         <div className="border-t border-gray-800 mt-12 pt-8 text-center">
           <p className="text-sm text-gray-500">
-            © {new Date().getFullYear()} Shadow Wolves Productions. All rights reserved.
+            © 2026 Shadow Wolves Productions Pty Ltd. All rights reserved.
           </p>
         </div>
       </div>
