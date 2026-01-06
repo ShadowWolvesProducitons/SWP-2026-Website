@@ -105,7 +105,7 @@ const Home = () => {
               className="film-card group relative overflow-hidden rounded-lg bg-smoke-gray hover:transform hover:-translate-y-2 transition-all duration-300">
 
                 <div
-                className="film-poster aspect-[2/3] relative"
+                className="film-poster aspect-square relative"
                 style={{ backgroundColor: film.posterColor }}>
 
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
