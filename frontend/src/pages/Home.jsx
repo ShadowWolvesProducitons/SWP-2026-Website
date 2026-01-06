@@ -23,7 +23,7 @@ const Home = () => {
         
         <div className="hero-content relative z-10 container mx-auto px-4 py-32 text-center">
           <div className="inline-block mb-6 px-4 py-2 rounded-full border border-electric-blue/30 bg-electric-blue/10">
-            <span className="text-electric-blue text-sm font-mono uppercase tracking-widest">Award-Winning Production</span>
+            <span className="uppercase !font-mono !text-sm !italic !text-[#FFFFFF]">We Don’t Follow. We Hunt.</span>
           </div>
           
           <h1 className="hero-title text-6xl md:text-8xl font-bold text-white mb-6 leading-tight">
@@ -32,8 +32,8 @@ const Home = () => {
             <span className="text-electric-blue">PRODUCTIONS</span>
           </h1>
           
-          <p className="hero-subtitle text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto">
-            Crafting cinematic experiences that captivate audiences and tell unforgettable stories
+          <p className="hero-subtitle md:text-2xl max-w-3xl !font-bold !text-xl !italic mb-12 mx-auto text-gray-300">A new breed of storytellers driven by instinct, not trends — from primal horror to deeply human stories, we create what others won’t.
+
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -71,8 +71,8 @@ const Home = () => {
             </div>
             <div className="stat-item text-center">
               <Users className="w-12 h-12 mx-auto mb-3 text-white" />
-              <div className="text-4xl font-bold text-white mb-2">100+</div>
-              <div className="text-gray-400 text-sm uppercase tracking-wide">Team Members</div>
+              <div className="!font-bold !text-4xl mb-2 text-white">5+</div>
+              <div className="uppercase !text-sm text-gray-400">Films In Production</div>
             </div>
             <div className="stat-item text-center">
               <Star className="w-12 h-12 mx-auto mb-3 text-electric-blue" />
