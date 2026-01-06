@@ -183,6 +183,41 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Join The Pack Section */}
+      <section className="join-pack-section py-24 bg-gradient-to-br from-navy-dark via-black to-navy-dark relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl"></div>
+        </div>
+        
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <h2 className="text-5xl md:text-6xl font-bold text-white mb-6">
+            JOIN THE PACK
+          </h2>
+          <p className="text-xl md:text-2xl text-gray-300 mb-4 max-w-3xl mx-auto leading-relaxed">
+            Step into the den — get exclusive discounts, first looks, early course releases and more.
+          </p>
+          <p className="text-lg text-gray-400 mb-10 max-w-2xl mx-auto italic">
+            Subscribe. Follow. Hunt with us.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a 
+              href="#newsletter" 
+              className="cta-button bg-electric-blue hover:bg-electric-blue/90 text-white px-10 py-5 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
+            >
+              📬 Join the Pack
+            </a>
+            <a 
+              href="#merch" 
+              className="cta-button-outline border-2 border-electric-blue text-electric-blue hover:bg-electric-blue hover:text-white px-10 py-5 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
+            >
+              🛒 Visit The Den
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="cta-section py-24 bg-black relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
