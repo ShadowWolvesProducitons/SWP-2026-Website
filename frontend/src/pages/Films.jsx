@@ -62,45 +62,46 @@ const Films = () => {
       {/* Films Grid */}
       <section className="films-grid-section py-16 bg-black">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {filteredFilms.map((film) => (
               <Link
                 key={film.id}
                 to={`/films/${film.id}`}
-                className="film-card group relative overflow-hidden rounded-lg bg-smoke-gray hover:transform hover:-translate-y-2 transition-all duration-300"
+                className="film-card-flip group relative overflow-hidden rounded-lg aspect-[2/3] transition-all duration-300"
               >
+                {/* Front - Poster */}
                 <div
-                  className="film-poster aspect-[2/3] relative"
+                  className="film-poster-front absolute inset-0 transition-opacity duration-300 group-hover:opacity-0"
                   style={{ backgroundColor: film.posterColor }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Play className="w-16 h-16 text-white" />
-                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                   {film.featured && (
-                    <div className="absolute top-4 right-4 px-3 py-1 bg-electric-blue text-black text-xs font-mono uppercase tracking-widest rounded-full">
+                    <div className="absolute top-2 right-2 px-2 py-1 bg-electric-blue text-white text-xs font-mono uppercase tracking-widest rounded-full">
                       Featured
                     </div>
                   )}
+                  <div className="absolute bottom-0 left-0 right-0 p-3">
+                    <h3 className="text-white font-bold text-sm line-clamp-2">{film.title}</h3>
+                  </div>
                 </div>
 
-                <div className="film-info p-6">
-                  <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-electric-blue transition-colors">
-                    {film.title}
-                  </h3>
-                  <p className="text-gray-400 mb-3 italic">{film.tagline}</p>
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    {film.genre.map((g, idx) => (
+                {/* Back - Info on Hover */}
+                <div className="film-poster-back absolute inset-0 bg-electric-blue/95 opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4 flex flex-col justify-center">
+                  <h3 className="text-white font-bold text-base mb-2">{film.title}</h3>
+                  <p className="text-white/90 text-xs mb-3 line-clamp-3 italic">{film.tagline}</p>
+                  <div className="flex flex-wrap gap-1 mb-2">
+                    {film.genre.slice(0, 2).map((g, idx) => (
                       <span
                         key={idx}
-                        className="genre-tag px-3 py-1 text-xs rounded-full bg-electric-blue/20 text-electric-blue border border-electric-blue/30 uppercase tracking-wide font-mono"
+                        className="px-2 py-0.5 text-xs rounded-full bg-white/20 text-white uppercase font-mono"
                       >
                         {g}
                       </span>
                     ))}
                   </div>
-                  <div className="text-sm text-gray-500">
-                    {film.year} • {film.duration} • {film.rating}
+                  <div className="text-white text-xs">{film.year} • {film.rating}</div>
+                  <div className="flex items-center justify-center mt-3">
+                    <Play className="w-8 h-8 text-white" />
                   </div>
                 </div>
               </Link>
