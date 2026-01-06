@@ -133,49 +133,54 @@ const Home = () => {
             <p className="text-xl text-gray-400">Our latest cinematic masterpieces</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {featuredFilms.map((film) =>
-            <Link
-              key={film.id}
-              to={`/films/${film.id}`}
-              className="film-card group relative overflow-hidden rounded-lg bg-smoke-gray hover:transform hover:-translate-y-2 transition-all duration-300">
-
-                <div
-                className="film-poster aspect-square relative"
-                style={{ backgroundColor: film.posterColor }}>
-
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Play className="w-16 h-16 text-white" />
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {featuredFilms.map((film) => (
+              <Link 
+                key={film.id} 
+                to={`/films/${film.id}`}
+                className="film-card-flip group relative overflow-hidden rounded-lg aspect-[2/3] transition-all duration-300"
+              >
+                {/* Front - Poster */}
+                <div 
+                  className="film-poster-front absolute inset-0 transition-opacity duration-300 group-hover:opacity-0"
+                  style={{ backgroundColor: film.posterColor }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                  <div className="absolute bottom-0 left-0 right-0 p-3">
+                    <h3 className="text-white font-bold text-sm line-clamp-2">{film.title}</h3>
                   </div>
                 </div>
                 
-                <div className="film-info p-6">
-                  <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-electric-blue transition-colors">{film.title}</h3>
-                  <p className="text-gray-400 mb-3 italic">{film.tagline}</p>
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    {film.genre.map((g, idx) =>
-                  <span
-                    key={idx}
-                    className="genre-tag px-3 py-1 text-xs rounded-full bg-electric-blue/20 text-electric-blue border border-electric-blue/30 uppercase tracking-wide font-mono">
-
+                {/* Back - Info on Hover */}
+                <div className="film-poster-back absolute inset-0 bg-electric-blue/95 opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4 flex flex-col justify-center">
+                  <h3 className="text-white font-bold text-base mb-2">{film.title}</h3>
+                  <p className="text-white/90 text-xs mb-3 line-clamp-3 italic">{film.tagline}</p>
+                  <div className="flex flex-wrap gap-1 mb-2">
+                    {film.genre.slice(0, 2).map((g, idx) => (
+                      <span 
+                        key={idx} 
+                        className="px-2 py-0.5 text-xs rounded-full bg-white/20 text-white uppercase font-mono"
+                      >
                         {g}
                       </span>
-                  )}
+                    ))}
                   </div>
-                  <div className="text-sm text-gray-500">{film.year} • {film.duration}</div>
+                  <div className="text-white text-xs mt-auto">{film.year}</div>
+                  <div className="flex items-center justify-center mt-2">
+                    <Play className="w-8 h-8 text-white" />
+                  </div>
                 </div>
               </Link>
-            )}
+            ))}
           </div>
           
           <div className="text-center mt-12">
-            <Link
-              to="/films"
-              className="inline-flex items-center gap-2 text-white hover:text-electric-blue transition-colors text-lg font-mono uppercase tracking-widest">
-
+            <Link 
+              to="/films" 
+              className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full bg-electric-blue hover:bg-electric-blue/90 text-white transition-all font-mono text-sm uppercase tracking-widest"
+            >
               View All Films
-              <ArrowRight size={20} />
+              <ArrowRight size={18} />
             </Link>
           </div>
         </div>
