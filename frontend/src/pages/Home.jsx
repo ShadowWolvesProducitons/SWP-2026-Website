@@ -90,7 +90,7 @@ const Home = () => {
               to="/apps"
               className="cta-button-outline border-2 border-white hover:bg-white hover:text-black text-white px-8 py-4 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2">
 
-              Evolve Your Craft
+              Enter The Den
               <ArrowRight size={18} />
             </Link>
           </div>
