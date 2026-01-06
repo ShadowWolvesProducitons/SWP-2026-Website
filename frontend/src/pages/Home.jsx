@@ -157,7 +157,7 @@ const Home = () => {
             {services.map((service) =>
             <div
               key={service.id}
-              className="service-card bg-black p-8 rounded-lg border border-gray-800 hover:border-gray-600 transition-all">
+              className="service-card bg-black p-8 rounded-lg border border-gray-800 hover:border-gray-600 transition-all aspect-square flex flex-col">
 
                 <div
                 className="service-icon w-16 h-16 rounded-full mb-6 flex items-center justify-center"
@@ -168,28 +168,17 @@ const Home = () => {
                 
                 <h3 className="text-3xl font-bold text-white mb-2">{service.name}</h3>
                 <p className="text-gray-400 italic mb-4">{service.tagline}</p>
-                <p className="text-gray-300 mb-6 leading-relaxed">{service.description}</p>
+                <p className="text-gray-300 mb-6 leading-relaxed flex-grow">{service.description}</p>
                 
-                <ul className="space-y-2">
-                  {service.features.slice(0, 4).map((feature, idx) =>
-                <li key={idx} className="text-gray-400 flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: service.color }}></span>
-                      {feature}
-                    </li>
-                )}
-                </ul>
+                <Link
+                  to="/services"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full border-2 border-electric-blue text-electric-blue hover:bg-electric-blue hover:text-white transition-all font-mono text-xs uppercase tracking-widest mt-auto">
+
+                  Learn More
+                  <ArrowRight size={16} />
+                </Link>
               </div>
             )}
-          </div>
-          
-          <div className="text-center mt-12">
-            <Link
-              to="/services"
-              className="inline-flex items-center gap-2 text-white hover:text-electric-blue transition-colors text-lg font-mono uppercase tracking-widest">
-
-              Learn More
-              <ArrowRight size={20} />
-            </Link>
           </div>
         </div>
       </section>
