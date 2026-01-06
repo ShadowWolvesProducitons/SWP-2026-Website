@@ -14,11 +14,17 @@ const Home = () => {
     <div className="home-page">
       {/* Hero Section */}
       <section className="hero-section relative flex items-center justify-center overflow-hidden">
+        {/* Cinematic Background Video/Animation */}
         <div className="hero-background absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black">
-          <div className="absolute inset-0 opacity-20">
-            <div className="absolute top-0 left-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl"></div>
-            <div className="absolute bottom-0 right-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl"></div>
+          {/* Animated fog and moonlight effect */}
+          <div className="absolute inset-0 opacity-30">
+            <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-900/20 rounded-full filter blur-3xl animate-pulse"></div>
+            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-800/10 rounded-full filter blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
           </div>
+          {/* Wolf silhouettes overlay */}
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxwYXR0ZXJuIGlkPSJmb2ciIHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0icmdiYSgwLDAsMCwwLjEpIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2ZvZykiLz48L3N2Zz4=')] opacity-20"></div>
+          {/* Moving fog effect */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40"></div>
         </div>
         
         <div className="hero-content relative z-10 container mx-auto px-4 py-32 text-center">
