@@ -148,6 +148,11 @@ h1, h2, h3, h4, h5, h6 {
   animation: twinkle 3s ease-in-out infinite;
 }
 
+/* Radial gradient for vignette effect */
+.bg-gradient-radial {
+  background: radial-gradient(circle at center, transparent 0%, transparent 50%, rgba(0, 0, 0, 0.6) 100%);
+}
+
 /* Button Transitions */
 button,
 .cta-button,
