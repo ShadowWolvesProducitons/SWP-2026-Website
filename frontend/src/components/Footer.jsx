@@ -10,11 +10,11 @@ const Footer = () => {
           {/* Company Info & Contact */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-3 mb-6">
-              <img 
-                src="https://customer-assets.emergentagent.com/job_wolfmedia/artifacts/bifyh7bv_Black%20Logo%20Only.png" 
+              <img
+                src="https://customer-assets.emergentagent.com/job_wolfmedia/artifacts/bifyh7bv_Black%20Logo%20Only.png"
                 alt="Shadow Wolves Productions"
-                className="h-12 w-auto"
-              />
+                className="h-14 w-auto" />
+
             </div>
             
             {/* Contact Info */}
@@ -25,13 +25,13 @@ const Footer = () => {
               </div>
               <div className="flex items-start gap-3">
                 <Mail size={18} className="text-electric-blue mt-1 flex-shrink-0" />
-                <a href="mailto:info@shadowwolvesproductions.com.au" className="text-sm hover:text-white transition-colors">
-                  info@shadowwolvesproductions.com.au
+                <a href="mailto:info@shadowwolvesproductions.com.au" className="hover:text-white transition-colors !text-sm">admin@shadowwolvesproductions.com.au
+
                 </a>
               </div>
               <div className="flex items-start gap-3">
                 <Phone size={18} className="text-electric-blue mt-1 flex-shrink-0" />
-                <span className="text-sm">+61 (0)2 XXXX XXXX</span>
+                <span className="!text-sm">+61 0420 984 558</span>
               </div>
             </div>
           </div>
@@ -69,8 +69,8 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </footer>
-  );
+    </footer>);
+
 };
 
 export default Footer;
