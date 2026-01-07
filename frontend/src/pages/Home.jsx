@@ -14,53 +14,23 @@ const Home = () => {
     <div className="home-page">
       {/* Hero Section */}
       <section className="hero-section relative flex items-center justify-center overflow-hidden min-h-screen">
-        {/* Cinematic Background with Moonlight and Fog */}
-        <div className="hero-background absolute inset-0 bg-gradient-to-br from-[#0a0a1a] via-[#050a30] to-black">
-          {/* Moonlight glow effect */}
-          <div className="absolute top-10 right-1/4 w-64 h-64 bg-blue-100/30 rounded-full filter blur-3xl animate-pulse"></div>
+        {/* Cinematic Video Background */}
+        <div className="hero-background absolute inset-0">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+          >
+            <source src="https://customer-assets.emergentagent.com/job_wolfmedia/artifacts/0n4k6t8k_SWP_Hero_BG.mp4" type="video/mp4" />
+          </video>
           
-          {/* Animated fog layers */}
-          <div className="absolute inset-0 opacity-40">
-            <div className="fog-layer absolute inset-0 bg-gradient-to-b from-transparent via-gray-600/20 to-transparent animate-fog-drift"></div>
-            <div className="fog-layer-2 absolute inset-0 bg-gradient-to-t from-transparent via-gray-500/15 to-transparent animate-fog-drift-reverse"></div>
-          </div>
+          {/* Dark overlay for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80"></div>
           
-          {/* Wolf silhouettes - subtle in background */}
-          <div className="absolute bottom-20 left-10 opacity-20">
-            <svg width="120" height="80" viewBox="0 0 120 80" fill="currentColor" className="text-white">
-              <path d="M20,60 Q25,45 35,50 Q40,30 50,45 Q55,40 60,50 Q70,55 75,50 Q80,60 70,65 Q60,70 50,65 Q40,70 30,65 Q20,70 20,60 Z"/>
-            </svg>
-          </div>
-          <div className="absolute bottom-32 right-20 opacity-15">
-            <svg width="100" height="70" viewBox="0 0 100 70" fill="currentColor" className="text-white">
-              <path d="M15,50 Q20,35 30,40 Q35,25 42,38 Q47,33 52,40 Q60,45 65,40 Q70,50 60,55 Q50,60 42,55 Q32,60 22,55 Q15,60 15,50 Z"/>
-            </svg>
-          </div>
-          
-          {/* Forest silhouette at bottom */}
-          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/80 to-transparent">
-            <svg className="absolute bottom-0 w-full h-24 opacity-60" preserveAspectRatio="none" viewBox="0 0 1200 120" fill="currentColor">
-              <path d="M0,80 L50,60 L80,80 L100,50 L130,80 L160,60 L190,80 L220,40 L250,80 L280,60 L310,80 L340,50 L370,80 L400,60 L430,80 L460,45 L490,80 L520,60 L550,80 L580,55 L610,80 L640,60 L670,80 L700,50 L730,80 L760,60 L790,80 L820,45 L850,80 L880,60 L910,80 L940,50 L970,80 L1000,60 L1030,80 L1060,55 L1090,80 L1120,60 L1150,80 L1180,65 L1200,80 L1200,120 L0,120 Z" className="text-black"/>
-            </svg>
-          </div>
-          
-          {/* Cold blue gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-blue-950/20 to-black/60"></div>
-          
-          {/* Subtle stars/particles */}
-          <div className="absolute inset-0 opacity-30">
-            {[...Array(20)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute w-1 h-1 bg-white rounded-full animate-twinkle"
-                style={{
-                  top: `${Math.random() * 50}%`,
-                  left: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 3}s`
-                }}
-              ></div>
-            ))}
-          </div>
+          {/* Additional vignette effect */}
+          <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-black/60"></div>
         </div>
         
         <div className="hero-content relative z-10 container mx-auto px-4 py-32 text-center">
