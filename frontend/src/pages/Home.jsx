@@ -35,6 +35,7 @@ const Home = () => {
       posterColor: film.poster_color,
       imdbUrl: film.imdb_url,
       watchUrl: film.watch_url,
+      watchUrlTitle: film.watch_url_title,
       posterUrl: film.poster_url
     };
     setSelectedFilm(modalFilm);
