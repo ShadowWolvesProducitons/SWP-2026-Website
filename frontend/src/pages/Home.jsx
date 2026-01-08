@@ -69,7 +69,7 @@ const Home = () => {
           </div>
           
           {/* Scroll Indicator */}
-          <div className="scroll-indicator mt-16 flex flex-col items-center animate-bounce">
+          <div className="scroll-indicator mt-16 flex flex-col items-center">
             <span className="text-white/60 text-sm uppercase tracking-widest font-mono mb-2">Scroll for More</span>
             <svg 
               width="24" 
