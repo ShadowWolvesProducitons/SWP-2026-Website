@@ -150,6 +150,21 @@ const FilmModal = ({ film, isOpen, onClose }) => {
               </button>
             </div>
           )}
+
+          {/* Secondary IMDb Link */}
+          {film.imdbUrl && (
+            <div className="imdb-link text-center pt-3">
+              <a
+                href={film.imdbUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-500 hover:text-gray-300 text-sm transition-colors inline-flex items-center gap-1"
+              >
+                View on IMDb
+                <span className="text-xs">↗</span>
+              </a>
+            </div>
+          )}
         </div>
       </div>
 
