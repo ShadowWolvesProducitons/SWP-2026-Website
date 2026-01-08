@@ -23,6 +23,16 @@ const Films = () => {
 
   const allGenres = ['All', ...new Set(films.flatMap((film) => film.genre))];
 
+  const handleFilmClick = (film) => {
+    setSelectedFilm(film);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setTimeout(() => setSelectedFilm(null), 300); // Clear after animation
+  };
+
   return (
     <div className="films-page pt-20">
       {/* Page Header */}
