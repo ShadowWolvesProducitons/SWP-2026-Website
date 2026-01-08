@@ -25,6 +25,7 @@ export const films = [
     ],
     posterColor: "#8B0000",
     trailerUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    imdbUrl: "https://www.imdb.com/title/tt0000001",
     featured: true
   },
   {
@@ -51,6 +52,7 @@ export const films = [
     ],
     posterColor: "#1a4d6f",
     trailerUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    imdbUrl: "https://www.imdb.com/title/tt0000002",
     featured: true
   },
   {
@@ -77,6 +79,7 @@ export const films = [
     ],
     posterColor: "#5a0000",
     trailerUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    imdbUrl: "https://www.imdb.com/title/tt0000003",
     featured: false
   },
   {
@@ -103,6 +106,7 @@ export const films = [
     ],
     posterColor: "#0f0f1a",
     trailerUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    imdbUrl: "https://www.imdb.com/title/tt0000004",
     featured: false
   },
   {
@@ -129,6 +133,7 @@ export const films = [
     ],
     posterColor: "#D4AF37",
     trailerUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    imdbUrl: "https://www.imdb.com/title/tt0000005",
     featured: true
   },
   {
@@ -155,6 +160,7 @@ export const films = [
     ],
     posterColor: "#1a1a2e",
     trailerUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    imdbUrl: "https://www.imdb.com/title/tt0000006",
     featured: false
   }
 ];
