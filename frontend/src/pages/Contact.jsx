@@ -224,11 +224,11 @@ const Contact = () => {
         </div>
         
         <div className="container mx-auto px-4 text-center relative z-10">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Join The Pack
+          <h2 className="md:text-5xl !font-bold !text-4xl mb-4 text-white">Join the Pack
+
           </h2>
-          <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
-            Get exclusive updates, early access to courses, behind-the-scenes content, and special discounts delivered straight to your inbox.
+          <p className="max-w-2xl !text-lg mb-8 mx-auto text-gray-300">Inside access to casting calls, industry updates, and the tools, apps, and templates we actually use.
+
           </p>
           
           <div className="max-w-md mx-auto">
@@ -236,11 +236,11 @@ const Contact = () => {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 px-6 py-4 rounded-full bg-smoke-gray border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-electric-blue transition-colors"
-              />
+                className="flex-1 px-6 py-4 rounded-full bg-smoke-gray border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-electric-blue transition-colors" />
+
               <button
-                className="bg-electric-blue hover:bg-electric-blue/90 text-white px-8 py-4 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
-              >
+                className="bg-electric-blue hover:bg-electric-blue/90 text-white px-8 py-4 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2">
+
                 📬 Subscribe
               </button>
             </div>
