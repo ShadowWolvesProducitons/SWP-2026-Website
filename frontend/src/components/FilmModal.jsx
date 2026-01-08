@@ -91,9 +91,22 @@ const FilmModal = ({ film, isOpen, onClose }) => {
                 {film.status}
               </span>
             </div>
-            <h2 className="text-5xl font-bold text-white" style={{ fontFamily: 'Cinzel, serif' }}>
-              {film.title}
-            </h2>
+            <div className="flex items-end justify-between gap-4">
+              <h2 className="text-5xl font-bold text-white" style={{ fontFamily: 'Cinzel, serif' }}>
+                {film.title}
+              </h2>
+              {film.imdbUrl && (
+                <a
+                  href={film.imdbUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-gray-200 text-sm transition-colors inline-flex items-center gap-1 mb-2 shrink-0"
+                >
+                  View on IMDb
+                  <span className="text-xs">↗</span>
+                </a>
+              )}
+            </div>
           </div>
         </div>
 
@@ -131,13 +144,6 @@ const FilmModal = ({ film, isOpen, onClose }) => {
             </div>
           )}
 
-          {/* Status Note */}
-          <div className="status-note">
-            <p className="text-gray-500 text-sm">
-              {getStatusMessage()}
-            </p>
-          </div>
-
           {/* CTA */}
           {cta && (
             <div className="cta pt-4">
@@ -148,21 +154,6 @@ const FilmModal = ({ film, isOpen, onClose }) => {
                 {cta.text}
                 <ArrowRight size={18} />
               </button>
-            </div>
-          )}
-
-          {/* Secondary IMDb Link */}
-          {film.imdbUrl && (
-            <div className="imdb-link text-center pt-3">
-              <a
-                href={film.imdbUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-500 hover:text-gray-300 text-sm transition-colors inline-flex items-center gap-1"
-              >
-                View on IMDb
-                <span className="text-xs">↗</span>
-              </a>
             </div>
           )}
         </div>
