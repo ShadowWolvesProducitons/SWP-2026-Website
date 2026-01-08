@@ -112,11 +112,11 @@ const Films = () => {
                   <button
                     key={film.id}
                     onClick={() => handleFilmClick(film)}
-                    className="film-card group relative overflow-hidden rounded-lg aspect-[2/3] transition-all duration-300 cursor-pointer"
+                    className="film-card group relative overflow-hidden rounded-lg aspect-[2/3] cursor-pointer"
                   >
                     {/* Poster / Placeholder */}
                     <div
-                      className="absolute inset-0 transition-all duration-300"
+                      className="absolute inset-0"
                       style={{ backgroundColor: film.poster_color || '#1a1a2e' }}
                     >
                       {film.poster_url ? (
@@ -127,17 +127,17 @@ const Films = () => {
                         />
                       ) : (
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="text-gray-500 text-xs font-mono uppercase tracking-widest text-center px-2">
+                          <span className="text-gray-600 text-xs font-mono uppercase tracking-widest text-center px-2">
                             Poster<br />Coming Soon
                           </span>
                         </div>
                       )}
                     </div>
                     
-                    {/* Default State - Title at bottom */}
+                    {/* Default State - Simple gradient with title */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-300 group-hover:opacity-0">
                       {film.featured && (
-                        <div className="absolute top-2 right-2 px-2 py-1 bg-electric-blue text-white text-xs font-mono uppercase tracking-widest rounded-full">
+                        <div className="absolute top-2 right-2 px-2 py-1 bg-electric-blue text-white text-[10px] font-mono uppercase tracking-widest rounded">
                           Featured
                         </div>
                       )}
@@ -146,43 +146,38 @@ const Films = () => {
                       </div>
                     </div>
 
-                    {/* Hover State - Full info */}
-                    <div className="absolute inset-0 bg-black/95 opacity-0 group-hover:opacity-100 transition-all duration-300 p-4 flex flex-col">
-                      {/* Title */}
-                      <h3 className="text-white font-bold text-base mb-2 line-clamp-2">{film.title}</h3>
-                      
-                      {/* Tagline */}
-                      {film.tagline && (
-                        <p className="text-gray-300 text-xs mb-3 line-clamp-2 italic">"{film.tagline}"</p>
-                      )}
-                      
-                      {/* Genres */}
-                      {film.genres && film.genres.length > 0 && (
-                        <div className="flex flex-wrap gap-1 mb-2">
-                          {film.genres.slice(0, 3).map((genre, idx) => (
-                            <span
-                              key={idx}
-                              className="px-2 py-0.5 text-xs rounded-full bg-electric-blue/20 text-electric-blue border border-electric-blue/30"
-                            >
-                              {genre}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                      
-                      {/* Status */}
-                      <div className="mt-auto">
-                        <span className="text-gray-400 text-xs font-mono uppercase tracking-wider">
+                    {/* Hover State - Cinematic Lower-Third */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-3">
+                      {/* Status Pill - Top Left */}
+                      <div>
+                        <span className="inline-block px-2 py-1 text-[10px] font-mono uppercase tracking-wider bg-white/10 text-white/80 rounded">
                           {film.status}
                         </span>
                       </div>
                       
-                      {/* More Button */}
-                      <div className="mt-3 flex items-center justify-center">
-                        <span className="inline-flex items-center gap-1 px-4 py-2 bg-electric-blue text-white text-xs font-mono uppercase tracking-widest rounded-full group-hover:animate-pulse">
-                          More
-                          <ArrowRight size={12} className="transition-transform group-hover:translate-x-1" />
-                        </span>
+                      {/* Lower Third Content */}
+                      <div>
+                        <h3 className="text-white font-bold text-sm mb-1">{film.title}</h3>
+                        {film.tagline && (
+                          <p className="text-gray-300 text-xs line-clamp-1 mb-2">{film.tagline}</p>
+                        )}
+                        <div className="flex items-end justify-between">
+                          {/* Genre Tags */}
+                          <div className="flex flex-wrap gap-1">
+                            {film.genres?.slice(0, 3).map((genre, idx) => (
+                              <span
+                                key={idx}
+                                className="px-2 py-0.5 text-[10px] rounded bg-white/10 text-white/70"
+                              >
+                                {genre}
+                              </span>
+                            ))}
+                          </div>
+                          {/* View Cue */}
+                          <span className="text-white/60 text-xs shrink-0 ml-2">
+                            View →
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </button>
