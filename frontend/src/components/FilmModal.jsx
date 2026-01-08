@@ -70,6 +70,13 @@ const FilmModal = ({ film, isOpen, onClose }) => {
           className="modal-hero relative h-80 bg-gradient-to-br from-black to-gray-900"
           style={{ backgroundColor: film.posterColor }}
         >
+          {film.posterUrl && (
+            <img
+              src={`${process.env.REACT_APP_BACKEND_URL}${film.posterUrl}`}
+              alt={film.title}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
           <div className="absolute bottom-0 left-0 right-0 p-8">
             <div className="mb-3">
