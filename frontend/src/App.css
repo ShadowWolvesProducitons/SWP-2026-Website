@@ -153,6 +153,42 @@ h1, h2, h3, h4, h5, h6 {
   background: radial-gradient(circle at center, transparent 0%, transparent 50%, rgba(0, 0, 0, 0.6) 100%);
 }
 
+/* Hero video smooth loop with fade */
+.hero-video {
+  animation: videoFadeLoop 30s ease-in-out infinite;
+}
+
+@keyframes videoFadeLoop {
+  0% {
+    opacity: 1;
+  }
+  2% {
+    opacity: 0.95;
+  }
+  98% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Scroll indicator custom animation */
+.scroll-indicator {
+  animation: scrollBounce 2s ease-in-out infinite;
+}
+
+@keyframes scrollBounce {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(10px);
+    opacity: 1;
+  }
+}
+
 /* Button Transitions */
 button,
 .cta-button,
