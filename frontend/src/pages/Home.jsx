@@ -139,44 +139,44 @@ const Home = () => {
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {featuredFilms.map((film) =>
-            <Link
-              key={film.id}
-              to={`/films/${film.id}`}
-              className="film-card-flip group relative overflow-hidden rounded-lg aspect-[2/3] transition-all duration-300">
-
+            {featuredFilms.map((film) => (
+              <button
+                key={film.id}
+                onClick={() => handleFilmClick(film)}
+                className="film-card-flip group relative overflow-hidden rounded-lg aspect-[2/3] transition-all duration-300 cursor-pointer"
+              >
                 {/* Front - Poster */}
                 <div
-                className="film-poster-front absolute inset-0 transition-opacity duration-300 group-hover:opacity-0"
-                style={{ backgroundColor: film.posterColor }}>
-
+                  className="film-poster-front absolute inset-0 transition-opacity duration-300 group-hover:opacity-0"
+                  style={{ backgroundColor: film.posterColor }}
+                >
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                   <div className="absolute bottom-0 left-0 right-0 p-3">
                     <h3 className="text-white font-bold text-sm line-clamp-2">{film.title}</h3>
                   </div>
                 </div>
-                
+
                 {/* Back - Info on Hover */}
                 <div className="film-poster-back absolute inset-0 bg-electric-blue/95 opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4 flex flex-col justify-center">
                   <h3 className="text-white font-bold text-base mb-2">{film.title}</h3>
                   <p className="text-white/90 text-xs mb-3 line-clamp-3 italic">{film.tagline}</p>
                   <div className="flex flex-wrap gap-1 mb-2">
-                    {film.genre.slice(0, 2).map((g, idx) =>
-                  <span
-                    key={idx}
-                    className="px-2 py-0.5 text-xs rounded-full bg-white/20 text-white uppercase font-mono">
-
+                    {film.genre.slice(0, 2).map((g, idx) => (
+                      <span
+                        key={idx}
+                        className="px-2 py-0.5 text-xs rounded-full bg-white/20 text-white uppercase font-mono"
+                      >
                         {g}
                       </span>
-                  )}
+                    ))}
                   </div>
                   <div className="text-white text-xs mt-auto">{film.year}</div>
                   <div className="flex items-center justify-center mt-2">
                     <Play className="w-8 h-8 text-white" />
                   </div>
                 </div>
-              </Link>
-            )}
+              </button>
+            ))}
           </div>
           
           <div className="text-center mt-12">
