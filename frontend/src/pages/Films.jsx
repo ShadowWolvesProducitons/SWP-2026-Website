@@ -116,7 +116,7 @@ const Films = () => {
                     <Play className="w-8 h-8 text-white" />
                   </div>
                 </div>
-              </Link>
+              </button>
             )}
           </div>
 
