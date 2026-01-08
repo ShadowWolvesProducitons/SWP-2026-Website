@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Play, Filter, RefreshCw } from 'lucide-react';
+import { Filter, RefreshCw, ArrowRight } from 'lucide-react';
 import FilmModal from '../components/FilmModal';
 
 const Films = () => {
@@ -38,7 +38,7 @@ const Films = () => {
     }
   }, [selectedStatus, films]);
 
-  const statusOptions = ['All', 'In Development', 'In Production', 'Released'];
+  const statusOptions = ['All', 'Development', 'Packaging', 'Pre-Production', 'Filming', 'Post-Production', 'Marketing', 'Released'];
 
   const handleFilmClick = (film) => {
     // Transform API data to match modal expectations
@@ -47,6 +47,7 @@ const Films = () => {
       posterColor: film.poster_color,
       imdbUrl: film.imdb_url,
       watchUrl: film.watch_url,
+      watchUrlTitle: film.watch_url_title,
       posterUrl: film.poster_url
     };
     setSelectedFilm(modalFilm);
@@ -111,21 +112,30 @@ const Films = () => {
                   <button
                     key={film.id}
                     onClick={() => handleFilmClick(film)}
-                    className="film-card-flip group relative overflow-hidden rounded-lg aspect-[2/3] transition-all duration-300 cursor-pointer"
+                    className="film-card group relative overflow-hidden rounded-lg aspect-[2/3] transition-all duration-300 cursor-pointer"
                   >
-                    {/* Front - Poster */}
+                    {/* Poster / Placeholder */}
                     <div
-                      className="film-poster-front absolute inset-0 transition-opacity duration-300 group-hover:opacity-0"
+                      className="absolute inset-0 transition-all duration-300"
                       style={{ backgroundColor: film.poster_color || '#1a1a2e' }}
                     >
-                      {film.poster_url && (
+                      {film.poster_url ? (
                         <img
                           src={`${process.env.REACT_APP_BACKEND_URL}${film.poster_url}`}
                           alt={film.title}
                           className="absolute inset-0 w-full h-full object-cover"
                         />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="text-gray-500 text-xs font-mono uppercase tracking-widest text-center px-2">
+                            Poster<br />Coming Soon
+                          </span>
+                        </div>
                       )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                    </div>
+                    
+                    {/* Default State - Title at bottom */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-300 group-hover:opacity-0">
                       {film.featured && (
                         <div className="absolute top-2 right-2 px-2 py-1 bg-electric-blue text-white text-xs font-mono uppercase tracking-widest rounded-full">
                           Featured
@@ -136,23 +146,43 @@ const Films = () => {
                       </div>
                     </div>
 
-                    {/* Back - Info on Hover */}
-                    <div className="film-poster-back absolute inset-0 bg-electric-blue/95 opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4 flex flex-col justify-center">
-                      <h3 className="text-white font-bold text-base mb-2">{film.title}</h3>
-                      <p className="text-white/90 text-xs mb-3 line-clamp-3 italic">{film.logline}</p>
-                      <div className="flex flex-wrap gap-1 mb-2">
-                        {film.themes?.slice(0, 2).map((theme, idx) => (
-                          <span
-                            key={idx}
-                            className="px-2 py-0.5 text-xs rounded-full bg-white/20 text-white uppercase font-mono"
-                          >
-                            {theme}
-                          </span>
-                        ))}
+                    {/* Hover State - Full info */}
+                    <div className="absolute inset-0 bg-black/95 opacity-0 group-hover:opacity-100 transition-all duration-300 p-4 flex flex-col">
+                      {/* Title */}
+                      <h3 className="text-white font-bold text-base mb-2 line-clamp-2">{film.title}</h3>
+                      
+                      {/* Tagline */}
+                      {film.tagline && (
+                        <p className="text-gray-300 text-xs mb-3 line-clamp-2 italic">"{film.tagline}"</p>
+                      )}
+                      
+                      {/* Genres */}
+                      {film.genres && film.genres.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mb-2">
+                          {film.genres.slice(0, 3).map((genre, idx) => (
+                            <span
+                              key={idx}
+                              className="px-2 py-0.5 text-xs rounded-full bg-electric-blue/20 text-electric-blue border border-electric-blue/30"
+                            >
+                              {genre}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                      
+                      {/* Status */}
+                      <div className="mt-auto">
+                        <span className="text-gray-400 text-xs font-mono uppercase tracking-wider">
+                          {film.status}
+                        </span>
                       </div>
-                      <div className="text-white text-xs uppercase">{film.status}</div>
-                      <div className="flex items-center justify-center mt-3">
-                        <Play className="w-8 h-8 text-white" />
+                      
+                      {/* More Button */}
+                      <div className="mt-3 flex items-center justify-center">
+                        <span className="inline-flex items-center gap-1 px-4 py-2 bg-electric-blue text-white text-xs font-mono uppercase tracking-widest rounded-full group-hover:animate-pulse">
+                          More
+                          <ArrowRight size={12} className="transition-transform group-hover:translate-x-1" />
+                        </span>
                       </div>
                     </div>
                   </button>
