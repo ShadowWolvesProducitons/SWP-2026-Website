@@ -21,8 +21,8 @@ const Home = () => {
             loop
             muted
             playsInline
-            className="absolute inset-0 w-full h-full object-cover hero-video"
-          >
+            className="absolute inset-0 w-full h-full object-cover hero-video">
+
             <source src="https://customer-assets.emergentagent.com/job_wolfmedia/artifacts/0n4k6t8k_SWP_Hero_BG.mp4" type="video/mp4" />
           </video>
           
@@ -71,17 +71,17 @@ const Home = () => {
           {/* Scroll Indicator */}
           <div className="scroll-indicator mt-16 flex flex-col items-center">
             <span className="text-white/60 text-sm uppercase tracking-widest font-mono mb-2">Scroll for More</span>
-            <svg 
-              width="24" 
-              height="24" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="currentColor" 
-              strokeWidth="2" 
-              strokeLinecap="round" 
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
               strokeLinejoin="round"
-              className="text-white/60"
-            >
+              className="text-white/60">
+
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
           </div>
@@ -125,17 +125,17 @@ const Home = () => {
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {featuredFilms.map((film) => (
-              <Link 
-                key={film.id} 
-                to={`/films/${film.id}`}
-                className="film-card-flip group relative overflow-hidden rounded-lg aspect-[2/3] transition-all duration-300"
-              >
+            {featuredFilms.map((film) =>
+            <Link
+              key={film.id}
+              to={`/films/${film.id}`}
+              className="film-card-flip group relative overflow-hidden rounded-lg aspect-[2/3] transition-all duration-300">
+
                 {/* Front - Poster */}
-                <div 
-                  className="film-poster-front absolute inset-0 transition-opacity duration-300 group-hover:opacity-0"
-                  style={{ backgroundColor: film.posterColor }}
-                >
+                <div
+                className="film-poster-front absolute inset-0 transition-opacity duration-300 group-hover:opacity-0"
+                style={{ backgroundColor: film.posterColor }}>
+
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                   <div className="absolute bottom-0 left-0 right-0 p-3">
                     <h3 className="text-white font-bold text-sm line-clamp-2">{film.title}</h3>
@@ -147,14 +147,14 @@ const Home = () => {
                   <h3 className="text-white font-bold text-base mb-2">{film.title}</h3>
                   <p className="text-white/90 text-xs mb-3 line-clamp-3 italic">{film.tagline}</p>
                   <div className="flex flex-wrap gap-1 mb-2">
-                    {film.genre.slice(0, 2).map((g, idx) => (
-                      <span 
-                        key={idx} 
-                        className="px-2 py-0.5 text-xs rounded-full bg-white/20 text-white uppercase font-mono"
-                      >
+                    {film.genre.slice(0, 2).map((g, idx) =>
+                  <span
+                    key={idx}
+                    className="px-2 py-0.5 text-xs rounded-full bg-white/20 text-white uppercase font-mono">
+
                         {g}
                       </span>
-                    ))}
+                  )}
                   </div>
                   <div className="text-white text-xs mt-auto">{film.year}</div>
                   <div className="flex items-center justify-center mt-2">
@@ -162,14 +162,14 @@ const Home = () => {
                   </div>
                 </div>
               </Link>
-            ))}
+            )}
           </div>
           
           <div className="text-center mt-12">
-            <Link 
-              to="/films" 
-              className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full bg-electric-blue hover:bg-electric-blue/90 text-white transition-all font-mono text-sm uppercase tracking-widest"
-            >
+            <Link
+              to="/films"
+              className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full bg-electric-blue hover:bg-electric-blue/90 text-white transition-all font-mono text-sm uppercase tracking-widest">
+
               View All Films
               <ArrowRight size={18} />
             </Link>
@@ -203,8 +203,8 @@ const Home = () => {
                 <p className="text-gray-300 mb-6 leading-relaxed flex-grow">{service.description}</p>
                 
                 <Link
-                  to="/services"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full border-2 border-electric-blue text-electric-blue hover:bg-electric-blue hover:text-white transition-all font-mono text-xs uppercase tracking-widest mt-auto">
+                to="/services"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full border-2 border-electric-blue text-electric-blue hover:bg-electric-blue hover:text-white transition-all font-mono text-xs uppercase tracking-widest mt-auto">
 
                   Learn More
                   <ArrowRight size={16} />
@@ -223,11 +223,11 @@ const Home = () => {
         </div>
         
         <div className="container mx-auto px-4 text-center relative z-10">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Join The Pack
+          <h2 className="md:text-5xl !font-bold !text-4xl mb-4 text-white">Join the Pack
+
           </h2>
-          <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
-            Get exclusive updates, early access to courses, behind-the-scenes content, and special discounts delivered straight to your inbox.
+          <p className="max-w-2xl !text-lg mb-8 mx-auto text-gray-300">Inside access to casting calls, industry updates, and the tools, apps, and templates we actually use.
+
           </p>
           
           <div className="max-w-md mx-auto">
@@ -235,11 +235,11 @@ const Home = () => {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 px-6 py-4 rounded-full bg-smoke-gray border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-electric-blue transition-colors"
-              />
+                className="flex-1 px-6 py-4 rounded-full bg-smoke-gray border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-electric-blue transition-colors" />
+
               <button
-                className="bg-electric-blue hover:bg-electric-blue/90 text-white px-8 py-4 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
-              >
+                className="bg-electric-blue hover:bg-electric-blue/90 text-white px-8 py-4 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2">
+
                 📬 Subscribe
               </button>
             </div>
