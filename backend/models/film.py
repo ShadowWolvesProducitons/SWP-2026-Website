@@ -6,15 +6,16 @@ import uuid
 
 class FilmBase(BaseModel):
     title: str
-    status: str = "In Development"  # In Development, In Production, Released
+    film_type: str = "Feature"  # Short, Feature, Series, Documentary, Other
+    status: str = "Development"  # Development, Packaging, Pre-Production, Filming, Post-Production, Marketing, Released
     featured: bool = False
     poster_url: Optional[str] = None
     logline: str = ""
     synopsis: str = ""
+    genres: List[str] = []
     themes: List[str] = []
     imdb_url: Optional[str] = None
     watch_url: Optional[str] = None
-    poster_color: str = "#1a1a2e"  # Fallback color for poster
 
 
 class FilmCreate(FilmBase):
@@ -23,15 +24,16 @@ class FilmCreate(FilmBase):
 
 class FilmUpdate(BaseModel):
     title: Optional[str] = None
+    film_type: Optional[str] = None
     status: Optional[str] = None
     featured: Optional[bool] = None
     poster_url: Optional[str] = None
     logline: Optional[str] = None
     synopsis: Optional[str] = None
+    genres: Optional[List[str]] = None
     themes: Optional[List[str]] = None
     imdb_url: Optional[str] = None
     watch_url: Optional[str] = None
-    poster_color: Optional[str] = None
 
 
 class Film(FilmBase):
