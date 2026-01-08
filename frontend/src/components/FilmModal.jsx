@@ -10,7 +10,7 @@ const FilmModal = ({ film, isOpen, onClose }) => {
     
     if (isOpen) {
       document.addEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'hidden'; // Prevent background scroll
+      document.body.style.overflow = 'hidden';
     }
     
     return () => {
@@ -23,31 +23,34 @@ const FilmModal = ({ film, isOpen, onClose }) => {
 
   // Get CTA based on status
   const getCTA = () => {
-    switch (film.status) {
-      case 'In Development':
-        return {
-          text: 'Partnership & Development Enquiries',
-          action: () => window.location.href = 'mailto:admin@shadowwolvesproductions.com.au?subject=Partnership Enquiry: ' + film.title
-        };
-      case 'In Production':
-        return {
-          text: 'Festival & Distribution Enquiries',
-          action: () => window.location.href = 'mailto:admin@shadowwolvesproductions.com.au?subject=Festival Enquiry: ' + film.title
-        };
-      case 'Released':
-        if (film.watchUrl) {
-          return {
-            text: 'Watch Now',
-            action: () => window.open(film.watchUrl, '_blank')
-          };
-        }
-        return {
-          text: 'Screening Enquiries',
-          action: () => window.location.href = 'mailto:admin@shadowwolvesproductions.com.au?subject=Screening Enquiry: ' + film.title
-        };
-      default:
-        return null;
+    // For Development stages
+    if (['Development', 'Packaging', 'Pre-Production'].includes(film.status)) {
+      return {
+        text: 'Partnership & Development Enquiries',
+        action: () => window.location.href = 'mailto:admin@shadowwolvesproductions.com.au?subject=Partnership Enquiry: ' + film.title
+      };
     }
+    // For Production stages
+    if (['Filming', 'Post-Production', 'Marketing'].includes(film.status)) {
+      return {
+        text: 'Festival & Distribution Enquiries',
+        action: () => window.location.href = 'mailto:admin@shadowwolvesproductions.com.au?subject=Festival Enquiry: ' + film.title
+      };
+    }
+    // For Released
+    if (film.status === 'Released') {
+      if (film.watchUrl) {
+        return {
+          text: film.watchUrlTitle || 'Watch Now',
+          action: () => window.open(film.watchUrl, '_blank')
+        };
+      }
+      return {
+        text: 'Screening Enquiries',
+        action: () => window.location.href = 'mailto:admin@shadowwolvesproductions.com.au?subject=Screening Enquiry: ' + film.title
+      };
+    }
+    return null;
   };
 
   const cta = getCTA();
@@ -74,7 +77,7 @@ const FilmModal = ({ film, isOpen, onClose }) => {
         {/* Hero Image */}
         <div
           className="modal-hero relative h-80 bg-gradient-to-br from-black to-gray-900"
-          style={{ backgroundColor: film.posterColor }}
+          style={{ backgroundColor: film.posterColor || '#1a1a2e' }}
         >
           {film.posterUrl && (
             <img
@@ -94,49 +97,70 @@ const FilmModal = ({ film, isOpen, onClose }) => {
               <h2 className="text-5xl font-bold text-white" style={{ fontFamily: 'Cinzel, serif' }}>
                 {film.title}
               </h2>
-              {film.imdbUrl && (
-                <a
-                  href={film.imdbUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-gray-200 text-sm transition-colors inline-flex items-center gap-1 mb-2 shrink-0"
-                >
-                  View on IMDb
-                  <span className="text-xs">↗</span>
-                </a>
-              )}
+              {/* Secondary Links */}
+              <div className="flex items-center gap-4 mb-2 shrink-0">
+                {film.imdbUrl && (
+                  <a
+                    href={film.imdbUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-400 hover:text-gray-200 text-sm transition-colors inline-flex items-center gap-1"
+                  >
+                    View on IMDb
+                    <span className="text-xs">↗</span>
+                  </a>
+                )}
+                {film.watchUrl && film.watchUrlTitle && (
+                  <>
+                    {film.imdbUrl && <span className="text-gray-600">|</span>}
+                    <a
+                      href={film.watchUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-400 hover:text-gray-200 text-sm transition-colors inline-flex items-center gap-1"
+                    >
+                      {film.watchUrlTitle}
+                      <span className="text-xs">↗</span>
+                    </a>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>
 
         {/* Content */}
         <div className="modal-body p-8 space-y-8">
-          {/* Logline */}
-          <div className="logline">
-            <p className="text-2xl text-gray-300 italic leading-relaxed">
-              {film.logline}
-            </p>
-          </div>
-
-          {/* Synopsis */}
-          <div className="synopsis space-y-4">
-            {film.synopsis.split('\n\n').map((paragraph, idx) => (
-              <p key={idx} className="text-gray-400 text-lg leading-relaxed">
-                {paragraph}
+          {/* Tagline */}
+          {film.tagline && (
+            <div className="tagline">
+              <p className="text-2xl text-gray-300 italic leading-relaxed">
+                "{film.tagline}"
               </p>
-            ))}
-          </div>
+            </div>
+          )}
 
-          {/* Themes */}
-          {film.themes && film.themes.length > 0 && (
-            <div className="themes">
+          {/* Logline */}
+          {film.logline && (
+            <div className="logline space-y-4">
+              {film.logline.split('\n\n').map((paragraph, idx) => (
+                <p key={idx} className="text-gray-400 text-lg leading-relaxed">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+          )}
+
+          {/* Genres */}
+          {film.genres && film.genres.length > 0 && (
+            <div className="genres">
               <div className="flex flex-wrap gap-2">
-                {film.themes.map((theme, idx) => (
+                {film.genres.map((genre, idx) => (
                   <span
                     key={idx}
                     className="px-4 py-2 rounded-full bg-smoke-gray border border-gray-700 text-gray-300 text-sm"
                   >
-                    {theme}
+                    {genre}
                   </span>
                 ))}
               </div>
@@ -160,37 +184,18 @@ const FilmModal = ({ film, isOpen, onClose }) => {
 
       <style jsx>{`
         @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
+          from { opacity: 0; }
+          to { opacity: 1; }
         }
 
         @keyframes scaleIn {
-          from {
-            opacity: 0;
-            transform: scale(0.95);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1);
-          }
+          from { opacity: 0; transform: scale(0.95); }
+          to { opacity: 1; transform: scale(1); }
         }
 
-        .film-modal-content::-webkit-scrollbar {
-          width: 8px;
-        }
-
-        .film-modal-content::-webkit-scrollbar-track {
-          background: #1a1a1a;
-        }
-
-        .film-modal-content::-webkit-scrollbar-thumb {
-          background: #233dff;
-          border-radius: 4px;
-        }
+        .film-modal-content::-webkit-scrollbar { width: 8px; }
+        .film-modal-content::-webkit-scrollbar-track { background: #1a1a1a; }
+        .film-modal-content::-webkit-scrollbar-thumb { background: #233dff; border-radius: 4px; }
       `}</style>
     </div>
   );
