@@ -76,10 +76,10 @@ const Films = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {filteredFilms.map((film) =>
-            <Link
+            <button
               key={film.id}
-              to={`/films/${film.id}`}
-              className="film-card-flip group relative overflow-hidden rounded-lg aspect-[2/3] transition-all duration-300">
+              onClick={() => handleFilmClick(film)}
+              className="film-card-flip group relative overflow-hidden rounded-lg aspect-[2/3] transition-all duration-300 cursor-pointer">
 
                 {/* Front - Poster */}
                 <div
