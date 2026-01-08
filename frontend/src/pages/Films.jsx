@@ -6,6 +6,8 @@ import FilmModal from '../components/FilmModal';
 const Films = () => {
   const [selectedGenre, setSelectedGenre] = useState('All');
   const [filteredFilms, setFilteredFilms] = useState(films);
+  const [selectedFilm, setSelectedFilm] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
