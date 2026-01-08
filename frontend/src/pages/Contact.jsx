@@ -64,9 +64,9 @@ const Contact = () => {
           <div className="absolute top-0 right-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl"></div>
         </div>
         <div className="container mx-auto px-4 relative z-10">
-          <h1 className="text-6xl md:text-7xl font-bold text-white mb-6">Get in Touch</h1>
-          <p className="text-xl text-gray-400 max-w-2xl">
-            Ready to start your next project? We'd love to hear from you.
+          <h1 className="md:text-7xl !font-bold !text-6xl mb-6 text-white">Get in Touch</h1>
+          <p className="max-w-2xl !text-xl text-gray-400">Let us know a bit about your project, and one of the team will be in touch as soon as possible.
+
           </p>
         </div>
       </section>
