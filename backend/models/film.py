@@ -10,12 +10,12 @@ class FilmBase(BaseModel):
     status: str = "Development"  # Development, Packaging, Pre-Production, Filming, Post-Production, Marketing, Released
     featured: bool = False
     poster_url: Optional[str] = None
-    logline: str = ""
-    synopsis: str = ""
-    genres: List[str] = []
-    themes: List[str] = []
+    tagline: str = ""  # Previously "logline" - single sentence hook
+    logline: str = ""  # Previously "synopsis" - full description
+    genres: List[str] = []  # Limited to 3
     imdb_url: Optional[str] = None
     watch_url: Optional[str] = None
+    watch_url_title: Optional[str] = None  # e.g., "Pitch Deck", "Trailer", "Watch Now"
 
 
 class FilmCreate(FilmBase):
@@ -28,12 +28,12 @@ class FilmUpdate(BaseModel):
     status: Optional[str] = None
     featured: Optional[bool] = None
     poster_url: Optional[str] = None
+    tagline: Optional[str] = None
     logline: Optional[str] = None
-    synopsis: Optional[str] = None
     genres: Optional[List[str]] = None
-    themes: Optional[List[str]] = None
     imdb_url: Optional[str] = None
     watch_url: Optional[str] = None
+    watch_url_title: Optional[str] = None
 
 
 class Film(FilmBase):
