@@ -46,20 +46,6 @@ const FilmModal = ({ film, isOpen, onClose }) => {
 
   const cta = getCTA();
 
-  // Get status message
-  const getStatusMessage = () => {
-    switch (film.status) {
-      case 'In Development':
-        return 'Currently in development.';
-      case 'In Production':
-        return 'Currently in production.';
-      case 'Released':
-        return 'Completed and screening.';
-      default:
-        return '';
-    }
-  };
-
   return (
     <div
       className="film-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md"
