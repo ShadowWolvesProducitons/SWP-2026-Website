@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Filter, RefreshCw, ArrowRight } from 'lucide-react';
+import { Filter, RefreshCw } from 'lucide-react';
 import FilmModal from '../components/FilmModal';
 
 const Films = () => {
