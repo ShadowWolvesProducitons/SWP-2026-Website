@@ -47,7 +47,7 @@ const Home = () => {
             <span className="text-electric-blue">PRODUCTIONS</span>
           </h1>
           
-          <p className="hero-subtitle md:text-2xl max-w-3xl !font-bold !text-xl !italic mb-12 mx-auto text-gray-300">A new breed of storytellers driven by instinct, not trends — from primal horror to deeply human stories, we create what others won’t.
+          <p className="hero-subtitle md:text-2xl max-w-3xl !font-bold !text-xl !italic mb-12 mx-auto text-gray-300">A new breed of storytellers driven by instinct, not trends — from primal horror to deeply human stories, we create where others fear to go.
 
           </p>
           
@@ -121,7 +121,7 @@ const Home = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-5xl md:text-6xl font-bold text-white mb-4">Featured Films</h2>
-            <p className="text-xl text-gray-400">Our latest cinematic masterpieces</p>
+            <p className="!text-xl text-gray-400">A selection from our past work and current slate.</p>
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -181,8 +181,8 @@ const Home = () => {
       <section className="services-section py-24 bg-smoke-gray">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-5xl md:text-6xl font-bold text-white mb-4">Our Services</h2>
-            <p className="text-xl text-gray-400">End-to-end production excellence</p>
+            <h2 className="md:text-6xl !font-bold !text-5xl mb-4 text-white">What We Do</h2>
+            <p className="!text-xl text-gray-400">We develop, produce, and support screen stories from first idea to final delivery — with clarity, intention, and zero BS.</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -223,7 +223,7 @@ const Home = () => {
         </div>
         
         <div className="container mx-auto px-4 text-center relative z-10">
-          <h2 className="md:text-5xl !font-bold !text-4xl mb-4 text-white">Join the Pack
+          <h2 className="md:text-5xl !font-bold !text-4xl mb-4 text-white">🐺 JOIN THE PACK
 
           </h2>
           <p className="max-w-2xl !text-lg mb-8 mx-auto text-gray-300">Inside access to casting calls, industry updates, and the tools, apps, and templates we actually use.
