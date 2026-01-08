@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { films } from '../mock';
 import { Play, Filter } from 'lucide-react';
+import FilmModal from '../components/FilmModal';
 
 const Films = () => {
   const [selectedGenre, setSelectedGenre] = useState('All');
