@@ -14,6 +14,8 @@ const STATUS_OPTIONS = [
 
 const TYPE_OPTIONS = ['Short', 'Feature', 'Series', 'Documentary', 'Other'];
 
+const MAX_GENRES = 3;
+
 const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
   const [formData, setFormData] = useState({
     title: '',
@@ -21,15 +23,14 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
     status: 'Development',
     featured: false,
     poster_url: '',
+    tagline: '',
     logline: '',
-    synopsis: '',
     genres: [],
-    themes: [],
     imdb_url: '',
-    watch_url: ''
+    watch_url: '',
+    watch_url_title: ''
   });
   const [genreInput, setGenreInput] = useState('');
-  const [themeInput, setThemeInput] = useState('');
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
@@ -43,12 +44,12 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
         status: film.status || 'Development',
         featured: film.featured || false,
         poster_url: film.poster_url || '',
+        tagline: film.tagline || '',
         logline: film.logline || '',
-        synopsis: film.synopsis || '',
         genres: film.genres || [],
-        themes: film.themes || [],
         imdb_url: film.imdb_url || '',
-        watch_url: film.watch_url || ''
+        watch_url: film.watch_url || '',
+        watch_url_title: film.watch_url_title || ''
       });
     } else {
       setFormData({
@@ -57,16 +58,15 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
         status: 'Development',
         featured: false,
         poster_url: '',
+        tagline: '',
         logline: '',
-        synopsis: '',
         genres: [],
-        themes: [],
         imdb_url: '',
-        watch_url: ''
+        watch_url: '',
+        watch_url_title: ''
       });
     }
     setGenreInput('');
-    setThemeInput('');
   }, [film, isOpen]);
 
   const handleChange = (e) => {
@@ -80,7 +80,6 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
   const handleImageUpload = async (file) => {
     if (!file) return;
 
-    // Validate file type
     const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
     if (!validTypes.includes(file.type)) {
       toast.error('Please upload a valid image file (JPG, PNG, GIF, WebP)');
@@ -136,6 +135,10 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
 
   const handleAddGenre = () => {
     const genre = genreInput.trim();
+    if (formData.genres.length >= MAX_GENRES) {
+      toast.error(`Maximum ${MAX_GENRES} genres allowed`);
+      return;
+    }
     if (genre && !formData.genres.includes(genre)) {
       setFormData(prev => ({
         ...prev,
@@ -149,24 +152,6 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
     setFormData(prev => ({
       ...prev,
       genres: prev.genres.filter(g => g !== genreToRemove)
-    }));
-  };
-
-  const handleAddTheme = () => {
-    const theme = themeInput.trim();
-    if (theme && !formData.themes.includes(theme)) {
-      setFormData(prev => ({
-        ...prev,
-        themes: [...prev.themes, theme]
-      }));
-      setThemeInput('');
-    }
-  };
-
-  const handleRemoveTheme = (themeToRemove) => {
-    setFormData(prev => ({
-      ...prev,
-      themes: prev.themes.filter(t => t !== themeToRemove)
     }));
   };
 
@@ -330,40 +315,40 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
             </div>
           </div>
 
+          {/* Tagline */}
+          <div>
+            <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+              Tagline
+            </label>
+            <input
+              type="text"
+              name="tagline"
+              value={formData.tagline}
+              onChange={handleChange}
+              className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
+              placeholder="A punchy one-liner hook (e.g., 'Some secrets should stay buried.')"
+            />
+          </div>
+
           {/* Logline */}
           <div>
             <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
               Logline
             </label>
-            <input
-              type="text"
+            <textarea
               name="logline"
               value={formData.logline}
               onChange={handleChange}
-              className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
-              placeholder="A single sentence that captures the essence"
-            />
-          </div>
-
-          {/* Synopsis */}
-          <div>
-            <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
-              Synopsis
-            </label>
-            <textarea
-              name="synopsis"
-              value={formData.synopsis}
-              onChange={handleChange}
               rows={5}
               className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors resize-none"
-              placeholder="Full synopsis (use blank lines for paragraph breaks)"
+              placeholder="Full logline / synopsis (use blank lines for paragraph breaks)"
             />
           </div>
 
           {/* Genres */}
           <div>
             <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
-              Genres
+              Genres <span className="text-gray-600">(max {MAX_GENRES})</span>
             </label>
             <div className="flex gap-2 mb-2">
               <input
@@ -373,11 +358,13 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                 onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddGenre())}
                 className="flex-1 bg-black border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-electric-blue focus:outline-none transition-colors text-sm"
                 placeholder="Add a genre (e.g., Horror, Drama, Thriller)"
+                disabled={formData.genres.length >= MAX_GENRES}
               />
               <button
                 type="button"
                 onClick={handleAddGenre}
-                className="px-4 py-2 bg-electric-blue/20 text-electric-blue rounded-lg hover:bg-electric-blue/30 transition-colors"
+                disabled={formData.genres.length >= MAX_GENRES}
+                className="px-4 py-2 bg-electric-blue/20 text-electric-blue rounded-lg hover:bg-electric-blue/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Plus size={18} />
               </button>
@@ -403,49 +390,6 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
             )}
           </div>
 
-          {/* Themes */}
-          <div>
-            <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
-              Themes
-            </label>
-            <div className="flex gap-2 mb-2">
-              <input
-                type="text"
-                value={themeInput}
-                onChange={(e) => setThemeInput(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddTheme())}
-                className="flex-1 bg-black border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-electric-blue focus:outline-none transition-colors text-sm"
-                placeholder="Add a theme (e.g., Redemption, Identity)"
-              />
-              <button
-                type="button"
-                onClick={handleAddTheme}
-                className="px-4 py-2 bg-electric-blue/20 text-electric-blue rounded-lg hover:bg-electric-blue/30 transition-colors"
-              >
-                <Plus size={18} />
-              </button>
-            </div>
-            {formData.themes.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {formData.themes.map((theme, idx) => (
-                  <span
-                    key={idx}
-                    className="inline-flex items-center gap-1 px-3 py-1 bg-black border border-gray-700 rounded-full text-gray-300 text-sm"
-                  >
-                    {theme}
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveTheme(theme)}
-                      className="text-gray-500 hover:text-red-400 transition-colors"
-                    >
-                      <X size={14} />
-                    </button>
-                  </span>
-                ))}
-              </div>
-            )}
-          </div>
-
           {/* IMDb URL */}
           <div>
             <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
@@ -461,19 +405,30 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
             />
           </div>
 
-          {/* Watch URL */}
+          {/* External Link with Title */}
           <div>
             <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
-              External Watch Link <span className="text-gray-600">(optional)</span>
+              External Link <span className="text-gray-600">(optional)</span>
             </label>
-            <input
-              type="url"
-              name="watch_url"
-              value={formData.watch_url}
-              onChange={handleChange}
-              className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
-              placeholder="https://..."
-            />
+            <div className="grid grid-cols-3 gap-3">
+              <input
+                type="text"
+                name="watch_url_title"
+                value={formData.watch_url_title}
+                onChange={handleChange}
+                className="col-span-1 bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
+                placeholder="Title (e.g., Trailer)"
+              />
+              <input
+                type="url"
+                name="watch_url"
+                value={formData.watch_url}
+                onChange={handleChange}
+                className="col-span-2 bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
+                placeholder="https://..."
+              />
+            </div>
+            <p className="text-gray-600 text-xs mt-1">e.g., "Pitch Deck", "Trailer", "Watch Now"</p>
           </div>
 
           {/* Actions */}
