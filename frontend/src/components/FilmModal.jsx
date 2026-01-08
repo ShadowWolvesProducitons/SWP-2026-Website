@@ -1,0 +1,194 @@
+import React, { useEffect } from 'react';
+import { X, ArrowRight } from 'lucide-react';
+
+const FilmModal = ({ film, isOpen, onClose }) => {
+  // Close on ESC key
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'hidden'; // Prevent background scroll
+    }
+    
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen, onClose]);
+
+  if (!isOpen || !film) return null;
+
+  // Get CTA based on status
+  const getCTA = () => {
+    switch (film.status) {
+      case 'In Development':
+        return {
+          text: 'Partnership & Development Enquiries',
+          action: () => window.location.href = 'mailto:admin@shadowwolvesproductions.com.au?subject=Partnership Enquiry: ' + film.title
+        };
+      case 'In Production':
+        return {
+          text: 'Festival & Distribution Enquiries',
+          action: () => window.location.href = 'mailto:admin@shadowwolvesproductions.com.au?subject=Festival Enquiry: ' + film.title
+        };
+      case 'Released':
+        return {
+          text: 'Watch / Learn More',
+          action: onClose
+        };
+      default:
+        return null;
+    }
+  };
+
+  const cta = getCTA();
+
+  // Get status message
+  const getStatusMessage = () => {
+    switch (film.status) {
+      case 'In Development':
+        return 'Currently in development.';
+      case 'In Production':
+        return 'Currently in production.';
+      case 'Released':
+        return 'Completed and screening.';
+      default:
+        return '';
+    }
+  };
+
+  return (
+    <div
+      className="film-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md"
+      onClick={onClose}
+      style={{ animation: 'fadeIn 0.3s ease-out' }}
+    >
+      <div
+        className="film-modal-content relative bg-black border border-gray-800 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+        onClick={(e) => e.stopPropagation()}
+        style={{ animation: 'scaleIn 0.3s ease-out' }}
+      >
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 z-10 w-10 h-10 bg-black/80 hover:bg-electric-blue rounded-full flex items-center justify-center transition-colors border border-gray-700 hover:border-electric-blue"
+        >
+          <X size={20} className="text-white" />
+        </button>
+
+        {/* Hero Image */}
+        <div
+          className="modal-hero relative h-80 bg-gradient-to-br from-black to-gray-900"
+          style={{ backgroundColor: film.posterColor }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+          <div className="absolute bottom-0 left-0 right-0 p-8">
+            <div className="mb-3">
+              <span className="px-4 py-2 rounded-full bg-electric-blue/20 text-electric-blue border border-electric-blue/40 text-xs font-mono uppercase tracking-widest">
+                {film.status}
+              </span>
+            </div>
+            <h2 className="text-5xl font-bold text-white" style={{ fontFamily: 'Cinzel, serif' }}>
+              {film.title}
+            </h2>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="modal-body p-8 space-y-8">
+          {/* Logline */}
+          <div className="logline">
+            <p className="text-2xl text-gray-300 italic leading-relaxed">
+              {film.logline}
+            </p>
+          </div>
+
+          {/* Synopsis */}
+          <div className="synopsis space-y-4">
+            {film.synopsis.split('\n\n').map((paragraph, idx) => (
+              <p key={idx} className="text-gray-400 text-lg leading-relaxed">
+                {paragraph}
+              </p>
+            ))}
+          </div>
+
+          {/* Themes */}
+          {film.themes && film.themes.length > 0 && (
+            <div className="themes">
+              <div className="flex flex-wrap gap-2">
+                {film.themes.map((theme, idx) => (
+                  <span
+                    key={idx}
+                    className="px-4 py-2 rounded-full bg-smoke-gray border border-gray-700 text-gray-300 text-sm"
+                  >
+                    {theme}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Status Note */}
+          <div className="status-note">
+            <p className="text-gray-500 text-sm">
+              {getStatusMessage()}
+            </p>
+          </div>
+
+          {/* CTA */}
+          {cta && (
+            <div className="cta pt-4">
+              <button
+                onClick={cta.action}
+                className="w-full bg-electric-blue hover:bg-electric-blue/90 text-white px-8 py-4 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
+              >
+                {cta.text}
+                <ArrowRight size={18} />
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <style jsx>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+
+        @keyframes scaleIn {
+          from {
+            opacity: 0;
+            transform: scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        .film-modal-content::-webkit-scrollbar {
+          width: 8px;
+        }
+
+        .film-modal-content::-webkit-scrollbar-track {
+          background: #1a1a1a;
+        }
+
+        .film-modal-content::-webkit-scrollbar-thumb {
+          background: #233dff;
+          border-radius: 4px;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+export default FilmModal;
