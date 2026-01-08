@@ -1,41 +1,51 @@
-import React, { useState, useEffect } from 'react';
-import { X, Upload, Plus, Trash2 } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { X, Upload, Plus, Image } from 'lucide-react';
 import { toast } from 'sonner';
 
-const STATUS_OPTIONS = ['In Development', 'In Production', 'Released'];
-
-const POSTER_COLORS = [
-  '#8B0000', '#1a4d6f', '#5a0000', '#0f0f1a', '#D4AF37', '#1a1a2e',
-  '#2d1b4e', '#1a3a1a', '#4a1a1a', '#1a2a4a'
+const STATUS_OPTIONS = [
+  'Development',
+  'Packaging',
+  'Pre-Production',
+  'Filming',
+  'Post-Production',
+  'Marketing',
+  'Released'
 ];
+
+const TYPE_OPTIONS = ['Short', 'Feature', 'Series', 'Documentary', 'Other'];
 
 const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
   const [formData, setFormData] = useState({
     title: '',
-    status: 'In Development',
+    film_type: 'Feature',
+    status: 'Development',
     featured: false,
     poster_url: '',
-    poster_color: '#1a1a2e',
     logline: '',
     synopsis: '',
+    genres: [],
     themes: [],
     imdb_url: '',
     watch_url: ''
   });
+  const [genreInput, setGenreInput] = useState('');
   const [themeInput, setThemeInput] = useState('');
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     if (film) {
       setFormData({
         title: film.title || '',
-        status: film.status || 'In Development',
+        film_type: film.film_type || 'Feature',
+        status: film.status || 'Development',
         featured: film.featured || false,
         poster_url: film.poster_url || '',
-        poster_color: film.poster_color || '#1a1a2e',
         logline: film.logline || '',
         synopsis: film.synopsis || '',
+        genres: film.genres || [],
         themes: film.themes || [],
         imdb_url: film.imdb_url || '',
         watch_url: film.watch_url || ''
@@ -43,17 +53,19 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
     } else {
       setFormData({
         title: '',
-        status: 'In Development',
+        film_type: 'Feature',
+        status: 'Development',
         featured: false,
         poster_url: '',
-        poster_color: '#1a1a2e',
         logline: '',
         synopsis: '',
+        genres: [],
         themes: [],
         imdb_url: '',
         watch_url: ''
       });
     }
+    setGenreInput('');
     setThemeInput('');
   }, [film, isOpen]);
 
@@ -65,9 +77,15 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
     }));
   };
 
-  const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
+  const handleImageUpload = async (file) => {
     if (!file) return;
+
+    // Validate file type
+    const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    if (!validTypes.includes(file.type)) {
+      toast.error('Please upload a valid image file (JPG, PNG, GIF, WebP)');
+      return;
+    }
 
     const formDataUpload = new FormData();
     formDataUpload.append('file', file);
@@ -94,6 +112,46 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
     }
   };
 
+  const handleFileSelect = (e) => {
+    const file = e.target.files[0];
+    handleImageUpload(file);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files[0];
+    handleImageUpload(file);
+  };
+
+  const handleAddGenre = () => {
+    const genre = genreInput.trim();
+    if (genre && !formData.genres.includes(genre)) {
+      setFormData(prev => ({
+        ...prev,
+        genres: [...prev.genres, genre]
+      }));
+      setGenreInput('');
+    }
+  };
+
+  const handleRemoveGenre = (genreToRemove) => {
+    setFormData(prev => ({
+      ...prev,
+      genres: prev.genres.filter(g => g !== genreToRemove)
+    }));
+  };
+
   const handleAddTheme = () => {
     const theme = themeInput.trim();
     if (theme && !formData.themes.includes(theme)) {
@@ -110,6 +168,10 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
       ...prev,
       themes: prev.themes.filter(t => t !== themeToRemove)
     }));
+  };
+
+  const handleRemoveImage = () => {
+    setFormData(prev => ({ ...prev, poster_url: '' }));
   };
 
   const handleSubmit = async (e) => {
@@ -160,8 +222,23 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
             />
           </div>
 
-          {/* Status & Featured Row */}
+          {/* Type & Status Row */}
           <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+                Type
+              </label>
+              <select
+                name="film_type"
+                value={formData.film_type}
+                onChange={handleChange}
+                className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
+              >
+                {TYPE_OPTIONS.map(type => (
+                  <option key={type} value={type}>{type}</option>
+                ))}
+              </select>
+            </div>
             <div>
               <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
                 Status
@@ -177,65 +254,78 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                 ))}
               </select>
             </div>
-            <div>
-              <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
-                Featured
-              </label>
-              <label className="flex items-center gap-3 bg-black border border-gray-700 rounded-lg px-4 py-3 cursor-pointer hover:border-gray-600 transition-colors">
-                <input
-                  type="checkbox"
-                  name="featured"
-                  checked={formData.featured}
-                  onChange={handleChange}
-                  className="w-5 h-5 rounded border-gray-600 text-electric-blue focus:ring-electric-blue focus:ring-offset-black"
-                />
-                <span className="text-white">Show as featured</span>
-              </label>
-            </div>
           </div>
 
-          {/* Poster Image */}
+          {/* Featured */}
+          <div>
+            <label className="flex items-center gap-3 bg-black border border-gray-700 rounded-lg px-4 py-3 cursor-pointer hover:border-gray-600 transition-colors">
+              <input
+                type="checkbox"
+                name="featured"
+                checked={formData.featured}
+                onChange={handleChange}
+                className="w-5 h-5 rounded border-gray-600 text-electric-blue focus:ring-electric-blue focus:ring-offset-black"
+              />
+              <span className="text-white">Show as featured film</span>
+            </label>
+          </div>
+
+          {/* Poster Image - Drag & Drop */}
           <div>
             <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
               Poster / Hero Image
             </label>
             <div className="flex gap-4">
-              <div
-                className="w-24 h-32 rounded-lg overflow-hidden flex-shrink-0 border border-gray-700"
-                style={{ backgroundColor: formData.poster_color }}
-              >
-                {formData.poster_url && (
-                  <img src={`${process.env.REACT_APP_BACKEND_URL}${formData.poster_url}`} alt="Poster" className="w-full h-full object-cover" />
+              {/* Preview */}
+              <div className="w-28 h-40 rounded-lg overflow-hidden flex-shrink-0 border border-gray-700 bg-gray-900 flex items-center justify-center">
+                {formData.poster_url ? (
+                  <div className="relative w-full h-full group">
+                    <img 
+                      src={`${process.env.REACT_APP_BACKEND_URL}${formData.poster_url}`} 
+                      alt="Poster" 
+                      className="w-full h-full object-cover" 
+                    />
+                    <button
+                      type="button"
+                      onClick={handleRemoveImage}
+                      className="absolute top-1 right-1 p-1 bg-black/70 rounded-full opacity-0 group-hover:opacity-100 transition-opacity text-red-400 hover:text-red-300"
+                    >
+                      <X size={14} />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="text-center p-2">
+                    <Image size={24} className="mx-auto text-gray-600 mb-1" />
+                    <span className="text-gray-500 text-xs">Poster Coming Soon</span>
+                  </div>
                 )}
               </div>
-              <div className="flex-1 space-y-3">
-                <label className="flex items-center justify-center gap-2 bg-black border border-gray-700 border-dashed rounded-lg px-4 py-3 cursor-pointer hover:border-electric-blue transition-colors">
-                  <Upload size={18} className="text-gray-400" />
-                  <span className="text-gray-400 text-sm">
-                    {uploading ? 'Uploading...' : 'Upload Image'}
-                  </span>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    className="hidden"
-                    disabled={uploading}
-                  />
-                </label>
-                <div>
-                  <p className="text-gray-500 text-xs mb-2">Or select a fallback color:</p>
-                  <div className="flex flex-wrap gap-2">
-                    {POSTER_COLORS.map(color => (
-                      <button
-                        key={color}
-                        type="button"
-                        onClick={() => setFormData(prev => ({ ...prev, poster_color: color }))}
-                        className={`w-6 h-6 rounded border-2 transition-all ${formData.poster_color === color ? 'border-white scale-110' : 'border-transparent'}`}
-                        style={{ backgroundColor: color }}
-                      />
-                    ))}
-                  </div>
-                </div>
+              
+              {/* Upload Zone */}
+              <div
+                className={`flex-1 border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-all ${
+                  isDragging 
+                    ? 'border-electric-blue bg-electric-blue/10' 
+                    : 'border-gray-700 hover:border-gray-500'
+                }`}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <Upload size={24} className={`mx-auto mb-2 ${isDragging ? 'text-electric-blue' : 'text-gray-500'}`} />
+                <p className={`text-sm ${isDragging ? 'text-electric-blue' : 'text-gray-400'}`}>
+                  {uploading ? 'Uploading...' : 'Drag & Drop or Click to Upload'}
+                </p>
+                <p className="text-xs text-gray-600 mt-1">JPG, PNG, GIF, WebP</p>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileSelect}
+                  className="hidden"
+                  disabled={uploading}
+                />
               </div>
             </div>
           </div>
@@ -264,10 +354,53 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
               name="synopsis"
               value={formData.synopsis}
               onChange={handleChange}
-              rows={6}
+              rows={5}
               className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors resize-none"
               placeholder="Full synopsis (use blank lines for paragraph breaks)"
             />
+          </div>
+
+          {/* Genres */}
+          <div>
+            <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+              Genres
+            </label>
+            <div className="flex gap-2 mb-2">
+              <input
+                type="text"
+                value={genreInput}
+                onChange={(e) => setGenreInput(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddGenre())}
+                className="flex-1 bg-black border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-electric-blue focus:outline-none transition-colors text-sm"
+                placeholder="Add a genre (e.g., Horror, Drama, Thriller)"
+              />
+              <button
+                type="button"
+                onClick={handleAddGenre}
+                className="px-4 py-2 bg-electric-blue/20 text-electric-blue rounded-lg hover:bg-electric-blue/30 transition-colors"
+              >
+                <Plus size={18} />
+              </button>
+            </div>
+            {formData.genres.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {formData.genres.map((genre, idx) => (
+                  <span
+                    key={idx}
+                    className="inline-flex items-center gap-1 px-3 py-1 bg-electric-blue/20 border border-electric-blue/40 rounded-full text-electric-blue text-sm"
+                  >
+                    {genre}
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveGenre(genre)}
+                      className="text-electric-blue/60 hover:text-red-400 transition-colors"
+                    >
+                      <X size={14} />
+                    </button>
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Themes */}
