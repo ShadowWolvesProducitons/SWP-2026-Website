@@ -127,6 +127,9 @@ const Films = () => {
           }
         </div>
       </section>
+
+      {/* Film Modal */}
+      <FilmModal film={selectedFilm} isOpen={isModalOpen} onClose={closeModal} />
     </div>);
 
 };
