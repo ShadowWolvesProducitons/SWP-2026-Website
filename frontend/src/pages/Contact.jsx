@@ -25,7 +25,7 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     // Create mailto link with form data
     const subject = encodeURIComponent(`Contact Form: ${formData.service || 'General Inquiry'}`);
     const body = encodeURIComponent(
@@ -35,13 +35,13 @@ const Contact = () => {
       `Service: ${formData.service}\n\n` +
       `Message:\n${formData.message}`
     );
-    
+
     // Open user's email client
     window.location.href = `mailto:info@shadowwolvesproductions.com.au?subject=${subject}&body=${body}`;
-    
+
     toast({
       title: "Opening Email Client",
-      description: "Your message will be sent via your email application.",
+      description: "Your message will be sent via your email application."
     });
 
     // Reset form after a delay
@@ -91,8 +91,8 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     className="w-full px-6 py-4 rounded-lg bg-smoke-gray border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-electric-blue transition-colors"
-                    placeholder="John Doe"
-                  />
+                    placeholder="John Doe" />
+
                 </div>
 
                 <div>
@@ -107,8 +107,8 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     className="w-full px-6 py-4 rounded-lg bg-smoke-gray border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-electric-blue transition-colors"
-                    placeholder="john@example.com"
-                  />
+                    placeholder="john@example.com" />
+
                 </div>
 
                 <div>
@@ -122,8 +122,8 @@ const Contact = () => {
                     value={formData.phone}
                     onChange={handleChange}
                     className="w-full px-6 py-4 rounded-lg bg-smoke-gray border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-electric-blue transition-colors"
-                    placeholder="+61 XXX XXX XXX"
-                  />
+                    placeholder="+61 XXX XXX XXX" />
+
                 </div>
 
                 <div>
@@ -136,8 +136,8 @@ const Contact = () => {
                     value={formData.service}
                     onChange={handleChange}
                     required
-                    className="w-full px-6 py-4 rounded-lg bg-smoke-gray border border-gray-700 text-white focus:outline-none focus:border-electric-blue transition-colors"
-                  >
+                    className="w-full px-6 py-4 rounded-lg bg-smoke-gray border border-gray-700 text-white focus:outline-none focus:border-electric-blue transition-colors">
+
                     <option value="">Select a service</option>
                     <option value="development">Development</option>
                     <option value="pre-production">Pre-Production</option>
@@ -160,14 +160,14 @@ const Contact = () => {
                     required
                     rows={6}
                     className="w-full px-6 py-4 rounded-lg bg-smoke-gray border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-electric-blue transition-colors resize-none"
-                    placeholder="Tell us about your project..."
-                  ></textarea>
+                    placeholder="Tell us about your project...">
+                  </textarea>
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full bg-electric-blue hover:bg-electric-blue/90 text-white px-8 py-5 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
-                >
+                  className="w-full bg-electric-blue hover:bg-electric-blue/90 text-white px-8 py-5 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2">
+
                   <Send size={18} />
                   Send Message
                 </button>
@@ -195,8 +195,8 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="text-white font-bold mb-2">Email</h3>
-                    <a href="mailto:info@shadowwolvesproductions.com.au" className="text-gray-400 hover:text-white transition-colors">
-                      info@shadowwolvesproductions.com.au
+                    <a href="mailto:info@shadowwolvesproductions.com.au" className="text-gray-400 hover:text-white transition-colors">admin@shadowwolvesproductions.com.au
+
                     </a>
                   </div>
                 </div>
@@ -233,8 +233,8 @@ const Contact = () => {
           </div>
         </div>
       </section>
-    </div>
-  );
+    </div>);
+
 };
 
 export default Contact;
