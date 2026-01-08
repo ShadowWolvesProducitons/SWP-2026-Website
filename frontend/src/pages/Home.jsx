@@ -334,6 +334,17 @@ const Home = () => {
               </span>
             </div>
           </div>
+
+          {/* View All Services Button */}
+          <div className="text-center mt-12">
+            <Link 
+              to="/services" 
+              className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full bg-electric-blue hover:bg-electric-blue/90 text-white transition-all font-mono text-sm uppercase tracking-widest"
+            >
+              View All Services
+              <ArrowRight size={18} />
+            </Link>
+          </div>
         </div>
       </section>
 
