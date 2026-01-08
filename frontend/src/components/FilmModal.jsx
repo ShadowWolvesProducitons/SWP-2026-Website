@@ -35,9 +35,15 @@ const FilmModal = ({ film, isOpen, onClose }) => {
           action: () => window.location.href = 'mailto:admin@shadowwolvesproductions.com.au?subject=Festival Enquiry: ' + film.title
         };
       case 'Released':
+        if (film.watchUrl) {
+          return {
+            text: 'Watch Now',
+            action: () => window.open(film.watchUrl, '_blank')
+          };
+        }
         return {
-          text: 'Watch / Learn More',
-          action: onClose
+          text: 'Screening Enquiries',
+          action: () => window.location.href = 'mailto:admin@shadowwolvesproductions.com.au?subject=Screening Enquiry: ' + film.title
         };
       default:
         return null;
