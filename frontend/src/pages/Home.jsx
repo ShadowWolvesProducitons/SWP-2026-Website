@@ -1,21 +1,43 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { films, services, testimonials } from '../mock';
+import { services, testimonials } from '../mock';
 import { Play, ArrowRight, Star, Award, Users, Film } from 'lucide-react';
 import FilmModal from '../components/FilmModal';
 
 const Home = () => {
   const [selectedFilm, setSelectedFilm] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [featuredFilms, setFeaturedFilms] = useState([]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    fetchFeaturedFilms();
   }, []);
 
-  const featuredFilms = films.filter((film) => film.featured).slice(0, 3);
+  const fetchFeaturedFilms = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/films`);
+      if (response.ok) {
+        const data = await response.json();
+        // Filter featured films and take first 3
+        const featured = data.filter(film => film.featured).slice(0, 3);
+        setFeaturedFilms(featured);
+      }
+    } catch (err) {
+      console.error('Failed to load films:', err);
+    }
+  };
 
   const handleFilmClick = (film) => {
-    setSelectedFilm(film);
+    // Transform API data to match modal expectations
+    const modalFilm = {
+      ...film,
+      posterColor: film.poster_color,
+      imdbUrl: film.imdb_url,
+      watchUrl: film.watch_url,
+      posterUrl: film.poster_url
+    };
+    setSelectedFilm(modalFilm);
     setIsModalOpen(true);
   };
 
