@@ -100,17 +100,17 @@ const Home = () => {
             <div className="stat-item text-center">
               <Award className="w-10 h-10 mx-auto mb-2 text-electric-blue" />
               <div className="text-3xl font-bold text-white mb-1">25+</div>
-              <div className="text-gray-400 text-xs uppercase tracking-wide">Awards Won</div>
+              <div className="uppercase !text-xs text-gray-400">Festival Awards</div>
             </div>
             <div className="stat-item text-center">
               <Users className="w-10 h-10 mx-auto mb-2 text-white" />
               <div className="text-3xl font-bold text-white mb-1">5+</div>
-              <div className="text-gray-400 text-xs uppercase tracking-wide">Films In Production</div>
+              <div className="uppercase !text-xs text-gray-400">Projects In Development</div>
             </div>
             <div className="stat-item text-center">
               <Star className="w-10 h-10 mx-auto mb-2 text-electric-blue" />
               <div className="text-3xl font-bold text-white mb-1">20+</div>
-              <div className="text-gray-400 text-xs uppercase tracking-wide">Years Experience</div>
+              <div className="uppercase !text-xs text-gray-400">Years Combined Experience</div>
             </div>
           </div>
         </div>
