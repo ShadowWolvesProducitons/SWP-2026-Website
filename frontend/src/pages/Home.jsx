@@ -1,14 +1,28 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { films, services, testimonials } from '../mock';
 import { Play, ArrowRight, Star, Award, Users, Film } from 'lucide-react';
+import FilmModal from '../components/FilmModal';
 
 const Home = () => {
+  const [selectedFilm, setSelectedFilm] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   const featuredFilms = films.filter((film) => film.featured).slice(0, 3);
+
+  const handleFilmClick = (film) => {
+    setSelectedFilm(film);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setTimeout(() => setSelectedFilm(null), 300);
+  };
 
   return (
     <div className="home-page">
