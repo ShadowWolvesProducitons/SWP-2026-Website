@@ -56,13 +56,13 @@ const Footer = () => {
           
           {/* Social Links - Right Side */}
           <div className="flex gap-4">
-            <a href="#" className="text-gray-400 hover:text-electric-blue transition-colors">
+            <a href="https://www.youtube.com/c/ShadowWolvesProductions" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-electric-blue transition-colors">
               <Youtube size={20} />
             </a>
-            <a href="#" className="text-gray-400 hover:text-electric-blue transition-colors">
+            <a href="https://www.instagram.com/Shadow.Wolves.Productions" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-electric-blue transition-colors">
               <Instagram size={20} />
             </a>
-            <a href="#" className="text-gray-400 hover:text-electric-blue transition-colors">
+            <a href="https://www.facebook.com/ShadowWolvesProductions1" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-electric-blue transition-colors">
               <Facebook size={20} />
             </a>
           </div>
