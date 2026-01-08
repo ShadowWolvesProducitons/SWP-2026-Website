@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { services, testimonials } from '../mock';
-import { Play, ArrowRight, Star, Award, Users, Film } from 'lucide-react';
+import { ArrowRight, Star, Award, Users, Film } from 'lucide-react';
 import FilmModal from '../components/FilmModal';
 
 const Home = () => {
