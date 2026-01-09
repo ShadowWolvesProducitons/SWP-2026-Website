@@ -166,7 +166,7 @@ const Home = () => {
               <button
                 key={film.id}
                 onClick={() => handleFilmClick(film)}
-                className="film-card group relative overflow-hidden rounded-lg aspect-[2/3] cursor-pointer"
+                className="film-card group relative overflow-hidden rounded-lg aspect-[2/3] cursor-pointer border-2 border-transparent hover:border-white/30 transition-all duration-300"
               >
                 {/* Poster / Placeholder */}
                 <div
