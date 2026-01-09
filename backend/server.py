@@ -12,7 +12,11 @@ import uuid
 from datetime import datetime, timezone
 
 # Import routes
-from routes import films_router, admin_router, upload_router, set_films_db
+from routes import (
+    films_router, admin_router, upload_router, 
+    den_items_router, blog_posts_router,
+    set_films_db, set_den_items_db, set_blog_posts_db
+)
 
 
 ROOT_DIR = Path(__file__).parent
@@ -25,6 +29,8 @@ db = client[os.environ['DB_NAME']]
 
 # Set database for routes
 set_films_db(db)
+set_den_items_db(db)
+set_blog_posts_db(db)
 
 # Create the main app
 app = FastAPI(title="Shadow Wolves Productions API")
@@ -76,6 +82,8 @@ async def get_status_checks():
 api_router.include_router(films_router)
 api_router.include_router(admin_router)
 api_router.include_router(upload_router)
+api_router.include_router(den_items_router)
+api_router.include_router(blog_posts_router)
 
 # Include the main API router
 app.include_router(api_router)
