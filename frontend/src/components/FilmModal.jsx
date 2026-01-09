@@ -94,9 +94,24 @@ const FilmModal = ({ film, isOpen, onClose }) => {
               </span>
             </div>
             <div className="flex items-end justify-between gap-4">
-              <h2 className="text-5xl font-bold text-white" style={{ fontFamily: 'Cinzel, serif' }}>
-                {film.title}
-              </h2>
+              <div>
+                <h2 className="text-5xl font-bold text-white mb-3" style={{ fontFamily: 'Cinzel, serif' }}>
+                  {film.title}
+                </h2>
+                {/* Genres - Under Title */}
+                {film.genres && film.genres.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {film.genres.map((genre, idx) => (
+                      <span
+                        key={idx}
+                        className="px-3 py-1 rounded-full bg-white/10 text-white/80 text-xs"
+                      >
+                        {genre}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
               {/* Secondary Links */}
               <div className="flex items-center gap-4 mb-2 shrink-0">
                 {film.imdbUrl && (
