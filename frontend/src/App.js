@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Header from "./components/Header";
@@ -8,6 +8,8 @@ import Films from "./pages/Films";
 import Services from "./pages/Services";
 import TheDen from "./pages/TheDen";
 import Contact from "./pages/Contact";
+import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import { Toaster } from "./components/ui/sonner";
@@ -49,9 +51,13 @@ const AppContent = () => {
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/films" element={<Films />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/den" element={<TheDen />} />
+        <Route path="/services" element={<TheDen />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:slug" element={<BlogPost />} />
+        
+        {/* Legacy redirect */}
+        <Route path="/den" element={<Navigate to="/services" replace />} />
         
         {/* Admin Routes */}
         <Route 
