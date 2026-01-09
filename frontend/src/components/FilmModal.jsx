@@ -166,22 +166,6 @@ const FilmModal = ({ film, isOpen, onClose }) => {
             </div>
           )}
 
-          {/* Genres */}
-          {film.genres && film.genres.length > 0 && (
-            <div className="genres">
-              <div className="flex flex-wrap gap-2">
-                {film.genres.map((genre, idx) => (
-                  <span
-                    key={idx}
-                    className="px-4 py-2 rounded-full bg-smoke-gray border border-gray-700 text-gray-300 text-sm"
-                  >
-                    {genre}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
           {/* CTA */}
           {cta && (
             <div className="cta pt-4">
