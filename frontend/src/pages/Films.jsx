@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Filter, RefreshCw } from 'lucide-react';
 import FilmModal from '../components/FilmModal';
 
 const Films = () => {
   const [films, setFilms] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedStatus, setSelectedStatus] = useState('All');
+  const [selectedGenre, setSelectedGenre] = useState('All');
   const [filteredFilms, setFilteredFilms] = useState([]);
   const [selectedFilm, setSelectedFilm] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,15 +30,22 @@ const Films = () => {
     }
   };
 
+  // Extract unique genres from all films
+  const genreOptions = useMemo(() => {
+    const allGenres = films.flatMap(film => film.genres || []);
+    const uniqueGenres = [...new Set(allGenres)].sort();
+    return ['All', ...uniqueGenres];
+  }, [films]);
+
   useEffect(() => {
-    if (selectedStatus === 'All') {
+    if (selectedGenre === 'All') {
       setFilteredFilms(films);
     } else {
-      setFilteredFilms(films.filter((film) => film.status === selectedStatus));
+      setFilteredFilms(films.filter((film) => 
+        film.genres && film.genres.includes(selectedGenre)
+      ));
     }
-  }, [selectedStatus, films]);
-
-  const statusOptions = ['All', 'Development', 'Packaging', 'Pre-Production', 'Filming', 'Post-Production', 'Marketing', 'Released'];
+  }, [selectedGenre, films]);
 
   const handleFilmClick = (film) => {
     // Transform API data to match modal expectations
@@ -77,19 +84,19 @@ const Films = () => {
         <div className="container mx-auto px-4">
           <div className="flex items-center gap-4 flex-wrap">
             <Filter size={20} className="text-gray-400" />
-            <span className="text-gray-400 font-mono text-sm uppercase tracking-widest">Filter by Status:</span>
+            <span className="text-gray-400 font-mono text-sm uppercase tracking-widest">Filter by Genre:</span>
             <div className="flex gap-2 flex-wrap">
-              {statusOptions.map((status) => (
+              {genreOptions.map((genre) => (
                 <button
-                  key={status}
-                  onClick={() => setSelectedStatus(status)}
+                  key={genre}
+                  onClick={() => setSelectedGenre(genre)}
                   className={`px-4 py-2 rounded-full text-xs font-mono uppercase tracking-widest transition-all ${
-                    selectedStatus === status
+                    selectedGenre === genre
                       ? 'bg-electric-blue text-white'
                       : 'bg-black text-gray-400 hover:bg-gray-800 hover:text-white border border-gray-700'
                   }`}
                 >
-                  {status}
+                  {genre}
                 </button>
               ))}
             </div>
@@ -186,7 +193,7 @@ const Films = () => {
 
               {filteredFilms.length === 0 && (
                 <div className="text-center py-16">
-                  <p className="text-gray-400 text-xl">No films found with this status.</p>
+                  <p className="text-gray-400 text-xl">No films found in this genre.</p>
                 </div>
               )}
             </>
