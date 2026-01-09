@@ -1,33 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Edit2, Trash2, Star, StarOff, LogOut, Film, RefreshCw } from 'lucide-react';
+import { Film, Package, FileText, LogOut, RefreshCw } from 'lucide-react';
 import { toast } from 'sonner';
-import AdminFilmModal from '../components/AdminFilmModal';
+import AdminFilmsTab from '../components/admin/AdminFilmsTab';
+import AdminArmoryTab from '../components/admin/AdminArmoryTab';
+import AdminBlogTab from '../components/admin/AdminBlogTab';
+
+const TABS = [
+  { id: 'films', label: 'Films', icon: Film },
+  { id: 'armory', label: 'The Armory', icon: Package },
+  { id: 'blog', label: 'The Den', icon: FileText },
+];
 
 const AdminDashboard = ({ onLogout }) => {
-  const [films, setFilms] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingFilm, setEditingFilm] = useState(null);
+  const [activeTab, setActiveTab] = useState('films');
   const navigate = useNavigate();
-
-  const fetchFilms = async () => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/films`);
-      if (response.ok) {
-        const data = await response.json();
-        setFilms(data);
-      }
-    } catch (err) {
-      toast.error('Failed to load films');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchFilms();
-  }, []);
 
   const handleLogout = () => {
     sessionStorage.removeItem('adminAuth');
@@ -36,226 +23,61 @@ const AdminDashboard = ({ onLogout }) => {
     toast.success('Logged out successfully');
   };
 
-  const handleAddFilm = () => {
-    setEditingFilm(null);
-    setIsModalOpen(true);
-  };
-
-  const handleEditFilm = (film) => {
-    setEditingFilm(film);
-    setIsModalOpen(true);
-  };
-
-  const handleDeleteFilm = async (film) => {
-    if (!window.confirm(`Are you sure you want to delete "${film.title}"?`)) return;
-
-    try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/films/${film.id}`, {
-        method: 'DELETE'
-      });
-      if (response.ok) {
-        toast.success('Film deleted successfully');
-        fetchFilms();
-      } else {
-        toast.error('Failed to delete film');
-      }
-    } catch (err) {
-      toast.error('Error deleting film');
-    }
-  };
-
-  const handleToggleFeatured = async (film) => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/films/${film.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ featured: !film.featured })
-      });
-      if (response.ok) {
-        toast.success(film.featured ? 'Removed from featured' : 'Added to featured');
-        fetchFilms();
-      }
-    } catch (err) {
-      toast.error('Error updating film');
-    }
-  };
-
-  const handleSaveFilm = async (filmData) => {
-    try {
-      const url = editingFilm
-        ? `${process.env.REACT_APP_BACKEND_URL}/api/films/${editingFilm.id}`
-        : `${process.env.REACT_APP_BACKEND_URL}/api/films`;
-      
-      const response = await fetch(url, {
-        method: editingFilm ? 'PUT' : 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(filmData)
-      });
-
-      if (response.ok) {
-        toast.success(editingFilm ? 'Film updated successfully' : 'Film created successfully');
-        setIsModalOpen(false);
-        fetchFilms();
-      } else {
-        const error = await response.json();
-        toast.error(error.detail || 'Failed to save film');
-      }
-    } catch (err) {
-      toast.error('Error saving film');
-    }
-  };
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'Released': return 'bg-green-500/20 text-green-400 border-green-500/40';
-      case 'In Production': return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/40';
-      case 'In Development': return 'bg-blue-500/20 text-blue-400 border-blue-500/40';
-      default: return 'bg-gray-500/20 text-gray-400 border-gray-500/40';
-    }
-  };
-
   return (
     <div className="min-h-screen bg-black">
       {/* Header */}
       <header className="bg-smoke-gray border-b border-gray-800 sticky top-0 z-40">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Film className="w-8 h-8 text-electric-blue" />
+            <div className="w-10 h-10 bg-electric-blue/20 rounded-lg flex items-center justify-center">
+              <Film className="w-5 h-5 text-electric-blue" />
+            </div>
             <div>
-              <h1 className="text-xl font-bold text-white">Admin Panel</h1>
+              <h1 className="text-xl font-bold text-white">Studio Admin Console</h1>
               <p className="text-gray-500 text-xs">Shadow Wolves Productions</p>
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <button
-              onClick={fetchFilms}
-              className="p-2 text-gray-400 hover:text-white transition-colors"
-              title="Refresh"
-            >
-              <RefreshCw size={20} />
-            </button>
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-2 px-4 py-2 text-gray-400 hover:text-white transition-colors"
-            >
-              <LogOut size={18} />
-              <span className="text-sm">Logout</span>
-            </button>
-          </div>
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-2 px-4 py-2 text-gray-400 hover:text-white transition-colors"
+          >
+            <LogOut size={18} />
+            <span className="text-sm">Logout</span>
+          </button>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
-        {/* Actions Bar */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h2 className="text-2xl font-bold text-white">Films</h2>
-            <p className="text-gray-500 text-sm mt-1">{films.length} total films</p>
+      {/* Tab Navigation */}
+      <nav className="bg-smoke-gray/50 border-b border-gray-800">
+        <div className="container mx-auto px-4">
+          <div className="flex gap-1">
+            {TABS.map((tab) => {
+              const Icon = tab.icon;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center gap-2 px-6 py-4 font-mono text-sm uppercase tracking-widest transition-all border-b-2 ${
+                    activeTab === tab.id
+                      ? 'text-electric-blue border-electric-blue bg-black/30'
+                      : 'text-gray-400 border-transparent hover:text-white hover:bg-black/20'
+                  }`}
+                >
+                  <Icon size={16} />
+                  {tab.label}
+                </button>
+              );
+            })}
           </div>
-          <button
-            onClick={handleAddFilm}
-            className="flex items-center gap-2 bg-electric-blue hover:bg-electric-blue/90 text-white px-6 py-3 rounded-full font-mono text-sm uppercase tracking-widest transition-all"
-          >
-            <Plus size={18} />
-            Add Film
-          </button>
         </div>
+      </nav>
 
-        {/* Films Table */}
-        {loading ? (
-          <div className="text-center py-12">
-            <RefreshCw className="w-8 h-8 text-electric-blue animate-spin mx-auto mb-4" />
-            <p className="text-gray-500">Loading films...</p>
-          </div>
-        ) : films.length === 0 ? (
-          <div className="text-center py-12 bg-smoke-gray border border-gray-800 rounded-lg">
-            <Film className="w-12 h-12 text-gray-600 mx-auto mb-4" />
-            <p className="text-gray-400 mb-4">No films yet</p>
-            <button
-              onClick={handleAddFilm}
-              className="text-electric-blue hover:underline"
-            >
-              Add your first film
-            </button>
-          </div>
-        ) : (
-          <div className="bg-smoke-gray border border-gray-800 rounded-lg overflow-hidden">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-gray-800">
-                  <th className="text-left px-6 py-4 text-gray-400 font-mono text-xs uppercase tracking-widest">Film</th>
-                  <th className="text-left px-6 py-4 text-gray-400 font-mono text-xs uppercase tracking-widest">Status</th>
-                  <th className="text-center px-6 py-4 text-gray-400 font-mono text-xs uppercase tracking-widest">Featured</th>
-                  <th className="text-right px-6 py-4 text-gray-400 font-mono text-xs uppercase tracking-widest">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {films.map((film) => (
-                  <tr key={film.id} className="border-b border-gray-800/50 hover:bg-black/30 transition-colors">
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-4">
-                        <div
-                          className="w-12 h-16 rounded overflow-hidden flex-shrink-0"
-                          style={{ backgroundColor: film.poster_color || '#1a1a2e' }}
-                        >
-                          {film.poster_url && (
-                            <img src={film.poster_url} alt={film.title} className="w-full h-full object-cover" />
-                          )}
-                        </div>
-                        <div>
-                          <h3 className="text-white font-semibold">{film.title}</h3>
-                          <p className="text-gray-500 text-sm line-clamp-1">{film.logline}</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className={`px-3 py-1 rounded-full text-xs font-mono uppercase border ${getStatusColor(film.status)}`}>
-                        {film.status}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <button
-                        onClick={() => handleToggleFeatured(film)}
-                        className={`p-2 rounded-full transition-colors ${film.featured ? 'text-yellow-400 bg-yellow-400/10' : 'text-gray-600 hover:text-gray-400'}`}
-                        title={film.featured ? 'Remove from featured' : 'Add to featured'}
-                      >
-                        {film.featured ? <Star size={20} fill="currentColor" /> : <StarOff size={20} />}
-                      </button>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center justify-end gap-2">
-                        <button
-                          onClick={() => handleEditFilm(film)}
-                          className="p-2 text-gray-400 hover:text-electric-blue transition-colors"
-                          title="Edit"
-                        >
-                          <Edit2 size={18} />
-                        </button>
-                        <button
-                          onClick={() => handleDeleteFilm(film)}
-                          className="p-2 text-gray-400 hover:text-red-400 transition-colors"
-                          title="Delete"
-                        >
-                          <Trash2 size={18} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+      {/* Tab Content */}
+      <main className="container mx-auto px-4 py-8">
+        {activeTab === 'films' && <AdminFilmsTab />}
+        {activeTab === 'armory' && <AdminArmoryTab />}
+        {activeTab === 'blog' && <AdminBlogTab />}
       </main>
-
-      {/* Film Modal */}
-      <AdminFilmModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSave={handleSaveFilm}
-        film={editingFilm}
-      />
     </div>
   );
 };
