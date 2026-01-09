@@ -161,12 +161,12 @@ const Home = () => {
             <p className="!text-xl text-gray-400">A selection from our past work and current slate.</p>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          <div className="flex flex-wrap justify-center gap-4">
             {featuredFilms.map((film) => (
               <button
                 key={film.id}
                 onClick={() => handleFilmClick(film)}
-                className="film-card group relative overflow-hidden rounded-lg aspect-[2/3] cursor-pointer border-2 border-transparent hover:border-white/30 transition-all duration-300"
+                className="film-card group relative overflow-hidden rounded-lg aspect-[2/3] cursor-pointer border-2 border-transparent hover:border-white/30 transition-all duration-300 w-[calc(50%-8px)] md:w-[calc(25%-12px)] lg:w-[calc(16.666%-14px)] max-w-[200px]"
               >
                 {/* Poster / Placeholder */}
                 <div
