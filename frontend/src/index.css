@@ -149,3 +149,127 @@ code {
         border-bottom-color: inherit;
     }
 }
+
+/* Quill Rich Text Editor Dark Theme */
+.quill-dark-theme .ql-toolbar {
+    background-color: #1a1a1a;
+    border: none !important;
+    border-bottom: 1px solid #374151 !important;
+}
+
+.quill-dark-theme .ql-container {
+    background-color: #0a0a0a;
+    border: none !important;
+    min-height: 300px;
+    font-size: 16px;
+}
+
+.quill-dark-theme .ql-editor {
+    color: #ffffff;
+    padding: 16px;
+    min-height: 300px;
+}
+
+.quill-dark-theme .ql-editor.ql-blank::before {
+    color: #6b7280;
+    font-style: normal;
+}
+
+.quill-dark-theme .ql-toolbar .ql-stroke {
+    stroke: #9ca3af;
+}
+
+.quill-dark-theme .ql-toolbar .ql-fill {
+    fill: #9ca3af;
+}
+
+.quill-dark-theme .ql-toolbar .ql-picker {
+    color: #9ca3af;
+}
+
+.quill-dark-theme .ql-toolbar .ql-picker-options {
+    background-color: #1a1a1a;
+    border-color: #374151;
+}
+
+.quill-dark-theme .ql-toolbar .ql-picker-item {
+    color: #9ca3af;
+}
+
+.quill-dark-theme .ql-toolbar .ql-picker-item:hover {
+    color: #ffffff;
+}
+
+.quill-dark-theme .ql-toolbar button:hover .ql-stroke,
+.quill-dark-theme .ql-toolbar button.ql-active .ql-stroke {
+    stroke: #233dff;
+}
+
+.quill-dark-theme .ql-toolbar button:hover .ql-fill,
+.quill-dark-theme .ql-toolbar button.ql-active .ql-fill {
+    fill: #233dff;
+}
+
+.quill-dark-theme .ql-toolbar .ql-picker-label:hover,
+.quill-dark-theme .ql-toolbar .ql-picker-label.ql-active {
+    color: #233dff;
+}
+
+.quill-dark-theme .ql-snow .ql-tooltip {
+    background-color: #1a1a1a;
+    border-color: #374151;
+    color: #ffffff;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+.quill-dark-theme .ql-snow .ql-tooltip input[type=text] {
+    background-color: #0a0a0a;
+    border-color: #374151;
+    color: #ffffff;
+}
+
+.quill-dark-theme .ql-snow .ql-tooltip a.ql-action::after,
+.quill-dark-theme .ql-snow .ql-tooltip a.ql-remove::before {
+    color: #233dff;
+}
+
+/* Quill content styles */
+.quill-dark-theme .ql-editor h1 {
+    font-size: 2em;
+    margin-bottom: 0.5em;
+}
+
+.quill-dark-theme .ql-editor h2 {
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
+}
+
+.quill-dark-theme .ql-editor h3 {
+    font-size: 1.25em;
+    margin-bottom: 0.5em;
+}
+
+.quill-dark-theme .ql-editor blockquote {
+    border-left: 4px solid #233dff;
+    padding-left: 1em;
+    margin-left: 0;
+    color: #9ca3af;
+}
+
+.quill-dark-theme .ql-editor pre.ql-syntax {
+    background-color: #1a1a1a;
+    color: #f3f4f6;
+    padding: 1em;
+    border-radius: 0.5em;
+    overflow-x: auto;
+}
+
+.quill-dark-theme .ql-editor a {
+    color: #233dff;
+}
+
+.quill-dark-theme .ql-editor img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.5em;
+}
