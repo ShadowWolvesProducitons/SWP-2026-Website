@@ -433,7 +433,7 @@ const Home = () => {
         </div>
         
         <div className="container mx-auto px-4 text-center relative z-10">
-          <h2 className="md:text-5xl !font-bold !text-4xl mb-4 text-white">🐺 JOIN THE PACK
+          <h2 className="md:text-5xl !font-bold !text-4xl mb-4 text-white" style={{ fontFamily: 'Cinzel, serif' }}>🐺 JOIN THE PACK
 
           </h2>
           <p className="max-w-2xl !text-lg mb-8 mx-auto text-gray-300">Inside access to casting calls, industry updates, and the tools, apps, and templates we actually use.
