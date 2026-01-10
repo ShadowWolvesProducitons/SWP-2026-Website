@@ -166,7 +166,7 @@ const Home = () => {
       <section className="featured-films-section py-24 bg-black">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-5xl md:text-6xl font-bold text-white mb-4">Featured Films</h2>
+            <h2 className="text-5xl md:text-6xl font-bold text-white mb-4" style={{ fontFamily: 'Cinzel, serif' }}>Featured Films</h2>
             <p className="!text-xl text-gray-400">A selection from our past work and current slate.</p>
           </div>
           
