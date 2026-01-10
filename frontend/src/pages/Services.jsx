@@ -15,7 +15,7 @@ const Services = () => {
           <div className="absolute top-0 left-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl"></div>
         </div>
         <div className="container mx-auto px-4 relative z-10">
-          <h1 className="text-6xl md:text-7xl font-bold text-white mb-6">Our Services</h1>
+          <h1 className="text-6xl md:text-7xl font-bold text-white mb-6" style={{ fontFamily: 'Cinzel, serif' }}>Our Services</h1>
           <p className="text-xl text-gray-400 max-w-2xl">
             End-to-end production services that bring your vision from concept to screen
           </p>
@@ -46,7 +46,7 @@ const Services = () => {
                           {service.id}
                         </span>
                       </div>
-                      <h2 className="text-5xl font-bold text-white mb-3">{service.name}</h2>
+                      <h2 className="text-5xl font-bold text-white mb-3" style={{ fontFamily: 'Cinzel, serif' }}>{service.name}</h2>
                       <p className="text-xl text-gray-400 italic mb-6">{service.tagline}</p>
                       <p className="text-gray-300 text-lg leading-relaxed mb-8">{service.description}</p>
                       <div className="space-y-3">
@@ -84,7 +84,7 @@ const Services = () => {
                           {service.id}
                         </span>
                       </div>
-                      <h2 className="text-5xl font-bold text-white mb-3">{service.name}</h2>
+                      <h2 className="text-5xl font-bold text-white mb-3" style={{ fontFamily: 'Cinzel, serif' }}>{service.name}</h2>
                       <p className="text-xl text-gray-400 italic mb-6">{service.tagline}</p>
                       <p className="text-gray-300 text-lg leading-relaxed mb-8">{service.description}</p>
                       <div className="space-y-3">
@@ -107,7 +107,7 @@ const Services = () => {
       {/* CTA Section */}
       <section className="cta-section py-24 bg-smoke-gray">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-5xl md:text-6xl font-bold text-white mb-6">
+          <h2 className="text-5xl md:text-6xl font-bold text-white mb-6" style={{ fontFamily: 'Cinzel, serif' }}>
             Ready to Start
             <br />
             <span className="text-electric-blue">Your Project?</span>
