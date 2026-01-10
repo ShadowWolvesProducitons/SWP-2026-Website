@@ -97,10 +97,19 @@ const Home = () => {
               View Our Films
             </Link>
             <Link
-              to="/den"
+              to="/blog"
               className="cta-button-outline border-2 border-white hover:bg-white hover:text-black text-white px-8 py-4 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2">
 
               🐺 Enter The Den
+              <ArrowRight size={18} />
+            </Link>
+          </div>
+          
+          <div className="flex justify-center mt-4">
+            <Link
+              to="/services"
+              className="cta-button-outline border-2 border-gray-600 hover:border-white hover:bg-white hover:text-black text-gray-300 hover:text-black px-8 py-4 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2">
+              ⚔️ Enter The Armory
               <ArrowRight size={18} />
             </Link>
           </div>
