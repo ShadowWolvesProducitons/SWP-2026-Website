@@ -1,8 +1,15 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Plus, Edit2, Trash2, RefreshCw, X, Upload, Image, Eye, EyeOff } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Plus, Edit2, Trash2, RefreshCw, X, Upload, Image, Eye, EyeOff, 
+         Bold, Italic, Underline, List, ListOrdered, Quote, Code, Link as LinkIcon, 
+         AlignLeft, AlignCenter, AlignRight, Heading1, Heading2, Heading3, Highlighter } from 'lucide-react';
 import { toast } from 'sonner';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import { useEditor, EditorContent } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import TiptapLink from '@tiptap/extension-link';
+import TiptapImage from '@tiptap/extension-image';
+import TextAlign from '@tiptap/extension-text-align';
+import TiptapUnderline from '@tiptap/extension-underline';
+import Highlight from '@tiptap/extension-highlight';
 
 const AdminBlogTab = () => {
   const [posts, setPosts] = useState([]);
@@ -100,6 +107,7 @@ const AdminBlogTab = () => {
           <button
             onClick={handleAddPost}
             className="flex items-center gap-2 bg-electric-blue hover:bg-electric-blue/90 text-white px-6 py-3 rounded-full font-mono text-sm uppercase tracking-widest transition-all"
+            data-testid="new-post-btn"
           >
             <Plus size={18} />
             New Post
@@ -179,6 +187,103 @@ const AdminBlogTab = () => {
   );
 };
 
+// Tiptap Menu Bar Component
+const MenuBar = ({ editor }) => {
+  if (!editor) return null;
+
+  const addLink = useCallback(() => {
+    const url = window.prompt('Enter URL:');
+    if (url) {
+      editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
+    }
+  }, [editor]);
+
+  const addImage = useCallback(() => {
+    const url = window.prompt('Enter image URL:');
+    if (url) {
+      editor.chain().focus().setImage({ src: url }).run();
+    }
+  }, [editor]);
+
+  const btnClass = (isActive) => `p-2 rounded transition-colors ${
+    isActive ? 'bg-electric-blue/30 text-electric-blue' : 'text-gray-400 hover:text-white hover:bg-white/10'
+  }`;
+
+  return (
+    <div className="flex flex-wrap gap-1 p-2 border-b border-gray-700 bg-gray-900/50">
+      {/* Headings */}
+      <button type="button" onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()} className={btnClass(editor.isActive('heading', { level: 1 }))} title="Heading 1">
+        <Heading1 size={18} />
+      </button>
+      <button type="button" onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} className={btnClass(editor.isActive('heading', { level: 2 }))} title="Heading 2">
+        <Heading2 size={18} />
+      </button>
+      <button type="button" onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()} className={btnClass(editor.isActive('heading', { level: 3 }))} title="Heading 3">
+        <Heading3 size={18} />
+      </button>
+
+      <div className="w-px h-6 bg-gray-700 mx-1 self-center" />
+
+      {/* Text Formatting */}
+      <button type="button" onClick={() => editor.chain().focus().toggleBold().run()} className={btnClass(editor.isActive('bold'))} title="Bold">
+        <Bold size={18} />
+      </button>
+      <button type="button" onClick={() => editor.chain().focus().toggleItalic().run()} className={btnClass(editor.isActive('italic'))} title="Italic">
+        <Italic size={18} />
+      </button>
+      <button type="button" onClick={() => editor.chain().focus().toggleUnderline().run()} className={btnClass(editor.isActive('underline'))} title="Underline">
+        <Underline size={18} />
+      </button>
+      <button type="button" onClick={() => editor.chain().focus().toggleHighlight().run()} className={btnClass(editor.isActive('highlight'))} title="Highlight">
+        <Highlighter size={18} />
+      </button>
+
+      <div className="w-px h-6 bg-gray-700 mx-1 self-center" />
+
+      {/* Lists */}
+      <button type="button" onClick={() => editor.chain().focus().toggleBulletList().run()} className={btnClass(editor.isActive('bulletList'))} title="Bullet List">
+        <List size={18} />
+      </button>
+      <button type="button" onClick={() => editor.chain().focus().toggleOrderedList().run()} className={btnClass(editor.isActive('orderedList'))} title="Numbered List">
+        <ListOrdered size={18} />
+      </button>
+
+      <div className="w-px h-6 bg-gray-700 mx-1 self-center" />
+
+      {/* Alignment */}
+      <button type="button" onClick={() => editor.chain().focus().setTextAlign('left').run()} className={btnClass(editor.isActive({ textAlign: 'left' }))} title="Align Left">
+        <AlignLeft size={18} />
+      </button>
+      <button type="button" onClick={() => editor.chain().focus().setTextAlign('center').run()} className={btnClass(editor.isActive({ textAlign: 'center' }))} title="Align Center">
+        <AlignCenter size={18} />
+      </button>
+      <button type="button" onClick={() => editor.chain().focus().setTextAlign('right').run()} className={btnClass(editor.isActive({ textAlign: 'right' }))} title="Align Right">
+        <AlignRight size={18} />
+      </button>
+
+      <div className="w-px h-6 bg-gray-700 mx-1 self-center" />
+
+      {/* Block Elements */}
+      <button type="button" onClick={() => editor.chain().focus().toggleBlockquote().run()} className={btnClass(editor.isActive('blockquote'))} title="Quote">
+        <Quote size={18} />
+      </button>
+      <button type="button" onClick={() => editor.chain().focus().toggleCodeBlock().run()} className={btnClass(editor.isActive('codeBlock'))} title="Code Block">
+        <Code size={18} />
+      </button>
+
+      <div className="w-px h-6 bg-gray-700 mx-1 self-center" />
+
+      {/* Link & Image */}
+      <button type="button" onClick={addLink} className={btnClass(editor.isActive('link'))} title="Add Link">
+        <LinkIcon size={18} />
+      </button>
+      <button type="button" onClick={addImage} className={btnClass(false)} title="Add Image">
+        <Image size={18} />
+      </button>
+    </div>
+  );
+};
+
 // Blog Post Modal Component
 const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
   const [formData, setFormData] = useState({
@@ -193,33 +298,34 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
   const [tagInput, setTagInput] = useState('');
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
-  const quillRef = useRef(null);
 
-  // Quill modules configuration
-  const quillModules = useMemo(() => ({
-    toolbar: {
-      container: [
-        [{ 'header': [1, 2, 3, false] }],
-        ['bold', 'italic', 'underline', 'strike'],
-        [{ 'color': [] }, { 'background': [] }],
-        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-        [{ 'indent': '-1'}, { 'indent': '+1' }],
-        ['blockquote', 'code-block'],
-        ['link', 'image', 'video'],
-        [{ 'align': [] }],
-        ['clean']
-      ]
-    },
-    clipboard: {
-      matchVisual: false
+  const editor = useEditor({
+    extensions: [
+      StarterKit.configure({
+        heading: { levels: [1, 2, 3] }
+      }),
+      TiptapUnderline,
+      TiptapLink.configure({
+        openOnClick: false,
+        HTMLAttributes: { class: 'text-electric-blue underline' }
+      }),
+      TiptapImage.configure({
+        HTMLAttributes: { class: 'max-w-full rounded-lg' }
+      }),
+      TextAlign.configure({
+        types: ['heading', 'paragraph']
+      }),
+      Highlight.configure({
+        HTMLAttributes: { class: 'bg-yellow-500/30 px-1 rounded' }
+      })
+    ],
+    content: '',
+    editorProps: {
+      attributes: {
+        class: 'prose prose-invert max-w-none min-h-[300px] p-4 focus:outline-none'
+      }
     }
-  }), []);
-
-  const quillFormats = [
-    'header', 'bold', 'italic', 'underline', 'strike',
-    'color', 'background', 'list', 'bullet', 'indent',
-    'blockquote', 'code-block', 'link', 'image', 'video', 'align'
-  ];
+  });
 
   useEffect(() => {
     if (post) {
@@ -232,6 +338,9 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
         tags: post.tags || [],
         status: post.status || 'Draft'
       });
+      if (editor) {
+        editor.commands.setContent(post.content || '');
+      }
     } else {
       setFormData({
         title: '',
@@ -242,9 +351,12 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
         tags: [],
         status: 'Draft'
       });
+      if (editor) {
+        editor.commands.setContent('');
+      }
     }
     setTagInput('');
-  }, [post, isOpen]);
+  }, [post, isOpen, editor]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -306,8 +418,11 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
       toast.error('Title is required');
       return;
     }
+    
+    const content = editor ? editor.getHTML() : formData.content;
+    
     setSaving(true);
-    await onSave(formData);
+    await onSave({ ...formData, content });
     setSaving(false);
   };
 
@@ -315,7 +430,7 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md overflow-y-auto">
-      <div className="relative bg-smoke-gray border border-gray-800 rounded-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto my-8">
+      <div className="relative bg-smoke-gray border border-gray-800 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto my-8">
         <div className="sticky top-0 bg-smoke-gray border-b border-gray-800 px-6 py-4 flex items-center justify-between z-10">
           <h2 className="text-xl font-bold text-white">
             {post ? 'Edit Post' : 'New Post'}
@@ -336,6 +451,7 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
               onChange={handleChange}
               className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none"
               placeholder="Post title"
+              data-testid="post-title-input"
               required
             />
           </div>
@@ -423,20 +539,14 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
             />
           </div>
 
-          {/* Content - Rich Text Editor */}
+          {/* Content - Tiptap Rich Text Editor */}
           <div>
             <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">Content</label>
-            <div className="bg-black border border-gray-700 rounded-lg overflow-hidden quill-dark-theme">
-              <ReactQuill
-                ref={quillRef}
-                theme="snow"
-                value={formData.content}
-                onChange={(value) => setFormData(prev => ({ ...prev, content: value }))}
-                modules={quillModules}
-                formats={quillFormats}
-                placeholder="Write your post content here..."
-                className="text-white min-h-[300px]"
-              />
+            <div className="bg-black border border-gray-700 rounded-lg overflow-hidden">
+              <MenuBar editor={editor} />
+              <div className="tiptap-editor-container">
+                <EditorContent editor={editor} className="min-h-[300px]" />
+              </div>
             </div>
             <p className="text-gray-500 text-xs mt-2">Use the toolbar above to format your content with headings, lists, images, and more.</p>
           </div>
@@ -476,7 +586,7 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
             <button type="button" onClick={onClose} className="flex-1 px-6 py-3 border border-gray-700 text-gray-400 rounded-full hover:bg-gray-800 transition-colors font-mono text-sm uppercase tracking-widest">
               Cancel
             </button>
-            <button type="submit" disabled={saving} className="flex-1 px-6 py-3 bg-electric-blue hover:bg-electric-blue/90 disabled:bg-gray-700 text-white rounded-full transition-colors font-mono text-sm uppercase tracking-widest">
+            <button type="submit" disabled={saving} className="flex-1 px-6 py-3 bg-electric-blue hover:bg-electric-blue/90 disabled:bg-gray-700 text-white rounded-full transition-colors font-mono text-sm uppercase tracking-widest" data-testid="save-post-btn">
               {saving ? 'Saving...' : (formData.status === 'Published' ? 'Publish' : 'Save Draft')}
             </button>
           </div>
