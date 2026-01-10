@@ -45,7 +45,21 @@ const BlogPost = () => {
   const renderContent = (content) => {
     if (!content) return null;
     
-    // Split into paragraphs
+    // Check if content is HTML (from rich text editor)
+    const isHtml = content.includes('<p>') || content.includes('<h1>') || content.includes('<h2>') || 
+                   content.includes('<strong>') || content.includes('<ul>') || content.includes('<ol>');
+    
+    if (isHtml) {
+      // Render HTML content from rich text editor
+      return (
+        <div 
+          className="prose-content"
+          dangerouslySetInnerHTML={{ __html: content }}
+        />
+      );
+    }
+    
+    // Fallback: Simple markdown parser for legacy content
     const paragraphs = content.split('\n\n');
     
     return paragraphs.map((para, idx) => {
