@@ -423,18 +423,22 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
             />
           </div>
 
-          {/* Content */}
+          {/* Content - Rich Text Editor */}
           <div>
             <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">Content</label>
-            <textarea
-              name="content"
-              value={formData.content}
-              onChange={handleChange}
-              rows={12}
-              className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none resize-none font-mono text-sm"
-              placeholder="Write your post content here... (Markdown supported)"
-            />
-            <p className="text-gray-500 text-xs mt-1">Supports basic Markdown: **bold**, *italic*, # headers, - lists</p>
+            <div className="bg-black border border-gray-700 rounded-lg overflow-hidden quill-dark-theme">
+              <ReactQuill
+                ref={quillRef}
+                theme="snow"
+                value={formData.content}
+                onChange={(value) => setFormData(prev => ({ ...prev, content: value }))}
+                modules={quillModules}
+                formats={quillFormats}
+                placeholder="Write your post content here..."
+                className="text-white min-h-[300px]"
+              />
+            </div>
+            <p className="text-gray-500 text-xs mt-2">Use the toolbar above to format your content with headings, lists, images, and more.</p>
           </div>
 
           {/* Tags */}
