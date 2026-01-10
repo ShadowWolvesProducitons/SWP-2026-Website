@@ -193,6 +193,33 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
   const [tagInput, setTagInput] = useState('');
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const quillRef = useRef(null);
+
+  // Quill modules configuration
+  const quillModules = useMemo(() => ({
+    toolbar: {
+      container: [
+        [{ 'header': [1, 2, 3, false] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        [{ 'color': [] }, { 'background': [] }],
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        [{ 'indent': '-1'}, { 'indent': '+1' }],
+        ['blockquote', 'code-block'],
+        ['link', 'image', 'video'],
+        [{ 'align': [] }],
+        ['clean']
+      ]
+    },
+    clipboard: {
+      matchVisual: false
+    }
+  }), []);
+
+  const quillFormats = [
+    'header', 'bold', 'italic', 'underline', 'strike',
+    'color', 'background', 'list', 'bullet', 'indent',
+    'blockquote', 'code-block', 'link', 'image', 'video', 'align'
+  ];
 
   useEffect(() => {
     if (post) {
