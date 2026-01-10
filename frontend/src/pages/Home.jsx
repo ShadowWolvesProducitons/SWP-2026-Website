@@ -258,7 +258,7 @@ const Home = () => {
       <section className="services-section py-24 bg-smoke-gray">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="md:text-6xl !font-bold !text-5xl mb-4 text-white">What We Do</h2>
+            <h2 className="md:text-6xl !font-bold !text-5xl mb-4 text-white" style={{ fontFamily: 'Cinzel, serif' }}>What We Do</h2>
             <p className="!text-xl text-gray-400">We develop, produce, and support screen stories from first idea to final delivery — with clarity, intention, and zero BS.</p>
           </div>
           
