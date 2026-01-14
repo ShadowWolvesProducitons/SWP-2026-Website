@@ -380,3 +380,99 @@ code {
     border-radius: 0.5em;
     margin: 1.5em 0;
 }
+
+/* Tiptap Editor Styles */
+.tiptap-editor-container .ProseMirror {
+    min-height: 300px;
+    padding: 1rem;
+    color: #ffffff;
+    outline: none;
+}
+
+.tiptap-editor-container .ProseMirror p {
+    margin-bottom: 0.75em;
+}
+
+.tiptap-editor-container .ProseMirror h1 {
+    font-size: 2em;
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+.tiptap-editor-container .ProseMirror h2 {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-top: 0.75em;
+    margin-bottom: 0.5em;
+}
+
+.tiptap-editor-container .ProseMirror h3 {
+    font-size: 1.25em;
+    font-weight: bold;
+    margin-top: 0.75em;
+    margin-bottom: 0.5em;
+}
+
+.tiptap-editor-container .ProseMirror ul,
+.tiptap-editor-container .ProseMirror ol {
+    padding-left: 1.5em;
+    margin-bottom: 0.75em;
+}
+
+.tiptap-editor-container .ProseMirror ul {
+    list-style-type: disc;
+}
+
+.tiptap-editor-container .ProseMirror ol {
+    list-style-type: decimal;
+}
+
+.tiptap-editor-container .ProseMirror blockquote {
+    border-left: 4px solid #233dff;
+    padding-left: 1em;
+    margin: 1em 0;
+    color: #9ca3af;
+    font-style: italic;
+}
+
+.tiptap-editor-container .ProseMirror pre {
+    background-color: #1a1a1a;
+    padding: 1em;
+    border-radius: 0.5em;
+    overflow-x: auto;
+    margin: 1em 0;
+    font-family: monospace;
+}
+
+.tiptap-editor-container .ProseMirror code {
+    background-color: #1a1a1a;
+    padding: 0.2em 0.4em;
+    border-radius: 0.25em;
+    font-family: monospace;
+}
+
+.tiptap-editor-container .ProseMirror a {
+    color: #233dff;
+    text-decoration: underline;
+}
+
+.tiptap-editor-container .ProseMirror img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.5em;
+}
+
+.tiptap-editor-container .ProseMirror mark {
+    background-color: rgba(234, 179, 8, 0.3);
+    padding: 0 0.25em;
+    border-radius: 0.25em;
+}
+
+.tiptap-editor-container .ProseMirror p.is-editor-empty:first-child::before {
+    color: #6b7280;
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
+}
