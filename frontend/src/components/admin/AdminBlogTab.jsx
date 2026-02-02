@@ -213,17 +213,6 @@ const MenuBar = ({ editor }) => {
     }
   }, [editor]);
 
-  const addYoutube = useCallback(() => {
-    const url = window.prompt('Enter YouTube URL:');
-    if (url) {
-      editor.commands.setYoutubeVideo({ src: url });
-    }
-  }, [editor]);
-
-  const insertTable = useCallback(() => {
-    editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run();
-  }, [editor]);
-
   const btnClass = (isActive) => `p-1.5 rounded transition-colors ${
     isActive ? 'bg-electric-blue/30 text-electric-blue' : 'text-gray-400 hover:text-white hover:bg-white/10'
   }`;
