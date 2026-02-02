@@ -171,10 +171,22 @@ const Contact = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-electric-blue hover:bg-electric-blue/90 text-white px-8 py-5 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2">
+                  disabled={submitting}
+                  className="w-full bg-electric-blue hover:bg-electric-blue/90 disabled:bg-gray-700 disabled:cursor-not-allowed text-white px-8 py-5 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2">
 
-                  <Send size={18} />
-                  Send Message
+                  {submitting ? (
+                    'Sending...'
+                  ) : submitted ? (
+                    <>
+                      <CheckCircle size={18} />
+                      Message Sent
+                    </>
+                  ) : (
+                    <>
+                      <Send size={18} />
+                      Send Message
+                    </>
+                  )}
                 </button>
               </form>
             </div>
