@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Film, Package, FileText, LogOut, RefreshCw, Inbox, Briefcase } from 'lucide-react';
+import { Film, Package, FileText, LogOut, RefreshCw, Inbox, Briefcase, MessageSquare } from 'lucide-react';
 import { toast } from 'sonner';
 import AdminFilmsTab from '../components/admin/AdminFilmsTab';
 import AdminArmoryTab from '../components/admin/AdminArmoryTab';
 import AdminBlogTab from '../components/admin/AdminBlogTab';
 import AdminSubmissionsTab from '../components/admin/AdminSubmissionsTab';
 import AdminInvestorTab from '../components/admin/AdminInvestorTab';
+import AdminMessagesTab from '../components/admin/AdminMessagesTab';
 
 const TABS = [
   { id: 'films', label: 'Films', icon: Film },
   { id: 'armory', label: 'The Armory', icon: Package },
   { id: 'blog', label: 'The Den', icon: FileText },
+  { id: 'messages', label: 'Messages', icon: MessageSquare },
   { id: 'submissions', label: 'Submissions', icon: Inbox },
   { id: 'investors', label: 'Investors', icon: Briefcase },
 ];
