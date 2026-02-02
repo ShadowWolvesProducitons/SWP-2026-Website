@@ -75,9 +75,16 @@ async def create_contact_message(message_data: ContactMessageCreate, background_
 async def get_contact_messages(status: Optional[str] = None, include_archived: bool = False):
     """Get all contact messages (admin only)"""
     query = {}
-    if status:
+    
+    # Build query based on filters
+    if status and not include_archived:
+        # Both status filter and exclude archived
+        query["$and"] = [{"status": status}, {"status": {"$ne": "Archived"}}]
+    elif status:
+        # Just status filter
         query["status"] = status
-    if not include_archived:
+    elif not include_archived:
+        # Just exclude archived
         query["status"] = {"$ne": "Archived"}
     
     messages = await db.contact_messages.find(query, {"_id": 0}).to_list(500)
