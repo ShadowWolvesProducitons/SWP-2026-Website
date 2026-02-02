@@ -392,7 +392,7 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
       Placeholder.configure({
         placeholder: 'Start writing your post...'
       }),
-      Youtube.configure({
+      YoutubeExtension.configure({
         HTMLAttributes: { class: 'w-full aspect-video rounded-lg my-4' }
       }),
       TableExtension.configure({
