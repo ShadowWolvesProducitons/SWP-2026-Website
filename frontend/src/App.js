@@ -52,11 +52,13 @@ const AppContent = () => {
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
         <Route path="/films" element={<Films />} />
         <Route path="/services" element={<TheDen />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
+        <Route path="/work-with-us" element={<WorkWithUs />} />
         
         {/* Legacy redirect */}
         <Route path="/den" element={<Navigate to="/services" replace />} />
