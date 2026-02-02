@@ -19,6 +19,7 @@ from routes import (
 )
 from routes.submissions import router as submissions_router, set_db as set_submissions_db
 from routes.investors import router as investors_router, set_db as set_investors_db
+from routes.newsletter import router as newsletter_router, set_db as set_newsletter_db
 
 
 ROOT_DIR = Path(__file__).parent
