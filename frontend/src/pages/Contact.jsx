@@ -12,6 +12,8 @@ const Contact = () => {
     service: '',
     message: ''
   });
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterSubmitting, setNewsletterSubmitting] = useState(false);
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
@@ -27,37 +29,36 @@ const Contact = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!formData.name || !formData.email || !formData.message) {
+      sonnerToast.error('Please fill in all required fields');
+      return;
+    }
 
-    // Create mailto link with form data
-    const subject = encodeURIComponent(`Contact Form: ${formData.service || 'General Inquiry'}`);
-    const body = encodeURIComponent(
-      `Name: ${formData.name}\n` +
-      `Email: ${formData.email}\n` +
-      `Phone: ${formData.phone}\n` +
-      `Service: ${formData.service}\n\n` +
-      `Message:\n${formData.message}`
-    );
-
-    // Open user's email client
-    window.location.href = `mailto:info@shadowwolvesproductions.com.au?subject=${subject}&body=${body}`;
-
-    toast({
-      title: "Opening Email Client",
-      description: "Your message will be sent via your email application."
-    });
-
-    // Reset form after a delay
-    setTimeout(() => {
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        service: '',
-        message: ''
+    setSubmitting(true);
+    
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
       });
-    }, 1000);
+
+      if (response.ok) {
+        setSubmitted(true);
+        sonnerToast.success('Message sent successfully!');
+        setFormData({ name: '', email: '', phone: '', service: '', message: '' });
+      } else {
+        const error = await response.json();
+        sonnerToast.error(error.detail || 'Failed to send message');
+      }
+    } catch (err) {
+      sonnerToast.error('Connection error. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
