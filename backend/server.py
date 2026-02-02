@@ -38,6 +38,7 @@ set_blog_posts_db(db)
 set_submissions_db(db)
 set_investors_db(db)
 set_newsletter_db(db)
+set_contact_db(db)
 
 # Create the main app
 app = FastAPI(title="Shadow Wolves Productions API")
