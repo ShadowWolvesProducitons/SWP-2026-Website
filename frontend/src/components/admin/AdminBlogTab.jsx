@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Plus, Edit2, Trash2, RefreshCw, X, Upload, Image, Eye, EyeOff, 
-         Bold, Italic, Underline, List, ListOrdered, Quote, Code, Link as LinkIcon, 
-         AlignLeft, AlignCenter, AlignRight, Heading1, Heading2, Heading3, Highlighter } from 'lucide-react';
+import { 
+  Plus, Edit2, Trash2, RefreshCw, X, Upload, Image, Eye, EyeOff, 
+  Bold, Italic, Underline, Strikethrough, List, ListOrdered, Quote, Code, 
+  Link as LinkIcon, AlignLeft, AlignCenter, AlignRight, AlignJustify,
+  Heading1, Heading2, Heading3, Heading4, Highlighter, Subscript, Superscript,
+  Youtube, Table, Minus, Undo, Redo, Search, Settings, ChevronDown, ChevronUp
+} from 'lucide-react';
 import { toast } from 'sonner';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
@@ -10,6 +14,14 @@ import TiptapImage from '@tiptap/extension-image';
 import TextAlign from '@tiptap/extension-text-align';
 import TiptapUnderline from '@tiptap/extension-underline';
 import Highlight from '@tiptap/extension-highlight';
+import TiptapSubscript from '@tiptap/extension-subscript';
+import TiptapSuperscript from '@tiptap/extension-superscript';
+import Placeholder from '@tiptap/extension-placeholder';
+import Youtube from '@tiptap/extension-youtube';
+import TableExtension from '@tiptap/extension-table';
+import TableRow from '@tiptap/extension-table-row';
+import TableCell from '@tiptap/extension-table-cell';
+import TableHeader from '@tiptap/extension-table-header';
 
 const AdminBlogTab = () => {
   const [posts, setPosts] = useState([]);
@@ -187,15 +199,19 @@ const AdminBlogTab = () => {
   );
 };
 
-// Tiptap Menu Bar Component
+// Enhanced Tiptap Menu Bar Component
 const MenuBar = ({ editor }) => {
   if (!editor) return null;
 
   const addLink = useCallback(() => {
-    const url = window.prompt('Enter URL:');
-    if (url) {
-      editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
+    const previousUrl = editor.getAttributes('link').href;
+    const url = window.prompt('Enter URL:', previousUrl);
+    if (url === null) return;
+    if (url === '') {
+      editor.chain().focus().extendMarkRange('link').unsetLink().run();
+      return;
     }
+    editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
   }, [editor]);
 
   const addImage = useCallback(() => {
@@ -205,80 +221,125 @@ const MenuBar = ({ editor }) => {
     }
   }, [editor]);
 
-  const btnClass = (isActive) => `p-2 rounded transition-colors ${
+  const addYoutube = useCallback(() => {
+    const url = window.prompt('Enter YouTube URL:');
+    if (url) {
+      editor.commands.setYoutubeVideo({ src: url });
+    }
+  }, [editor]);
+
+  const insertTable = useCallback(() => {
+    editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run();
+  }, [editor]);
+
+  const btnClass = (isActive) => `p-1.5 rounded transition-colors ${
     isActive ? 'bg-electric-blue/30 text-electric-blue' : 'text-gray-400 hover:text-white hover:bg-white/10'
   }`;
 
   return (
-    <div className="flex flex-wrap gap-1 p-2 border-b border-gray-700 bg-gray-900/50">
+    <div className="flex flex-wrap gap-0.5 p-2 border-b border-gray-700 bg-gray-900/50">
+      {/* Undo/Redo */}
+      <button type="button" onClick={() => editor.chain().focus().undo().run()} disabled={!editor.can().undo()} className={`${btnClass(false)} disabled:opacity-30`} title="Undo">
+        <Undo size={16} />
+      </button>
+      <button type="button" onClick={() => editor.chain().focus().redo().run()} disabled={!editor.can().redo()} className={`${btnClass(false)} disabled:opacity-30`} title="Redo">
+        <Redo size={16} />
+      </button>
+
+      <div className="w-px h-6 bg-gray-700 mx-1 self-center" />
+
       {/* Headings */}
       <button type="button" onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()} className={btnClass(editor.isActive('heading', { level: 1 }))} title="Heading 1">
-        <Heading1 size={18} />
+        <Heading1 size={16} />
       </button>
       <button type="button" onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} className={btnClass(editor.isActive('heading', { level: 2 }))} title="Heading 2">
-        <Heading2 size={18} />
+        <Heading2 size={16} />
       </button>
       <button type="button" onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()} className={btnClass(editor.isActive('heading', { level: 3 }))} title="Heading 3">
-        <Heading3 size={18} />
+        <Heading3 size={16} />
+      </button>
+      <button type="button" onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()} className={btnClass(editor.isActive('heading', { level: 4 }))} title="Heading 4">
+        <Heading4 size={16} />
       </button>
 
       <div className="w-px h-6 bg-gray-700 mx-1 self-center" />
 
       {/* Text Formatting */}
       <button type="button" onClick={() => editor.chain().focus().toggleBold().run()} className={btnClass(editor.isActive('bold'))} title="Bold">
-        <Bold size={18} />
+        <Bold size={16} />
       </button>
       <button type="button" onClick={() => editor.chain().focus().toggleItalic().run()} className={btnClass(editor.isActive('italic'))} title="Italic">
-        <Italic size={18} />
+        <Italic size={16} />
       </button>
       <button type="button" onClick={() => editor.chain().focus().toggleUnderline().run()} className={btnClass(editor.isActive('underline'))} title="Underline">
-        <Underline size={18} />
+        <Underline size={16} />
+      </button>
+      <button type="button" onClick={() => editor.chain().focus().toggleStrike().run()} className={btnClass(editor.isActive('strike'))} title="Strikethrough">
+        <Strikethrough size={16} />
       </button>
       <button type="button" onClick={() => editor.chain().focus().toggleHighlight().run()} className={btnClass(editor.isActive('highlight'))} title="Highlight">
-        <Highlighter size={18} />
+        <Highlighter size={16} />
+      </button>
+      <button type="button" onClick={() => editor.chain().focus().toggleSubscript().run()} className={btnClass(editor.isActive('subscript'))} title="Subscript">
+        <Subscript size={16} />
+      </button>
+      <button type="button" onClick={() => editor.chain().focus().toggleSuperscript().run()} className={btnClass(editor.isActive('superscript'))} title="Superscript">
+        <Superscript size={16} />
       </button>
 
       <div className="w-px h-6 bg-gray-700 mx-1 self-center" />
 
       {/* Lists */}
       <button type="button" onClick={() => editor.chain().focus().toggleBulletList().run()} className={btnClass(editor.isActive('bulletList'))} title="Bullet List">
-        <List size={18} />
+        <List size={16} />
       </button>
       <button type="button" onClick={() => editor.chain().focus().toggleOrderedList().run()} className={btnClass(editor.isActive('orderedList'))} title="Numbered List">
-        <ListOrdered size={18} />
+        <ListOrdered size={16} />
       </button>
 
       <div className="w-px h-6 bg-gray-700 mx-1 self-center" />
 
       {/* Alignment */}
       <button type="button" onClick={() => editor.chain().focus().setTextAlign('left').run()} className={btnClass(editor.isActive({ textAlign: 'left' }))} title="Align Left">
-        <AlignLeft size={18} />
+        <AlignLeft size={16} />
       </button>
       <button type="button" onClick={() => editor.chain().focus().setTextAlign('center').run()} className={btnClass(editor.isActive({ textAlign: 'center' }))} title="Align Center">
-        <AlignCenter size={18} />
+        <AlignCenter size={16} />
       </button>
       <button type="button" onClick={() => editor.chain().focus().setTextAlign('right').run()} className={btnClass(editor.isActive({ textAlign: 'right' }))} title="Align Right">
-        <AlignRight size={18} />
+        <AlignRight size={16} />
+      </button>
+      <button type="button" onClick={() => editor.chain().focus().setTextAlign('justify').run()} className={btnClass(editor.isActive({ textAlign: 'justify' }))} title="Justify">
+        <AlignJustify size={16} />
       </button>
 
       <div className="w-px h-6 bg-gray-700 mx-1 self-center" />
 
       {/* Block Elements */}
       <button type="button" onClick={() => editor.chain().focus().toggleBlockquote().run()} className={btnClass(editor.isActive('blockquote'))} title="Quote">
-        <Quote size={18} />
+        <Quote size={16} />
       </button>
       <button type="button" onClick={() => editor.chain().focus().toggleCodeBlock().run()} className={btnClass(editor.isActive('codeBlock'))} title="Code Block">
-        <Code size={18} />
+        <Code size={16} />
+      </button>
+      <button type="button" onClick={() => editor.chain().focus().setHorizontalRule().run()} className={btnClass(false)} title="Horizontal Rule">
+        <Minus size={16} />
       </button>
 
       <div className="w-px h-6 bg-gray-700 mx-1 self-center" />
 
-      {/* Link & Image */}
-      <button type="button" onClick={addLink} className={btnClass(editor.isActive('link'))} title="Add Link">
-        <LinkIcon size={18} />
+      {/* Media & Links */}
+      <button type="button" onClick={addLink} className={btnClass(editor.isActive('link'))} title="Add/Edit Link">
+        <LinkIcon size={16} />
       </button>
       <button type="button" onClick={addImage} className={btnClass(false)} title="Add Image">
-        <Image size={18} />
+        <Image size={16} />
+      </button>
+      <button type="button" onClick={addYoutube} className={btnClass(false)} title="Add YouTube Video">
+        <Youtube size={16} />
+      </button>
+      <button type="button" onClick={insertTable} className={btnClass(false)} title="Insert Table">
+        <Table size={16} />
       </button>
     </div>
   );
@@ -286,6 +347,7 @@ const MenuBar = ({ editor }) => {
 
 // Blog Post Modal Component
 const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
+  const [activeTab, setActiveTab] = useState('content'); // content, seo
   const [formData, setFormData] = useState({
     title: '',
     slug: '',
@@ -293,7 +355,14 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
     cover_image_url: '',
     content: '',
     tags: [],
-    status: 'Draft'
+    status: 'Draft',
+    // SEO fields
+    seo_title: '',
+    seo_description: '',
+    seo_keywords: '',
+    canonical_url: '',
+    og_image_url: '',
+    no_index: false
   });
   const [tagInput, setTagInput] = useState('');
   const [uploading, setUploading] = useState(false);
@@ -302,27 +371,46 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
-        heading: { levels: [1, 2, 3] }
+        heading: { levels: [1, 2, 3, 4] }
       }),
       TiptapUnderline,
+      TiptapSubscript,
+      TiptapSuperscript,
       TiptapLink.configure({
         openOnClick: false,
         HTMLAttributes: { class: 'text-electric-blue underline' }
       }),
       TiptapImage.configure({
-        HTMLAttributes: { class: 'max-w-full rounded-lg' }
+        HTMLAttributes: { class: 'max-w-full rounded-lg my-4' }
       }),
       TextAlign.configure({
         types: ['heading', 'paragraph']
       }),
       Highlight.configure({
         HTMLAttributes: { class: 'bg-yellow-500/30 px-1 rounded' }
+      }),
+      Placeholder.configure({
+        placeholder: 'Start writing your post...'
+      }),
+      Youtube.configure({
+        HTMLAttributes: { class: 'w-full aspect-video rounded-lg my-4' }
+      }),
+      TableExtension.configure({
+        resizable: true,
+        HTMLAttributes: { class: 'border-collapse border border-gray-700 my-4' }
+      }),
+      TableRow,
+      TableHeader.configure({
+        HTMLAttributes: { class: 'border border-gray-700 bg-gray-800 p-2 text-left font-bold' }
+      }),
+      TableCell.configure({
+        HTMLAttributes: { class: 'border border-gray-700 p-2' }
       })
     ],
     content: '',
     editorProps: {
       attributes: {
-        class: 'prose prose-invert max-w-none min-h-[300px] p-4 focus:outline-none'
+        class: 'prose prose-invert max-w-none min-h-[400px] p-4 focus:outline-none'
       }
     }
   });
@@ -336,7 +424,13 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
         cover_image_url: post.cover_image_url || '',
         content: post.content || '',
         tags: post.tags || [],
-        status: post.status || 'Draft'
+        status: post.status || 'Draft',
+        seo_title: post.seo_title || '',
+        seo_description: post.seo_description || '',
+        seo_keywords: post.seo_keywords || '',
+        canonical_url: post.canonical_url || '',
+        og_image_url: post.og_image_url || '',
+        no_index: post.no_index || false
       });
       if (editor) {
         editor.commands.setContent(post.content || '');
@@ -349,18 +443,28 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
         cover_image_url: '',
         content: '',
         tags: [],
-        status: 'Draft'
+        status: 'Draft',
+        seo_title: '',
+        seo_description: '',
+        seo_keywords: '',
+        canonical_url: '',
+        og_image_url: '',
+        no_index: false
       });
       if (editor) {
         editor.commands.setContent('');
       }
     }
     setTagInput('');
+    setActiveTab('content');
   }, [post, isOpen, editor]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({ 
+      ...prev, 
+      [name]: type === 'checkbox' ? checked : value 
+    }));
     
     // Auto-generate slug from title
     if (name === 'title' && !post) {
@@ -372,7 +476,7 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
     }
   };
 
-  const handleImageUpload = async (e) => {
+  const handleImageUpload = async (e, field = 'cover_image_url') => {
     const file = e.target.files[0];
     if (!file) return;
 
@@ -388,7 +492,7 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
 
       if (response.ok) {
         const data = await response.json();
-        setFormData(prev => ({ ...prev, cover_image_url: data.url }));
+        setFormData(prev => ({ ...prev, [field]: data.url }));
         toast.success('Image uploaded');
       } else {
         toast.error('Failed to upload image');
@@ -430,159 +534,300 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md overflow-y-auto">
-      <div className="relative bg-smoke-gray border border-gray-800 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto my-8">
+      <div className="relative bg-smoke-gray border border-gray-800 rounded-lg max-w-5xl w-full max-h-[95vh] overflow-y-auto my-4">
+        {/* Header */}
         <div className="sticky top-0 bg-smoke-gray border-b border-gray-800 px-6 py-4 flex items-center justify-between z-10">
-          <h2 className="text-xl font-bold text-white">
-            {post ? 'Edit Post' : 'New Post'}
-          </h2>
+          <div className="flex items-center gap-4">
+            <h2 className="text-xl font-bold text-white">
+              {post ? 'Edit Post' : 'New Post'}
+            </h2>
+            {/* Tab Switcher */}
+            <div className="flex bg-black rounded-lg p-1">
+              <button
+                type="button"
+                onClick={() => setActiveTab('content')}
+                className={`px-4 py-1.5 rounded text-sm transition-colors ${
+                  activeTab === 'content' ? 'bg-electric-blue text-white' : 'text-gray-400 hover:text-white'
+                }`}
+              >
+                Content
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('seo')}
+                className={`px-4 py-1.5 rounded text-sm transition-colors flex items-center gap-1 ${
+                  activeTab === 'seo' ? 'bg-electric-blue text-white' : 'text-gray-400 hover:text-white'
+                }`}
+              >
+                <Search size={14} />
+                SEO
+              </button>
+            </div>
+          </div>
           <button onClick={onClose} className="p-2 text-gray-400 hover:text-white transition-colors">
             <X size={20} />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
-          {/* Title */}
-          <div>
-            <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">Title *</label>
-            <input
-              type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none"
-              placeholder="Post title"
-              data-testid="post-title-input"
-              required
-            />
-          </div>
+        <form onSubmit={handleSubmit}>
+          {/* Content Tab */}
+          {activeTab === 'content' && (
+            <div className="p-6 space-y-6">
+              {/* Title & Slug */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">Title *</label>
+                  <input
+                    type="text"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleChange}
+                    className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none"
+                    placeholder="Post title"
+                    data-testid="post-title-input"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">Slug</label>
+                  <div className="flex items-center">
+                    <span className="text-gray-500 text-sm mr-2">/blog/</span>
+                    <input
+                      type="text"
+                      name="slug"
+                      value={formData.slug}
+                      onChange={handleChange}
+                      className="flex-1 bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none"
+                      placeholder="post-slug"
+                    />
+                  </div>
+                </div>
+              </div>
 
-          {/* Slug */}
-          <div>
-            <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">Slug</label>
-            <div className="flex items-center">
-              <span className="text-gray-500 text-sm mr-2">/blog/</span>
-              <input
-                type="text"
-                name="slug"
-                value={formData.slug}
-                onChange={handleChange}
-                className="flex-1 bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none"
-                placeholder="post-slug"
-              />
-            </div>
-          </div>
+              {/* Status & Cover Image */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">Status</label>
+                  <div className="flex gap-4">
+                    <label className={`flex items-center gap-2 px-4 py-3 rounded-lg border cursor-pointer transition-colors ${
+                      formData.status === 'Draft' ? 'bg-black border-electric-blue text-white' : 'bg-black border-gray-700 text-gray-400'
+                    }`}>
+                      <input type="radio" name="status" value="Draft" checked={formData.status === 'Draft'} onChange={handleChange} className="hidden" />
+                      <EyeOff size={16} /> Draft
+                    </label>
+                    <label className={`flex items-center gap-2 px-4 py-3 rounded-lg border cursor-pointer transition-colors ${
+                      formData.status === 'Published' ? 'bg-green-500/20 border-green-500 text-green-400' : 'bg-black border-gray-700 text-gray-400'
+                    }`}>
+                      <input type="radio" name="status" value="Published" checked={formData.status === 'Published'} onChange={handleChange} className="hidden" />
+                      <Eye size={16} /> Published
+                    </label>
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">Cover Image</label>
+                  <div className="flex gap-4 items-start">
+                    <div className="w-24 h-16 rounded-lg overflow-hidden bg-gray-800 flex items-center justify-center border border-gray-700">
+                      {formData.cover_image_url ? (
+                        <img src={`${process.env.REACT_APP_BACKEND_URL}${formData.cover_image_url}`} alt="" className="w-full h-full object-cover" />
+                      ) : (
+                        <Image size={20} className="text-gray-600" />
+                      )}
+                    </div>
+                    <label className="flex items-center gap-2 px-4 py-2 bg-black border border-gray-700 rounded-lg cursor-pointer hover:border-gray-500 transition-colors">
+                      <Upload size={16} className="text-gray-400" />
+                      <span className="text-gray-400 text-sm">{uploading ? 'Uploading...' : 'Upload'}</span>
+                      <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e, 'cover_image_url')} className="hidden" disabled={uploading} />
+                    </label>
+                  </div>
+                </div>
+              </div>
 
-          {/* Status */}
-          <div>
-            <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">Status</label>
-            <div className="flex gap-4">
-              <label className={`flex items-center gap-2 px-4 py-3 rounded-lg border cursor-pointer transition-colors ${
-                formData.status === 'Draft' ? 'bg-black border-electric-blue text-white' : 'bg-black border-gray-700 text-gray-400'
-              }`}>
-                <input
-                  type="radio"
-                  name="status"
-                  value="Draft"
-                  checked={formData.status === 'Draft'}
+              {/* Excerpt */}
+              <div>
+                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">Excerpt</label>
+                <textarea
+                  name="excerpt"
+                  value={formData.excerpt}
                   onChange={handleChange}
-                  className="hidden"
+                  rows={2}
+                  className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none resize-none"
+                  placeholder="Short summary for previews (optional)"
                 />
-                <EyeOff size={16} />
-                Draft
-              </label>
-              <label className={`flex items-center gap-2 px-4 py-3 rounded-lg border cursor-pointer transition-colors ${
-                formData.status === 'Published' ? 'bg-green-500/20 border-green-500 text-green-400' : 'bg-black border-gray-700 text-gray-400'
-              }`}>
-                <input
-                  type="radio"
-                  name="status"
-                  value="Published"
-                  checked={formData.status === 'Published'}
-                  onChange={handleChange}
-                  className="hidden"
-                />
-                <Eye size={16} />
-                Published
-              </label>
-            </div>
-          </div>
+              </div>
 
-          {/* Cover Image */}
-          <div>
-            <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">Cover Image</label>
-            <div className="flex gap-4 items-start">
-              <div className="w-32 h-20 rounded-lg overflow-hidden bg-gray-800 flex items-center justify-center border border-gray-700">
-                {formData.cover_image_url ? (
-                  <img src={`${process.env.REACT_APP_BACKEND_URL}${formData.cover_image_url}`} alt="" className="w-full h-full object-cover" />
-                ) : (
-                  <Image size={24} className="text-gray-600" />
+              {/* Content - Tiptap Rich Text Editor */}
+              <div>
+                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">Content</label>
+                <div className="bg-black border border-gray-700 rounded-lg overflow-hidden">
+                  <MenuBar editor={editor} />
+                  <div className="tiptap-editor-container">
+                    <EditorContent editor={editor} className="min-h-[400px]" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Tags */}
+              <div>
+                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">Tags</label>
+                <div className="flex gap-2 mb-2">
+                  <input
+                    type="text"
+                    value={tagInput}
+                    onChange={(e) => setTagInput(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddTag())}
+                    className="flex-1 bg-black border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-electric-blue focus:outline-none text-sm"
+                    placeholder="Add a tag"
+                  />
+                  <button type="button" onClick={handleAddTag} className="px-4 py-2 bg-electric-blue/20 text-electric-blue rounded-lg">
+                    <Plus size={18} />
+                  </button>
+                </div>
+                {formData.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {formData.tags.map((tag, idx) => (
+                      <span key={idx} className="inline-flex items-center gap-1 px-3 py-1 bg-black border border-gray-700 rounded-full text-gray-300 text-sm">
+                        {tag}
+                        <button type="button" onClick={() => handleRemoveTag(tag)} className="text-gray-500 hover:text-red-400">
+                          <X size={14} />
+                        </button>
+                      </span>
+                    ))}
+                  </div>
                 )}
               </div>
-              <label className="flex items-center gap-2 px-4 py-2 bg-black border border-gray-700 rounded-lg cursor-pointer hover:border-gray-500 transition-colors">
-                <Upload size={16} className="text-gray-400" />
-                <span className="text-gray-400 text-sm">{uploading ? 'Uploading...' : 'Upload'}</span>
-                <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" disabled={uploading} />
-              </label>
             </div>
-          </div>
+          )}
 
-          {/* Excerpt */}
-          <div>
-            <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">Excerpt</label>
-            <textarea
-              name="excerpt"
-              value={formData.excerpt}
-              onChange={handleChange}
-              rows={2}
-              className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none resize-none"
-              placeholder="Short summary for previews and SEO (optional)"
-            />
-          </div>
+          {/* SEO Tab */}
+          {activeTab === 'seo' && (
+            <div className="p-6 space-y-6">
+              <div className="bg-black/50 border border-gray-800 rounded-lg p-4 mb-6">
+                <h3 className="text-white font-medium mb-2 flex items-center gap-2">
+                  <Search size={16} className="text-electric-blue" />
+                  SEO Preview
+                </h3>
+                <div className="space-y-1">
+                  <p className="text-blue-400 text-lg truncate">
+                    {formData.seo_title || formData.title || 'Page Title'}
+                  </p>
+                  <p className="text-green-500 text-sm truncate">
+                    shadowwolvesproductions.com.au/blog/{formData.slug || 'post-slug'}
+                  </p>
+                  <p className="text-gray-400 text-sm line-clamp-2">
+                    {formData.seo_description || formData.excerpt || 'Add a meta description to improve search visibility...'}
+                  </p>
+                </div>
+              </div>
 
-          {/* Content - Tiptap Rich Text Editor */}
-          <div>
-            <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">Content</label>
-            <div className="bg-black border border-gray-700 rounded-lg overflow-hidden">
-              <MenuBar editor={editor} />
-              <div className="tiptap-editor-container">
-                <EditorContent editor={editor} className="min-h-[300px]" />
+              {/* SEO Title */}
+              <div>
+                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+                  SEO Title <span className="text-gray-600">(max 60 chars recommended)</span>
+                </label>
+                <input
+                  type="text"
+                  name="seo_title"
+                  value={formData.seo_title}
+                  onChange={handleChange}
+                  className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none"
+                  placeholder={formData.title || 'Custom SEO title (optional)'}
+                />
+                <p className="text-gray-600 text-xs mt-1">{(formData.seo_title || formData.title || '').length}/60 characters</p>
+              </div>
+
+              {/* Meta Description */}
+              <div>
+                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+                  Meta Description <span className="text-gray-600">(max 160 chars recommended)</span>
+                </label>
+                <textarea
+                  name="seo_description"
+                  value={formData.seo_description}
+                  onChange={handleChange}
+                  rows={3}
+                  className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none resize-none"
+                  placeholder={formData.excerpt || 'Description for search engines (optional)'}
+                />
+                <p className="text-gray-600 text-xs mt-1">{(formData.seo_description || formData.excerpt || '').length}/160 characters</p>
+              </div>
+
+              {/* Meta Keywords */}
+              <div>
+                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+                  Meta Keywords <span className="text-gray-600">(comma-separated)</span>
+                </label>
+                <input
+                  type="text"
+                  name="seo_keywords"
+                  value={formData.seo_keywords}
+                  onChange={handleChange}
+                  className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none"
+                  placeholder="horror, film, production, shadow wolves"
+                />
+              </div>
+
+              {/* Canonical URL */}
+              <div>
+                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+                  Canonical URL <span className="text-gray-600">(if content exists elsewhere)</span>
+                </label>
+                <input
+                  type="url"
+                  name="canonical_url"
+                  value={formData.canonical_url}
+                  onChange={handleChange}
+                  className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none"
+                  placeholder="https://..."
+                />
+              </div>
+
+              {/* OG Image */}
+              <div>
+                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+                  Social Share Image <span className="text-gray-600">(Open Graph)</span>
+                </label>
+                <div className="flex gap-4 items-start">
+                  <div className="w-32 h-20 rounded-lg overflow-hidden bg-gray-800 flex items-center justify-center border border-gray-700">
+                    {(formData.og_image_url || formData.cover_image_url) ? (
+                      <img 
+                        src={`${process.env.REACT_APP_BACKEND_URL}${formData.og_image_url || formData.cover_image_url}`} 
+                        alt="" 
+                        className="w-full h-full object-cover" 
+                      />
+                    ) : (
+                      <Image size={24} className="text-gray-600" />
+                    )}
+                  </div>
+                  <div>
+                    <label className="flex items-center gap-2 px-4 py-2 bg-black border border-gray-700 rounded-lg cursor-pointer hover:border-gray-500 transition-colors">
+                      <Upload size={16} className="text-gray-400" />
+                      <span className="text-gray-400 text-sm">Upload Custom</span>
+                      <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e, 'og_image_url')} className="hidden" />
+                    </label>
+                    <p className="text-gray-600 text-xs mt-2">Defaults to cover image if not set</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* No Index */}
+              <div className="flex items-center gap-3">
+                <input
+                  type="checkbox"
+                  name="no_index"
+                  checked={formData.no_index}
+                  onChange={handleChange}
+                  className="w-4 h-4 rounded border-gray-600 bg-black text-electric-blue focus:ring-electric-blue"
+                />
+                <div>
+                  <label className="text-white">Prevent search engine indexing</label>
+                  <p className="text-gray-600 text-xs">Add noindex meta tag to this post</p>
+                </div>
               </div>
             </div>
-            <p className="text-gray-500 text-xs mt-2">Use the toolbar above to format your content with headings, lists, images, and more.</p>
-          </div>
+          )}
 
-          {/* Tags */}
-          <div>
-            <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">Tags</label>
-            <div className="flex gap-2 mb-2">
-              <input
-                type="text"
-                value={tagInput}
-                onChange={(e) => setTagInput(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddTag())}
-                className="flex-1 bg-black border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-electric-blue focus:outline-none text-sm"
-                placeholder="Add a tag"
-              />
-              <button type="button" onClick={handleAddTag} className="px-4 py-2 bg-electric-blue/20 text-electric-blue rounded-lg">
-                <Plus size={18} />
-              </button>
-            </div>
-            {formData.tags.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {formData.tags.map((tag, idx) => (
-                  <span key={idx} className="inline-flex items-center gap-1 px-3 py-1 bg-black border border-gray-700 rounded-full text-gray-300 text-sm">
-                    {tag}
-                    <button type="button" onClick={() => handleRemoveTag(tag)} className="text-gray-500 hover:text-red-400">
-                      <X size={14} />
-                    </button>
-                  </span>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Actions */}
-          <div className="flex gap-4 pt-4 border-t border-gray-800">
+          {/* Actions Footer */}
+          <div className="sticky bottom-0 bg-smoke-gray border-t border-gray-800 px-6 py-4 flex gap-4">
             <button type="button" onClick={onClose} className="flex-1 px-6 py-3 border border-gray-700 text-gray-400 rounded-full hover:bg-gray-800 transition-colors font-mono text-sm uppercase tracking-widest">
               Cancel
             </button>
