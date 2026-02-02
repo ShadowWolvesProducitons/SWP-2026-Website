@@ -236,18 +236,53 @@ const Contact = () => {
           </p>
           
           <div className="max-w-md mx-auto">
-            <div className="flex flex-col sm:flex-row gap-3">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-6 py-4 rounded-full bg-smoke-gray border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-electric-blue transition-colors" />
+            {newsletterSubscribed ? (
+              <div className="flex items-center justify-center gap-3 text-green-400">
+                <CheckCircle size={24} />
+                <span>You're in. Welcome to the pack.</span>
+              </div>
+            ) : (
+              <form onSubmit={async (e) => {
+                e.preventDefault();
+                if (!newsletterEmail) return;
+                
+                setNewsletterSubmitting(true);
+                try {
+                  const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/newsletter`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: newsletterEmail, source: 'contact_page' })
+                  });
+                  
+                  if (response.ok) {
+                    setNewsletterSubscribed(true);
+                    sonnerToast.success('Welcome to the pack!');
+                  } else {
+                    const error = await response.json();
+                    sonnerToast.error(error.detail || 'Failed to subscribe');
+                  }
+                } catch (err) {
+                  sonnerToast.error('Connection error. Please try again.');
+                } finally {
+                  setNewsletterSubmitting(false);
+                }
+              }} className="flex flex-col sm:flex-row gap-3">
+                <input
+                  type="email"
+                  value={newsletterEmail}
+                  onChange={(e) => setNewsletterEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  required
+                  className="flex-1 px-6 py-4 rounded-full bg-smoke-gray border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-electric-blue transition-colors" />
 
-              <button
-                className="bg-electric-blue hover:bg-electric-blue/90 text-white px-8 py-4 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2">
-
-                📬 Subscribe
-              </button>
-            </div>
+                <button
+                  type="submit"
+                  disabled={newsletterSubmitting}
+                  className="bg-electric-blue hover:bg-electric-blue/90 disabled:bg-gray-700 text-white px-8 py-4 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2">
+                  {newsletterSubmitting ? 'Subscribing...' : '📬 Subscribe'}
+                </button>
+              </form>
+            )}
             <p className="text-gray-500 text-xs mt-4">
               No spam. Unsubscribe anytime. We respect your privacy.
             </p>
