@@ -47,6 +47,13 @@ class BlogPostUpdate(BaseModel):
     status: Optional[str] = None
     published_at: Optional[datetime] = None
     is_archived: Optional[bool] = None
+    # SEO Fields
+    seo_title: Optional[str] = None
+    seo_description: Optional[str] = None
+    seo_keywords: Optional[str] = None
+    canonical_url: Optional[str] = None
+    og_image_url: Optional[str] = None
+    no_index: Optional[bool] = None
 
 
 class BlogPost(BlogPostBase):
