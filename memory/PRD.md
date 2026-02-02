@@ -31,6 +31,7 @@ Build a professional, cinematic website for Shadow Wolves Productions - a creato
 | The Armory | ✅ Complete | CRUD for apps, templates, downloads, courses, ebooks |
 | The Den (Blog) | ✅ Complete | Tiptap rich text editor with full SEO, draft/published states |
 | Submissions | ✅ Complete | View/manage submissions with status workflow |
+| Messages | ✅ Complete | View/manage contact form messages with status workflow |
 | Investors | ✅ Complete | Portal settings, access codes, slate projects, documents, inquiries |
 
 ### Investor Portal Sections
