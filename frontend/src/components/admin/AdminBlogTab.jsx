@@ -261,12 +261,6 @@ const MenuBar = ({ editor }) => {
       <button type="button" onClick={() => editor.chain().focus().toggleHighlight().run()} className={btnClass(editor.isActive('highlight'))} title="Highlight">
         <Highlighter size={16} />
       </button>
-      <button type="button" onClick={() => editor.chain().focus().toggleSubscript().run()} className={btnClass(editor.isActive('subscript'))} title="Subscript">
-        <Subscript size={16} />
-      </button>
-      <button type="button" onClick={() => editor.chain().focus().toggleSuperscript().run()} className={btnClass(editor.isActive('superscript'))} title="Superscript">
-        <Superscript size={16} />
-      </button>
 
       <div className="w-px h-6 bg-gray-700 mx-1 self-center" />
 
