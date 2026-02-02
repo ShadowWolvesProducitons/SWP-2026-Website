@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Film, Package, FileText, LogOut, RefreshCw } from 'lucide-react';
+import { Film, Package, FileText, LogOut, RefreshCw, Inbox } from 'lucide-react';
 import { toast } from 'sonner';
 import AdminFilmsTab from '../components/admin/AdminFilmsTab';
 import AdminArmoryTab from '../components/admin/AdminArmoryTab';
 import AdminBlogTab from '../components/admin/AdminBlogTab';
+import AdminSubmissionsTab from '../components/admin/AdminSubmissionsTab';
 
 const TABS = [
   { id: 'films', label: 'Films', icon: Film },
   { id: 'armory', label: 'The Armory', icon: Package },
   { id: 'blog', label: 'The Den', icon: FileText },
+  { id: 'submissions', label: 'Submissions', icon: Inbox },
 ];
 
 const AdminDashboard = ({ onLogout }) => {
