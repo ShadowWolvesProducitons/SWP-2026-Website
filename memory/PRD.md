@@ -20,7 +20,7 @@ Build a professional, cinematic website for Shadow Wolves Productions - a creato
 | The Armory | `/services` | ✅ Complete | E-commerce style product cards for apps, templates, downloads |
 | The Den (Blog) | `/blog` | ✅ Complete | Blog index with SEO-friendly individual post pages |
 | Work With Us | `/work-with-us` | ✅ Complete | Structured submission system with form validation |
-| Contact | `/contact` | ✅ Complete | Contact form + functional newsletter signup |
+| Contact | `/contact` | ✅ Complete | Contact form (backend) + functional newsletter signup |
 | Investor Portal | `/investors` | ✅ Complete | Password-protected private portal |
 
 ### Studio Admin Console (`/admin`)
