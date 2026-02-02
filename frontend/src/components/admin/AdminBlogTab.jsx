@@ -310,12 +310,6 @@ const MenuBar = ({ editor }) => {
       <button type="button" onClick={addImage} className={btnClass(false)} title="Add Image">
         <Image size={16} />
       </button>
-      <button type="button" onClick={addYoutube} className={btnClass(false)} title="Add YouTube Video">
-        <YoutubeIcon size={16} />
-      </button>
-      <button type="button" onClick={insertTable} className={btnClass(false)} title="Insert Table">
-        <Table size={16} />
-      </button>
     </div>
   );
 };
