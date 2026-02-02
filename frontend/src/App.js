@@ -46,11 +46,15 @@ const AppContent = () => {
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(
     () => sessionStorage.getItem('adminAuth') === 'true'
   );
+  const [isInvestorAuthenticated, setIsInvestorAuthenticated] = useState(
+    () => sessionStorage.getItem('investorAuth') === 'true'
+  );
   
   const isAdminRoute = location.pathname.startsWith('/admin');
+  const isInvestorRoute = location.pathname.startsWith('/investors');
 
   return (
-    <Layout showLayout={!isAdminRoute}>
+    <Layout showLayout={!isAdminRoute && !isInvestorRoute}>
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
@@ -64,6 +68,16 @@ const AppContent = () => {
         
         {/* Legacy redirect */}
         <Route path="/den" element={<Navigate to="/services" replace />} />
+        
+        {/* Investor Portal Routes */}
+        <Route 
+          path="/investors" 
+          element={
+            isInvestorAuthenticated ? 
+              <InvestorPortal onLogout={() => setIsInvestorAuthenticated(false)} /> : 
+              <InvestorLogin onLogin={() => setIsInvestorAuthenticated(true)} />
+          } 
+        />
         
         {/* Admin Routes */}
         <Route 
