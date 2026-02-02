@@ -152,14 +152,20 @@ const BlogPost = () => {
   return (
     <div className="blog-post-page pt-20 min-h-screen bg-black">
       <Helmet>
-        <title>{post.title} | Shadow Wolves Productions</title>
+        <title>{getMetaTitle()}</title>
         <meta name="description" content={getMetaDescription()} />
-        {post.cover_image_url && (
-          <meta property="og:image" content={`${process.env.REACT_APP_BACKEND_URL}${post.cover_image_url}`} />
-        )}
-        <meta property="og:title" content={`${post.title} | Shadow Wolves Productions`} />
+        {post.seo_keywords && <meta name="keywords" content={post.seo_keywords} />}
+        {post.canonical_url && <link rel="canonical" href={post.canonical_url} />}
+        {post.no_index && <meta name="robots" content="noindex, nofollow" />}
+        {getOgImage() && <meta property="og:image" content={getOgImage()} />}
+        <meta property="og:title" content={getMetaTitle()} />
         <meta property="og:description" content={getMetaDescription()} />
         <meta property="og:type" content="article" />
+        <meta property="og:url" content={`${window.location.origin}/blog/${post.slug}`} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={getMetaTitle()} />
+        <meta name="twitter:description" content={getMetaDescription()} />
+        {getOgImage() && <meta name="twitter:image" content={getOgImage()} />}
       </Helmet>
 
       <article className="py-16">
