@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, CheckCircle } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
+import { toast as sonnerToast } from 'sonner';
 
 const Contact = () => {
   const { toast } = useToast();
@@ -11,6 +12,9 @@ const Contact = () => {
     service: '',
     message: ''
   });
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterSubmitting, setNewsletterSubmitting] = useState(false);
+  const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
