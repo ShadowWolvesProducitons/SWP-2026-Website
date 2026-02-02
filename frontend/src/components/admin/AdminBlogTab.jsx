@@ -336,7 +336,7 @@ const MenuBar = ({ editor }) => {
         <Image size={16} />
       </button>
       <button type="button" onClick={addYoutube} className={btnClass(false)} title="Add YouTube Video">
-        <Youtube size={16} />
+        <YoutubeIcon size={16} />
       </button>
       <button type="button" onClick={insertTable} className={btnClass(false)} title="Insert Table">
         <Table size={16} />
