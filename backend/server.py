@@ -17,6 +17,7 @@ from routes import (
     den_items_router, blog_posts_router,
     set_films_db, set_den_items_db, set_blog_posts_db
 )
+from routes.submissions import router as submissions_router, set_db as set_submissions_db
 
 
 ROOT_DIR = Path(__file__).parent
