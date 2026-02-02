@@ -107,9 +107,20 @@ const BlogPost = () => {
   };
 
   const getMetaDescription = () => {
+    if (post?.seo_description) return post.seo_description;
     if (post?.excerpt) return post.excerpt;
-    if (post?.content) return post.content.slice(0, 160).replace(/[#*\[\]]/g, '') + '...';
+    if (post?.content) return post.content.slice(0, 160).replace(/[#*\[\]<>]/g, '').replace(/&nbsp;/g, ' ') + '...';
     return 'Read this article from Shadow Wolves Productions.';
+  };
+
+  const getMetaTitle = () => {
+    return post?.seo_title || `${post?.title} | Shadow Wolves Productions`;
+  };
+
+  const getOgImage = () => {
+    if (post?.og_image_url) return `${process.env.REACT_APP_BACKEND_URL}${post.og_image_url}`;
+    if (post?.cover_image_url) return `${process.env.REACT_APP_BACKEND_URL}${post.cover_image_url}`;
+    return null;
   };
 
   if (loading) {
