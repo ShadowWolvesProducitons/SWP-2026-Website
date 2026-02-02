@@ -86,6 +86,7 @@ api_router.include_router(admin_router)
 api_router.include_router(upload_router)
 api_router.include_router(den_items_router)
 api_router.include_router(blog_posts_router)
+api_router.include_router(submissions_router)
 
 # Include the main API router
 app.include_router(api_router)
