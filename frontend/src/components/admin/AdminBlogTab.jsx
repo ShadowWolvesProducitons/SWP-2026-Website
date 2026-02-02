@@ -343,8 +343,6 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
         heading: { levels: [1, 2, 3, 4] }
       }),
       TiptapUnderline,
-      TiptapSubscript,
-      TiptapSuperscript,
       TiptapLink.configure({
         openOnClick: false,
         HTMLAttributes: { class: 'text-electric-blue underline' }
@@ -357,23 +355,6 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
       }),
       Highlight.configure({
         HTMLAttributes: { class: 'bg-yellow-500/30 px-1 rounded' }
-      }),
-      Placeholder.configure({
-        placeholder: 'Start writing your post...'
-      }),
-      YoutubeExtension.configure({
-        HTMLAttributes: { class: 'w-full aspect-video rounded-lg my-4' }
-      }),
-      TableExtension.configure({
-        resizable: true,
-        HTMLAttributes: { class: 'border-collapse border border-gray-700 my-4' }
-      }),
-      TableRow,
-      TableHeader.configure({
-        HTMLAttributes: { class: 'border border-gray-700 bg-gray-800 p-2 text-left font-bold' }
-      }),
-      TableCell.configure({
-        HTMLAttributes: { class: 'border border-gray-700 p-2' }
       })
     ],
     content: '',
