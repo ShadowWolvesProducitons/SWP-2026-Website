@@ -4,7 +4,7 @@ import {
   Bold, Italic, Underline, Strikethrough, List, ListOrdered, Quote, Code, 
   Link as LinkIcon, AlignLeft, AlignCenter, AlignRight, AlignJustify,
   Heading1, Heading2, Heading3, Heading4, Highlighter, Subscript, Superscript,
-  Youtube, Table, Minus, Undo, Redo, Search, Settings, ChevronDown, ChevronUp
+  Youtube as YoutubeIcon, Table, Minus, Undo, Redo, Search, Settings, ChevronDown, ChevronUp
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useEditor, EditorContent } from '@tiptap/react';
@@ -17,7 +17,7 @@ import Highlight from '@tiptap/extension-highlight';
 import TiptapSubscript from '@tiptap/extension-subscript';
 import TiptapSuperscript from '@tiptap/extension-superscript';
 import Placeholder from '@tiptap/extension-placeholder';
-import Youtube from '@tiptap/extension-youtube';
+import YoutubeExtension from '@tiptap/extension-youtube';
 import TableExtension from '@tiptap/extension-table';
 import TableRow from '@tiptap/extension-table-row';
 import TableCell from '@tiptap/extension-table-cell';
