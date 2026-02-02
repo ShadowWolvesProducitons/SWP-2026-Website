@@ -24,6 +24,13 @@ class BlogPostBase(BaseModel):
     status: str = "Draft"  # Draft, Published
     published_at: Optional[datetime] = None
     is_archived: bool = False
+    # SEO Fields
+    seo_title: Optional[str] = None  # Custom page title for SEO
+    seo_description: Optional[str] = None  # Meta description
+    seo_keywords: Optional[str] = None  # Meta keywords
+    canonical_url: Optional[str] = None  # Canonical URL if different
+    og_image_url: Optional[str] = None  # Open Graph image (defaults to cover_image_url)
+    no_index: bool = False  # Prevent search engine indexing
 
 
 class BlogPostCreate(BlogPostBase):
