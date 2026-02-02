@@ -4,12 +4,14 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-route
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
+import About from "./pages/About";
 import Films from "./pages/Films";
 import Services from "./pages/Services";
 import TheDen from "./pages/TheDen";
 import Contact from "./pages/Contact";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
+import WorkWithUs from "./pages/WorkWithUs";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import { Toaster } from "./components/ui/sonner";
