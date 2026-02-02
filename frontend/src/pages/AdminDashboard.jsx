@@ -82,6 +82,7 @@ const AdminDashboard = ({ onLogout }) => {
         {activeTab === 'armory' && <AdminArmoryTab />}
         {activeTab === 'blog' && <AdminBlogTab />}
         {activeTab === 'submissions' && <AdminSubmissionsTab />}
+        {activeTab === 'investors' && <AdminInvestorTab />}
       </main>
     </div>
   );
