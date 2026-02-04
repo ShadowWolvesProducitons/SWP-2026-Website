@@ -90,7 +90,8 @@ Build a professional, cinematic website for Shadow Wolves Productions - a creato
 
 | Service | Status | Notes |
 |---------|--------|-------|
-| Resend (Email) | 🟡 Ready | Implemented but requires `RESEND_API_KEY` in `.env` |
+| Resend (Email) | ✅ Active | API key configured. Requires domain verification to send to external recipients |
+| Tiptap YouTube | ✅ Active | YouTube video embedding in blog posts |
 
 ---
 
