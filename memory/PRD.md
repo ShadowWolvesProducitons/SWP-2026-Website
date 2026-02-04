@@ -147,53 +147,15 @@ Build a professional, cinematic website for Shadow Wolves Productions - a creato
 
 ---
 
-## File Structure
+## Admin Component Reference
 
 ```
-/app
-├── backend/
-│   ├── server.py
-│   ├── db.py
-│   ├── models/
-│   │   ├── film.py
-│   │   ├── den_item.py
-│   │   ├── blog_post.py
-│   │   ├── submission.py
-│   │   ├── newsletter.py
-│   │   └── investor.py
-│   ├── routes/
-│   │   ├── films.py
-│   │   ├── den_items.py
-│   │   ├── blog_posts.py
-│   │   ├── submissions.py
-│   │   ├── newsletter.py
-│   │   ├── investors.py
-│   │   ├── admin.py
-│   │   └── upload.py
-│   └── uploads/
-│
-└── frontend/
-    └── src/
-        ├── pages/
-        │   ├── Home.jsx
-        │   ├── About.jsx
-        │   ├── Films.jsx
-        │   ├── TheDen.jsx (Armory)
-        │   ├── Blog.jsx
-        │   ├── BlogPost.jsx
-        │   ├── WorkWithUs.jsx
-        │   ├── Contact.jsx
-        │   ├── InvestorLogin.jsx
-        │   ├── InvestorPortal.jsx
-        │   ├── AdminLogin.jsx
-        │   └── AdminDashboard.jsx
-        └── components/
-            ├── Header.jsx
-            ├── Footer.jsx
-            └── admin/
-                ├── AdminFilmsTab.jsx
-                ├── AdminArmoryTab.jsx
-                ├── AdminBlogTab.jsx
-                ├── AdminSubmissionsTab.jsx
-                └── AdminInvestorTab.jsx
+/app/frontend/src/components/admin/
+├── AdminFilmsTab.jsx       - Film CRUD management
+├── AdminArmoryTab.jsx      - Product/resource management
+├── AdminBlogTab.jsx        - Blog with Tiptap editor + YouTube
+├── AdminMessagesTab.jsx    - Contact form submissions
+├── AdminSubmissionsTab.jsx - Work With Us submissions
+├── AdminNewsletterTab.jsx  - Newsletter subscriber management
+└── AdminInvestorTab.jsx    - Investor portal management
 ```
