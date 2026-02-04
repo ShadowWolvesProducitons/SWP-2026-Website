@@ -105,6 +105,8 @@ api_router.include_router(newsletter_router)
 api_router.include_router(contact_router)
 api_router.include_router(email_templates_router)
 api_router.include_router(ai_router)
+api_router.include_router(analytics_router)
+api_router.include_router(webhooks_router)
 
 # Include the main API router
 app.include_router(api_router)
