@@ -169,19 +169,27 @@ async def send_bulk_email(request: BulkEmailRequest):
     </div>
     """
     
+    # Generate campaign ID for tracking
+    import uuid
+    campaign_id = str(uuid.uuid4())
+    
     sent = 0
     failed = 0
     errors = []
+    email_ids = []
     
     for subscriber in subscribers:
         try:
-            await asyncio.to_thread(resend.Emails.send, {
+            result = await asyncio.to_thread(resend.Emails.send, {
                 "from": from_email,
                 "to": subscriber['email'],
                 "subject": request.subject,
                 "html": styled_html
             })
             sent += 1
+            # Track email ID for analytics
+            if result and hasattr(result, 'id'):
+                email_ids.append({'email_id': result.id, 'recipient': subscriber['email']})
             # Small delay to avoid rate limiting
             await asyncio.sleep(0.1)
         except Exception as e:
@@ -190,14 +198,16 @@ async def send_bulk_email(request: BulkEmailRequest):
             errors.append(error_msg)
             print(f"Failed to send to {subscriber['email']}: {e}")
     
-    # Log the campaign
+    # Log the campaign with ID for tracking
     campaign_log = {
+        "id": campaign_id,
         "subject": request.subject,
         "sent_at": datetime.now(timezone.utc).isoformat(),
         "total_recipients": len(subscribers),
         "sent": sent,
         "failed": failed,
-        "test_mode": request.test_mode
+        "test_mode": request.test_mode,
+        "email_ids": email_ids
     }
     await db.newsletter_campaigns.insert_one(campaign_log)
     
