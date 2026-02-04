@@ -16,6 +16,7 @@ import InvestorLogin from "./pages/InvestorLogin";
 import InvestorPortal from "./pages/InvestorPortal";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
+import LeadMagnetPopup from "./components/LeadMagnetPopup";
 import { Toaster } from "./components/ui/sonner";
 
 // Layout wrapper that conditionally renders Header/Footer
