@@ -25,7 +25,7 @@ const TABS = [
 ];
 
 const AdminDashboard = ({ onLogout }) => {
-  const [activeTab, setActiveTab] = useState('films');
+  const [activeTab, setActiveTab] = useState('analytics');
   const navigate = useNavigate();
 
   const handleLogout = () => {
