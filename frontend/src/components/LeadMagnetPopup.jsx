@@ -157,9 +157,13 @@ const LeadMagnetPopup = () => {
 
             {/* Content */}
             <div className="p-8">
-              {/* Icon */}
-              <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-electric-blue/10 border border-electric-blue/30 flex items-center justify-center">
-                <FileText size={28} className="text-electric-blue" />
+              {/* Mockup Image */}
+              <div className="mb-6">
+                <img 
+                  src="https://customer-assets.emergentagent.com/job_04afc1ac-41b6-4e3d-938f-409263bdaadd/artifacts/i8yb09b1_The%20Producer-s%20Playbook%20Mockup.png"
+                  alt="The Producer's Playbook"
+                  className="w-48 h-auto mx-auto"
+                />
               </div>
 
               {/* Heading */}
@@ -205,9 +209,9 @@ const LeadMagnetPopup = () => {
                 </button>
               </form>
 
-              {/* Footer */}
+              {/* Footer - Newsletter mention */}
               <p className="text-gray-600 text-xs text-center mt-4">
-                Join the pack. We'll send it instantly.
+                You'll also join our newsletter for industry updates. Unsubscribe anytime.
               </p>
             </div>
           </motion.div>
