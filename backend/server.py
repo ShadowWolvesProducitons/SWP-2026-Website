@@ -22,6 +22,7 @@ from routes.investors import router as investors_router, set_db as set_investors
 from routes.newsletter import router as newsletter_router, set_db as set_newsletter_db
 from routes.contact import router as contact_router, set_db as set_contact_db
 from routes.email_templates import router as email_templates_router, set_db as set_email_templates_db
+from routes.ai import router as ai_router
 
 
 ROOT_DIR = Path(__file__).parent
