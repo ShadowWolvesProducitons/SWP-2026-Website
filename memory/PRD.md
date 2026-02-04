@@ -113,14 +113,17 @@ Build a professional, cinematic website for Shadow Wolves Productions - a creato
 - **Newsletter** - Functional subscription connected to database
 - **Admin Submissions tab** - View/manage with status workflow
 - **Admin Investors tab** - Full portal management with sub-tabs
+- **Admin Messages tab** - View contact form submissions
+- **Admin Newsletter tab** - View subscribers with export and unsubscribe features
+- **Blog YouTube Embed** - Tiptap YouTube extension for embedding videos
+- **Resend Email Integration** - Welcome emails for newsletter signups (requires domain verification)
 
 ---
 
 ## Known Limitations
 
-1. **Contact form** - Opens email client (mailto) rather than backend submission
-2. **Email notifications** - Require Resend API key to function (silent skip without)
-3. **File uploads** - Stored locally in `/app/backend/uploads/`
+1. **Resend Emails** - API key configured, but requires domain verification at resend.com/domains to send to external recipients
+2. **File uploads** - Stored locally in `/app/backend/uploads/`
 
 ---
 
