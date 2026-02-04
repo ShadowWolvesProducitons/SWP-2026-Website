@@ -474,6 +474,44 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
     }
   };
 
+  const handleGenerateAICover = async () => {
+    if (!formData.title.trim()) {
+      toast.error('Please add a title first');
+      return;
+    }
+
+    setGeneratingAI(true);
+    toast.info('Generating cover image... This may take up to a minute.');
+
+    try {
+      const content = editor ? editor.getHTML() : formData.content;
+      
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/ai/generate-cover-image`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: formData.title,
+          content: content,
+          tags: formData.tags,
+          excerpt: formData.excerpt
+        })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setFormData(prev => ({ ...prev, cover_image_url: data.image_url }));
+        toast.success('AI cover image generated!');
+      } else {
+        const error = await response.json();
+        toast.error(error.detail || 'Failed to generate image');
+      }
+    } catch (err) {
+      toast.error('Error generating AI image');
+    } finally {
+      setGeneratingAI(false);
+    }
+  };
+
   const handleAddTag = () => {
     const tag = tagInput.trim();
     if (tag && !formData.tags.includes(tag)) {
