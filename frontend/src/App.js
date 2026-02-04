@@ -55,8 +55,8 @@ const AppContent = () => {
   const isAdminRoute = location.pathname.startsWith('/admin');
   const isInvestorRoute = location.pathname.startsWith('/investors');
   
-  // Show popup only on Home, Blog, and Blog Post pages
-  const showPopup = ['/', '/blog'].includes(location.pathname) || location.pathname.startsWith('/blog/');
+  // Show popup only on Home, About, Blog, and Blog Post pages
+  const showPopup = ['/', '/about', '/blog'].includes(location.pathname) || location.pathname.startsWith('/blog/');
 
   return (
     <Layout showLayout={!isAdminRoute && !isInvestorRoute} showPopup={showPopup}>
