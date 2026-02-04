@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { RefreshCw, Trash2, Download, Users, Mail, CheckCircle, XCircle } from 'lucide-react';
+import { RefreshCw, Trash2, Download, Users, Mail, CheckCircle, XCircle, Send, X, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 
 const AdminNewsletterTab = () => {
   const [subscribers, setSubscribers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showInactive, setShowInactive] = useState(false);
+  const [showComposeModal, setShowComposeModal] = useState(false);
 
   const fetchSubscribers = async () => {
     setLoading(true);
@@ -95,6 +96,17 @@ const AdminNewsletterTab = () => {
             />
             Show unsubscribed
           </label>
+          
+          {/* Compose Email Button */}
+          <button
+            onClick={() => setShowComposeModal(true)}
+            disabled={activeCount === 0}
+            className="flex items-center gap-2 px-4 py-2 bg-electric-blue hover:bg-electric-blue/90 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+            data-testid="compose-email-btn"
+          >
+            <Send size={16} />
+            Compose Email
+          </button>
           
           {/* Export Button */}
           <button
@@ -187,6 +199,219 @@ const AdminNewsletterTab = () => {
           </table>
         </div>
       )}
+
+      {/* Compose Email Modal */}
+      <ComposeEmailModal
+        isOpen={showComposeModal}
+        onClose={() => setShowComposeModal(false)}
+        subscriberCount={activeCount}
+      />
+    </div>
+  );
+};
+
+
+// Compose Email Modal Component
+const ComposeEmailModal = ({ isOpen, onClose, subscriberCount }) => {
+  const [subject, setSubject] = useState('');
+  const [content, setContent] = useState('');
+  const [sending, setSending] = useState(false);
+  const [testMode, setTestMode] = useState(false);
+  const [result, setResult] = useState(null);
+
+  const handleSend = async () => {
+    if (!subject.trim()) {
+      toast.error('Subject is required');
+      return;
+    }
+    if (!content.trim()) {
+      toast.error('Email content is required');
+      return;
+    }
+
+    // Convert plain text to HTML paragraphs
+    const htmlContent = content
+      .split('\n\n')
+      .map(p => `<p style="color: #9ca3af; line-height: 1.6; margin-bottom: 16px;">${p.replace(/\n/g, '<br />')}</p>`)
+      .join('');
+
+    setSending(true);
+    setResult(null);
+
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/newsletter/send-bulk`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          subject,
+          html_content: htmlContent,
+          test_mode: testMode
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setResult(data);
+        if (data.sent > 0) {
+          toast.success(`Email sent to ${data.sent} subscriber${data.sent !== 1 ? 's' : ''}`);
+        }
+        if (data.failed > 0) {
+          toast.error(`Failed to send to ${data.failed} subscriber${data.failed !== 1 ? 's' : ''}`);
+        }
+      } else {
+        toast.error(data.detail || 'Failed to send emails');
+      }
+    } catch (err) {
+      toast.error('Error sending emails');
+    } finally {
+      setSending(false);
+    }
+  };
+
+  const handleClose = () => {
+    setSubject('');
+    setContent('');
+    setTestMode(false);
+    setResult(null);
+    onClose();
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md">
+      <div className="relative bg-smoke-gray border border-gray-800 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        {/* Header */}
+        <div className="sticky top-0 bg-smoke-gray border-b border-gray-800 px-6 py-4 flex items-center justify-between z-10">
+          <div>
+            <h2 className="text-xl font-bold text-white flex items-center gap-2">
+              <Send size={20} className="text-electric-blue" />
+              Compose Newsletter
+            </h2>
+            <p className="text-gray-500 text-sm mt-1">
+              Send to {subscriberCount} active subscriber{subscriberCount !== 1 ? 's' : ''}
+            </p>
+          </div>
+          <button onClick={handleClose} className="p-2 text-gray-400 hover:text-white transition-colors">
+            <X size={20} />
+          </button>
+        </div>
+
+        <div className="p-6 space-y-6">
+          {/* Warning Notice */}
+          <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4 flex items-start gap-3">
+            <AlertCircle size={20} className="text-yellow-500 flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="text-yellow-200 text-sm font-medium">Domain Verification Required</p>
+              <p className="text-yellow-200/70 text-xs mt-1">
+                Resend requires domain verification to send to external recipients. 
+                Verify your domain at resend.com/domains and set FROM_EMAIL in your environment.
+              </p>
+            </div>
+          </div>
+
+          {/* Subject */}
+          <div>
+            <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+              Subject *
+            </label>
+            <input
+              type="text"
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+              placeholder="Your email subject line..."
+              className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none"
+              data-testid="email-subject-input"
+            />
+          </div>
+
+          {/* Content */}
+          <div>
+            <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+              Message *
+            </label>
+            <textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              placeholder="Write your newsletter content here...
+
+Use blank lines to separate paragraphs."
+              rows={10}
+              className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none resize-none font-sans"
+              data-testid="email-content-input"
+            />
+            <p className="text-gray-600 text-xs mt-2">
+              Plain text will be converted to styled HTML. Use blank lines to create paragraphs.
+            </p>
+          </div>
+
+          {/* Test Mode Toggle */}
+          <div className="flex items-center gap-3">
+            <input
+              type="checkbox"
+              id="testMode"
+              checked={testMode}
+              onChange={(e) => setTestMode(e.target.checked)}
+              className="w-4 h-4 rounded border-gray-600 bg-black text-electric-blue focus:ring-electric-blue"
+            />
+            <label htmlFor="testMode" className="text-gray-400 text-sm cursor-pointer">
+              <span className="text-white">Test Mode</span> — Send to only one subscriber first
+            </label>
+          </div>
+
+          {/* Result Display */}
+          {result && (
+            <div className={`rounded-lg p-4 border ${
+              result.failed === 0 
+                ? 'bg-green-500/10 border-green-500/30' 
+                : 'bg-red-500/10 border-red-500/30'
+            }`}>
+              <div className="flex items-center gap-4 text-sm">
+                <span className="text-gray-400">Total: {result.total}</span>
+                <span className="text-green-400">Sent: {result.sent}</span>
+                {result.failed > 0 && <span className="text-red-400">Failed: {result.failed}</span>}
+              </div>
+              {result.errors && result.errors.length > 0 && (
+                <div className="mt-3 text-xs text-red-400/80">
+                  <p className="font-medium mb-1">Errors:</p>
+                  {result.errors.map((err, i) => (
+                    <p key={i} className="truncate">{err}</p>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div className="sticky bottom-0 bg-smoke-gray border-t border-gray-800 px-6 py-4 flex gap-4">
+          <button
+            onClick={handleClose}
+            className="flex-1 px-6 py-3 border border-gray-700 text-gray-400 rounded-full hover:bg-gray-800 transition-colors font-mono text-sm uppercase tracking-widest"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleSend}
+            disabled={sending || !subject.trim() || !content.trim()}
+            className="flex-1 px-6 py-3 bg-electric-blue hover:bg-electric-blue/90 disabled:bg-gray-700 disabled:cursor-not-allowed text-white rounded-full transition-colors font-mono text-sm uppercase tracking-widest flex items-center justify-center gap-2"
+            data-testid="send-email-btn"
+          >
+            {sending ? (
+              <>
+                <RefreshCw size={16} className="animate-spin" />
+                Sending...
+              </>
+            ) : (
+              <>
+                <Send size={16} />
+                {testMode ? 'Send Test' : 'Send to All'}
+              </>
+            )}
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
