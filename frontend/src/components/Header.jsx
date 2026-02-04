@@ -8,8 +8,8 @@ const Header = () => {
 
   const navLinks = [
     { name: 'Home', path: '/' },
-    { name: 'Films', path: '/films' },
     { name: 'About', path: '/about' },
+    { name: 'Films', path: '/films' },
     { name: 'The Armory', path: '/services' },
     { name: 'The Den', path: '/blog' },
     { name: 'Work With Us', path: '/work-with-us' },
