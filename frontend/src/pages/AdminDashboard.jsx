@@ -13,6 +13,7 @@ import AdminEmailTemplatesTab from '../components/admin/AdminEmailTemplatesTab';
 import AdminAnalyticsTab from '../components/admin/AdminAnalyticsTab';
 
 const TABS = [
+  { id: 'analytics', label: 'Dashboard', icon: BarChart3 },
   { id: 'films', label: 'Films', icon: Film },
   { id: 'armory', label: 'The Armory', icon: Package },
   { id: 'blog', label: 'The Den', icon: FileText },
