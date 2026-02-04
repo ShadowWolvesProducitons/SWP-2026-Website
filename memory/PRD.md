@@ -125,8 +125,8 @@ Build a professional, cinematic website for Shadow Wolves Productions - a creato
 
 ## Known Limitations
 
-1. **Resend Emails** - API key configured, but requires domain verification at resend.com/domains to send to external recipients
-2. **File uploads** - Stored locally in `/app/backend/uploads/`
+1. **File uploads** - Stored locally in `/app/backend/uploads/`
+2. **Rate limits** - Resend free tier allows 2 emails/second
 
 ---
 
