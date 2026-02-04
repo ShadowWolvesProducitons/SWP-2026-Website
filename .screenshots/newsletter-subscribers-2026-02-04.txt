@@ -1,0 +1,5 @@
+test_newsletter@example.com
+test_api_newsletter@example.com
+Brendan@shadowwolvesproductions.com.au
+test_resend_email_1770170414@example.com
+test_resend_verify_1770170595@example.com
