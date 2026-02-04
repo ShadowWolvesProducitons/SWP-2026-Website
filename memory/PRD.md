@@ -116,7 +116,8 @@ Build a professional, cinematic website for Shadow Wolves Productions - a creato
 - **Admin Submissions tab** - View/manage with status workflow
 - **Admin Investors tab** - Full portal management with sub-tabs
 - **Admin Messages tab** - View contact form submissions
-- **Admin Newsletter tab** - View subscribers with export and unsubscribe features
+- **Admin Newsletter tab** - View subscribers with export, unsubscribe, and bulk email features
+- **Bulk Email Campaigns** - Compose and send newsletters to all subscribers with test mode
 - **Blog YouTube Embed** - Tiptap YouTube extension for embedding videos
 - **Resend Email Integration** - Welcome emails for newsletter signups (requires domain verification)
 
