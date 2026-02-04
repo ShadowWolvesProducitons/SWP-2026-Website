@@ -98,6 +98,7 @@ api_router.include_router(submissions_router)
 api_router.include_router(investors_router)
 api_router.include_router(newsletter_router)
 api_router.include_router(contact_router)
+api_router.include_router(email_templates_router)
 
 # Include the main API router
 app.include_router(api_router)
