@@ -382,6 +382,13 @@ const Home = () => {
         isOpen={isModalOpen}
         onClose={closeModal}
       />
+
+      {/* Services Modal */}
+      <ServicesModal
+        open={servicesModalOpen}
+        onClose={closeServicesModal}
+        serviceKey={activeServiceKey}
+      />
     </div>);
 
 };
