@@ -22,7 +22,7 @@ const LeadMagnetPopup = () => {
     }
 
     // Only show on specific pages
-    const allowedPaths = ['/', '/blog'];
+    const allowedPaths = ['/', '/about', '/blog'];
     const currentPath = window.location.pathname;
     const isBlogPost = currentPath.startsWith('/blog/');
     
