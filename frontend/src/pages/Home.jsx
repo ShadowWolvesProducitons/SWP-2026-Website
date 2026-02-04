@@ -272,168 +272,71 @@ const Home = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="md:text-6xl !font-bold !text-5xl mb-4 text-white" style={{ fontFamily: 'Cinzel, serif' }}>What We Do</h2>
-            <p className="!text-xl text-gray-400">We develop, produce, and support screen stories from first idea to final delivery — with clarity, intention, and zero BS.</p>
+            <p className="!text-xl text-gray-400">We develop, produce, and support screen stories from first idea to final delivery.</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            {/* Development Card */}
-            <div className="service-card bg-black p-8 rounded-lg border border-gray-800 hover:border-electric-blue transition-all flex flex-col">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-electric-blue/20 rounded-full flex items-center justify-center border-2 border-electric-blue">
-                  <span className="text-xl font-bold text-electric-blue">1</span>
-                </div>
-                <h3 className="text-2xl font-bold text-white uppercase tracking-wide">Development</h3>
-              </div>
-              
-              <p className="text-gray-300 text-lg mb-4 leading-relaxed">
-                We work at the foundation — concept, script, and structure.
-              </p>
-              <p className="text-gray-400 mb-6 leading-relaxed">
-                From early ideas to production-ready drafts, we help shape stories that hold up under pressure and resonate on screen.
-              </p>
-              
-              <div className="mb-6">
-                <p className="text-gray-400 text-sm mb-3">This includes:</p>
-                <ul className="space-y-2">
-                  <li className="text-gray-300 flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-electric-blue"></span>
-                    Script development
-                  </li>
-                  <li className="text-gray-300 flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-electric-blue"></span>
-                    Story consultation
-                  </li>
-                  <li className="text-gray-300 flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-electric-blue"></span>
-                    Creative direction
-                  </li>
-                </ul>
-              </div>
-              
-              <Link 
-                to="/services"
-                className="mt-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-electric-blue hover:bg-electric-blue/90 text-white transition-all font-mono text-xs uppercase tracking-widest"
+          {/* Minimal Service Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            {[
+              { key: 'development', num: '01', title: 'Development' },
+              { key: 'preproduction', num: '02', title: 'Pre-Production' },
+              { key: 'postproduction', num: '03', title: 'Post-Production' }
+            ].map((service) => (
+              <button
+                key={service.key}
+                onClick={() => openServicesModal(service.key)}
+                onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && openServicesModal(service.key)}
+                className="service-card-minimal group relative bg-black p-8 md:p-10 rounded-xl border border-gray-800 hover:border-electric-blue/50 transition-all duration-300 text-left focus:outline-none focus:ring-2 focus:ring-electric-blue focus:ring-offset-2 focus:ring-offset-black hover:-translate-y-0.5"
+                aria-label={`Learn more about ${service.title}`}
               >
-                Learn More
-                <ArrowRight size={16} />
-              </Link>
-            </div>
+                {/* Large Number */}
+                <span 
+                  className="absolute top-6 right-6 text-6xl md:text-7xl font-bold text-white/[0.06] group-hover:text-white/[0.12] transition-opacity duration-300 select-none"
+                  style={{ fontFamily: 'Cinzel, serif' }}
+                >
+                  {service.num}
+                </span>
+                
+                {/* Content */}
+                <div className="relative z-10">
+                  <h3 
+                    className="text-2xl md:text-3xl font-bold text-white mb-4 group-hover:text-electric-blue transition-colors duration-300"
+                    style={{ fontFamily: 'Cinzel, serif' }}
+                  >
+                    {service.title}
+                  </h3>
+                  
+                  <span className="text-gray-500 text-sm group-hover:text-gray-400 transition-colors inline-flex items-center gap-2">
+                    Learn more
+                    <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                  </span>
+                </div>
 
-            {/* Pre-Production Card */}
-            <div className="service-card bg-black p-8 rounded-lg border border-gray-800 hover:border-electric-blue transition-all flex flex-col">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-electric-blue/20 rounded-full flex items-center justify-center border-2 border-electric-blue">
-                  <span className="text-xl font-bold text-electric-blue">2</span>
-                </div>
-                <h3 className="text-2xl font-bold text-white uppercase tracking-wide">Pre-Production</h3>
-              </div>
-              
-              <p className="text-gray-300 text-lg mb-4 leading-relaxed">
-                Strong films are built before the camera rolls.
-              </p>
-              <p className="text-gray-400 mb-6 leading-relaxed">
-                We handle planning, breakdowns, casting support, and logistics so productions move with purpose — not panic.
-              </p>
-              
-              <div className="mb-6">
-                <p className="text-gray-400 text-sm mb-3">Our focus is:</p>
-                <ul className="space-y-2">
-                  <li className="text-gray-300 flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-electric-blue"></span>
-                    Clarity
-                  </li>
-                  <li className="text-gray-300 flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-electric-blue"></span>
-                    Efficiency
-                  </li>
-                  <li className="text-gray-300 flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-electric-blue"></span>
-                    Readiness
-                  </li>
-                </ul>
-              </div>
-              
-              <Link 
-                to="/services"
-                className="mt-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-electric-blue hover:bg-electric-blue/90 text-white transition-all font-mono text-xs uppercase tracking-widest"
-              >
-                Learn More
-                <ArrowRight size={16} />
-              </Link>
-            </div>
-
-            {/* Post-Production Card */}
-            <div className="service-card bg-black p-8 rounded-lg border border-gray-800 hover:border-electric-blue transition-all flex flex-col">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-electric-blue/20 rounded-full flex items-center justify-center border-2 border-electric-blue">
-                  <span className="text-xl font-bold text-electric-blue">3</span>
-                </div>
-                <h3 className="text-2xl font-bold text-white uppercase tracking-wide">Post-Production</h3>
-              </div>
-              
-              <p className="text-gray-300 text-lg mb-4 leading-relaxed">
-                Editing, sound, and mixing are where the story finds its final shape.
-              </p>
-              <p className="text-gray-400 mb-6 leading-relaxed">
-                We collaborate closely through post to ensure the finished film delivers on its promise — emotionally and technically.
-              </p>
-              
-              <div className="mb-6">
-                <p className="text-gray-400 text-sm mb-3">From rough cut to final export, we prioritise:</p>
-                <ul className="space-y-2">
-                  <li className="text-gray-300 flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-electric-blue"></span>
-                    Narrative cohesion
-                  </li>
-                  <li className="text-gray-300 flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-electric-blue"></span>
-                    Technical polish
-                  </li>
-                  <li className="text-gray-300 flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-electric-blue"></span>
-                    Emotional impact
-                  </li>
-                </ul>
-              </div>
-              
-              <Link 
-                to="/services"
-                className="mt-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-electric-blue hover:bg-electric-blue/90 text-white transition-all font-mono text-xs uppercase tracking-widest"
-              >
-                Learn More
-                <ArrowRight size={16} />
-              </Link>
-            </div>
+                {/* Subtle glow on hover */}
+                <div className="absolute inset-0 rounded-xl bg-electric-blue/0 group-hover:bg-electric-blue/[0.02] transition-colors duration-300 pointer-events-none" />
+              </button>
+            ))}
           </div>
 
-          {/* Additional Support Pills */}
+          {/* Additional Support Chips */}
           <div className="additional-support text-center">
-            <h3 className="text-lg font-bold text-white mb-6 uppercase tracking-wide">Additional Support</h3>
+            <h3 className="text-sm font-mono text-gray-500 mb-4 uppercase tracking-widest">Additional Support</h3>
             <div className="flex flex-wrap gap-3 justify-center">
-              <span className="px-6 py-3 rounded-full bg-black border border-gray-700 text-gray-300 hover:border-electric-blue hover:text-white transition-all text-sm">
-                Script Coverage
-              </span>
-              <span className="px-6 py-3 rounded-full bg-black border border-gray-700 text-gray-300 hover:border-electric-blue hover:text-white transition-all text-sm">
-                Development Notes
-              </span>
-              <span className="px-6 py-3 rounded-full bg-black border border-gray-700 text-gray-300 hover:border-electric-blue hover:text-white transition-all text-sm">
-                Pitch Materials
-              </span>
-              <span className="px-6 py-3 rounded-full bg-black border border-gray-700 text-gray-300 hover:border-electric-blue hover:text-white transition-all text-sm">
-                Creative Consulting
-              </span>
+              {[
+                { key: 'development', label: 'Script Coverage' },
+                { key: 'development', label: 'Development Notes' },
+                { key: 'preproduction', label: 'Pitch Materials' },
+                { key: 'development', label: 'Creative Consulting' }
+              ].map((chip, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => openServicesModal(chip.key)}
+                  className="px-5 py-2.5 rounded-full bg-black border border-gray-700 text-gray-400 hover:border-electric-blue/50 hover:text-white transition-all text-sm focus:outline-none focus:ring-2 focus:ring-electric-blue"
+                >
+                  {chip.label}
+                </button>
+              ))}
             </div>
-          </div>
-
-          {/* View All Services Button */}
-          <div className="text-center mt-12">
-            <Link 
-              to="/services" 
-              className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full bg-electric-blue hover:bg-electric-blue/90 text-white transition-all font-mono text-sm uppercase tracking-widest"
-            >
-              View All Services
-              <ArrowRight size={18} />
-            </Link>
           </div>
         </div>
       </section>
