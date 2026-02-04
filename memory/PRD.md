@@ -27,6 +27,7 @@ Build a professional, cinematic website for Shadow Wolves Productions - a creato
 
 | Tab | Status | Features |
 |-----|--------|----------|
+| Dashboard | ✅ Complete | Analytics overview, stats cards, recent activity feed, email campaign analytics |
 | Films | ✅ Complete | Full CRUD, image upload, genres, status, featured toggle |
 | The Armory | ✅ Complete | CRUD for apps, templates, downloads, courses, ebooks |
 | The Den (Blog) | ✅ Complete | Tiptap rich text editor with full SEO, YouTube embeds, **AI cover image generation**, draft/published states |
