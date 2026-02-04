@@ -299,18 +299,6 @@ const ComposeEmailModal = ({ isOpen, onClose, subscriberCount }) => {
         </div>
 
         <div className="p-6 space-y-6">
-          {/* Warning Notice */}
-          <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4 flex items-start gap-3">
-            <AlertCircle size={20} className="text-yellow-500 flex-shrink-0 mt-0.5" />
-            <div>
-              <p className="text-yellow-200 text-sm font-medium">Domain Verification Required</p>
-              <p className="text-yellow-200/70 text-xs mt-1">
-                Resend requires domain verification to send to external recipients. 
-                Verify your domain at resend.com/domains and set FROM_EMAIL in your environment.
-              </p>
-            </div>
-          </div>
-
           {/* Subject */}
           <div>
             <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
