@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { services, testimonials } from '../mock';
-import { ArrowRight, Star, Award, Users, Film, Play } from 'lucide-react';
+import { ArrowRight, Star, Award, Users, Film, Play, Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 import FilmModal from '../components/FilmModal';
 import ServicesModal from '../components/ServicesModal';
 import SupportModal from '../components/SupportModal';
@@ -14,6 +15,8 @@ const Home = () => {
   const [activeServiceKey, setActiveServiceKey] = useState(null);
   const [supportModalOpen, setSupportModalOpen] = useState(false);
   const [activeSupportKey, setActiveSupportKey] = useState(null);
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [subscribing, setSubscribing] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
