@@ -121,6 +121,9 @@ Build a professional, cinematic website for Shadow Wolves Productions - a creato
 - **Admin Messages tab** - View contact form submissions
 - **Admin Newsletter tab** - View subscribers with export, unsubscribe, and bulk email features
 - **Bulk Email Campaigns** - Compose and send newsletters to all subscribers with test mode
+- **Email Campaign Analytics** - Track sent, delivered, opened, clicked, bounced with open/click rates
+- **Admin Analytics Dashboard** - Overview stats, recent activity feed, campaign performance
+- **Resend Webhook Integration** - Real-time email event tracking
 - **Blog YouTube Embed** - Tiptap YouTube extension for embedding videos
 - **Resend Email Integration** - Welcome emails for newsletter signups (requires domain verification)
 
