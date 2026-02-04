@@ -633,7 +633,7 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
                 </div>
                 <div>
                   <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">Cover Image</label>
-                  <div className="flex gap-4 items-start">
+                  <div className="flex gap-3 items-start flex-wrap">
                     <div className="w-24 h-16 rounded-lg overflow-hidden bg-gray-800 flex items-center justify-center border border-gray-700">
                       {formData.cover_image_url ? (
                         <img src={`${process.env.REACT_APP_BACKEND_URL}${formData.cover_image_url}`} alt="" className="w-full h-full object-cover" />
@@ -646,6 +646,21 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
                       <span className="text-gray-400 text-sm">{uploading ? 'Uploading...' : 'Upload'}</span>
                       <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e, 'cover_image_url')} className="hidden" disabled={uploading} />
                     </label>
+                    <button
+                      type="button"
+                      onClick={handleGenerateAICover}
+                      disabled={generatingAI || !formData.title.trim()}
+                      className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-electric-blue rounded-lg hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                      title="Generate cover image with AI"
+                      data-testid="ai-cover-btn"
+                    >
+                      {generatingAI ? (
+                        <RefreshCw size={16} className="text-white animate-spin" />
+                      ) : (
+                        <Sparkles size={16} className="text-white" />
+                      )}
+                      <span className="text-white text-sm font-medium">{generatingAI ? 'Generating...' : 'AI'}</span>
+                    </button>
                   </div>
                 </div>
               </div>
