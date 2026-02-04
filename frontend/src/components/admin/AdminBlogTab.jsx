@@ -194,9 +194,8 @@ const AdminBlogTab = () => {
 
 // Enhanced Tiptap Menu Bar Component
 const MenuBar = ({ editor }) => {
-  if (!editor) return null;
-
   const addLink = useCallback(() => {
+    if (!editor) return;
     const previousUrl = editor.getAttributes('link').href;
     const url = window.prompt('Enter URL:', previousUrl);
     if (url === null) return;
@@ -208,6 +207,7 @@ const MenuBar = ({ editor }) => {
   }, [editor]);
 
   const addImage = useCallback(() => {
+    if (!editor) return;
     const url = window.prompt('Enter image URL:');
     if (url) {
       editor.chain().focus().setImage({ src: url }).run();
@@ -215,6 +215,7 @@ const MenuBar = ({ editor }) => {
   }, [editor]);
 
   const addYoutubeVideo = useCallback(() => {
+    if (!editor) return;
     const url = window.prompt('Enter YouTube video URL:');
     if (url) {
       editor.chain().focus().setYoutubeVideo({ src: url }).run();
@@ -224,6 +225,8 @@ const MenuBar = ({ editor }) => {
   const btnClass = (isActive) => `p-1.5 rounded transition-colors ${
     isActive ? 'bg-electric-blue/30 text-electric-blue' : 'text-gray-400 hover:text-white hover:bg-white/10'
   }`;
+
+  if (!editor) return null;
 
   return (
     <div className="flex flex-wrap gap-0.5 p-2 border-b border-gray-700 bg-gray-900/50">
