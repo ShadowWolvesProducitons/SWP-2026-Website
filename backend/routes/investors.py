@@ -213,7 +213,7 @@ async def log_document_download(doc_id: str, request: Request, investor_id: Opti
 
 
 @router.post("/inquiries", response_model=InvestorInquiry)
-async def create_investor_inquiry(inquiry_data: InvestorInquiryCreate):
+async def create_investor_inquiry(inquiry_data: InvestorInquiryCreate, background_tasks: BackgroundTasks):
     """Submit an investor expression of interest"""
     inquiry_dict = inquiry_data.model_dump()
     inquiry = InvestorInquiry(**inquiry_dict)
@@ -222,6 +222,10 @@ async def create_investor_inquiry(inquiry_data: InvestorInquiryCreate):
     doc['created_at'] = doc['created_at'].isoformat()
     
     await db.investor_inquiries.insert_one(doc)
+    
+    # Send notification email in background
+    background_tasks.add_task(send_inquiry_notification, inquiry_dict)
+    
     return inquiry
 
 
