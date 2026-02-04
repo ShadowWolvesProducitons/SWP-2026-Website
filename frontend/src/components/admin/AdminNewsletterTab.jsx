@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { RefreshCw, Trash2, Download, Users, Mail, CheckCircle, XCircle, Send, X, AlertCircle } from 'lucide-react';
+import { RefreshCw, Trash2, Download, Users, Mail, CheckCircle, XCircle, Send, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 const AdminNewsletterTab = () => {
