@@ -22,25 +22,36 @@ async def send_contact_notification(message: dict):
             return
         
         import resend
+        import asyncio
         resend.api_key = resend_api_key
         
         html_content = f"""
-        <h2>New Contact Message</h2>
-        <p><strong>Name:</strong> {message['name']}</p>
-        <p><strong>Email:</strong> <a href="mailto:{message['email']}">{message['email']}</a></p>
-        {f"<p><strong>Phone:</strong> {message['phone']}</p>" if message.get('phone') else ""}
-        {f"<p><strong>Project Type:</strong> {message['service']}</p>" if message.get('service') else ""}
-        <hr>
-        <p><strong>Message:</strong></p>
-        <p>{message['message']}</p>
-        <hr>
-        <p><em>Reply directly to this email or view in admin dashboard.</em></p>
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #ffffff; padding: 40px;">
+            <h1 style="color: #ffffff; font-size: 24px; margin-bottom: 20px;">New Contact Message</h1>
+            <p style="color: #9ca3af; line-height: 1.6;">
+                A new message has been received through the website contact form.
+            </p>
+            
+            <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 20px; margin: 20px 0;">
+                <p style="color: #ffffff; margin: 8px 0;"><strong>Name:</strong> {message['name']}</p>
+                <p style="color: #ffffff; margin: 8px 0;"><strong>Email:</strong> <a href="mailto:{message['email']}" style="color: #233dff;">{message['email']}</a></p>
+                {f"<p style='color: #ffffff; margin: 8px 0;'><strong>Phone:</strong> {message['phone']}</p>" if message.get('phone') else ""}
+                {f"<p style='color: #ffffff; margin: 8px 0;'><strong>Project Type:</strong> {message['service']}</p>" if message.get('service') else ""}
+            </div>
+            
+            <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 20px; margin: 20px 0;">
+                <p style="color: #9ca3af; margin-bottom: 8px;"><strong>Message:</strong></p>
+                <p style="color: #ffffff; white-space: pre-wrap;">{message['message']}</p>
+            </div>
+            
+            <p style="color: #233dff; margin-top: 30px;">— Shadow Wolves Productions</p>
+        </div>
         """
         
-        admin_email = os.environ.get('ADMIN_EMAIL', 'admin@shadowwolvesproductions.com.au')
-        from_email = os.environ.get('FROM_EMAIL', 'noreply@shadowwolvesproductions.com.au')
+        admin_email = os.environ.get('ADMIN_EMAIL', 'Brendan@shadowwolvesproductions.com.au')
+        from_email = os.environ.get('FROM_EMAIL', 'onboarding@resend.dev')
         
-        resend.Emails.send({
+        await asyncio.to_thread(resend.Emails.send, {
             "from": from_email,
             "to": admin_email,
             "reply_to": message['email'],
