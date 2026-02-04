@@ -9,6 +9,7 @@ import AdminSubmissionsTab from '../components/admin/AdminSubmissionsTab';
 import AdminInvestorTab from '../components/admin/AdminInvestorTab';
 import AdminMessagesTab from '../components/admin/AdminMessagesTab';
 import AdminNewsletterTab from '../components/admin/AdminNewsletterTab';
+import AdminEmailTemplatesTab from '../components/admin/AdminEmailTemplatesTab';
 
 const TABS = [
   { id: 'films', label: 'Films', icon: Film },
