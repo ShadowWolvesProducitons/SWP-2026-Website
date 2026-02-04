@@ -94,6 +94,7 @@ Build a professional, cinematic website for Shadow Wolves Productions - a creato
 |---------|--------|-------|
 | Resend (Email) | ✅ Active | Domain `newsletter.shadowwolvesproductions.com.au` verified. Sends welcome emails, admin notifications, and bulk newsletters |
 | Tiptap YouTube | ✅ Active | YouTube video embedding in blog posts |
+| OpenAI GPT Image 1 | ✅ Active | AI cover image generation for blog posts via Emergent LLM key |
 
 ---
 
