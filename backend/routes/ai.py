@@ -72,8 +72,7 @@ async def generate_cover_image(request: CoverImageRequest):
     try:
         # Step 1: Generate optimized prompt using GPT
         from emergentintegrations.llm.openai import LlmChat
-        
-        chat = LlmChat(api_key=api_key)
+        import uuid as uuid_lib
         
         # Prepare context
         content_preview = request.content[:1500] if request.content else ""
@@ -84,6 +83,13 @@ async def generate_cover_image(request: CoverImageRequest):
             tags=tags_str,
             excerpt=request.excerpt or "",
             content_preview=content_preview
+        )
+        
+        # Create chat instance with required parameters
+        chat = LlmChat(
+            api_key=api_key,
+            session_id=str(uuid_lib.uuid4()),
+            system_message="You are an expert art director and prompt engineer for AI image generation."
         )
         
         # Get optimized image prompt
