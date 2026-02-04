@@ -318,6 +318,9 @@ const MenuBar = ({ editor }) => {
       <button type="button" onClick={addImage} className={btnClass(false)} title="Add Image">
         <Image size={16} />
       </button>
+      <button type="button" onClick={addYoutubeVideo} className={btnClass(editor.isActive('youtube'))} title="Add YouTube Video">
+        <Youtube size={16} />
+      </button>
     </div>
   );
 };
