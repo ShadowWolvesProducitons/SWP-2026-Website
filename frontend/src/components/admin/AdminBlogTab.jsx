@@ -214,6 +214,13 @@ const MenuBar = ({ editor }) => {
     }
   }, [editor]);
 
+  const addYoutubeVideo = useCallback(() => {
+    const url = window.prompt('Enter YouTube video URL:');
+    if (url) {
+      editor.chain().focus().setYoutubeVideo({ src: url }).run();
+    }
+  }, [editor]);
+
   const btnClass = (isActive) => `p-1.5 rounded transition-colors ${
     isActive ? 'bg-electric-blue/30 text-electric-blue' : 'text-gray-400 hover:text-white hover:bg-white/10'
   }`;
