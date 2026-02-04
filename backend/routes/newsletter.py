@@ -28,8 +28,8 @@ class BulkEmailResponse(BaseModel):
     errors: List[str] = []
 
 
-async def send_welcome_email(email: str):
-    """Send welcome email to new subscriber"""
+async def send_welcome_email(email: str, lead_magnet: str = None):
+    """Send welcome email to new subscriber, optionally with lead magnet"""
     try:
         resend_api_key = os.environ.get('RESEND_API_KEY')
         if not resend_api_key:
@@ -39,30 +39,62 @@ async def send_welcome_email(email: str):
         import resend
         resend.api_key = resend_api_key
         
-        html_content = """
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #ffffff; padding: 40px;">
-            <h1 style="color: #ffffff; font-size: 24px; margin-bottom: 20px;">Welcome to the Pack</h1>
-            <p style="color: #9ca3af; line-height: 1.6;">
-                You've joined the Shadow Wolves mailing list. You'll be the first to hear about new projects, 
-                releases, and behind-the-scenes updates.
-            </p>
-            <p style="color: #9ca3af; line-height: 1.6; margin-top: 20px;">
-                We don't spam. We only reach out when we have something worth saying.
-            </p>
-            <p style="color: #233dff; margin-top: 30px;">— Shadow Wolves Productions</p>
-        </div>
-        """
+        # Different content based on lead magnet
+        if lead_magnet == 'producers_playbook':
+            html_content = """
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #ffffff; padding: 40px;">
+                <h1 style="color: #ffffff; font-size: 28px; margin-bottom: 8px;">Welcome to the Pack</h1>
+                <p style="color: #233dff; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 30px;">Your Producer's Playbook is ready</p>
+                
+                <p style="color: #9ca3af; line-height: 1.6; margin-bottom: 20px;">
+                    Thanks for joining the Shadow Wolves mailing list. As promised, here's your free copy of the Producer's Playbook.
+                </p>
+                
+                <div style="background: #111; border: 1px solid #333; border-radius: 12px; padding: 24px; margin: 24px 0; text-align: center;">
+                    <p style="color: #ffffff; font-size: 18px; margin-bottom: 16px;">📄 Producer's Playbook</p>
+                    <a href="https://shadowwolvesproductions.com.au/playbook" style="display: inline-block; background: #233dff; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 50px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Download Now</a>
+                </div>
+                
+                <p style="color: #666; font-size: 12px; margin-top: 30px;">
+                    This link is for your use only. If you have trouble downloading, reply to this email.
+                </p>
+                
+                <hr style="border: none; border-top: 1px solid #333; margin: 30px 0;" />
+                
+                <p style="color: #9ca3af; line-height: 1.6;">
+                    You'll now receive updates on new projects, releases, and industry insights. We don't spam — only signal.
+                </p>
+                
+                <p style="color: #233dff; margin-top: 30px;">— Shadow Wolves Productions</p>
+            </div>
+            """
+            subject = "Your Producer's Playbook is ready"
+        else:
+            html_content = """
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #ffffff; padding: 40px;">
+                <h1 style="color: #ffffff; font-size: 24px; margin-bottom: 20px;">Welcome to the Pack</h1>
+                <p style="color: #9ca3af; line-height: 1.6;">
+                    You've joined the Shadow Wolves mailing list. You'll be the first to hear about new projects, 
+                    releases, and behind-the-scenes updates.
+                </p>
+                <p style="color: #9ca3af; line-height: 1.6; margin-top: 20px;">
+                    We don't spam. We only reach out when we have something worth saying.
+                </p>
+                <p style="color: #233dff; margin-top: 30px;">— Shadow Wolves Productions</p>
+            </div>
+            """
+            subject = "Welcome to Shadow Wolves Productions"
         
         from_email = os.environ.get('FROM_EMAIL', 'onboarding@resend.dev')
         
         await asyncio.to_thread(resend.Emails.send, {
             "from": from_email,
             "to": email,
-            "subject": "Welcome to Shadow Wolves Productions",
+            "subject": subject,
             "html": html_content
         })
         
-        print(f"Welcome email sent to {email}")
+        print(f"Welcome email sent to {email} (lead_magnet: {lead_magnet})")
         
     except Exception as e:
         print(f"Failed to send welcome email: {e}")
