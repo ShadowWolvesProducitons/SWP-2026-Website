@@ -18,6 +18,7 @@ const TABS = [
   { id: 'messages', label: 'Messages', icon: MessageSquare },
   { id: 'submissions', label: 'Submissions', icon: Inbox },
   { id: 'newsletter', label: 'Newsletter', icon: Users },
+  { id: 'email-templates', label: 'Templates', icon: Mail },
   { id: 'investors', label: 'Investors', icon: Briefcase },
 ];
 
