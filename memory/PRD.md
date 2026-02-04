@@ -33,6 +33,7 @@ Build a professional, cinematic website for Shadow Wolves Productions - a creato
 | Messages | ✅ Complete | View/manage contact form messages with status workflow |
 | Submissions | ✅ Complete | View/manage submissions with status workflow |
 | Newsletter | ✅ Complete | View subscribers, export emails, unsubscribe management, **bulk email sending** |
+| Email Templates | ✅ Complete | Customize all email notifications with Tiptap HTML editor |
 | Investors | ✅ Complete | Portal settings, access codes, slate projects, documents, inquiries |
 
 ### Investor Portal Sections
