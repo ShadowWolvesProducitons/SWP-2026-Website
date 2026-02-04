@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, HTTPException, Request, BackgroundTasks
 from typing import List, Optional
 from models.investor import (
     InvestorCredential, InvestorCredentialCreate, InvestorCredentialUpdate,
@@ -10,6 +10,7 @@ from models.investor import (
 from datetime import datetime, timezone
 from pydantic import BaseModel
 import os
+import asyncio
 
 router = APIRouter(prefix="/investors", tags=["investors"])
 
@@ -18,6 +19,52 @@ db = None
 def set_db(database):
     global db
     db = database
+
+
+async def send_inquiry_notification(inquiry: dict):
+    """Send email notification for new investor inquiry"""
+    try:
+        resend_api_key = os.environ.get('RESEND_API_KEY')
+        if not resend_api_key:
+            print("RESEND_API_KEY not set, skipping inquiry notification")
+            return
+        
+        import resend
+        resend.api_key = resend_api_key
+        
+        html_content = f"""
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #ffffff; padding: 40px;">
+            <h1 style="color: #ffffff; font-size: 24px; margin-bottom: 20px;">New Investor Inquiry</h1>
+            <p style="color: #9ca3af; line-height: 1.6;">
+                A new expression of interest has been submitted through the Investor Portal.
+            </p>
+            
+            <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 20px; margin: 20px 0;">
+                <p style="color: #ffffff; margin: 8px 0;"><strong>Name:</strong> {inquiry.get('name', 'N/A')}</p>
+                <p style="color: #ffffff; margin: 8px 0;"><strong>Email:</strong> {inquiry.get('email', 'N/A')}</p>
+                <p style="color: #ffffff; margin: 8px 0;"><strong>Investor Type:</strong> {inquiry.get('investor_type', 'N/A')}</p>
+                <p style="color: #ffffff; margin: 8px 0;"><strong>Area of Interest:</strong> {inquiry.get('area_of_interest', 'N/A')}</p>
+                {f'<p style="color: #9ca3af; margin: 16px 0 8px 0;"><strong>Message:</strong></p><p style="color: #ffffff; white-space: pre-wrap;">{inquiry.get("message")}</p>' if inquiry.get('message') else ''}
+            </div>
+            
+            <p style="color: #233dff; margin-top: 30px;">— Shadow Wolves Productions</p>
+        </div>
+        """
+        
+        from_email = os.environ.get('FROM_EMAIL', 'onboarding@resend.dev')
+        admin_email = os.environ.get('ADMIN_EMAIL', 'Brendan@shadowwolvesproductions.com.au')
+        
+        await asyncio.to_thread(resend.Emails.send, {
+            "from": from_email,
+            "to": admin_email,
+            "subject": f"New Investor Inquiry: {inquiry.get('name', 'Unknown')}",
+            "html": html_content
+        })
+        
+        print(f"Inquiry notification sent for {inquiry.get('name')}")
+        
+    except Exception as e:
+        print(f"Failed to send inquiry notification: {e}")
 
 
 # ========== PORTAL AUTH ==========
