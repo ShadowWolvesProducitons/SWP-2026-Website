@@ -4,6 +4,7 @@ import { services, testimonials } from '../mock';
 import { ArrowRight, Star, Award, Users, Film, Play } from 'lucide-react';
 import FilmModal from '../components/FilmModal';
 import ServicesModal from '../components/ServicesModal';
+import SupportModal from '../components/SupportModal';
 
 const Home = () => {
   const [selectedFilm, setSelectedFilm] = useState(null);
@@ -11,6 +12,8 @@ const Home = () => {
   const [featuredFilms, setFeaturedFilms] = useState([]);
   const [servicesModalOpen, setServicesModalOpen] = useState(false);
   const [activeServiceKey, setActiveServiceKey] = useState(null);
+  const [supportModalOpen, setSupportModalOpen] = useState(false);
+  const [activeSupportKey, setActiveSupportKey] = useState(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
