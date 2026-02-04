@@ -336,14 +336,14 @@ const Home = () => {
             <h3 className="text-sm font-mono text-gray-500 mb-4 uppercase tracking-widest">Additional Support</h3>
             <div className="flex flex-wrap gap-3 justify-center">
               {[
-                { key: 'development', label: 'Script Coverage' },
-                { key: 'development', label: 'Development Notes' },
-                { key: 'preproduction', label: 'Pitch Materials' },
-                { key: 'development', label: 'Creative Consulting' }
-              ].map((chip, idx) => (
+                { key: 'script-coverage', label: 'Script Coverage' },
+                { key: 'development-notes', label: 'Development Notes' },
+                { key: 'pitch-materials', label: 'Pitch Materials' },
+                { key: 'creative-consulting', label: 'Creative Consulting' }
+              ].map((chip) => (
                 <button
-                  key={idx}
-                  onClick={() => openServicesModal(chip.key)}
+                  key={chip.key}
+                  onClick={() => openSupportModal(chip.key)}
                   className="px-5 py-2.5 rounded-full bg-black border border-gray-700 text-gray-400 hover:border-electric-blue/50 hover:text-white transition-all text-sm focus:outline-none focus:ring-2 focus:ring-electric-blue"
                 >
                   {chip.label}
