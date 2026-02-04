@@ -3,11 +3,14 @@ import { Link } from 'react-router-dom';
 import { services, testimonials } from '../mock';
 import { ArrowRight, Star, Award, Users, Film, Play } from 'lucide-react';
 import FilmModal from '../components/FilmModal';
+import ServicesModal from '../components/ServicesModal';
 
 const Home = () => {
   const [selectedFilm, setSelectedFilm] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [featuredFilms, setFeaturedFilms] = useState([]);
+  const [servicesModalOpen, setServicesModalOpen] = useState(false);
+  const [activeServiceKey, setActiveServiceKey] = useState(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
