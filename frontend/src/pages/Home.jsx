@@ -402,6 +402,13 @@ const Home = () => {
         onClose={closeServicesModal}
         serviceKey={activeServiceKey}
       />
+
+      {/* Support Modal */}
+      <SupportModal
+        open={supportModalOpen}
+        onClose={closeSupportModal}
+        supportKey={activeSupportKey}
+      />
     </div>);
 
 };
