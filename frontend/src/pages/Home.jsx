@@ -63,6 +63,16 @@ const Home = () => {
     setTimeout(() => setActiveServiceKey(null), 200);
   };
 
+  const openSupportModal = (key) => {
+    setActiveSupportKey(key);
+    setSupportModalOpen(true);
+  };
+
+  const closeSupportModal = () => {
+    setSupportModalOpen(false);
+    setTimeout(() => setActiveSupportKey(null), 200);
+  };
+
   return (
     <div className="home-page">
       {/* Hero Section */}
