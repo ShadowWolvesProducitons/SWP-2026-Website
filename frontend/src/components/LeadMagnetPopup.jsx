@@ -179,8 +179,9 @@ const LeadMagnetPopup = () => {
 
               {/* Description */}
               <p className="text-gray-400 text-center text-sm mb-6 leading-relaxed">
-                The frameworks, templates, and hard-won lessons we use on every production. 
-                No fluff. Just what works.
+                Get the step-by-step filmmaking checklist we use on every production — from development to distribution.
+                <br /><br />
+                No chaos. No guesswork. Just a clean production roadmap.
               </p>
 
               {/* Form */}
