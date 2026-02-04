@@ -4,7 +4,7 @@ import {
   Bold, Italic, Underline, Strikethrough, List, ListOrdered, Quote, Code, 
   Link as LinkIcon, AlignLeft, AlignCenter, AlignRight, AlignJustify,
   Heading1, Heading2, Heading3, Heading4, Highlighter, Subscript, Superscript,
-  Minus, Undo, Redo, Search
+  Minus, Undo, Redo, Search, Youtube
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useEditor, EditorContent } from '@tiptap/react';
@@ -14,6 +14,7 @@ import TiptapImage from '@tiptap/extension-image';
 import TextAlign from '@tiptap/extension-text-align';
 import TiptapUnderline from '@tiptap/extension-underline';
 import Highlight from '@tiptap/extension-highlight';
+import TiptapYoutube from '@tiptap/extension-youtube';
 
 const AdminBlogTab = () => {
   const [posts, setPosts] = useState([]);
