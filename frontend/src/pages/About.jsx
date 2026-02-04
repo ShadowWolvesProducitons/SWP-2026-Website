@@ -19,16 +19,13 @@ const About = () => {
       <section className="py-24 md:py-32">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl">
-            <p className="text-electric-blue font-mono text-sm uppercase tracking-widest mb-6">
-              Manifesto
-            </p>
             <h1 
-              className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-8 leading-tight"
+              className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-8 leading-tight"
               style={{ fontFamily: 'Cinzel, serif' }}
             >
-              We don't chase trends.<br />
-              We don't ask permission.<br />
-              We don't make noise for the sake of it.
+              We don't chase <span className="text-electric-blue">trends.</span><br />
+              We don't ask <span className="text-electric-blue">permission.</span><br />
+              We don't make noise for the <span className="text-electric-blue">sake of it.</span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-300 leading-relaxed max-w-3xl">
               Shadow Wolves Productions exists to create bold, genre-driven stories with teeth — stories that entertain first, but leave a mark long after.
