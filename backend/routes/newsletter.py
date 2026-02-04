@@ -116,6 +116,8 @@ async def subscribe(subscriber_data: NewsletterSubscriberCreate, background_task
                 {"$set": {"is_active": True, "unsubscribed_at": None}}
             )
             updated = await db.newsletter.find_one({"email": subscriber_data.email}, {"_id": 0})
+            # Send welcome email with lead magnet if provided
+            background_tasks.add_task(send_welcome_email, subscriber_data.email, subscriber_data.lead_magnet)
             return updated
     
     subscriber_dict = subscriber_data.model_dump()
@@ -126,8 +128,8 @@ async def subscribe(subscriber_data: NewsletterSubscriberCreate, background_task
     
     await db.newsletter.insert_one(doc)
     
-    # Send welcome email in background
-    background_tasks.add_task(send_welcome_email, subscriber.email)
+    # Send welcome email in background (with lead magnet if provided)
+    background_tasks.add_task(send_welcome_email, subscriber.email, subscriber_data.lead_magnet)
     
     return subscriber
 
