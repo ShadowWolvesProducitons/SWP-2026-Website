@@ -41,7 +41,8 @@ async def send_welcome_email(email: str, lead_magnet: str = None):
         
         # Different content based on lead magnet
         if lead_magnet == 'producers_playbook':
-            html_content = """
+            pdf_url = "https://customer-assets.emergentagent.com/job_04afc1ac-41b6-4e3d-938f-409263bdaadd/artifacts/kzkfolyg_Producer%27s%20Playbook%20%28Editable%29.pdf"
+            html_content = f"""
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #ffffff; padding: 40px;">
                 <h1 style="color: #ffffff; font-size: 28px; margin-bottom: 8px;">Welcome to the Pack</h1>
                 <p style="color: #233dff; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 30px;">Your Producer's Playbook is ready</p>
@@ -51,8 +52,9 @@ async def send_welcome_email(email: str, lead_magnet: str = None):
                 </p>
                 
                 <div style="background: #111; border: 1px solid #333; border-radius: 12px; padding: 24px; margin: 24px 0; text-align: center;">
+                    <img src="https://customer-assets.emergentagent.com/job_04afc1ac-41b6-4e3d-938f-409263bdaadd/artifacts/i8yb09b1_The%20Producer-s%20Playbook%20Mockup.png" alt="Producer's Playbook" style="width: 120px; height: auto; margin-bottom: 16px;" />
                     <p style="color: #ffffff; font-size: 18px; margin-bottom: 16px;">📄 Producer's Playbook</p>
-                    <a href="https://shadowwolvesproductions.com.au/playbook" style="display: inline-block; background: #233dff; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 50px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Download Now</a>
+                    <a href="{pdf_url}" style="display: inline-block; background: #233dff; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 50px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Download PDF</a>
                 </div>
                 
                 <p style="color: #666; font-size: 12px; margin-top: 30px;">
@@ -62,7 +64,7 @@ async def send_welcome_email(email: str, lead_magnet: str = None):
                 <hr style="border: none; border-top: 1px solid #333; margin: 30px 0;" />
                 
                 <p style="color: #9ca3af; line-height: 1.6;">
-                    You'll now receive updates on new projects, releases, and industry insights. We don't spam — only signal.
+                    You're now part of the pack. You'll receive updates on new projects, releases, and industry insights. We don't spam — only signal.
                 </p>
                 
                 <p style="color: #233dff; margin-top: 30px;">— Shadow Wolves Productions</p>
