@@ -350,6 +350,7 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
   const [tagInput, setTagInput] = useState('');
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [generatingAI, setGeneratingAI] = useState(false);
 
   const editor = useEditor({
     extensions: [
