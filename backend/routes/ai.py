@@ -92,10 +92,10 @@ async def generate_cover_image(request: CoverImageRequest):
             system_message="You are an expert art director and prompt engineer for AI image generation."
         )
         
-        # Get optimized image prompt
-        optimized_prompt = await chat.chat(
-            model="gpt-4o-mini",
-            messages=[{"role": "user", "content": prompt_request}]
+        # Get optimized image prompt using send_message
+        optimized_prompt = await chat.send_message(
+            message=prompt_request,
+            model="gpt-4o-mini"
         )
         
         optimized_prompt = optimized_prompt.strip()
