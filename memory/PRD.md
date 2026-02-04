@@ -32,7 +32,7 @@ Build a professional, cinematic website for Shadow Wolves Productions - a creato
 | The Den (Blog) | ✅ Complete | Tiptap rich text editor with full SEO, YouTube embeds, draft/published states |
 | Messages | ✅ Complete | View/manage contact form messages with status workflow |
 | Submissions | ✅ Complete | View/manage submissions with status workflow |
-| Newsletter | ✅ Complete | View subscribers, export emails, unsubscribe management |
+| Newsletter | ✅ Complete | View subscribers, export emails, unsubscribe management, **bulk email sending** |
 | Investors | ✅ Complete | Portal settings, access codes, slate projects, documents, inquiries |
 
 ### Investor Portal Sections
