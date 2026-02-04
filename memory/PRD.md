@@ -14,7 +14,7 @@ Build a professional, cinematic website for Shadow Wolves Productions - a creato
 
 | Page | Route | Status | Description |
 |------|-------|--------|-------------|
-| Homepage | `/` | ✅ Complete | Hero, featured films, services, newsletter |
+| Homepage | `/` | ✅ Complete | Hero, featured films, **minimal service cards with modal**, newsletter |
 | Films | `/films` | ✅ Complete | Gallery with genre filters, cinematic lower-third hover effects, modal viewer |
 | About/Manifesto | `/about` | ✅ Complete | Creative manifesto, philosophy, what we do/believe/don't do |
 | The Armory | `/services` | ✅ Complete | E-commerce style product cards for apps, templates, downloads |
