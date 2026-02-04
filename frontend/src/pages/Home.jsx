@@ -50,6 +50,16 @@ const Home = () => {
     setTimeout(() => setSelectedFilm(null), 300);
   };
 
+  const openServicesModal = (key) => {
+    setActiveServiceKey(key);
+    setServicesModalOpen(true);
+  };
+
+  const closeServicesModal = () => {
+    setServicesModalOpen(false);
+    setTimeout(() => setActiveServiceKey(null), 200);
+  };
+
   return (
     <div className="home-page">
       {/* Hero Section */}
