@@ -133,3 +133,77 @@ async def get_subscribers(active_only: bool = True):
             sub['unsubscribed_at'] = datetime.fromisoformat(sub['unsubscribed_at'])
     
     return subscribers
+
+
+@router.post("/send-bulk", response_model=BulkEmailResponse)
+async def send_bulk_email(request: BulkEmailRequest):
+    """Send bulk email to all active subscribers"""
+    resend_api_key = os.environ.get('RESEND_API_KEY')
+    if not resend_api_key:
+        raise HTTPException(status_code=500, detail="RESEND_API_KEY not configured")
+    
+    import resend
+    resend.api_key = resend_api_key
+    from_email = os.environ.get('FROM_EMAIL', 'onboarding@resend.dev')
+    
+    # Get active subscribers
+    subscribers = await db.newsletter.find({"is_active": True}, {"_id": 0}).to_list(1000)
+    
+    if not subscribers:
+        raise HTTPException(status_code=400, detail="No active subscribers found")
+    
+    # In test mode, only send to first subscriber
+    if request.test_mode:
+        subscribers = subscribers[:1]
+    
+    # Wrap content in styled template
+    styled_html = f"""
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #ffffff; padding: 40px;">
+        {request.html_content}
+        <hr style="border: none; border-top: 1px solid #333; margin: 30px 0;" />
+        <p style="color: #666; font-size: 12px; text-align: center;">
+            You received this email because you subscribed to Shadow Wolves Productions newsletter.
+            <br />
+            <a href="#" style="color: #233dff;">Unsubscribe</a>
+        </p>
+    </div>
+    """
+    
+    sent = 0
+    failed = 0
+    errors = []
+    
+    for subscriber in subscribers:
+        try:
+            await asyncio.to_thread(resend.Emails.send, {
+                "from": from_email,
+                "to": subscriber['email'],
+                "subject": request.subject,
+                "html": styled_html
+            })
+            sent += 1
+            # Small delay to avoid rate limiting
+            await asyncio.sleep(0.1)
+        except Exception as e:
+            failed += 1
+            error_msg = f"{subscriber['email']}: {str(e)}"
+            errors.append(error_msg)
+            print(f"Failed to send to {subscriber['email']}: {e}")
+    
+    # Log the campaign
+    campaign_log = {
+        "subject": request.subject,
+        "sent_at": datetime.now(timezone.utc).isoformat(),
+        "total_recipients": len(subscribers),
+        "sent": sent,
+        "failed": failed,
+        "test_mode": request.test_mode
+    }
+    await db.newsletter_campaigns.insert_one(campaign_log)
+    
+    return BulkEmailResponse(
+        total=len(subscribers),
+        sent=sent,
+        failed=failed,
+        errors=errors[:10]  # Limit errors returned
+    )
