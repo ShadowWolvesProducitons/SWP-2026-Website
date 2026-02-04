@@ -20,7 +20,7 @@ import LeadMagnetPopup from "./components/LeadMagnetPopup";
 import { Toaster } from "./components/ui/sonner";
 
 // Layout wrapper that conditionally renders Header/Footer
-const Layout = ({ children, showLayout }) => {
+const Layout = ({ children, showLayout, showPopup }) => {
   if (!showLayout) {
     return <>{children}</>;
   }
@@ -29,6 +29,7 @@ const Layout = ({ children, showLayout }) => {
       <Header />
       <main className="min-h-screen">{children}</main>
       <Footer />
+      {showPopup && <LeadMagnetPopup />}
     </>
   );
 };
