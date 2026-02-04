@@ -91,7 +91,7 @@ Build a professional, cinematic website for Shadow Wolves Productions - a creato
 
 | Service | Status | Notes |
 |---------|--------|-------|
-| Resend (Email) | ✅ Active | API key configured. Requires domain verification to send to external recipients |
+| Resend (Email) | ✅ Active | Domain `newsletter.shadowwolvesproductions.com.au` verified. Sends welcome emails, admin notifications, and bulk newsletters |
 | Tiptap YouTube | ✅ Active | YouTube video embedding in blog posts |
 
 ---
