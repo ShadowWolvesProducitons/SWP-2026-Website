@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Film, Package, FileText, LogOut, RefreshCw, Inbox, Briefcase, MessageSquare, Users } from 'lucide-react';
+import { Film, Package, FileText, LogOut, RefreshCw, Inbox, Briefcase, MessageSquare, Users, Mail } from 'lucide-react';
 import { toast } from 'sonner';
 import AdminFilmsTab from '../components/admin/AdminFilmsTab';
 import AdminArmoryTab from '../components/admin/AdminArmoryTab';
