@@ -76,6 +76,40 @@ const Home = () => {
     setTimeout(() => setActiveSupportKey(null), 200);
   };
 
+  const handleNewsletterSubmit = async (e) => {
+    e.preventDefault();
+    if (!newsletterEmail.trim()) {
+      toast.error('Please enter your email');
+      return;
+    }
+
+    setSubscribing(true);
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/newsletter`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          email: newsletterEmail,
+          source: 'homepage'
+        })
+      });
+
+      if (response.ok) {
+        toast.success('Welcome to the pack! Check your email.');
+        setNewsletterEmail('');
+        // Mark as subscribed in localStorage for popup logic
+        localStorage.setItem('swp_subscribed', 'true');
+      } else {
+        const error = await response.json();
+        toast.error(error.detail || 'Failed to subscribe');
+      }
+    } catch (err) {
+      toast.error('Something went wrong. Please try again.');
+    } finally {
+      setSubscribing(false);
+    }
+  };
+
   return (
     <div className="home-page">
       {/* Hero Section */}
