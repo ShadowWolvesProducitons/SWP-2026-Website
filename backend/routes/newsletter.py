@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException, BackgroundTasks
-from typing import List
+from typing import List, Optional
 from models.newsletter import NewsletterSubscriber, NewsletterSubscriberCreate
+from pydantic import BaseModel
 from datetime import datetime, timezone
 import os
 import asyncio
@@ -12,6 +13,19 @@ db = None
 def set_db(database):
     global db
     db = database
+
+
+class BulkEmailRequest(BaseModel):
+    subject: str
+    html_content: str
+    test_mode: bool = False  # If true, only send to first subscriber as test
+
+
+class BulkEmailResponse(BaseModel):
+    total: int
+    sent: int
+    failed: int
+    errors: List[str] = []
 
 
 async def send_welcome_email(email: str):
