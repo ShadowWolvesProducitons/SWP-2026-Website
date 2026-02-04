@@ -23,6 +23,8 @@ from routes.newsletter import router as newsletter_router, set_db as set_newslet
 from routes.contact import router as contact_router, set_db as set_contact_db
 from routes.email_templates import router as email_templates_router, set_db as set_email_templates_db
 from routes.ai import router as ai_router
+from routes.analytics import router as analytics_router, set_db as set_analytics_db
+from routes.webhooks import router as webhooks_router, set_db as set_webhooks_db
 
 
 ROOT_DIR = Path(__file__).parent
