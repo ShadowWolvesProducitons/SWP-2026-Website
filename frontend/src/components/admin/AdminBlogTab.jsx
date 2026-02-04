@@ -366,6 +366,11 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
       }),
       Highlight.configure({
         HTMLAttributes: { class: 'bg-yellow-500/30 px-1 rounded' }
+      }),
+      TiptapYoutube.configure({
+        width: 640,
+        height: 360,
+        HTMLAttributes: { class: 'my-4 rounded-lg overflow-hidden' }
       })
     ],
     content: '',
