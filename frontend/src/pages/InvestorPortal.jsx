@@ -298,35 +298,41 @@ const ProjectDetailModal = ({ project, onClose }) => {
         })
       });
 
-      if (response.ok) {
-        const contentType = response.headers.get('content-type');
-        
-        if (contentType && contentType.includes('application/pdf')) {
-          // It's a PDF file - download it
-          const blob = await response.blob();
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = `${project.title}_${docType}.pdf`;
-          document.body.appendChild(a);
-          a.click();
-          window.URL.revokeObjectURL(url);
-          a.remove();
-          toast.success(`${docType} downloaded with your watermark`);
-        } else {
-          // It's a URL response
-          const data = await response.json();
-          if (data.file_url) {
-            window.open(data.file_url, '_blank');
-            toast.success('Download logged');
-          }
+      if (!response.ok) {
+        try {
+          const error = await response.json();
+          toast.error(error.detail || 'Document not available for this project yet');
+        } catch {
+          toast.error('Document not available for this project yet');
         }
+        return;
+      }
+
+      const contentType = response.headers.get('content-type');
+      
+      if (contentType && contentType.includes('application/pdf')) {
+        // It's a PDF file - download it
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${project.title}_${docType}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
+        toast.success(`${docType} downloaded with your watermark`);
       } else {
-        const error = await response.json();
-        toast.error(error.detail || 'Document not available');
+        // It's a URL response
+        const data = await response.json();
+        if (data.file_url) {
+          window.open(data.file_url, '_blank');
+          toast.success('Download logged');
+        }
       }
     } catch (err) {
-      toast.error('Download failed');
+      console.error('Download error:', err);
+      toast.error('Connection error. Please check your internet.');
     } finally {
       setDownloading(null);
     }
