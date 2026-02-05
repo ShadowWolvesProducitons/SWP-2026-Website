@@ -531,7 +531,8 @@ const DocumentRequestForm = ({ project, docType, onCancel, onSuccess }) => {
         toast.error(error.detail || 'Document not available for this project yet');
       }
     } catch (err) {
-      toast.error('Connection error');
+      console.error('Document request error:', err);
+      toast.error('Connection error. Please check your internet and try again.');
     } finally {
       setSubmitting(false);
     }
