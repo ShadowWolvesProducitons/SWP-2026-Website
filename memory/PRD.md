@@ -42,11 +42,11 @@ Build a professional, cinematic website for Shadow Wolves Productions - a creato
 | Section | Status | Description |
 |---------|--------|-------------|
 | Overview | ✅ Complete | Studio philosophy, development-first mindset |
-| Development Slate | ✅ Complete | Projects with poster, hook, description, budget range |
+| Development Slate | ✅ Complete | Projects with poster, hook, description, budget range + **Request Materials chips** |
 | Investment Model | ✅ Complete | Project-by-project and slate investment options |
-| Track Record | ✅ Complete | Achievements and completed works |
-| Documents | ✅ Complete | Secure downloads with logging |
-| Expression of Interest | ✅ Complete | Private inquiry form |
+| Expression of Interest | ✅ Complete | Private inquiry form with **conditional project dropdown** |
+
+*Note: Track Record and Documents sections removed per user request. Documents are now accessed via Request Materials chips within each project.*
 
 ---
 
