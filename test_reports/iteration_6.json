@@ -1,0 +1,103 @@
+{
+  "summary": "Tested Investor Portal overhaul features. All backend APIs pass (15/15 tests). Frontend UI working correctly with sidebar showing only Overview, Development Slate, Investment Model, Expression of Interest. Document request chips and forms working. Expression of Interest with project dropdown working. AI Cover Image URL fix verified.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_investor_portal.py",
+    "/app/test_reports/pytest/investor_portal_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "AI Cover Image fix correctly changes URL from /uploads/ to /api/upload/images/",
+    "Investor Portal sidebar correctly shows only 4 sections (Track Record and Documents removed)",
+    "Document requests endpoint properly stores project_id, project_title, doc_type, and user details",
+    "Expression of Interest form correctly shows project dropdown when 'Single Project' is selected",
+    "All data-testid attributes present for testing"
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_investor_portal.py"
+  ],
+  "success_rate": {
+    "backend": "100% (15/15 tests passed)",
+    "frontend": "100% (all features working)"
+  },
+  "test_credentials": {
+    "investor_url": "/investors",
+    "investor_password": "investor2024",
+    "admin_url": "/admin",
+    "admin_password": "shadowwolves2024"
+  },
+  "seed_data_creation": "Created TEST_ prefixed document requests and inquiries for testing",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Investor Portal overhaul complete. All features working: sidebar navigation (4 sections), Development Slate with project cards, project modal with Request Materials chips (Pitch Deck, Screener, Script), document request form with user details, Expression of Interest with conditional project dropdown.",
+  "features_tested": {
+    "investor_portal_sidebar": {
+      "status": "PASSED",
+      "details": [
+        "Sidebar shows only: Overview, Development Slate, Investment Model, Expression of Interest",
+        "Track Record section removed",
+        "Documents section removed (now inside project modals)"
+      ]
+    },
+    "development_slate": {
+      "status": "PASSED",
+      "details": [
+        "Project cards display with poster, title, genre, status, hook",
+        "'View Details & Request Materials' link visible on cards",
+        "Clicking card opens project detail modal"
+      ]
+    },
+    "project_modal_request_materials": {
+      "status": "PASSED",
+      "details": [
+        "Modal shows project details (title, genre, status, hook, description, budget range)",
+        "Request Materials section with 3 chips: Request Pitch Deck, Request Screener, Request Script",
+        "Clicking chip shows form with Name, Email, Company, Phone fields",
+        "Form submission creates entry in database and shows success toast"
+      ]
+    },
+    "expression_of_interest_form": {
+      "status": "PASSED",
+      "details": [
+        "Form has Name, Email, Investor Type, Area of Interest, Message fields",
+        "Selecting 'Single Project' shows project dropdown",
+        "Project dropdown populated with available projects",
+        "Form submission works correctly with project selection"
+      ]
+    },
+    "ai_cover_image_url_fix": {
+      "status": "PASSED",
+      "details": [
+        "AI route returns /api/upload/images/{filename} instead of /uploads/{filename}",
+        "Image serving endpoint /api/upload/images/{filename} working correctly",
+        "Images accessible via the correct URL path"
+      ]
+    },
+    "document_requests_api": {
+      "status": "PASSED",
+      "details": [
+        "POST /api/investors/document-requests creates request with all fields",
+        "Request includes project_id, project_title, doc_type, name, email, company, phone",
+        "Status defaults to 'pending'",
+        "Admin endpoint GET /api/investors/admin/document-requests returns all requests"
+      ]
+    },
+    "investor_inquiries_api": {
+      "status": "PASSED",
+      "details": [
+        "POST /api/investors/inquiries creates inquiry with project selection",
+        "selected_project_id and selected_project_title stored correctly",
+        "All investor types supported: Individual, Family Office, Venture Capital, Strategic Partner, Other",
+        "All interest areas supported: Single Project, Slate Investment, Strategic Partnership, Advisory Role"
+      ]
+    }
+  }
+}
