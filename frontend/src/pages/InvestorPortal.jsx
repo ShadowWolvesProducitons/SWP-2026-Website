@@ -494,41 +494,47 @@ const DocumentRequestForm = ({ project, docType, onCancel, onSuccess }) => {
         })
       });
 
-      if (response.ok) {
-        const contentType = response.headers.get('content-type');
+      const contentType = response.headers.get('content-type');
+
+      if (!response.ok) {
+        // Handle error responses
+        try {
+          const error = await response.json();
+          toast.error(error.detail || 'Document not available for this project yet');
+        } catch {
+          toast.error('Document not available for this project yet');
+        }
+        return;
+      }
+      
+      if (contentType && contentType.includes('application/pdf')) {
+        // It's a PDF file - download it
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${project.title}_${docType}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
         
-        if (contentType && contentType.includes('application/pdf')) {
-          // It's a PDF file - download it
-          const blob = await response.blob();
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = `${project.title}_${docType}.pdf`;
-          document.body.appendChild(a);
-          a.click();
-          window.URL.revokeObjectURL(url);
-          a.remove();
-          
+        setSubmitted(true);
+        toast.success(`${docType} downloaded successfully`);
+        setTimeout(() => onSuccess(), 2000);
+      } else {
+        // JSON response - might be external URL or success message
+        const data = await response.json();
+        if (data.file_url) {
+          window.open(data.file_url, '_blank');
           setSubmitted(true);
-          toast.success(`${docType} downloaded successfully`);
+          toast.success('Download started');
           setTimeout(() => onSuccess(), 2000);
         } else {
-          // JSON response - might be external URL or error
-          const data = await response.json();
-          if (data.file_url) {
-            window.open(data.file_url, '_blank');
-            setSubmitted(true);
-            toast.success('Download started');
-            setTimeout(() => onSuccess(), 2000);
-          } else {
-            toast.info('Request submitted. We\'ll send you the materials shortly.');
-            setSubmitted(true);
-            setTimeout(() => onSuccess(), 2000);
-          }
+          toast.info('Request submitted. We\'ll send you the materials shortly.');
+          setSubmitted(true);
+          setTimeout(() => onSuccess(), 2000);
         }
-      } else {
-        const error = await response.json();
-        toast.error(error.detail || 'Document not available for this project yet');
       }
     } catch (err) {
       console.error('Document request error:', err);
