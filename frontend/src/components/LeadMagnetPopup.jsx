@@ -116,7 +116,8 @@ const LeadMagnetPopup = () => {
         }
       }
     } catch (err) {
-      toast.error('Connection error. Please try again.');
+      console.error('Newsletter subscription error:', err);
+      toast.error('Connection error. Please check your internet and try again.');
     } finally {
       setSubmitting(false);
     }
