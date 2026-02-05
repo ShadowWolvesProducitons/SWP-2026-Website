@@ -69,8 +69,9 @@ Build a professional, cinematic website for Shadow Wolves Productions - a creato
 - `investor_credentials` - Access codes
 - `investor_projects` - Development slate
 - `investor_documents` - Downloadable files
-- `investor_inquiries` - Expression of interest forms
+- `investor_inquiries` - Expression of interest forms (with project selection)
 - `document_downloads` - Download logging
+- `document_requests` - **New:** Document request tracking (investor details for pitch decks, screeners, scripts)
 
 ### Design System
 - **Heading Font:** Cinzel (serif)
