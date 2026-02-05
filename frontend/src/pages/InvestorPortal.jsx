@@ -70,11 +70,21 @@ const InvestorPortal = ({ onLogout }) => {
       {/* Header */}
       <header className="bg-smoke-gray border-b border-gray-800 sticky top-0 z-40">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div>
-            <h1 className="text-xl font-bold text-white" style={{ fontFamily: 'Cinzel, serif' }}>
-              Investor Portal
-            </h1>
-            <p className="text-gray-500 text-sm">Welcome, {investorName}</p>
+          <div className="flex items-center gap-4">
+            <Link 
+              to="/"
+              className="flex items-center gap-2 px-3 py-2 text-gray-400 hover:text-electric-blue transition-colors border border-gray-700 hover:border-electric-blue rounded-lg"
+              data-testid="home-btn"
+            >
+              <Home size={16} />
+              <span className="text-sm">Back to Site</span>
+            </Link>
+            <div>
+              <h1 className="text-xl font-bold text-white" style={{ fontFamily: 'Cinzel, serif' }}>
+                Investor Portal
+              </h1>
+              <p className="text-gray-500 text-sm">Welcome, {investorName}</p>
+            </div>
           </div>
           <button
             onClick={handleLogout}
@@ -82,7 +92,7 @@ const InvestorPortal = ({ onLogout }) => {
             data-testid="logout-btn"
           >
             <LogOut size={18} />
-            <span className="text-sm">Exit</span>
+            <span className="text-sm">Exit Portal</span>
           </button>
         </div>
       </header>
