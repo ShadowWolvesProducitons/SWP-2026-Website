@@ -163,9 +163,9 @@ async def get_investor_projects():
 
 @router.get("/documents", response_model=List[InvestorDocument])
 async def get_investor_documents():
-    """Get visible investor documents"""
+    """Get visible investor documents (general docs only, not project-linked)"""
     docs = await db.investor_documents.find(
-        {"is_visible": True},
+        {"is_visible": True, "$or": [{"project_id": None}, {"project_id": {"$exists": False}}]},
         {"_id": 0}
     ).to_list(100)
     
@@ -175,6 +175,19 @@ async def get_investor_documents():
     
     docs.sort(key=lambda x: x.get('sort_order', 999))
     return docs
+
+
+@router.get("/projects/{project_id}/documents")
+async def get_project_documents(project_id: str):
+    """Get available document types for a specific project"""
+    docs = await db.investor_documents.find(
+        {"project_id": project_id, "is_visible": True},
+        {"_id": 0}
+    ).to_list(100)
+    
+    # Return available doc types for this project
+    doc_types = list(set([d['doc_type'] for d in docs]))
+    return {"project_id": project_id, "available_doc_types": doc_types, "documents": docs}
 
 
 @router.post("/documents/{doc_id}/download")
