@@ -122,7 +122,8 @@ async def generate_cover_image(request: CoverImageRequest):
         with open(filepath, "wb") as f:
             f.write(image_bytes)
         
-        image_url = f"/uploads/{filename}"
+        # Return the correct API path for serving images
+        image_url = f"/api/upload/images/{filename}"
         
         return CoverImageResponse(
             image_url=image_url,
