@@ -451,7 +451,7 @@ const ProjectDetailModal = ({ project, onClose }) => {
   );
 };
 
-// Document Request Form
+// Document Request Form - For global password users
 const DocumentRequestForm = ({ project, docType, onCancel, onSuccess }) => {
   const [formData, setFormData] = useState({
     name: '',
@@ -472,25 +472,53 @@ const DocumentRequestForm = ({ project, docType, onCancel, onSuccess }) => {
     setSubmitting(true);
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/investors/document-requests`, {
+      // Use the smart download endpoint that handles both logging and file serving
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/investors/documents/download`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           project_id: project.id,
-          project_title: project.title,
           doc_type: docType,
+          investor_id: null,  // Global password user
           ...formData
         })
       });
 
       if (response.ok) {
-        setSubmitted(true);
-        toast.success('Request submitted successfully');
-        setTimeout(() => {
-          onSuccess();
-        }, 2000);
+        const contentType = response.headers.get('content-type');
+        
+        if (contentType && contentType.includes('application/pdf')) {
+          // It's a PDF file - download it
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `${project.title}_${docType}.pdf`;
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+          a.remove();
+          
+          setSubmitted(true);
+          toast.success(`${docType} downloaded successfully`);
+          setTimeout(() => onSuccess(), 2000);
+        } else {
+          // JSON response - might be external URL or error
+          const data = await response.json();
+          if (data.file_url) {
+            window.open(data.file_url, '_blank');
+            setSubmitted(true);
+            toast.success('Download started');
+            setTimeout(() => onSuccess(), 2000);
+          } else {
+            toast.info('Request submitted. We\'ll send you the materials shortly.');
+            setSubmitted(true);
+            setTimeout(() => onSuccess(), 2000);
+          }
+        }
       } else {
-        toast.error('Failed to submit request');
+        const error = await response.json();
+        toast.error(error.detail || 'Document not available for this project yet');
       }
     } catch (err) {
       toast.error('Connection error');
@@ -503,9 +531,9 @@ const DocumentRequestForm = ({ project, docType, onCancel, onSuccess }) => {
     return (
       <div className="text-center py-8 bg-black/50 rounded-lg border border-gray-800">
         <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-4" />
-        <h4 className="text-white font-bold mb-2">Request Submitted</h4>
+        <h4 className="text-white font-bold mb-2">Download Complete</h4>
         <p className="text-gray-400 text-sm">
-          We'll review your request and send you the materials if approved.
+          Your download has been logged and watermarked with your details.
         </p>
       </div>
     );
