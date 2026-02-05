@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException, Request, BackgroundTasks
+from fastapi.responses import StreamingResponse
 from typing import List, Optional
 from models.investor import (
     InvestorCredential, InvestorCredentialCreate, InvestorCredentialUpdate,
@@ -9,11 +10,16 @@ from models.investor import (
     DocumentRequest, DocumentRequestCreate
 )
 from datetime import datetime, timezone
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 import os
 import asyncio
+import io
+from pathlib import Path
 
 router = APIRouter(prefix="/investors", tags=["investors"])
+
+db = None
+UPLOAD_DIR = Path(__file__).parent.parent / "uploads"
 
 db = None
 
