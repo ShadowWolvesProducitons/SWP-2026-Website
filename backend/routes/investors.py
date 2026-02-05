@@ -586,3 +586,50 @@ async def get_download_logs():
     
     logs.sort(key=lambda x: x.get('downloaded_at', datetime.min), reverse=True)
     return logs
+
+
+
+# Document Requests Management
+@router.get("/admin/document-requests")
+async def get_document_requests(status: Optional[str] = None):
+    """Get all document requests (admin)"""
+    query = {}
+    if status:
+        query["status"] = status
+    
+    requests = await db.document_requests.find(query, {"_id": 0}).to_list(500)
+    
+    for r in requests:
+        if isinstance(r.get('created_at'), str):
+            r['created_at'] = datetime.fromisoformat(r['created_at'])
+    
+    requests.sort(key=lambda x: x.get('created_at', datetime.min), reverse=True)
+    return requests
+
+
+@router.put("/admin/document-requests/{request_id}")
+async def update_document_request(request_id: str, status: str, admin_notes: Optional[str] = None):
+    """Update document request status (admin)"""
+    existing = await db.document_requests.find_one({"id": request_id}, {"_id": 0})
+    if not existing:
+        raise HTTPException(status_code=404, detail="Request not found")
+    
+    update_dict = {"status": status}
+    if admin_notes is not None:
+        update_dict["admin_notes"] = admin_notes
+    
+    await db.document_requests.update_one(
+        {"id": request_id},
+        {"$set": update_dict}
+    )
+    
+    return {"message": "Request updated"}
+
+
+@router.delete("/admin/document-requests/{request_id}")
+async def delete_document_request(request_id: str):
+    """Delete document request (admin)"""
+    result = await db.document_requests.delete_one({"id": request_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Request not found")
+    return {"message": "Request deleted"}
