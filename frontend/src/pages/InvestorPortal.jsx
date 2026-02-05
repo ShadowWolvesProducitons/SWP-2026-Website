@@ -264,8 +264,63 @@ const SlateSection = ({ projects, selectedProject, setSelectedProject }) => (
 const ProjectDetailModal = ({ project, onClose }) => {
   const [showRequestForm, setShowRequestForm] = useState(false);
   const [selectedDocType, setSelectedDocType] = useState(null);
+  const [downloading, setDownloading] = useState(null);
+  
+  // Check if user has personal access code (vs global password)
+  const investorId = sessionStorage.getItem('investorId');
+  const investorName = sessionStorage.getItem('investorName');
+  const hasPersonalAccess = investorId && investorId !== 'null' && investorName !== 'Investor';
   
   const docTypes = ['Pitch Deck', 'Screener', 'Script'];
+
+  // Direct download for personal access code users
+  const handleDirectDownload = async (docType) => {
+    setDownloading(docType);
+    
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/investors/documents/download`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          project_id: project.id,
+          doc_type: docType,
+          investor_id: investorId
+        })
+      });
+
+      if (response.ok) {
+        const contentType = response.headers.get('content-type');
+        
+        if (contentType && contentType.includes('application/pdf')) {
+          // It's a PDF file - download it
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `${project.title}_${docType}.pdf`;
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+          a.remove();
+          toast.success(`${docType} downloaded with your watermark`);
+        } else {
+          // It's a URL response
+          const data = await response.json();
+          if (data.file_url) {
+            window.open(data.file_url, '_blank');
+            toast.success('Download logged');
+          }
+        }
+      } else {
+        const error = await response.json();
+        toast.error(error.detail || 'Document not available');
+      }
+    } catch (err) {
+      toast.error('Download failed');
+    } finally {
+      setDownloading(null);
+    }
+  };
 
   return (
     <motion.div
@@ -332,27 +387,45 @@ const ProjectDetailModal = ({ project, onClose }) => {
 
           {/* Request Materials Section */}
           <div className="border-t border-gray-800 pt-6">
-            <h3 className="text-lg font-bold text-white mb-4">Request Materials</h3>
+            <h3 className="text-lg font-bold text-white mb-2">
+              {hasPersonalAccess ? 'Download Materials' : 'Request Materials'}
+            </h3>
             <p className="text-gray-500 text-sm mb-4">
-              Select a document type to request. You'll need to provide your details for tracking and security purposes.
+              {hasPersonalAccess 
+                ? `Downloads will be watermarked with your name (${investorName}) and logged for security.`
+                : 'Provide your details to access materials. Documents will be watermarked for security.'
+              }
             </p>
 
             {!showRequestForm ? (
               <div className="flex flex-wrap gap-3">
                 {docTypes.map((docType) => {
                   const Icon = DOC_TYPE_ICONS[docType] || FileText;
+                  const isDownloading = downloading === docType;
+                  
                   return (
                     <button
                       key={docType}
                       onClick={() => {
-                        setSelectedDocType(docType);
-                        setShowRequestForm(true);
+                        if (hasPersonalAccess) {
+                          handleDirectDownload(docType);
+                        } else {
+                          setSelectedDocType(docType);
+                          setShowRequestForm(true);
+                        }
                       }}
-                      className="flex items-center gap-2 px-4 py-2 bg-black border border-gray-700 rounded-lg text-gray-300 hover:border-electric-blue hover:text-electric-blue transition-all"
+                      disabled={isDownloading}
+                      className="flex items-center gap-2 px-4 py-2 bg-black border border-gray-700 rounded-lg text-gray-300 hover:border-electric-blue hover:text-electric-blue transition-all disabled:opacity-50"
                       data-testid={`request-${docType.toLowerCase().replace(' ', '-')}`}
                     >
-                      <Icon size={16} />
-                      <span className="text-sm">Request {docType}</span>
+                      {isDownloading ? (
+                        <RefreshCw size={16} className="animate-spin" />
+                      ) : (
+                        <Icon size={16} />
+                      )}
+                      <span className="text-sm">
+                        {hasPersonalAccess ? `Download ${docType}` : `Request ${docType}`}
+                      </span>
                     </button>
                   );
                 })}
