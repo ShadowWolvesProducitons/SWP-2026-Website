@@ -151,17 +151,17 @@ Build a professional, cinematic website for Shadow Wolves Productions - a creato
 
 ### P1 - High Priority
 - [ ] E-commerce for The Armory (payment integration)
-- [ ] Contact form backend submission (vs mailto)
+- [ ] Actual file upload and watermarking for investor documents
 
 ### P2 - Medium Priority
-- [ ] Email templates for submissions/inquiries
-- [ ] Admin dashboard analytics/stats
-- [ ] Investor document watermarking
+- [ ] Investor document watermarking with investor details
+- [ ] Admin view for document requests (to approve/deny and send materials)
 
 ### P3 - Low Priority
 - [ ] Social media integration
 - [ ] SEO improvements
 - [ ] Performance optimization
+- [ ] Abstract font-['Cinzel'] into global CSS class
 
 ---
 
