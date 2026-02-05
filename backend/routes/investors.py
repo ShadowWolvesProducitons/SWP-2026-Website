@@ -5,7 +5,8 @@ from models.investor import (
     InvestorProject, InvestorProjectCreate, InvestorProjectUpdate,
     InvestorDocument, InvestorDocumentCreate, InvestorDocumentUpdate,
     InvestorInquiry, InvestorInquiryCreate, InvestorInquiryUpdate,
-    InvestorPortalSettings, DocumentDownloadLog
+    InvestorPortalSettings, DocumentDownloadLog,
+    DocumentRequest, DocumentRequestCreate
 )
 from datetime import datetime, timezone
 from pydantic import BaseModel
