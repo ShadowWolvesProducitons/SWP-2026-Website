@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  RefreshCw, Plus, Edit2, Trash2, Eye, EyeOff, Copy, Key, 
-  FileText, Download, Users, Settings, ChevronDown, ChevronUp, X, Upload
+  RefreshCw, Plus, Edit2, Trash2, Copy, Key, 
+  FileText, Download, Users, Settings, ChevronDown, ChevronUp, X, Upload,
+  Activity, Clock, User, Mail, Building, Phone
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -9,8 +10,7 @@ const TABS = [
   { id: 'settings', label: 'Settings', icon: Settings },
   { id: 'credentials', label: 'Access Codes', icon: Key },
   { id: 'projects', label: 'Slate Projects', icon: FileText },
-  { id: 'documents', label: 'Documents', icon: Download },
-  { id: 'inquiries', label: 'Inquiries', icon: Users },
+  { id: 'activity', label: 'Activity', icon: Activity },
 ];
 
 const AdminInvestorTab = () => {
@@ -44,8 +44,7 @@ const AdminInvestorTab = () => {
       {activeTab === 'settings' && <SettingsPanel />}
       {activeTab === 'credentials' && <CredentialsPanel />}
       {activeTab === 'projects' && <ProjectsPanel />}
-      {activeTab === 'documents' && <DocumentsPanel />}
-      {activeTab === 'inquiries' && <InquiriesPanel />}
+      {activeTab === 'activity' && <ActivityPanel />}
     </div>
   );
 };
@@ -368,7 +367,7 @@ const CredentialModal = ({ credential, onClose, onSave }) => {
   );
 };
 
-// Projects Panel
+// Projects Panel - Now includes documents per project
 const ProjectsPanel = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -465,7 +464,7 @@ const ProjectsPanel = () => {
   );
 };
 
-// Project Modal
+// Project Modal - Now includes documents management
 const ProjectModal = ({ project, onClose, onSave }) => {
   const [formData, setFormData] = useState({
     title: project?.title || '',
@@ -480,6 +479,31 @@ const ProjectModal = ({ project, onClose, onSave }) => {
   });
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [activeSection, setActiveSection] = useState('details');
+  const [documents, setDocuments] = useState([]);
+  const [loadingDocs, setLoadingDocs] = useState(false);
+
+  useEffect(() => {
+    if (project?.id) {
+      fetchProjectDocuments();
+    }
+  }, [project?.id]);
+
+  const fetchProjectDocuments = async () => {
+    if (!project?.id) return;
+    setLoadingDocs(true);
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/investors/admin/documents?project_id=${project.id}`);
+      if (response.ok) {
+        const allDocs = await response.json();
+        setDocuments(allDocs.filter(d => d.project_id === project.id));
+      }
+    } catch (err) {
+      console.error('Failed to load documents');
+    } finally {
+      setLoadingDocs(false);
+    }
+  };
 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
@@ -529,140 +553,200 @@ const ProjectModal = ({ project, onClose, onSave }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 overflow-y-auto">
-      <div className="bg-smoke-gray border border-gray-800 rounded-lg w-full max-w-lg p-6 my-8">
+      <div className="bg-smoke-gray border border-gray-800 rounded-lg w-full max-w-2xl p-6 my-8">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-xl font-bold text-white">{project ? 'Edit' : 'Add'} Project</h3>
           <button onClick={onClose} className="p-2 text-gray-400 hover:text-white">
             <X size={20} />
           </button>
         </div>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-gray-400 text-sm mb-1">Title *</label>
-            <input
-              type="text"
-              value={formData.title}
-              onChange={(e) => setFormData(s => ({ ...s, title: e.target.value }))}
-              className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2 text-white"
-              required
-            />
+
+        {/* Section Tabs - Only show Documents tab for existing projects */}
+        {project && (
+          <div className="flex gap-2 mb-6 border-b border-gray-800 pb-4">
+            <button
+              onClick={() => setActiveSection('details')}
+              className={`px-4 py-2 rounded-lg text-sm ${activeSection === 'details' ? 'bg-electric-blue text-white' : 'text-gray-400 hover:text-white'}`}
+            >
+              Project Details
+            </button>
+            <button
+              onClick={() => setActiveSection('documents')}
+              className={`px-4 py-2 rounded-lg text-sm ${activeSection === 'documents' ? 'bg-electric-blue text-white' : 'text-gray-400 hover:text-white'}`}
+            >
+              Documents ({documents.length})
+            </button>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+        )}
+
+        {activeSection === 'details' && (
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-gray-400 text-sm mb-1">Genre *</label>
+              <label className="block text-gray-400 text-sm mb-1">Title *</label>
               <input
                 type="text"
-                value={formData.genre}
-                onChange={(e) => setFormData(s => ({ ...s, genre: e.target.value }))}
+                value={formData.title}
+                onChange={(e) => setFormData(s => ({ ...s, title: e.target.value }))}
+                className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2 text-white"
+                required
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-gray-400 text-sm mb-1">Genre *</label>
+                <input
+                  type="text"
+                  value={formData.genre}
+                  onChange={(e) => setFormData(s => ({ ...s, genre: e.target.value }))}
+                  className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2 text-white"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-400 text-sm mb-1">Status *</label>
+                <select
+                  value={formData.status}
+                  onChange={(e) => setFormData(s => ({ ...s, status: e.target.value }))}
+                  className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2 text-white"
+                >
+                  <option>Script</option>
+                  <option>Proof</option>
+                  <option>Financing</option>
+                  <option>In Development</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label className="block text-gray-400 text-sm mb-1">One-Line Hook *</label>
+              <input
+                type="text"
+                value={formData.hook}
+                onChange={(e) => setFormData(s => ({ ...s, hook: e.target.value }))}
                 className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2 text-white"
                 required
               />
             </div>
             <div>
-              <label className="block text-gray-400 text-sm mb-1">Status *</label>
-              <select
-                value={formData.status}
-                onChange={(e) => setFormData(s => ({ ...s, status: e.target.value }))}
+              <label className="block text-gray-400 text-sm mb-1">Description *</label>
+              <textarea
+                value={formData.description}
+                onChange={(e) => setFormData(s => ({ ...s, description: e.target.value }))}
+                className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2 text-white resize-none"
+                rows={3}
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-gray-400 text-sm mb-1">Budget Range</label>
+              <input
+                type="text"
+                value={formData.budget_range}
+                onChange={(e) => setFormData(s => ({ ...s, budget_range: e.target.value }))}
                 className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2 text-white"
-              >
-                <option>Script</option>
-                <option>Proof</option>
-                <option>Financing</option>
-                <option>In Development</option>
-              </select>
+                placeholder="e.g., $500K - $1M"
+              />
             </div>
-          </div>
-          <div>
-            <label className="block text-gray-400 text-sm mb-1">One-Line Hook *</label>
-            <input
-              type="text"
-              value={formData.hook}
-              onChange={(e) => setFormData(s => ({ ...s, hook: e.target.value }))}
-              className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2 text-white"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-gray-400 text-sm mb-1">Description *</label>
-            <textarea
-              value={formData.description}
-              onChange={(e) => setFormData(s => ({ ...s, description: e.target.value }))}
-              className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2 text-white resize-none"
-              rows={3}
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-gray-400 text-sm mb-1">Budget Range</label>
-            <input
-              type="text"
-              value={formData.budget_range}
-              onChange={(e) => setFormData(s => ({ ...s, budget_range: e.target.value }))}
-              className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2 text-white"
-              placeholder="e.g., $500K - $1M"
-            />
-          </div>
-          <div>
-            <label className="block text-gray-400 text-sm mb-1">Poster Image</label>
-            <div className="flex items-center gap-4">
-              {formData.poster_url && (
-                <img src={`${process.env.REACT_APP_BACKEND_URL}${formData.poster_url}`} alt="" className="w-16 h-24 object-cover rounded" />
-              )}
-              <label className="flex items-center gap-2 px-4 py-2 bg-black border border-gray-700 rounded-lg cursor-pointer">
-                <Upload size={16} className="text-gray-400" />
-                <span className="text-gray-400 text-sm">{uploading ? 'Uploading...' : 'Upload'}</span>
-                <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
-              </label>
+            <div>
+              <label className="block text-gray-400 text-sm mb-1">Poster Image</label>
+              <div className="flex items-center gap-4">
+                {formData.poster_url && (
+                  <img src={`${process.env.REACT_APP_BACKEND_URL}${formData.poster_url}`} alt="" className="w-16 h-24 object-cover rounded" />
+                )}
+                <label className="flex items-center gap-2 px-4 py-2 bg-black border border-gray-700 rounded-lg cursor-pointer">
+                  <Upload size={16} className="text-gray-400" />
+                  <span className="text-gray-400 text-sm">{uploading ? 'Uploading...' : 'Upload'}</span>
+                  <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
+                </label>
+              </div>
             </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={formData.is_visible}
-              onChange={(e) => setFormData(s => ({ ...s, is_visible: e.target.checked }))}
-              className="rounded"
-            />
-            <label className="text-gray-400 text-sm">Visible to investors</label>
-          </div>
-          <button
-            type="submit"
-            disabled={saving}
-            className="w-full px-4 py-2 bg-electric-blue text-white rounded-lg"
-          >
-            {saving ? 'Saving...' : 'Save Project'}
-          </button>
-        </form>
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={formData.is_visible}
+                onChange={(e) => setFormData(s => ({ ...s, is_visible: e.target.checked }))}
+                className="rounded"
+              />
+              <label className="text-gray-400 text-sm">Visible to investors</label>
+            </div>
+            <button
+              type="submit"
+              disabled={saving}
+              className="w-full px-4 py-2 bg-electric-blue text-white rounded-lg"
+            >
+              {saving ? 'Saving...' : 'Save Project'}
+            </button>
+          </form>
+        )}
+
+        {activeSection === 'documents' && project && (
+          <ProjectDocumentsSection projectId={project.id} documents={documents} onRefresh={fetchProjectDocuments} />
+        )}
       </div>
     </div>
   );
 };
 
-// Documents Panel
-const DocumentsPanel = () => {
-  const [documents, setDocuments] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [showModal, setShowModal] = useState(false);
-  const [editingDoc, setEditingDoc] = useState(null);
+// Project Documents Section - Manage documents per project
+const ProjectDocumentsSection = ({ projectId, documents, onRefresh }) => {
+  const [showAddDoc, setShowAddDoc] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [newDoc, setNewDoc] = useState({
+    title: '',
+    doc_type: 'Pitch Deck',
+    file_url: '',
+    is_visible: true
+  });
 
-  const fetchDocuments = async () => {
-    setLoading(true);
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const fd = new FormData();
+    fd.append('file', file);
+    setUploading(true);
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/investors/admin/documents`);
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/upload/file`, {
+        method: 'POST',
+        body: fd
+      });
       if (response.ok) {
-        setDocuments(await response.json());
+        const data = await response.json();
+        setNewDoc(s => ({ ...s, file_url: data.url }));
+        toast.success('File uploaded');
       }
     } catch (err) {
-      toast.error('Failed to load documents');
+      toast.error('Upload failed');
     } finally {
-      setLoading(false);
+      setUploading(false);
     }
   };
 
-  useEffect(() => {
-    fetchDocuments();
-  }, []);
+  const handleAddDocument = async () => {
+    if (!newDoc.title || !newDoc.file_url) {
+      toast.error('Title and file are required');
+      return;
+    }
 
-  const handleDelete = async (doc) => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/investors/admin/documents`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...newDoc,
+          project_id: projectId
+        })
+      });
+      if (response.ok) {
+        toast.success('Document added');
+        setShowAddDoc(false);
+        setNewDoc({ title: '', doc_type: 'Pitch Deck', file_url: '', is_visible: true });
+        onRefresh();
+      }
+    } catch (err) {
+      toast.error('Failed to add document');
+    }
+  };
+
+  const handleDeleteDoc = async (doc) => {
     if (!window.confirm(`Delete "${doc.title}"?`)) return;
     try {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/investors/admin/documents/${doc.id}`, {
@@ -670,7 +754,7 @@ const DocumentsPanel = () => {
       });
       if (response.ok) {
         toast.success('Document deleted');
-        fetchDocuments();
+        onRefresh();
       }
     } catch (err) {
       toast.error('Failed to delete');
@@ -678,209 +762,145 @@ const DocumentsPanel = () => {
   };
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-6">
-        <p className="text-gray-500">{documents.length} documents</p>
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <p className="text-gray-500 text-sm">{documents.length} documents for this project</p>
         <button
-          onClick={() => { setEditingDoc(null); setShowModal(true); }}
-          className="flex items-center gap-2 bg-electric-blue hover:bg-electric-blue/90 text-white px-4 py-2 rounded-lg text-sm"
+          onClick={() => setShowAddDoc(!showAddDoc)}
+          className="flex items-center gap-2 bg-electric-blue hover:bg-electric-blue/90 text-white px-3 py-1.5 rounded-lg text-sm"
         >
-          <Plus size={16} />
+          <Plus size={14} />
           Add Document
         </button>
       </div>
 
-      {loading ? (
-        <div className="text-center py-12">
-          <RefreshCw className="w-8 h-8 text-electric-blue animate-spin mx-auto" />
+      {showAddDoc && (
+        <div className="bg-black border border-gray-700 rounded-lg p-4 space-y-3">
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-gray-400 text-xs mb-1">Title</label>
+              <input
+                type="text"
+                value={newDoc.title}
+                onChange={(e) => setNewDoc(s => ({ ...s, title: e.target.value }))}
+                className="w-full bg-smoke-gray border border-gray-700 rounded px-3 py-2 text-white text-sm"
+                placeholder="CROWE Pitch Deck"
+              />
+            </div>
+            <div>
+              <label className="block text-gray-400 text-xs mb-1">Type</label>
+              <select
+                value={newDoc.doc_type}
+                onChange={(e) => setNewDoc(s => ({ ...s, doc_type: e.target.value }))}
+                className="w-full bg-smoke-gray border border-gray-700 rounded px-3 py-2 text-white text-sm"
+              >
+                <option>Pitch Deck</option>
+                <option>Screener</option>
+                <option>Script</option>
+                <option>Lookbook</option>
+                <option>Overview</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label className="block text-gray-400 text-xs mb-1">File</label>
+            <div className="flex items-center gap-2">
+              <label className="flex items-center gap-2 px-3 py-2 bg-smoke-gray border border-gray-700 rounded cursor-pointer text-sm">
+                <Upload size={14} className="text-gray-400" />
+                <span className="text-gray-400">{uploading ? 'Uploading...' : 'Upload PDF'}</span>
+                <input type="file" accept=".pdf" onChange={handleFileUpload} className="hidden" />
+              </label>
+              {newDoc.file_url && <span className="text-green-400 text-xs">✓ File uploaded</span>}
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={handleAddDocument}
+              className="px-4 py-2 bg-electric-blue text-white rounded text-sm"
+            >
+              Save Document
+            </button>
+            <button
+              onClick={() => setShowAddDoc(false)}
+              className="px-4 py-2 bg-gray-700 text-white rounded text-sm"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
-      ) : documents.length === 0 ? (
-        <div className="text-center py-12 bg-smoke-gray border border-gray-800 rounded-lg">
-          <Download className="w-12 h-12 text-gray-700 mx-auto mb-4" />
-          <p className="text-gray-500">No documents uploaded</p>
+      )}
+
+      {documents.length === 0 ? (
+        <div className="text-center py-8 bg-black/50 rounded-lg border border-gray-800">
+          <Download className="w-8 h-8 text-gray-700 mx-auto mb-2" />
+          <p className="text-gray-500 text-sm">No documents yet</p>
+          <p className="text-gray-600 text-xs">Add pitch decks, scripts, or screeners for investors to download</p>
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-2">
           {documents.map((doc) => (
-            <div key={doc.id} className="bg-smoke-gray border border-gray-800 rounded-lg p-4 flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className={`w-3 h-3 rounded-full ${doc.is_visible ? 'bg-green-500' : 'bg-gray-600'}`} />
+            <div key={doc.id} className="bg-black border border-gray-700 rounded-lg p-3 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Download size={16} className="text-electric-blue" />
                 <div>
-                  <h4 className="text-white font-medium">{doc.title}</h4>
-                  <p className="text-gray-500 text-sm">{doc.doc_type} • {doc.download_count} downloads</p>
+                  <h4 className="text-white text-sm font-medium">{doc.title}</h4>
+                  <p className="text-gray-500 text-xs">{doc.doc_type} • {doc.download_count || 0} downloads</p>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
-                <button onClick={() => { setEditingDoc(doc); setShowModal(true); }} className="p-2 text-gray-400 hover:text-electric-blue">
-                  <Edit2 size={16} />
-                </button>
-                <button onClick={() => handleDelete(doc)} className="p-2 text-gray-400 hover:text-red-400">
-                  <Trash2 size={16} />
-                </button>
-              </div>
+              <button onClick={() => handleDeleteDoc(doc)} className="p-1.5 text-gray-400 hover:text-red-400">
+                <Trash2 size={14} />
+              </button>
             </div>
           ))}
         </div>
       )}
-
-      {showModal && (
-        <DocumentModal
-          document={editingDoc}
-          onClose={() => setShowModal(false)}
-          onSave={() => { setShowModal(false); fetchDocuments(); }}
-        />
-      )}
     </div>
   );
 };
 
-// Document Modal
-const DocumentModal = ({ document, onClose, onSave }) => {
-  const [formData, setFormData] = useState({
-    title: document?.title || '',
-    doc_type: document?.doc_type || 'Pitch Deck',
-    description: document?.description || '',
-    file_url: document?.file_url || '',
-    is_watermarked: document?.is_watermarked ?? false,
-    is_visible: document?.is_visible ?? true
-  });
-  const [saving, setSaving] = useState(false);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSaving(true);
-    try {
-      const url = document
-        ? `${process.env.REACT_APP_BACKEND_URL}/api/investors/admin/documents/${document.id}`
-        : `${process.env.REACT_APP_BACKEND_URL}/api/investors/admin/documents`;
-      
-      const response = await fetch(url, {
-        method: document ? 'PUT' : 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-      if (response.ok) {
-        toast.success(document ? 'Updated' : 'Created');
-        onSave();
-      }
-    } catch (err) {
-      toast.error('Error saving');
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80">
-      <div className="bg-smoke-gray border border-gray-800 rounded-lg w-full max-w-md p-6">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-bold text-white">{document ? 'Edit' : 'Add'} Document</h3>
-          <button onClick={onClose} className="p-2 text-gray-400 hover:text-white">
-            <X size={20} />
-          </button>
-        </div>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-gray-400 text-sm mb-1">Title *</label>
-            <input
-              type="text"
-              value={formData.title}
-              onChange={(e) => setFormData(s => ({ ...s, title: e.target.value }))}
-              className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2 text-white"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-gray-400 text-sm mb-1">Type</label>
-            <select
-              value={formData.doc_type}
-              onChange={(e) => setFormData(s => ({ ...s, doc_type: e.target.value }))}
-              className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2 text-white"
-            >
-              <option>Pitch Deck</option>
-              <option>Lookbook</option>
-              <option>Screener</option>
-              <option>Overview</option>
-              <option>Financial</option>
-              <option>Other</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-gray-400 text-sm mb-1">File URL *</label>
-            <input
-              type="url"
-              value={formData.file_url}
-              onChange={(e) => setFormData(s => ({ ...s, file_url: e.target.value }))}
-              className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2 text-white"
-              placeholder="https://..."
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-gray-400 text-sm mb-1">Description</label>
-            <textarea
-              value={formData.description}
-              onChange={(e) => setFormData(s => ({ ...s, description: e.target.value }))}
-              className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2 text-white resize-none"
-              rows={2}
-            />
-          </div>
-          <div className="flex items-center gap-4">
-            <label className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={formData.is_watermarked}
-                onChange={(e) => setFormData(s => ({ ...s, is_watermarked: e.target.checked }))}
-                className="rounded"
-              />
-              <span className="text-gray-400 text-sm">Watermarked</span>
-            </label>
-            <label className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={formData.is_visible}
-                onChange={(e) => setFormData(s => ({ ...s, is_visible: e.target.checked }))}
-                className="rounded"
-              />
-              <span className="text-gray-400 text-sm">Visible</span>
-            </label>
-          </div>
-          <button
-            type="submit"
-            disabled={saving}
-            className="w-full px-4 py-2 bg-electric-blue text-white rounded-lg"
-          >
-            {saving ? 'Saving...' : 'Save Document'}
-          </button>
-        </form>
-      </div>
-    </div>
-  );
-};
-
-// Inquiries Panel
-const InquiriesPanel = () => {
+// Activity Panel - Combined inquiries and download requests
+const ActivityPanel = () => {
+  const [activityType, setActivityType] = useState('all');
   const [inquiries, setInquiries] = useState([]);
+  const [downloads, setDownloads] = useState([]);
+  const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expandedId, setExpandedId] = useState(null);
 
-  const fetchInquiries = async () => {
+  const fetchActivity = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/investors/admin/inquiries`);
-      if (response.ok) {
-        setInquiries(await response.json());
-      }
+      const [inqRes, dlRes, reqRes] = await Promise.all([
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/api/investors/admin/inquiries`),
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/api/investors/admin/downloads`),
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/api/investors/admin/document-requests`)
+      ]);
+
+      if (inqRes.ok) setInquiries(await inqRes.json());
+      if (dlRes.ok) setDownloads(await dlRes.json());
+      if (reqRes.ok) setRequests(await reqRes.json());
     } catch (err) {
-      toast.error('Failed to load inquiries');
+      toast.error('Failed to load activity');
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchInquiries();
+    fetchActivity();
   }, []);
+
+  const formatDate = (dateStr) => {
+    if (!dateStr) return '-';
+    return new Date(dateStr).toLocaleString('en-AU', { 
+      day: 'numeric', 
+      month: 'short', 
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
 
   const handleStatusChange = async (inquiry, newStatus) => {
     try {
@@ -891,30 +911,57 @@ const InquiriesPanel = () => {
       });
       if (response.ok) {
         toast.success('Status updated');
-        fetchInquiries();
+        fetchActivity();
       }
     } catch (err) {
       toast.error('Failed to update');
     }
   };
 
-  const formatDate = (dateStr) => {
-    if (!dateStr) return '-';
-    return new Date(dateStr).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
-  };
-
   const STATUS_COLORS = {
     'New': 'bg-electric-blue/20 text-electric-blue border-electric-blue/40',
     'Contacted': 'bg-yellow-500/20 text-yellow-400 border-yellow-500/40',
     'In Discussion': 'bg-green-500/20 text-green-400 border-green-500/40',
-    'Archived': 'bg-gray-500/20 text-gray-400 border-gray-500/40'
+    'Archived': 'bg-gray-500/20 text-gray-400 border-gray-500/40',
+    'pending': 'bg-yellow-500/20 text-yellow-400 border-yellow-500/40',
+    'downloaded': 'bg-green-500/20 text-green-400 border-green-500/40'
   };
+
+  // Combine all activity into a single sorted list
+  const allActivity = [
+    ...inquiries.map(i => ({ ...i, type: 'inquiry', date: i.created_at })),
+    ...downloads.map(d => ({ ...d, type: 'download', date: d.downloaded_at })),
+    ...requests.map(r => ({ ...r, type: 'request', date: r.created_at }))
+  ].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  const filteredActivity = activityType === 'all' 
+    ? allActivity 
+    : allActivity.filter(a => a.type === activityType);
 
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <p className="text-gray-500">{inquiries.length} inquiries</p>
-        <button onClick={fetchInquiries} className="p-2 text-gray-400 hover:text-white">
+        <div className="flex gap-2">
+          {[
+            { id: 'all', label: 'All Activity' },
+            { id: 'inquiry', label: 'Inquiries' },
+            { id: 'download', label: 'Downloads' },
+            { id: 'request', label: 'Doc Requests' }
+          ].map(filter => (
+            <button
+              key={filter.id}
+              onClick={() => setActivityType(filter.id)}
+              className={`px-3 py-1.5 rounded text-xs font-mono uppercase ${
+                activityType === filter.id
+                  ? 'bg-electric-blue text-white'
+                  : 'bg-black text-gray-400 border border-gray-700 hover:text-white'
+              }`}
+            >
+              {filter.label}
+            </button>
+          ))}
+        </div>
+        <button onClick={fetchActivity} className="p-2 text-gray-400 hover:text-white">
           <RefreshCw size={18} />
         </button>
       </div>
@@ -923,49 +970,120 @@ const InquiriesPanel = () => {
         <div className="text-center py-12">
           <RefreshCw className="w-8 h-8 text-electric-blue animate-spin mx-auto" />
         </div>
-      ) : inquiries.length === 0 ? (
+      ) : filteredActivity.length === 0 ? (
         <div className="text-center py-12 bg-smoke-gray border border-gray-800 rounded-lg">
-          <Users className="w-12 h-12 text-gray-700 mx-auto mb-4" />
-          <p className="text-gray-500">No investor inquiries yet</p>
+          <Activity className="w-12 h-12 text-gray-700 mx-auto mb-4" />
+          <p className="text-gray-500">No activity yet</p>
         </div>
       ) : (
         <div className="space-y-3">
-          {inquiries.map((inquiry) => (
-            <div key={inquiry.id} className="bg-smoke-gray border border-gray-800 rounded-lg overflow-hidden">
+          {filteredActivity.map((item, idx) => (
+            <div key={`${item.type}-${item.id || idx}`} className="bg-smoke-gray border border-gray-800 rounded-lg overflow-hidden">
               <div 
                 className="p-4 flex items-center justify-between cursor-pointer"
-                onClick={() => setExpandedId(expandedId === inquiry.id ? null : inquiry.id)}
+                onClick={() => setExpandedId(expandedId === `${item.type}-${item.id}` ? null : `${item.type}-${item.id}`)}
               >
                 <div className="flex items-center gap-4">
-                  <span className={`px-2 py-1 rounded text-xs border ${STATUS_COLORS[inquiry.status]}`}>
-                    {inquiry.status}
+                  {/* Activity Type Badge */}
+                  <span className={`px-2 py-1 rounded text-xs font-mono uppercase ${
+                    item.type === 'inquiry' ? 'bg-purple-500/20 text-purple-400' :
+                    item.type === 'download' ? 'bg-green-500/20 text-green-400' :
+                    'bg-yellow-500/20 text-yellow-400'
+                  }`}>
+                    {item.type === 'inquiry' ? 'Inquiry' : item.type === 'download' ? 'Download' : 'Request'}
                   </span>
+                  
                   <div>
-                    <h4 className="text-white font-medium">{inquiry.name}</h4>
-                    <p className="text-gray-500 text-sm">{inquiry.investor_type} • {inquiry.area_of_interest}</p>
+                    {item.type === 'inquiry' && (
+                      <>
+                        <h4 className="text-white font-medium">{item.name}</h4>
+                        <p className="text-gray-500 text-sm">{item.investor_type} • {item.area_of_interest}</p>
+                      </>
+                    )}
+                    {item.type === 'download' && (
+                      <>
+                        <h4 className="text-white font-medium">{item.investor_name || 'Anonymous'}</h4>
+                        <p className="text-gray-500 text-sm">{item.document_title}</p>
+                      </>
+                    )}
+                    {item.type === 'request' && (
+                      <>
+                        <h4 className="text-white font-medium">{item.name}</h4>
+                        <p className="text-gray-500 text-sm">{item.doc_type} • {item.project_title}</p>
+                      </>
+                    )}
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
-                  <span className="text-gray-500 text-sm">{formatDate(inquiry.created_at)}</span>
-                  {expandedId === inquiry.id ? <ChevronUp size={18} className="text-gray-400" /> : <ChevronDown size={18} className="text-gray-400" />}
+                  <div className="text-right">
+                    <span className="text-gray-500 text-sm">{formatDate(item.date)}</span>
+                    {item.status && (
+                      <span className={`ml-2 px-2 py-0.5 rounded text-xs border ${STATUS_COLORS[item.status]}`}>
+                        {item.status}
+                      </span>
+                    )}
+                  </div>
+                  {expandedId === `${item.type}-${item.id}` ? 
+                    <ChevronUp size={18} className="text-gray-400" /> : 
+                    <ChevronDown size={18} className="text-gray-400" />
+                  }
                 </div>
               </div>
-              {expandedId === inquiry.id && (
+              
+              {expandedId === `${item.type}-${item.id}` && (
                 <div className="px-4 pb-4 border-t border-gray-800 pt-4">
-                  <p className="text-gray-300 mb-4">{inquiry.message || 'No additional message'}</p>
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray-500 text-sm">Set Status:</span>
-                    {['New', 'Contacted', 'In Discussion', 'Archived'].map(status => (
-                      <button
-                        key={status}
-                        onClick={() => handleStatusChange(inquiry, status)}
-                        className={`px-2 py-1 rounded text-xs border ${STATUS_COLORS[status]} ${inquiry.status === status ? 'opacity-50' : ''}`}
-                        disabled={inquiry.status === status}
-                      >
-                        {status}
-                      </button>
-                    ))}
+                  <div className="grid grid-cols-2 gap-4 text-sm mb-4">
+                    {item.email && (
+                      <div className="flex items-center gap-2">
+                        <Mail size={14} className="text-gray-500" />
+                        <span className="text-gray-300">{item.email}</span>
+                      </div>
+                    )}
+                    {item.investor_email && (
+                      <div className="flex items-center gap-2">
+                        <Mail size={14} className="text-gray-500" />
+                        <span className="text-gray-300">{item.investor_email}</span>
+                      </div>
+                    )}
+                    {item.company && (
+                      <div className="flex items-center gap-2">
+                        <Building size={14} className="text-gray-500" />
+                        <span className="text-gray-300">{item.company}</span>
+                      </div>
+                    )}
+                    {item.phone && (
+                      <div className="flex items-center gap-2">
+                        <Phone size={14} className="text-gray-500" />
+                        <span className="text-gray-300">{item.phone}</span>
+                      </div>
+                    )}
+                    {item.ip_address && (
+                      <div className="flex items-center gap-2">
+                        <span className="text-gray-500 text-xs">IP:</span>
+                        <span className="text-gray-400 text-xs font-mono">{item.ip_address}</span>
+                      </div>
+                    )}
                   </div>
+                  
+                  {item.message && (
+                    <p className="text-gray-300 mb-4 bg-black/50 p-3 rounded">{item.message}</p>
+                  )}
+                  
+                  {item.type === 'inquiry' && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-500 text-sm">Set Status:</span>
+                      {['New', 'Contacted', 'In Discussion', 'Archived'].map(status => (
+                        <button
+                          key={status}
+                          onClick={() => handleStatusChange(item, status)}
+                          className={`px-2 py-1 rounded text-xs border ${STATUS_COLORS[status]} ${item.status === status ? 'opacity-50' : ''}`}
+                          disabled={item.status === status}
+                        >
+                          {status}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
             </div>
