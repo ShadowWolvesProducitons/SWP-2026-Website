@@ -74,10 +74,11 @@ class InvestorProject(InvestorProjectBase):
         from_attributes = True
 
 
-# Investor Documents
+# Investor Documents (now project-linked)
 class InvestorDocumentBase(BaseModel):
     title: str
-    doc_type: str  # Pitch Deck, Lookbook, Screener, Overview, Other
+    doc_type: str  # Pitch Deck, Screener, Script, Lookbook, Overview, Other
+    project_id: Optional[str] = None  # Links document to specific project (null = general doc)
     description: Optional[str] = None
     file_url: str
     is_watermarked: bool = False
@@ -92,6 +93,7 @@ class InvestorDocumentCreate(InvestorDocumentBase):
 class InvestorDocumentUpdate(BaseModel):
     title: Optional[str] = None
     doc_type: Optional[str] = None
+    project_id: Optional[str] = None
     description: Optional[str] = None
     file_url: Optional[str] = None
     is_watermarked: Optional[bool] = None
@@ -113,10 +115,37 @@ class DocumentDownloadLog(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     document_id: str
     document_title: str
+    project_id: Optional[str] = None
     investor_id: Optional[str] = None
     investor_name: Optional[str] = None
+    investor_email: Optional[str] = None
     ip_address: Optional[str] = None
     downloaded_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+# Document Request (for investors requesting docs with their details)
+class DocumentRequestBase(BaseModel):
+    project_id: str
+    project_title: str
+    doc_type: str  # Pitch Deck, Screener, Script
+    name: str
+    email: EmailStr
+    company: Optional[str] = None
+    phone: Optional[str] = None
+
+
+class DocumentRequestCreate(DocumentRequestBase):
+    pass
+
+
+class DocumentRequest(DocumentRequestBase):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    status: str = "pending"  # pending, approved, denied
+    admin_notes: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    
+    class Config:
+        from_attributes = True
 
 
 # Investor Expression of Interest
