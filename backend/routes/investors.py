@@ -297,6 +297,166 @@ async def create_document_request(request_data: DocumentRequestCreate, backgroun
     return doc_request
 
 
+# Smart Document Download Request Model
+class DocumentDownloadRequest(BaseModel):
+    project_id: str
+    doc_type: str  # Pitch Deck, Screener, Script
+    investor_id: Optional[str] = None  # If logged in with personal access code
+    # For anonymous/global password users:
+    name: Optional[str] = None
+    email: Optional[EmailStr] = None
+    company: Optional[str] = None
+    phone: Optional[str] = None
+
+
+@router.post("/documents/download")
+async def download_project_document(request: Request, download_req: DocumentDownloadRequest, background_tasks: BackgroundTasks):
+    """
+    Smart download endpoint:
+    - If investor_id provided (personal access code user): Direct download with auto-watermark
+    - If no investor_id (global password user): Requires name/email, logs details, watermarks
+    """
+    from utils.watermark import watermark_pdf_from_path
+    
+    # Find the document for this project and doc_type
+    doc = await db.investor_documents.find_one({
+        "project_id": download_req.project_id,
+        "doc_type": download_req.doc_type,
+        "is_visible": True
+    }, {"_id": 0})
+    
+    if not doc:
+        raise HTTPException(status_code=404, detail=f"No {download_req.doc_type} available for this project")
+    
+    # Get project title for logging
+    project = await db.investor_projects.find_one({"id": download_req.project_id}, {"_id": 0})
+    project_title = project['title'] if project else "Unknown Project"
+    
+    # Determine investor details
+    investor_name = None
+    investor_email = None
+    investor_company = None
+    investor_id = download_req.investor_id
+    
+    if investor_id:
+        # Personal access code user - get their details
+        credential = await db.investor_credentials.find_one({"id": investor_id, "is_active": True}, {"_id": 0})
+        if credential:
+            investor_name = credential.get('name', 'Unknown')
+            investor_email = credential.get('email')
+            investor_company = credential.get('notes')  # Company often stored in notes
+            
+            # Update access stats
+            await db.investor_credentials.update_one(
+                {"id": investor_id},
+                {
+                    "$set": {"last_accessed": datetime.now(timezone.utc).isoformat()},
+                    "$inc": {"access_count": 1}
+                }
+            )
+        else:
+            raise HTTPException(status_code=403, detail="Invalid investor credentials")
+    else:
+        # Global password user - require details
+        if not download_req.name or not download_req.email:
+            raise HTTPException(status_code=400, detail="Name and email required for document access")
+        
+        investor_name = download_req.name
+        investor_email = download_req.email
+        investor_company = download_req.company
+        
+        # Store this as a document request for tracking
+        doc_request = DocumentRequest(
+            project_id=download_req.project_id,
+            project_title=project_title,
+            doc_type=download_req.doc_type,
+            name=download_req.name,
+            email=download_req.email,
+            company=download_req.company,
+            phone=download_req.phone,
+            status="downloaded"  # Mark as downloaded immediately since we're serving the file
+        )
+        req_doc = doc_request.model_dump()
+        req_doc['created_at'] = req_doc['created_at'].isoformat()
+        await db.document_requests.insert_one(req_doc)
+    
+    # Log the download
+    log_entry = DocumentDownloadLog(
+        document_id=doc['id'],
+        document_title=doc['title'],
+        project_id=download_req.project_id,
+        investor_id=investor_id,
+        investor_name=investor_name,
+        investor_email=investor_email,
+        ip_address=request.client.host if request.client else None
+    )
+    log_dict = log_entry.model_dump()
+    log_dict['downloaded_at'] = log_dict['downloaded_at'].isoformat()
+    await db.document_downloads.insert_one(log_dict)
+    
+    # Increment download count
+    await db.investor_documents.update_one(
+        {"id": doc['id']},
+        {"$inc": {"download_count": 1}}
+    )
+    
+    # Get the file path
+    file_url = doc.get('file_url', '')
+    
+    # If it's a local file, watermark and serve
+    if file_url.startswith('/api/upload/images/') or file_url.startswith('/uploads/'):
+        filename = file_url.split('/')[-1]
+        file_path = UPLOAD_DIR / filename
+        
+        if not file_path.exists():
+            raise HTTPException(status_code=404, detail="Document file not found")
+        
+        # Check if it's a PDF for watermarking
+        if filename.lower().endswith('.pdf'):
+            try:
+                watermarked = watermark_pdf_from_path(
+                    str(file_path),
+                    investor_name=investor_name,
+                    investor_email=investor_email,
+                    company=investor_company
+                )
+                
+                # Create safe filename
+                safe_name = f"{project_title}_{download_req.doc_type}_{investor_name}".replace(" ", "_")
+                safe_name = "".join(c for c in safe_name if c.isalnum() or c in ('_', '-'))
+                
+                return StreamingResponse(
+                    io.BytesIO(watermarked),
+                    media_type="application/pdf",
+                    headers={
+                        "Content-Disposition": f'attachment; filename="{safe_name}.pdf"'
+                    }
+                )
+            except Exception as e:
+                print(f"Watermarking error: {e}")
+                # Fall through to serve original
+        
+        # Serve original file if not PDF or watermarking failed
+        with open(file_path, 'rb') as f:
+            content = f.read()
+        
+        return StreamingResponse(
+            io.BytesIO(content),
+            media_type="application/octet-stream",
+            headers={
+                "Content-Disposition": f'attachment; filename="{filename}"'
+            }
+        )
+    
+    # For external URLs, return the URL and log
+    return {
+        "message": "Download logged",
+        "file_url": file_url,
+        "watermarked": False,
+        "investor_name": investor_name
+    }
+
+
 @router.post("/inquiries", response_model=InvestorInquiry)
 async def create_investor_inquiry(inquiry_data: InvestorInquiryCreate, background_tasks: BackgroundTasks):
     """Submit an investor expression of interest"""
