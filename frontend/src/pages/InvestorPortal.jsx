@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { 
   LogOut, FileText, Briefcase, TrendingUp, Mail, 
   ChevronRight, RefreshCw, Send, CheckCircle, X,
-  Film, FileVideo, BookOpen, Presentation
+  Film, FileVideo, BookOpen, Presentation, Home
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
