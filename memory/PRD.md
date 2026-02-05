@@ -115,7 +115,7 @@ Build a professional, cinematic website for Shadow Wolves Productions - a creato
 ### February 2026 - Studio Infrastructure Expansion
 - **About/Manifesto page** - Complete creative manifesto
 - **Work With Us/Submissions** - Structured submission form with backend storage
-- **Investor Portal** - Password + access code auth, 6 sections, admin controls
+- **Investor Portal** - Password + access code auth, 4 sections, admin controls
 - **Newsletter** - Functional subscription connected to database
 - **Admin Submissions tab** - View/manage with status workflow
 - **Admin Investors tab** - Full portal management with sub-tabs
@@ -127,6 +127,16 @@ Build a professional, cinematic website for Shadow Wolves Productions - a creato
 - **Resend Webhook Integration** - Real-time email event tracking
 - **Blog YouTube Embed** - Tiptap YouTube extension for embedding videos
 - **Resend Email Integration** - Welcome emails for newsletter signups (requires domain verification)
+- **AI Cover Image Generation** - GPT-powered cover images for blog posts
+- **Lead Magnet Popup** - Producer's Playbook download with newsletter signup
+
+### February 2026 - Investor Portal Overhaul
+- **Removed Track Record section** - Investors can find this via IMDB/research
+- **Removed standalone Documents section** - Documents now per-project
+- **Request Materials in Development Slate** - Per-project chips: Request Pitch Deck, Request Screener, Request Script
+- **Document Request Form** - Investor enters details (name, email, company, phone) for tracking/watermarking
+- **Project Selection in Expression of Interest** - Conditional dropdown when "Single Project" is selected
+- **AI Image URL Fix** - Fixed broken images by correcting API path
 
 ---
 
