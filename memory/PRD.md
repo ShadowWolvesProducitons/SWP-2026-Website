@@ -134,7 +134,11 @@ Build a professional, cinematic website for Shadow Wolves Productions - a creato
 - **Removed Track Record section** - Investors can find this via IMDB/research
 - **Removed standalone Documents section** - Documents now per-project
 - **Request Materials in Development Slate** - Per-project chips: Request Pitch Deck, Request Screener, Request Script
-- **Document Request Form** - Investor enters details (name, email, company, phone) for tracking/watermarking
+- **Smart Download System:**
+  - **Personal Access Code users** → Direct "Download" buttons, auto-watermarked with their name, instant download
+  - **Global password users** → "Request" form (name, email, company, phone) then watermarked download
+- **Auto PDF Watermarking** - All downloaded PDFs are watermarked with investor name, company, timestamp
+- **Download Logging** - Every download is logged with investor details and timestamp
 - **Project Selection in Expression of Interest** - Conditional dropdown when "Single Project" is selected
 - **AI Image URL Fix** - Fixed broken images by correcting API path
 
