@@ -226,6 +226,71 @@ async def log_document_download(doc_id: str, request: Request, investor_id: Opti
     return {"message": "Download logged", "file_url": doc['file_url']}
 
 
+async def send_document_request_notification(request_data: dict):
+    """Send email notification for document request"""
+    try:
+        resend_api_key = os.environ.get('RESEND_API_KEY')
+        if not resend_api_key:
+            print("RESEND_API_KEY not set, skipping document request notification")
+            return
+        
+        import resend
+        resend.api_key = resend_api_key
+        
+        html_content = f"""
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #ffffff; padding: 40px;">
+            <h1 style="color: #ffffff; font-size: 24px; margin-bottom: 20px;">New Document Request</h1>
+            <p style="color: #9ca3af; line-height: 1.6;">
+                An investor has requested access to project materials.
+            </p>
+            
+            <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 20px; margin: 20px 0;">
+                <p style="color: #ffffff; margin: 8px 0;"><strong>Project:</strong> {request_data.get('project_title', 'N/A')}</p>
+                <p style="color: #ffffff; margin: 8px 0;"><strong>Document Type:</strong> {request_data.get('doc_type', 'N/A')}</p>
+                <hr style="border: none; border-top: 1px solid #333; margin: 16px 0;" />
+                <p style="color: #ffffff; margin: 8px 0;"><strong>Name:</strong> {request_data.get('name', 'N/A')}</p>
+                <p style="color: #ffffff; margin: 8px 0;"><strong>Email:</strong> {request_data.get('email', 'N/A')}</p>
+                {f'<p style="color: #ffffff; margin: 8px 0;"><strong>Company:</strong> {request_data.get("company")}</p>' if request_data.get('company') else ''}
+                {f'<p style="color: #ffffff; margin: 8px 0;"><strong>Phone:</strong> {request_data.get("phone")}</p>' if request_data.get('phone') else ''}
+            </div>
+            
+            <p style="color: #233dff; margin-top: 30px;">— Shadow Wolves Productions</p>
+        </div>
+        """
+        
+        from_email = os.environ.get('FROM_EMAIL', 'onboarding@resend.dev')
+        admin_email = os.environ.get('ADMIN_EMAIL', 'Brendan@shadowwolvesproductions.com.au')
+        
+        await asyncio.to_thread(resend.Emails.send, {
+            "from": from_email,
+            "to": admin_email,
+            "subject": f"Document Request: {request_data.get('doc_type', 'Unknown')} for {request_data.get('project_title', 'Unknown')}",
+            "html": html_content
+        })
+        
+        print(f"Document request notification sent for {request_data.get('name')}")
+        
+    except Exception as e:
+        print(f"Failed to send document request notification: {e}")
+
+
+@router.post("/document-requests", response_model=DocumentRequest)
+async def create_document_request(request_data: DocumentRequestCreate, background_tasks: BackgroundTasks):
+    """Submit a document request (investor provides details to access materials)"""
+    request_dict = request_data.model_dump()
+    doc_request = DocumentRequest(**request_dict)
+    
+    doc = doc_request.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    
+    await db.document_requests.insert_one(doc)
+    
+    # Send notification email in background
+    background_tasks.add_task(send_document_request_notification, request_dict)
+    
+    return doc_request
+
+
 @router.post("/inquiries", response_model=InvestorInquiry)
 async def create_investor_inquiry(inquiry_data: InvestorInquiryCreate, background_tasks: BackgroundTasks):
     """Submit an investor expression of interest"""
