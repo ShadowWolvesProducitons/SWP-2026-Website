@@ -112,7 +112,7 @@ const Blog = () => {
               <p className="text-gray-400 text-xl">No posts published yet.</p>
             </div>
           ) : (
-            <div className="space-y-8 max-w-3xl mx-auto">
+            <div className="space-y-8 max-w-4xl mx-auto">
               {filteredPosts.map((post) => (
                 <article 
                   key={post.id} 
@@ -120,6 +120,16 @@ const Blog = () => {
                 >
                   <Link to={`/blog/${post.slug}`}>
                     <div className="flex flex-col md:flex-row md:items-start gap-6">
+                      {/* Thumbnail */}
+                      {post.cover_image && (
+                        <div className="w-full md:w-48 h-32 md:h-28 flex-shrink-0 rounded-lg overflow-hidden bg-smoke-gray">
+                          <img 
+                            src={post.cover_image.startsWith('http') ? post.cover_image : `${process.env.REACT_APP_BACKEND_URL}${post.cover_image}`}
+                            alt={post.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        </div>
+                      )}
                       {/* Content */}
                       <div className="flex-1">
                         <h2 className="text-2xl font-bold text-white group-hover:text-electric-blue transition-colors mb-3">
@@ -147,7 +157,7 @@ const Blog = () => {
                         </div>
                       </div>
                       {/* Arrow */}
-                      <div className="flex items-center text-gray-600 group-hover:text-electric-blue transition-colors">
+                      <div className="hidden md:flex items-center text-gray-600 group-hover:text-electric-blue transition-colors">
                         <ArrowRight size={20} className="transform group-hover:translate-x-1 transition-transform" />
                       </div>
                     </div>
