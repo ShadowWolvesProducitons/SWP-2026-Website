@@ -154,6 +154,8 @@ class InvestorInquiryBase(BaseModel):
     email: EmailStr
     investor_type: str  # Individual, Family Office, VC, Strategic, Other
     area_of_interest: str  # Single Project, Slate Investment, Strategic Partnership
+    selected_project_id: Optional[str] = None  # Required if area_of_interest is "Single Project"
+    selected_project_title: Optional[str] = None  # Store title for reference
     message: Optional[str] = None
 
 
