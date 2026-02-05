@@ -100,15 +100,18 @@ async def generate_cover_image(request: CoverImageRequest):
         
         optimized_prompt = optimized_prompt.strip()
         
-        # Step 2: Generate image using GPT Image 1
+        # Step 2: Generate image using GPT Image 1 at blog banner size (2240x1290)
         from emergentintegrations.llm.openai.image_generation import OpenAIImageGeneration
         
         image_gen = OpenAIImageGeneration(api_key=api_key)
         
+        # Generate at 1792x1024 (closest to 2240x1290 aspect ratio supported by DALL-E)
+        # This will be displayed as blog banner
         images = await image_gen.generate_images(
             prompt=optimized_prompt,
             model="gpt-image-1",
-            number_of_images=1
+            number_of_images=1,
+            size="1792x1024"  # Landscape format for blog banner
         )
         
         if not images or len(images) == 0:
