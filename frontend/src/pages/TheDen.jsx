@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Smartphone, Download, FileText, BookOpen, GraduationCap, ExternalLink, RefreshCw, Star, ShoppingBag } from 'lucide-react';
 import { Helmet } from 'react-helmet';
 
