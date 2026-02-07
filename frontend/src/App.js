@@ -72,8 +72,13 @@ const AppContent = () => {
         <Route path="/blog/:slug" element={<BlogPost />} />
         <Route path="/work-with-us" element={<WorkWithUs />} />
         
+        {/* The Armory Routes */}
+        <Route path="/armory" element={<TheDen />} />
+        <Route path="/armory/:slug" element={<ProductPage />} />
+        
         {/* Legacy redirect */}
-        <Route path="/den" element={<Navigate to="/services" replace />} />
+        <Route path="/services" element={<Navigate to="/armory" replace />} />
+        <Route path="/den" element={<Navigate to="/armory" replace />} />
         
         {/* Investor Portal Routes */}
         <Route 
