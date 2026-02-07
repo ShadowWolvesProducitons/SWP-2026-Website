@@ -174,16 +174,35 @@ const ProductCard = ({ item }) => {
   };
 
   const Icon = getTypeIcon(item.item_type);
-  const linkUrl = item.primary_link_url || item.file_url || '#';
+  
+  // Use slug-based link if available, otherwise fall back to external link
+  const hasLandingPage = item.slug && item.is_published !== false;
+  const linkUrl = hasLandingPage ? `/armory/${item.slug}` : (item.primary_link_url || item.file_url || '#');
+  const isExternalLink = !hasLandingPage && linkUrl !== '#';
+
+  const CardWrapper = ({ children }) => {
+    if (hasLandingPage) {
+      return (
+        <Link to={linkUrl} className="product-card group block" data-testid={`product-card-${item.id}`}>
+          {children}
+        </Link>
+      );
+    }
+    return (
+      <a
+        href={linkUrl}
+        target={isExternalLink ? '_blank' : undefined}
+        rel={isExternalLink ? 'noopener noreferrer' : undefined}
+        className="product-card group block"
+        data-testid={`product-card-${item.id}`}
+      >
+        {children}
+      </a>
+    );
+  };
 
   return (
-    <a
-      href={linkUrl}
-      target={linkUrl !== '#' ? '_blank' : undefined}
-      rel="noopener noreferrer"
-      className="product-card group block"
-      data-testid={`product-card-${item.id}`}
-    >
+    <CardWrapper>
       {/* Card Container */}
       <div className="relative bg-smoke-gray rounded-xl overflow-hidden border border-gray-800/50 hover:border-gray-700 transition-all duration-300">
         
@@ -216,8 +235,8 @@ const ProductCard = ({ item }) => {
           {/* Quick View Button */}
           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <span className="px-4 py-2 bg-white text-black text-sm font-medium rounded-full flex items-center gap-2 shadow-xl transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-              View Details
-              <ExternalLink size={14} />
+              {hasLandingPage ? 'View Details' : 'Get It'}
+              {!hasLandingPage && isExternalLink && <ExternalLink size={14} />}
             </span>
           </div>
         </div>
@@ -271,7 +290,7 @@ const ProductCard = ({ item }) => {
           </div>
         </div>
       </div>
-    </a>
+    </CardWrapper>
   );
 };
 
