@@ -11,6 +11,7 @@ import TheDen from "./pages/TheDen";
 import Contact from "./pages/Contact";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
+import ProductPage from "./pages/ProductPage";
 import WorkWithUs from "./pages/WorkWithUs";
 import InvestorLogin from "./pages/InvestorLogin";
 import InvestorPortal from "./pages/InvestorPortal";
