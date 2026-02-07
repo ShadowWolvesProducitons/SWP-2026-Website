@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from typing import List, Optional
-from models.den_item import DenItem, DenItemCreate, DenItemUpdate
+from models.den_item import DenItem, DenItemCreate, DenItemUpdate, generate_slug
 from datetime import datetime, timezone
 import uuid
 
@@ -40,6 +40,21 @@ async def get_den_items(item_type: Optional[str] = None, include_archived: bool 
     return items
 
 
+@router.get("/by-slug/{slug}", response_model=DenItem)
+async def get_den_item_by_slug(slug: str):
+    """Get a specific den item by slug (for landing pages)"""
+    item = await db.den_items.find_one({"slug": slug, "is_archived": {"$ne": True}}, {"_id": 0})
+    if not item:
+        raise HTTPException(status_code=404, detail="Product not found")
+    
+    if isinstance(item.get('created_at'), str):
+        item['created_at'] = datetime.fromisoformat(item['created_at'])
+    if isinstance(item.get('updated_at'), str):
+        item['updated_at'] = datetime.fromisoformat(item['updated_at'])
+    
+    return item
+
+
 @router.get("/{item_id}", response_model=DenItem)
 async def get_den_item(item_id: str):
     """Get a specific den item by ID"""
@@ -59,6 +74,17 @@ async def get_den_item(item_id: str):
 async def create_den_item(item_data: DenItemCreate):
     """Create a new den item"""
     item_dict = item_data.model_dump()
+    
+    # Auto-generate slug if not provided
+    if not item_dict.get('slug'):
+        item_dict['slug'] = generate_slug(item_dict['title'])
+    
+    # Ensure slug is unique
+    existing = await db.den_items.find_one({"slug": item_dict['slug']}, {"_id": 0})
+    if existing:
+        # Append a random suffix
+        item_dict['slug'] = f"{item_dict['slug']}-{str(uuid.uuid4())[:6]}"
+    
     item = DenItem(**item_dict)
     
     doc = item.model_dump()
