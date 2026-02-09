@@ -146,8 +146,12 @@ async def get_campaign_events(campaign_id: str, event_type: Optional[str] = None
 @router.get("/subscriber-growth")
 async def get_subscriber_growth():
     """Get subscriber growth over time (last 12 months)"""
-    # Get all subscribers with their subscription dates
-    subscribers = await db.newsletter.find({}, {"_id": 0, "subscribed_at": 1, "is_active": 1}).to_list(10000)
+    # Optimized: limit to last 12 months of data with projection
+    twelve_months_ago = (datetime.now(timezone.utc) - timedelta(days=365)).isoformat()
+    subscribers = await db.newsletter.find(
+        {"subscribed_at": {"$gte": twelve_months_ago}}, 
+        {"_id": 0, "subscribed_at": 1, "is_active": 1}
+    ).to_list(5000)
     
     # Group by month
     monthly_data = {}

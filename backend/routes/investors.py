@@ -743,8 +743,13 @@ async def delete_inquiry(inquiry_id: str):
 # Download Logs
 @router.get("/admin/download-logs")
 async def get_download_logs():
-    """Get document download logs (admin)"""
-    logs = await db.document_downloads.find({}, {"_id": 0}).to_list(500)
+    """Get document download logs (admin) - last 90 days"""
+    # Optimized: only fetch last 90 days of logs
+    ninety_days_ago = (datetime.now(timezone.utc) - timedelta(days=90)).isoformat()
+    logs = await db.document_downloads.find(
+        {"downloaded_at": {"$gte": ninety_days_ago}}, 
+        {"_id": 0}
+    ).to_list(500)
     
     for log in logs:
         if isinstance(log.get('downloaded_at'), str):
@@ -758,8 +763,10 @@ async def get_download_logs():
 # Document Requests Management
 @router.get("/admin/document-requests")
 async def get_document_requests(status: Optional[str] = None):
-    """Get all document requests (admin)"""
-    query = {}
+    """Get all document requests (admin) - last 90 days"""
+    # Optimized: only fetch last 90 days of requests
+    ninety_days_ago = (datetime.now(timezone.utc) - timedelta(days=90)).isoformat()
+    query = {"created_at": {"$gte": ninety_days_ago}}
     if status:
         query["status"] = status
     

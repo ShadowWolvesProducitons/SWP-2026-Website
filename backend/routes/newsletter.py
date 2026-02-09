@@ -157,10 +157,11 @@ async def unsubscribe(email: str):
 
 @router.get("", response_model=List[NewsletterSubscriber])
 async def get_subscribers(active_only: bool = True):
-    """Get all newsletter subscribers (admin)"""
+    """Get all newsletter subscribers (admin) - with pagination limit"""
     query = {"is_active": True} if active_only else {}
     
-    subscribers = await db.newsletter.find(query, {"_id": 0}).to_list(1000)
+    # Optimized: limit to 2000 subscribers for performance
+    subscribers = await db.newsletter.find(query, {"_id": 0}).to_list(2000)
     
     for sub in subscribers:
         if isinstance(sub.get('subscribed_at'), str):
