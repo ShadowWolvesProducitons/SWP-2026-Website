@@ -63,6 +63,24 @@ const InvestorLogin = ({ onLogin }) => {
     }
   };
 
+  const handleNdaAccept = () => {
+    if (!ndaAccepted || !riskAccepted) {
+      toast.error('Please accept both agreements to continue');
+      return;
+    }
+
+    // Complete the login
+    sessionStorage.setItem('investorAuth', 'true');
+    sessionStorage.setItem('ndaAccepted', new Date().toISOString());
+    if (pendingAuth.investor_name) {
+      sessionStorage.setItem('investorName', pendingAuth.investor_name);
+    }
+    if (pendingAuth.investor_id) {
+      sessionStorage.setItem('investorId', pendingAuth.investor_id);
+    }
+    onLogin();
+  };
+
   if (!portalStatus.enabled) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center p-4">
@@ -76,6 +94,97 @@ const InvestorLogin = ({ onLogin }) => {
             Portal Unavailable
           </h1>
           <p className="text-gray-500">The investor portal is currently closed.</p>
+        </div>
+      </div>
+    );
+  }
+
+  // NDA Acceptance Step
+  if (step === 'nda') {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center p-4">
+        <Helmet>
+          <title>Confidentiality Agreement | Shadow Wolves Productions</title>
+          <meta name="robots" content="noindex, nofollow" />
+        </Helmet>
+
+        <div className="w-full max-w-lg">
+          <div className="text-center mb-8">
+            <div className="w-16 h-16 bg-smoke-gray rounded-full flex items-center justify-center mx-auto mb-6 border border-gray-800">
+              <Shield className="w-8 h-8 text-electric-blue" />
+            </div>
+            <h1 className="text-2xl font-bold text-white mb-2" style={{ fontFamily: 'Cinzel, serif' }}>
+              Confidentiality Agreement
+            </h1>
+            <p className="text-gray-500">Please review and accept before accessing the portal</p>
+          </div>
+
+          <div className="bg-smoke-gray border border-gray-800 rounded-xl p-6 space-y-6">
+            {/* NDA Section */}
+            <div className="bg-black/50 rounded-lg p-4 max-h-40 overflow-y-auto text-sm text-gray-400">
+              <h4 className="text-white font-medium mb-2">Non-Disclosure Agreement</h4>
+              <p className="mb-2">
+                By accessing this portal, you agree that all information contained herein is confidential 
+                and proprietary to Shadow Wolves Productions.
+              </p>
+              <p className="mb-2">
+                You agree not to disclose, copy, distribute, or use any information from this portal 
+                for any purpose other than evaluating potential investment opportunities.
+              </p>
+              <p>
+                Unauthorized disclosure may result in legal action.
+              </p>
+            </div>
+
+            <label className="flex items-start gap-3 cursor-pointer group">
+              <input
+                type="checkbox"
+                checked={ndaAccepted}
+                onChange={(e) => setNdaAccepted(e.target.checked)}
+                className="mt-1 rounded border-gray-600 bg-black text-electric-blue focus:ring-electric-blue"
+              />
+              <span className="text-gray-300 text-sm">
+                I have read and agree to the <span className="text-electric-blue">Confidentiality Agreement</span> above.
+              </span>
+            </label>
+
+            {/* Risk Disclaimer Section */}
+            <div className="bg-black/50 rounded-lg p-4 max-h-40 overflow-y-auto text-sm text-gray-400">
+              <h4 className="text-white font-medium mb-2">General Risk Disclaimer</h4>
+              <p className="mb-2">
+                Investment in film and entertainment projects involves substantial risk. 
+                Past performance is not indicative of future results.
+              </p>
+              <p className="mb-2">
+                The information in this portal is for informational purposes only and does not 
+                constitute legal, tax, or investment advice.
+              </p>
+              <p>
+                You should consult with qualified professionals before making any investment decisions.
+              </p>
+            </div>
+
+            <label className="flex items-start gap-3 cursor-pointer group">
+              <input
+                type="checkbox"
+                checked={riskAccepted}
+                onChange={(e) => setRiskAccepted(e.target.checked)}
+                className="mt-1 rounded border-gray-600 bg-black text-electric-blue focus:ring-electric-blue"
+              />
+              <span className="text-gray-300 text-sm">
+                I understand the <span className="text-electric-blue">risks associated with investment</span> and acknowledge this is not financial advice.
+              </span>
+            </label>
+
+            <button
+              onClick={handleNdaAccept}
+              disabled={!ndaAccepted || !riskAccepted}
+              className="w-full bg-electric-blue hover:bg-electric-blue/90 disabled:bg-gray-700 disabled:cursor-not-allowed text-white py-4 rounded-lg font-mono text-sm uppercase tracking-widest transition-all flex items-center justify-center gap-2"
+            >
+              Enter Portal
+              <ArrowRight size={18} />
+            </button>
+          </div>
         </div>
       </div>
     );
