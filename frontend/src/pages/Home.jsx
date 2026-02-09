@@ -141,7 +141,7 @@ const Home = () => {
             <span className="uppercase !font-mono !text-sm !italic !text-[#FFFFFF]">We Don’t Follow. We Hunt.</span>
           </div>
           
-          <h1 className="hero-title text-6xl md:text-8xl font-bold text-white mb-6 leading-tight" style={{ fontFamily: 'Cinzel, serif' }}>
+          <h1 className="hero-title text-6xl md:text-8xl font-bold text-white mb-12 leading-tight" style={{ fontFamily: 'Cinzel, serif' }}>
             SHADOW WOLVES
             <br />
             <span className="text-electric-blue">PRODUCTIONS</span>
