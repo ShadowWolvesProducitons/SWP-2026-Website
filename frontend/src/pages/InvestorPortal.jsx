@@ -332,7 +332,7 @@ const ProjectDetailModal = ({ project, onClose }) => {
       }
     } catch (err) {
       console.error('Download error:', err);
-      toast.error('Connection error. Please check your internet.');
+      toast.error('Unable to download. Please try again.');
     } finally {
       setDownloading(null);
     }
@@ -544,7 +544,7 @@ const DocumentRequestForm = ({ project, docType, onCancel, onSuccess }) => {
       }
     } catch (err) {
       console.error('Document request error:', err);
-      toast.error('Connection error. Please check your internet and try again.');
+      toast.error('Unable to process request. Please try again.');
     } finally {
       setSubmitting(false);
     }
@@ -777,7 +777,7 @@ const InterestSection = ({ projects }) => {
         toast.error('Failed to submit. Please try again.');
       }
     } catch (err) {
-      toast.error('Connection error. Please try again.');
+      toast.error('Unable to submit. Please try again.');
     } finally {
       setSubmitting(false);
     }
