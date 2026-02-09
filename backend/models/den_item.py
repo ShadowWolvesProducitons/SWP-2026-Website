@@ -67,6 +67,16 @@ class DenItemUpdate(BaseModel):
     featured: Optional[bool] = None
     short_description: Optional[str] = None
     long_description: Optional[str] = None
+    what_it_is: Optional[str] = None
+    core_actions: Optional[List[str]] = None
+    experiences: Optional[List[str]] = None
+    how_it_works: Optional[List[str]] = None
+    how_it_works_notes: Optional[str] = None
+    what_its_not: Optional[List[str]] = None
+    what_its_not_closing: Optional[str] = None
+    final_cta_text: Optional[str] = None
+    final_cta_microcopy: Optional[str] = None
+    price_status: Optional[str] = None
     hero_image_url: Optional[str] = None
     thumbnail_url: Optional[str] = None
     screenshots: Optional[List[str]] = None
