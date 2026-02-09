@@ -345,6 +345,7 @@ const ProductModal = ({ item, onClose, onSave }) => {
 
   const tabs = [
     { id: 'basic', label: 'Basic Info' },
+    { id: 'landing', label: 'Landing Page' },
     { id: 'content', label: 'Content' },
     { id: 'media', label: 'Media' },
     { id: 'links', label: 'Links & Pricing' },
