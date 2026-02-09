@@ -277,15 +277,20 @@ const ProductCard = ({ item }) => {
             </p>
           )}
           
-          {/* Price */}
+          {/* Price - Standardized A$ format */}
           <div className="flex items-center justify-between mt-auto pt-2 border-t border-gray-800/50">
             <div className="price-display">
               {item.is_free ? (
                 <span className="text-green-400 font-semibold text-lg">Free</span>
               ) : item.price ? (
-                <span className="text-white font-semibold text-lg">{item.price}</span>
+                <span className="text-white font-semibold text-lg">
+                  {/* Ensure A$ prefix if price is numeric */}
+                  {item.price.startsWith('A$') || item.price.startsWith('$') ? item.price.replace('$', 'A$').replace('A$A$', 'A$') : `A$${item.price}`}
+                </span>
+              ) : item.price_note ? (
+                <span className="text-gray-400 text-sm">{item.price_note}</span>
               ) : (
-                <span className="text-gray-500 text-sm">View for pricing</span>
+                <span className="text-gray-500 text-sm">View pricing</span>
               )}
             </div>
             
