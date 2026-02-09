@@ -116,18 +116,28 @@ const LeadMagnetPopup = () => {
         localStorage.setItem('swp_subscribed', 'true');
         setIsVisible(false);
       } else {
-        const error = await response.json();
-        if (error.detail?.includes('already subscribed')) {
+        let errorMsg = 'Something went wrong';
+        try {
+          const error = await response.json();
+          errorMsg = error.detail || errorMsg;
+        } catch {
+          // Response body wasn't JSON
+        }
+        if (errorMsg.includes('already subscribed')) {
           toast.info("You're already in the pack! Check your email.");
           localStorage.setItem('swp_subscribed', 'true');
           setIsVisible(false);
         } else {
-          toast.error(error.detail || 'Something went wrong');
+          toast.error(errorMsg);
         }
       }
     } catch (err) {
       console.error('Newsletter subscription error:', err);
-      toast.error('Connection error. Please check your internet and try again.');
+      if (err.name === 'TypeError' && err.message.includes('fetch')) {
+        toast.error('Unable to connect. Please check your internet and try again.');
+      } else {
+        toast.error('Something went wrong. Please try again.');
+      }
     } finally {
       setSubmitting(false);
     }
