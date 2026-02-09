@@ -50,18 +50,43 @@ const Blog = () => {
         <meta name="description" content="Industry notes, studio updates, and what we're building next." />
       </Helmet>
 
-      {/* Page Header */}
-      <section className="page-header py-24 bg-gradient-to-br from-black via-smoke-gray to-black relative overflow-hidden">
+      {/* Page Header with Intro Banner */}
+      <section className="page-header py-16 bg-gradient-to-br from-black via-smoke-gray to-black relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute top-0 right-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl"></div>
         </div>
         <div className="container mx-auto px-4 relative z-10">
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6" style={{ fontFamily: 'Cinzel, serif' }}>
+          <h1 className="text-5xl md:text-7xl font-bold text-white mb-4" style={{ fontFamily: 'Cinzel, serif' }}>
             The Den
           </h1>
-          <p className="max-w-2xl text-xl text-gray-400">
+          <p className="max-w-2xl text-xl text-gray-400 mb-6">
             Field notes from the studio — no fluff.
           </p>
+          {/* Intro Banner */}
+          <div className="bg-black/50 border border-gray-800 rounded-lg p-5 max-w-2xl">
+            <p className="text-gray-300 text-sm leading-relaxed">
+              Casting calls. Crew needs. Production lessons. Tools we actually use. 
+              This is a working blog — grounded in real studio activity, not content for content's sake.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Subscribe CTA */}
+      <section className="py-6 bg-smoke-gray border-b border-gray-800">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <p className="text-white font-medium">Get The Producer's Playbook (Free)</p>
+              <p className="text-gray-500 text-sm">Practical tools we actually use. No fluff.</p>
+            </div>
+            <Link
+              to="/#newsletter"
+              className="px-6 py-2 bg-electric-blue hover:bg-electric-blue/90 text-white rounded-full text-sm font-mono uppercase tracking-widest transition-all"
+            >
+              Subscribe
+            </Link>
+          </div>
         </div>
       </section>
 
