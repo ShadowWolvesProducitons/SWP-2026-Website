@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { Lock, Key, AlertCircle, ArrowRight } from 'lucide-react';
+import { Lock, Key, AlertCircle, ArrowRight, Shield, FileText } from 'lucide-react';
 import { toast } from 'sonner';
 
 const InvestorLogin = ({ onLogin }) => {
+  const [step, setStep] = useState('login'); // 'login' or 'nda'
   const [loginType, setLoginType] = useState('password'); // 'password' or 'code'
   const [password, setPassword] = useState('');
   const [accessCode, setAccessCode] = useState('');
   const [loading, setLoading] = useState(false);
   const [portalStatus, setPortalStatus] = useState({ enabled: true, require_code: false });
+  const [ndaAccepted, setNdaAccepted] = useState(false);
+  const [riskAccepted, setRiskAccepted] = useState(false);
+  const [pendingAuth, setPendingAuth] = useState(null);
 
   useEffect(() => {
     checkPortalStatus();
@@ -46,15 +50,9 @@ const InvestorLogin = ({ onLogin }) => {
       const data = await response.json();
 
       if (data.success) {
-        // Store investor session
-        sessionStorage.setItem('investorAuth', 'true');
-        if (data.investor_name) {
-          sessionStorage.setItem('investorName', data.investor_name);
-        }
-        if (data.investor_id) {
-          sessionStorage.setItem('investorId', data.investor_id);
-        }
-        onLogin();
+        // Store pending auth and show NDA step
+        setPendingAuth(data);
+        setStep('nda');
       } else {
         toast.error(data.message || 'Invalid credentials');
       }
