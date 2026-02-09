@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet';
 import { 
   LogOut, FileText, Briefcase, TrendingUp, Mail, 
   ChevronRight, RefreshCw, Send, CheckCircle, X,
-  Film, FileVideo, BookOpen, Presentation, Home
+  Film, FileVideo, BookOpen, Presentation, Home, Newspaper
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
