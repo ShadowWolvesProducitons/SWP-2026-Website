@@ -141,6 +141,7 @@ const InvestorPortal = ({ onLogout }) => {
                     setSelectedProject={setSelectedProject}
                   />
                 )}
+                {activeSection === 'updates' && <StudioUpdatesSection />}
                 {activeSection === 'investment' && <InvestmentSection />}
                 {activeSection === 'interest' && <InterestSection projects={projects} />}
               </>
