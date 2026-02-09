@@ -182,17 +182,15 @@ const LeadMagnetPopup = () => {
                 className="text-2xl font-bold text-white text-center mb-2"
                 style={{ fontFamily: 'Cinzel, serif' }}
               >
-                Producer's Playbook
+                Get The Producer's Playbook
               </h2>
               <p className="text-electric-blue text-sm text-center mb-4 font-mono uppercase tracking-widest">
-                Free Download
+                Free
               </p>
 
               {/* Description */}
               <p className="text-gray-400 text-center text-sm mb-6 leading-relaxed">
-                Get the step-by-step filmmaking checklist we use on every production — from development to distribution.
-                <br /><br />
-                No chaos. No guesswork. Just a clean production roadmap.
+                Practical tools we actually use. No fluff.
               </p>
 
               {/* Form */}
