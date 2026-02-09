@@ -486,6 +486,11 @@ const ProductModal = ({ item, onClose, onSave }) => {
             </div>
           )}
 
+          {/* Landing Page Tab */}
+          {activeTab === 'landing' && (
+            <LandingPageFields formData={formData} setFormData={setFormData} />
+          )}
+
           {/* Content Tab */}
           {activeTab === 'content' && (
             <div className="space-y-4">
