@@ -107,7 +107,8 @@ async def get_submissions(status: Optional[str] = None, include_archived: bool =
     if not include_archived:
         query["status"] = {"$ne": "Archived"}
     
-    submissions = await db.submissions.find(query, {"_id": 0}).to_list(1000)
+    # Optimized: limit to 500 submissions for performance
+    submissions = await db.submissions.find(query, {"_id": 0}).to_list(500)
     
     for sub in submissions:
         if isinstance(sub.get('created_at'), str):

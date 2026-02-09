@@ -20,7 +20,8 @@ def set_db(database):
 @router.get("", response_model=List[Film])
 async def get_films():
     """Get all films, sorted by featured first, then by created_at"""
-    films = await db.films.find({}, {"_id": 0}).to_list(1000)
+    # Optimized: limit to 100 films for performance
+    films = await db.films.find({}, {"_id": 0}).to_list(100)
     
     # Convert datetime strings back to datetime objects
     for film in films:

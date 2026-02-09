@@ -22,7 +22,8 @@ async def get_blog_posts(status: Optional[str] = None, include_archived: bool = 
     if not include_archived:
         query["is_archived"] = {"$ne": True}
     
-    posts = await db.blog_posts.find(query, {"_id": 0}).to_list(1000)
+    # Optimized: exclude large content field for list view, limit to 200
+    posts = await db.blog_posts.find(query, {"_id": 0, "content": 0}).to_list(200)
     
     for post in posts:
         if isinstance(post.get('created_at'), str):

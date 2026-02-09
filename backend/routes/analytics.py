@@ -93,8 +93,11 @@ async def get_campaign_analytics():
     for campaign in campaigns:
         campaign_id = campaign.get('id') or str(campaign.get('_id', ''))
         
-        # Get event counts for this campaign
-        events = await db.email_events.find({"campaign_id": campaign_id}).to_list(10000)
+        # Get event counts for this campaign (optimized with projection)
+        events = await db.email_events.find(
+            {"campaign_id": campaign_id}, 
+            {"_id": 0, "event_type": 1, "recipient": 1}
+        ).to_list(5000)
         
         delivered = sum(1 for e in events if e.get('event_type') == 'email.delivered')
         opened = len(set(e.get('recipient') for e in events if e.get('event_type') == 'email.opened'))
