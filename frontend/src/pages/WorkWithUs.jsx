@@ -433,6 +433,19 @@ const WorkWithUs = () => {
                   We review submissions on an ongoing basis. If your project aligns with our slate, expect to hear back within 2-4 weeks.
                 </p>
               </div>
+
+              {/* CineConnect - Coming Soon */}
+              <div className="mt-10 bg-electric-blue/5 border border-electric-blue/20 rounded-lg p-5">
+                <h4 className="text-white font-bold mb-2" style={{ fontFamily: 'Cinzel, serif' }}>
+                  CineConnect
+                </h4>
+                <p className="text-gray-400 text-sm mb-3">
+                  Cast & Crew Network (Coming Soon)
+                </p>
+                <p className="text-gray-500 text-xs">
+                  A curated database for production talent. Register your interest to be notified when we launch.
+                </p>
+              </div>
             </div>
 
           </div>
