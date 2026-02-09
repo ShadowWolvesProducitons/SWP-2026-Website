@@ -106,16 +106,26 @@ const ProductPage = () => {
         )}
       </Helmet>
 
-      {/* Breadcrumb */}
+      {/* Breadcrumb with Back Button */}
       <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center gap-2 text-sm">
-          <Link to="/armory" className="text-gray-500 hover:text-white transition-colors">
-            The Armory
-          </Link>
-          <span className="text-gray-700">/</span>
-          <span className="text-gray-500">{product.item_type}</span>
-          <span className="text-gray-700">/</span>
-          <span className="text-gray-300">{product.title}</span>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => window.history.length > 1 ? window.history.back() : window.location.href = '/armory'}
+            className="flex items-center gap-2 px-4 py-2 text-gray-400 hover:text-white border border-gray-800 hover:border-gray-600 rounded-full transition-colors text-sm"
+            data-testid="product-back-btn"
+          >
+            <ArrowLeft size={16} />
+            Back
+          </button>
+          <div className="flex items-center gap-2 text-sm">
+            <Link to="/armory" className="text-gray-500 hover:text-white transition-colors">
+              The Armory
+            </Link>
+            <span className="text-gray-700">/</span>
+            <span className="text-gray-500">{product.item_type}</span>
+            <span className="text-gray-700">/</span>
+            <span className="text-gray-300">{product.title}</span>
+          </div>
         </div>
       </div>
 
