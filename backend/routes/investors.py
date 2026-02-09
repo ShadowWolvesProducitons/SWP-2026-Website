@@ -18,7 +18,6 @@ from pathlib import Path
 
 router = APIRouter(prefix="/investors", tags=["investors"])
 
-db = None
 UPLOAD_DIR = Path(__file__).parent.parent / "uploads"
 
 db = None
