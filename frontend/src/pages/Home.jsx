@@ -147,34 +147,35 @@ const Home = () => {
             <span className="text-electric-blue">PRODUCTIONS</span>
           </h1>
           
-          <p className="hero-subtitle md:text-2xl max-w-3xl !font-bold !text-xl !italic mb-12 mx-auto text-gray-300">A new breed of storytellers driven by instinct, not trends — from primal horror to deeply human stories, we create where others fear to go.
-
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          {/* CTA Hierarchy: Primary > Secondary > Tertiary */}
+          <div className="flex flex-col items-center gap-4">
+            {/* Primary CTA - Dominant */}
             <Link
               to="/films"
-              className="cta-button bg-electric-blue hover:bg-electric-blue/90 text-white px-8 py-4 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2">
-
-              <Play size={18} />
+              className="bg-electric-blue hover:bg-electric-blue/90 text-white px-10 py-5 rounded-full font-mono text-base uppercase tracking-widest transition-all inline-flex items-center justify-center gap-3 shadow-lg shadow-electric-blue/30"
+              data-testid="hero-cta-films"
+            >
+              <Play size={20} />
               View Our Films
             </Link>
-            <Link
-              to="/blog"
-              className="cta-button-outline border-2 border-white hover:bg-white hover:text-black text-white px-8 py-4 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2">
-
-              🐺 Enter The Den
-              <ArrowRight size={18} />
-            </Link>
-          </div>
-          
-          <div className="flex justify-center mt-4">
-            <Link
-              to="/services"
-              className="cta-button-outline border-2 border-gray-600 hover:border-white hover:bg-white hover:text-black text-gray-300 hover:text-black px-8 py-4 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2">
-              ⚔️ Enter The Armory
-              <ArrowRight size={18} />
-            </Link>
+            
+            {/* Secondary & Tertiary CTAs */}
+            <div className="flex flex-col sm:flex-row gap-3 mt-2">
+              <Link
+                to="/work-with-us"
+                className="border-2 border-white/80 hover:bg-white hover:text-black text-white px-6 py-3 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
+                data-testid="hero-cta-work"
+              >
+                Work With Us
+              </Link>
+              <Link
+                to="/armory"
+                className="border border-gray-600 hover:border-white/60 text-gray-400 hover:text-white px-6 py-3 rounded-full font-mono text-xs uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
+                data-testid="hero-cta-armory"
+              >
+                Enter The Armory
+              </Link>
+            </div>
           </div>
           
           {/* Scroll Indicator */}
