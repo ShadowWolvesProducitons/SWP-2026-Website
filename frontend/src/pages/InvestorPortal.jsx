@@ -655,6 +655,94 @@ const DocumentRequestForm = ({ project, docType, onCancel, onSuccess }) => {
   );
 };
 
+// Studio Updates (Private Blog) Section
+const CATEGORY_COLORS = {
+  'Update': 'bg-electric-blue/20 text-electric-blue border-electric-blue/40',
+  'Milestone': 'bg-green-500/20 text-green-400 border-green-500/40',
+  'Financial': 'bg-yellow-500/20 text-yellow-400 border-yellow-500/40',
+  'Production': 'bg-purple-500/20 text-purple-400 border-purple-500/40',
+};
+
+const StudioUpdatesSection = () => {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [expandedPost, setExpandedPost] = useState(null);
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+
+  const fetchPosts = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/investors/blog/posts`);
+      if (res.ok) setPosts(await res.json());
+    } catch {
+      console.error('Failed to fetch posts');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const formatDate = (dateStr) => {
+    if (!dateStr) return '';
+    return new Date(dateStr).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' });
+  };
+
+  return (
+    <div className="space-y-6" data-testid="studio-updates-section">
+      <div>
+        <h2 className="text-3xl font-bold text-white mb-2" style={{ fontFamily: 'Cinzel, serif' }}>Studio Updates</h2>
+        <p className="text-gray-500">Investor-only updates from the production floor.</p>
+      </div>
+
+      {loading ? (
+        <div className="text-center py-12">
+          <RefreshCw className="w-8 h-8 text-electric-blue animate-spin mx-auto" />
+        </div>
+      ) : posts.length === 0 ? (
+        <div className="text-center py-16 bg-smoke-gray rounded-lg border border-gray-800">
+          <Newspaper className="w-12 h-12 text-gray-700 mx-auto mb-4" />
+          <p className="text-gray-400 mb-1">No updates posted yet</p>
+          <p className="text-gray-600 text-sm">Check back for production news, milestones, and investor-specific updates.</p>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {posts.map((post) => (
+            <div
+              key={post.id}
+              className="bg-smoke-gray border border-gray-800 hover:border-gray-700 rounded-lg overflow-hidden transition-colors cursor-pointer"
+              onClick={() => setExpandedPost(expandedPost === post.id ? null : post.id)}
+              data-testid={`update-post-${post.id}`}
+            >
+              <div className="px-6 py-5 flex items-start justify-between">
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase border ${CATEGORY_COLORS[post.category] || CATEGORY_COLORS['Update']}`}>
+                      {post.category}
+                    </span>
+                    <span className="text-gray-500 text-sm">{formatDate(post.created_at)}</span>
+                  </div>
+                  <h3 className="text-white text-lg font-semibold">{post.title}</h3>
+                  {post.summary && expandedPost !== post.id && (
+                    <p className="text-gray-400 text-sm mt-1 line-clamp-2">{post.summary}</p>
+                  )}
+                </div>
+                <ChevronRight size={20} className={`text-gray-500 transition-transform ${expandedPost === post.id ? 'rotate-90' : ''}`} />
+              </div>
+              {expandedPost === post.id && (
+                <div className="px-6 pb-6 border-t border-gray-800 pt-4">
+                  <div className="prose prose-invert prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: post.content }} />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 // Investment Model Section
 const InvestmentSection = () => (
   <div className="space-y-8">
