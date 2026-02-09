@@ -137,8 +137,46 @@ const Blog = () => {
               <p className="text-gray-400 text-xl">No posts published yet.</p>
             </div>
           ) : (
-            <div className="space-y-8 max-w-4xl mx-auto">
-              {filteredPosts.map((post) => (
+            <div className="max-w-4xl mx-auto">
+              {/* Featured Post - First featured post gets larger layout */}
+              {!selectedTag && filteredPosts.find(p => p.featured) && (
+                <div className="mb-12">
+                  {(() => {
+                    const featuredPost = filteredPosts.find(p => p.featured);
+                    return (
+                      <Link to={`/blog/${featuredPost.slug}`} className="group block">
+                        <article className="bg-smoke-gray border border-gray-800 rounded-xl overflow-hidden hover:border-gray-700 transition-colors">
+                          {featuredPost.cover_image && (
+                            <div className="aspect-video overflow-hidden">
+                              <img 
+                                src={featuredPost.cover_image.startsWith('http') ? featuredPost.cover_image : `${process.env.REACT_APP_BACKEND_URL}${featuredPost.cover_image}`}
+                                alt={featuredPost.title}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                              />
+                            </div>
+                          )}
+                          <div className="p-6">
+                            <span className="text-electric-blue text-xs font-mono uppercase tracking-widest mb-3 block">Featured</span>
+                            <h2 className="text-3xl font-bold text-white group-hover:text-electric-blue transition-colors mb-3" style={{ fontFamily: 'Cinzel, serif' }}>
+                              {featuredPost.title}
+                            </h2>
+                            {featuredPost.excerpt && (
+                              <p className="text-gray-400 text-lg mb-4 line-clamp-2">
+                                {featuredPost.excerpt}
+                              </p>
+                            )}
+                            <span className="text-gray-500 text-sm">{formatDate(featuredPost.published_at)}</span>
+                          </div>
+                        </article>
+                      </Link>
+                    );
+                  })()}
+                </div>
+              )}
+
+              {/* Regular Posts */}
+              <div className="space-y-8">
+              {filteredPosts.filter(post => selectedTag || !post.featured).map((post) => (
                 <article 
                   key={post.id} 
                   className="group border-b border-gray-800 pb-8 last:border-0"
