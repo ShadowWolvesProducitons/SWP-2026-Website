@@ -13,13 +13,16 @@ const LeadMagnetPopup = () => {
     // Never show if already subscribed
     if (localStorage.getItem('swp_subscribed') === 'true') return false;
     
-    // Don't show if dismissed within last 7 days
+    // Don't show if dismissed within last 14-30 days (use 21 as middle ground)
     const dismissedAt = localStorage.getItem('swp_popup_dismissed');
     if (dismissedAt) {
       const dismissedDate = new Date(dismissedAt);
       const daysSinceDismissed = (Date.now() - dismissedDate.getTime()) / (1000 * 60 * 60 * 24);
-      if (daysSinceDismissed < 7) return false;
+      if (daysSinceDismissed < 21) return false;
     }
+
+    // Check if first-time visitor (for time trigger)
+    const hasVisited = localStorage.getItem('swp_has_visited');
 
     // Only show on specific pages
     const allowedPaths = ['/', '/about', '/blog'];
@@ -28,30 +31,37 @@ const LeadMagnetPopup = () => {
     
     if (!allowedPaths.includes(currentPath) && !isBlogPost) return false;
 
-    return true;
+    return { allowed: true, isFirstVisit: !hasVisited, isBlogPost };
   }, []);
 
   useEffect(() => {
-    if (!shouldShowPopup()) return;
+    const checkResult = shouldShowPopup();
+    if (!checkResult || !checkResult.allowed) return;
+
+    // Mark as visited
+    localStorage.setItem('swp_has_visited', 'true');
 
     let triggered = false;
     let timeoutId;
     let scrollTriggered = false;
 
-    // Timer trigger (45 seconds)
-    timeoutId = setTimeout(() => {
-      if (!triggered && shouldShowPopup()) {
-        triggered = true;
-        setIsVisible(true);
-      }
-    }, 45000);
+    // Timer trigger - 45 seconds for first-time visitors only
+    if (checkResult.isFirstVisit) {
+      timeoutId = setTimeout(() => {
+        if (!triggered && shouldShowPopup()?.allowed) {
+          triggered = true;
+          setIsVisible(true);
+        }
+      }, 45000);
+    }
 
-    // Scroll trigger (50%)
+    // Scroll trigger - 70% for blog posts, 50% for other pages
+    const scrollThreshold = checkResult.isBlogPost ? 70 : 50;
     const handleScroll = () => {
       if (scrollTriggered || triggered) return;
       
       const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-      if (scrollPercent >= 50 && shouldShowPopup()) {
+      if (scrollPercent >= scrollThreshold && shouldShowPopup()?.allowed) {
         scrollTriggered = true;
         triggered = true;
         setIsVisible(true);
