@@ -71,7 +71,7 @@ const LeadMagnetPopup = () => {
     // Exit intent trigger (desktop only)
     const handleMouseLeave = (e) => {
       if (triggered) return;
-      if (e.clientY <= 0 && shouldShowPopup()) {
+      if (e.clientY <= 0 && shouldShowPopup()?.allowed) {
         triggered = true;
         setIsVisible(true);
       }
