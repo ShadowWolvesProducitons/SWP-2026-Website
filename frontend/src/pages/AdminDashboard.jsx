@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Film, Package, FileText, LogOut, RefreshCw, Inbox, Briefcase, MessageSquare, Users, Mail, BarChart3 } from 'lucide-react';
+import { Film, Package, FileText, LogOut, RefreshCw, Briefcase, Users, Mail, BarChart3, ArrowLeft, Activity } from 'lucide-react';
 import { toast } from 'sonner';
 import AdminFilmsTab from '../components/admin/AdminFilmsTab';
 import AdminArmoryTab from '../components/admin/AdminArmoryTab';
 import AdminBlogTab from '../components/admin/AdminBlogTab';
-import AdminSubmissionsTab from '../components/admin/AdminSubmissionsTab';
+import AdminActivityTab from '../components/admin/AdminActivityTab';
 import AdminInvestorTab from '../components/admin/AdminInvestorTab';
-import AdminMessagesTab from '../components/admin/AdminMessagesTab';
 import AdminNewsletterTab from '../components/admin/AdminNewsletterTab';
 import AdminEmailTemplatesTab from '../components/admin/AdminEmailTemplatesTab';
 import AdminAnalyticsTab from '../components/admin/AdminAnalyticsTab';
@@ -17,8 +16,7 @@ const TABS = [
   { id: 'films', label: 'Films', icon: Film },
   { id: 'armory', label: 'The Armory', icon: Package },
   { id: 'blog', label: 'The Den', icon: FileText },
-  { id: 'messages', label: 'Messages', icon: MessageSquare },
-  { id: 'submissions', label: 'Submissions', icon: Inbox },
+  { id: 'activity', label: 'Activity', icon: Activity },
   { id: 'newsletter', label: 'Newsletter', icon: Users },
   { id: 'email-templates', label: 'Templates', icon: Mail },
   { id: 'investors', label: 'Investors', icon: Briefcase },
