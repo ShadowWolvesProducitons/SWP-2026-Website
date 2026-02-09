@@ -148,11 +148,26 @@ const TheDen = () => {
               <p className="text-gray-500">Check back soon for new additions to the armory.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {items.map((item) => (
-                <ProductCard key={item.id} item={item} />
-              ))}
-            </div>
+            <>
+              {/* Featured Collection - Only show when viewing "All" */}
+              {activeTab === 'All' && items.filter(i => i.featured).length > 0 && (
+                <div className="mb-12">
+                  <h2 className="text-sm font-mono text-electric-blue uppercase tracking-widest mb-6">Featured Collection</h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {items.filter(i => i.featured).map((item) => (
+                      <ProductCard key={item.id} item={item} />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* All Products */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {items.filter(i => activeTab !== 'All' || !i.featured).map((item) => (
+                  <ProductCard key={item.id} item={item} />
+                ))}
+              </div>
+            </>
           )}
         </div>
       </section>
