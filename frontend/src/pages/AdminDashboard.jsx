@@ -39,13 +39,13 @@ const AdminDashboard = ({ onLogout }) => {
       <header className="bg-smoke-gray border-b border-gray-800 sticky top-0 z-40">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            {/* Secret back link - click the icon to go back to site */}
             <Link 
               to="/" 
-              className="w-10 h-10 bg-electric-blue/20 rounded-lg flex items-center justify-center hover:bg-electric-blue/40 transition-colors"
-              title="Back to site"
+              className="flex items-center gap-2 px-4 py-2 text-gray-400 hover:text-white border border-gray-800 hover:border-gray-600 rounded-full transition-colors text-sm"
+              data-testid="admin-back-to-site"
             >
-              <Film className="w-5 h-5 text-electric-blue" />
+              <ArrowLeft size={16} />
+              Back to Website
             </Link>
             <div>
               <h1 className="text-xl font-bold text-white">Studio Admin Console</h1>
