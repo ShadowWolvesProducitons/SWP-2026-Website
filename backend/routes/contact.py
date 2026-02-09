@@ -193,55 +193,6 @@ async def update_contact_message(message_id: str, update_data: ContactMessageUpd
     return updated
 
 
-@router.post("/cineconnect-interest")
-async def register_cineconnect_interest(data: dict, background_tasks: BackgroundTasks):
-    """Register interest in CineConnect"""
-    from uuid import uuid4
-    interest = {
-        "id": str(uuid4()),
-        "name": data.get("name", ""),
-        "email": data.get("email", ""),
-        "type": "cineconnect_interest",
-        "created_at": datetime.now(timezone.utc).isoformat()
-    }
-    await db.cineconnect_interests.insert_one(interest)
-    del interest["_id"]
-
-    # Notify admin in background
-    async def notify_admin():
-        try:
-            resend_api_key = os.environ.get('RESEND_API_KEY')
-            if not resend_api_key:
-                return
-            import resend
-            import asyncio
-            resend.api_key = resend_api_key
-            admin_email = os.environ.get('ADMIN_EMAIL', 'Brendan@shadowwolvesproductions.com.au')
-            from_email = os.environ.get('FROM_EMAIL', 'onboarding@resend.dev')
-            await asyncio.to_thread(resend.Emails.send, {
-                "from": from_email,
-                "to": admin_email,
-                "subject": f"CineConnect Interest: {interest['name']}",
-                "html": f"""<div style="font-family:Arial;max-width:600px;margin:0 auto;background:#0a0a0a;color:#fff;padding:40px;">
-                    <h1 style="color:#fff;">New CineConnect Interest</h1>
-                    <p style="color:#9ca3af;">{interest['name']} ({interest['email']}) has registered interest in CineConnect.</p>
-                    <p style="color:#233dff;margin-top:30px;">— Shadow Wolves Productions</p>
-                </div>"""
-            })
-        except Exception as e:
-            print(f"Failed to send CineConnect notification: {e}")
-
-    background_tasks.add_task(notify_admin)
-    return {"message": "Interest registered successfully"}
-
-
-@router.get("/cineconnect-interest")
-async def get_cineconnect_interests():
-    """Get all CineConnect interests (admin)"""
-    interests = await db.cineconnect_interests.find({}, {"_id": 0}).to_list(500)
-    return interests
-
-
 @router.delete("/{message_id}")
 async def delete_contact_message(message_id: str, permanent: bool = False):
     """Archive or permanently delete a contact message"""
