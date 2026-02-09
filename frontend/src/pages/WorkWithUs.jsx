@@ -333,6 +333,35 @@ const WorkWithUs = () => {
                   />
                 </div>
 
+                {/* Legal Acknowledgements */}
+                <div className="space-y-3 pt-4 border-t border-gray-800">
+                  <label className="flex items-start gap-3 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      checked={confirmOriginal}
+                      onChange={(e) => setConfirmOriginal(e.target.checked)}
+                      className="mt-1 rounded border-gray-600 bg-smoke-gray text-electric-blue focus:ring-electric-blue"
+                    />
+                    <span className="text-gray-400 text-sm group-hover:text-gray-300">
+                      I confirm this project is original or I control the rights to submit it. *
+                    </span>
+                  </label>
+                  <label className="flex items-start gap-3 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      checked={confirmNoAttachments}
+                      onChange={(e) => setConfirmNoAttachments(e.target.checked)}
+                      className="mt-1 rounded border-gray-600 bg-smoke-gray text-electric-blue focus:ring-electric-blue"
+                    />
+                    <span className="text-gray-400 text-sm group-hover:text-gray-300">
+                      I understand Shadow Wolves Productions cannot accept unsolicited attachments. *
+                    </span>
+                  </label>
+                  <p className="text-gray-600 text-xs pl-6">
+                    If accepted, we will request materials securely.
+                  </p>
+                </div>
+
                 {/* Submit */}
                 <button
                   type="submit"
