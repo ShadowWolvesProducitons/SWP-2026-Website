@@ -81,6 +81,12 @@ const WorkWithUs = () => {
       return;
     }
 
+    // Validate legal checkboxes
+    if (!confirmOriginal || !confirmNoAttachments) {
+      toast.error('Please confirm the required acknowledgements');
+      return;
+    }
+
     setSubmitting(true);
     
     try {
