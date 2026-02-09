@@ -20,13 +20,24 @@ class DenItemBase(BaseModel):
     slug: Optional[str] = None  # URL slug like "house-heroes"
     item_type: str  # Apps, Templates, Downloads, Courses, eBooks
     featured: bool = False
-    short_description: str = ""
+    short_description: str = ""  # One-line positioning statement
     long_description: Optional[str] = None
+    # Canonical landing page sections
+    what_it_is: Optional[str] = None  # 1-2 line "What it is" paragraph
+    core_actions: List[str] = []  # Short scannable steps
+    experiences: List[str] = []  # What you do / compete in bullets
+    how_it_works: List[str] = []  # Numbered flow steps
+    how_it_works_notes: Optional[str] = None  # 2-3 clarifying lines
+    what_its_not: List[str] = []  # "No ads", "No social feeds", etc
+    what_its_not_closing: Optional[str] = None  # Closing line
+    final_cta_text: Optional[str] = None  # Final CTA line
+    final_cta_microcopy: Optional[str] = None  # "No subscriptions · No ads"
+    price_status: Optional[str] = None  # "Free", "Trial", "Paid (A$X)"
     # Landing page content
     hero_image_url: Optional[str] = None  # Large banner image for landing page
     thumbnail_url: Optional[str] = None  # Small thumbnail for listing
     screenshots: List[str] = []  # Gallery images
-    features: List[str] = []  # Feature bullet points
+    features: List[str] = []  # Feature bullet points (scannable grid)
     # Links and files
     primary_link_url: Optional[str] = None  # App store / main link
     file_url: Optional[str] = None  # For downloadable files
