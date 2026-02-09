@@ -806,3 +806,57 @@ async def delete_document_request(request_id: str):
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Request not found")
     return {"message": "Request deleted"}
+
+
+
+# ========== INVESTOR PRIVATE BLOG ==========
+
+class InvestorBlogPost(BaseModel):
+    title: str
+    content: str  # Rich text HTML
+    summary: Optional[str] = None
+    category: Optional[str] = "Update"  # Update, Milestone, Financial, Production
+    is_published: bool = True
+
+@router.get("/blog/posts")
+async def get_investor_blog_posts(published_only: bool = True):
+    """Get investor-only blog posts"""
+    query = {}
+    if published_only:
+        query["is_published"] = True
+    posts = await db.investor_blog_posts.find(query, {"_id": 0}).sort("created_at", -1).to_list(100)
+    return posts
+
+@router.post("/blog/posts")
+async def create_investor_blog_post(post: InvestorBlogPost):
+    """Create a new investor blog post (admin)"""
+    from uuid import uuid4
+    post_dict = post.model_dump()
+    post_dict["id"] = str(uuid4())
+    post_dict["created_at"] = datetime.now(timezone.utc).isoformat()
+    post_dict["updated_at"] = datetime.now(timezone.utc).isoformat()
+    await db.investor_blog_posts.insert_one(post_dict)
+    del post_dict["_id"]
+    return post_dict
+
+@router.put("/blog/posts/{post_id}")
+async def update_investor_blog_post(post_id: str, post: InvestorBlogPost):
+    """Update an investor blog post (admin)"""
+    update_dict = post.model_dump()
+    update_dict["updated_at"] = datetime.now(timezone.utc).isoformat()
+    result = await db.investor_blog_posts.update_one(
+        {"id": post_id},
+        {"$set": update_dict}
+    )
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Post not found")
+    return {"message": "Post updated"}
+
+@router.delete("/blog/posts/{post_id}")
+async def delete_investor_blog_post(post_id: str):
+    """Delete an investor blog post (admin)"""
+    result = await db.investor_blog_posts.delete_one({"id": post_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Post not found")
+    return {"message": "Post deleted"}
+
