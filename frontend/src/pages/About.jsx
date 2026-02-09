@@ -15,37 +15,41 @@ const About = () => {
         <meta name="description" content="Shadow Wolves Productions exists to create bold, genre-driven stories with teeth — stories that entertain first, but leave a mark long after the screen goes black." />
       </Helmet>
 
-      {/* Hero Section */}
-      <section className="py-24 md:py-32">
+      {/* Hero Section - Reduced padding */}
+      <section className="py-16 md:py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl">
-            <h1 
-              className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-8 leading-tight"
-              style={{ fontFamily: 'Cinzel, serif' }}
-            >
-              We don't chase <span className="text-electric-blue">trends.</span><br />
-              We don't ask <span className="text-electric-blue">permission.</span><br />
-              We don't make noise for the <span className="text-electric-blue">sake of it.</span>
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-300 leading-relaxed max-w-3xl">
+            {/* Manifesto lines - smaller, separate lines */}
+            <div className="space-y-2 mb-8">
+              <p className="text-lg md:text-xl text-gray-300 tracking-wide">
+                We don't chase <span className="text-electric-blue">trends.</span>
+              </p>
+              <p className="text-lg md:text-xl text-gray-300 tracking-wide">
+                We don't ask <span className="text-electric-blue">permission.</span>
+              </p>
+              <p className="text-lg md:text-xl text-gray-300 tracking-wide">
+                We don't make noise for the <span className="text-electric-blue">sake of it.</span>
+              </p>
+            </div>
+            <p className="text-xl md:text-2xl text-gray-400 leading-relaxed max-w-3xl">
               Shadow Wolves Productions exists to create bold, genre-driven stories with teeth — stories that entertain first, but leave a mark long after.
             </p>
           </div>
         </div>
       </section>
 
-      {/* What We Believe */}
-      <section className="py-20 bg-smoke-gray">
+      {/* What We Believe - Reduced padding */}
+      <section className="py-12 bg-smoke-gray">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl">
             <h2 
-              className="text-3xl md:text-4xl font-bold text-white mb-10"
+              className="text-2xl md:text-3xl font-bold text-white mb-6"
               style={{ fontFamily: 'Cinzel, serif' }}
             >
               What We Believe
             </h2>
             
-            <ul className="space-y-5 mb-12">
+            <ul className="space-y-3 mb-8">
               {[
                 "Cinema should provoke, unsettle, and challenge the audience without talking down to them.",
                 "Genre deserves respect, not shortcuts.",
@@ -54,18 +58,18 @@ const About = () => {
               ].map((belief, index) => (
                 <li 
                   key={index}
-                  className="flex items-start gap-4 text-lg text-gray-300"
+                  className="flex items-start gap-3 text-gray-300"
                 >
-                  <span className="w-1.5 h-1.5 rounded-full bg-electric-blue mt-2.5 flex-shrink-0"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-electric-blue mt-2 flex-shrink-0"></span>
                   <span>{belief}</span>
                 </li>
               ))}
             </ul>
 
             {/* Standout Quote */}
-            <div className="border-l-4 border-electric-blue pl-6 py-2">
+            <div className="border-l-2 border-electric-blue pl-5 py-1">
               <p 
-                className="text-2xl md:text-3xl text-white font-medium italic"
+                className="text-xl md:text-2xl text-white font-medium italic"
                 style={{ fontFamily: 'Cinzel, serif' }}
               >
                 "If it doesn't scare us a little, it's probably not worth making."
@@ -75,23 +79,81 @@ const About = () => {
         </div>
       </section>
 
+      {/* How We Work - New Section */}
+      <section className="py-12">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl">
+            <h2 
+              className="text-2xl md:text-3xl font-bold text-white mb-6"
+              style={{ fontFamily: 'Cinzel, serif' }}
+            >
+              How We Work
+            </h2>
+            
+            <ul className="space-y-3">
+              {[
+                "Development-led, not trend-led.",
+                "Lean teams, focused collaboration.",
+                "Clear creative intent from concept to delivery."
+              ].map((point, index) => (
+                <li 
+                  key={index}
+                  className="flex items-start gap-3 text-gray-300"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-electric-blue mt-2 flex-shrink-0"></span>
+                  <span>{point}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* What We're Building - New Section */}
+      <section className="py-12 bg-smoke-gray">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl">
+            <h2 
+              className="text-2xl md:text-3xl font-bold text-white mb-6"
+              style={{ fontFamily: 'Cinzel, serif' }}
+            >
+              What We're Building
+            </h2>
+            
+            <div className="space-y-4 text-gray-300">
+              <p>
+                We're developing a slate of genre-driven projects across film, television, and emerging formats. Each project is selected for its creative ambition and commercial viability.
+              </p>
+              <p>
+                Beyond production, we're building a studio ecosystem — films, tools, and resources designed to support independent creators who share our approach.
+              </p>
+              <p>
+                This is long-term development, not a quick flip. We build what we believe in.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
-      <section className="py-24">
+      <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl">
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
-                to="/films"
+                to="/work-with-us"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-electric-blue hover:bg-electric-blue/90 text-white rounded-full font-mono text-sm uppercase tracking-widest transition-all"
+                data-testid="about-cta-work"
               >
-                View Our Work
+                Work With Us
                 <ArrowRight size={18} />
               </Link>
               <Link
-                to="/work-with-us"
+                to="/contact"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 border border-gray-700 hover:border-gray-500 text-white rounded-full font-mono text-sm uppercase tracking-widest transition-all"
+                data-testid="about-cta-contact"
               >
-                Work With Us
+                Contact
               </Link>
             </div>
           </div>
