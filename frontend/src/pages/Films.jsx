@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import { Filter, RefreshCw } from 'lucide-react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
+import { ChevronDown, X, RefreshCw } from 'lucide-react';
 import FilmModal from '../components/FilmModal';
 
 const Films = () => {
@@ -9,6 +9,8 @@ const Films = () => {
   const [filteredFilms, setFilteredFilms] = useState([]);
   const [selectedFilm, setSelectedFilm] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isGenreDropdownOpen, setIsGenreDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
