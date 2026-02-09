@@ -9,7 +9,7 @@ from models.investor import (
     InvestorPortalSettings, DocumentDownloadLog,
     DocumentRequest, DocumentRequestCreate
 )
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pydantic import BaseModel, EmailStr
 import os
 import asyncio
