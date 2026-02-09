@@ -71,7 +71,7 @@ const TheDen = () => {
     <div className="the-armory-page pt-20 min-h-screen bg-black">
       <Helmet>
         <title>The Armory | Shadow Wolves Productions</title>
-        <meta name="description" content="Your creative arsenal — apps, templates, downloads, and courses to evolve your craft." />
+        <meta name="description" content="Your creative arsenal — apps, templates, resources, and courses built for real-world filmmaking." />
       </Helmet>
 
       {/* Page Header */}
@@ -87,7 +87,7 @@ const TheDen = () => {
               The Armory
             </h1>
             <p className="text-xl text-gray-400 leading-relaxed">
-              Your creative arsenal — premium apps, templates, resources, and courses designed to elevate your filmmaking craft.
+              Your creative arsenal — apps, templates, resources, and courses built for real-world filmmaking.
             </p>
           </div>
         </div>
