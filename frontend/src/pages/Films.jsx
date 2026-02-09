@@ -133,9 +133,23 @@ const Films = () => {
                           className="absolute inset-0 w-full h-full object-cover"
                         />
                       ) : (
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="text-gray-600 text-xs font-mono uppercase tracking-widest text-center px-2">
-                            Poster<br />Coming Soon
+                        /* Designed placeholder - intentional, not error */
+                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-black to-gray-900 p-4">
+                          {/* Wolf Mark */}
+                          <div className="w-12 h-12 mb-4 opacity-30">
+                            <svg viewBox="0 0 100 100" fill="currentColor" className="text-electric-blue">
+                              <path d="M50 10L20 40L10 90L50 70L90 90L80 40L50 10Z" stroke="currentColor" strokeWidth="2" fill="none"/>
+                              <circle cx="35" cy="45" r="4" fill="currentColor"/>
+                              <circle cx="65" cy="45" r="4" fill="currentColor"/>
+                            </svg>
+                          </div>
+                          {/* Film Title */}
+                          <h4 className="text-white text-sm font-bold text-center mb-3 px-2" style={{ fontFamily: 'Cinzel, serif' }}>
+                            {film.title}
+                          </h4>
+                          {/* Status Badge */}
+                          <span className="px-3 py-1 bg-electric-blue/20 border border-electric-blue/40 text-electric-blue text-[9px] font-mono uppercase tracking-widest rounded-full">
+                            {film.status === 'Development' || film.status === 'Script' ? 'In Development' : 'Poster In Production'}
                           </span>
                         </div>
                       )}
