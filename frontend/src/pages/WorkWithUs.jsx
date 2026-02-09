@@ -23,6 +23,8 @@ const WorkWithUs = () => {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
+  const [confirmOriginal, setConfirmOriginal] = useState(false);
+  const [confirmNoAttachments, setConfirmNoAttachments] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
