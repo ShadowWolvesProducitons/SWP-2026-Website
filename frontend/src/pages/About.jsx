@@ -19,26 +19,26 @@ const About = () => {
       <section className="py-16 md:py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl">
-            {/* Manifesto lines - smaller, separate lines */}
+            {/* Manifesto lines - Cinzel bold, no periods */}
             <div className="space-y-2 mb-8">
-              <p className="text-lg md:text-xl text-gray-300 tracking-wide">
-                We don't chase <span className="text-electric-blue">trends.</span>
+              <p className="text-lg md:text-xl text-gray-300 tracking-wide font-bold" style={{ fontFamily: 'Cinzel, serif' }}>
+                We don't chase <span className="text-electric-blue">trends</span>
               </p>
-              <p className="text-lg md:text-xl text-gray-300 tracking-wide">
-                We don't ask <span className="text-electric-blue">permission.</span>
+              <p className="text-lg md:text-xl text-gray-300 tracking-wide font-bold" style={{ fontFamily: 'Cinzel, serif' }}>
+                We don't ask <span className="text-electric-blue">permission</span>
               </p>
-              <p className="text-lg md:text-xl text-gray-300 tracking-wide">
-                We don't make noise for the <span className="text-electric-blue">sake of it.</span>
+              <p className="text-lg md:text-xl text-gray-300 tracking-wide font-bold" style={{ fontFamily: 'Cinzel, serif' }}>
+                We don't make noise for the <span className="text-electric-blue">sake of it</span>
               </p>
             </div>
             <p className="text-xl md:text-2xl text-gray-400 leading-relaxed max-w-3xl">
-              Shadow Wolves Productions exists to create bold, genre-driven stories with teeth — stories that entertain first, but leave a mark long after.
+              Shadow Wolves Productions exists to create bold, genre-driven stories with teeth — stories that entertain first and leave a mark long after.
             </p>
           </div>
         </div>
       </section>
 
-      {/* What We Believe - Reduced padding */}
+      {/* What We Believe - Tight bullet list */}
       <section className="py-12 bg-smoke-gray">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl">
@@ -49,12 +49,12 @@ const About = () => {
               What We Believe
             </h2>
             
-            <ul className="space-y-3 mb-8">
+            <ul className="space-y-2 mb-8">
               {[
-                "Cinema should provoke, unsettle, and challenge the audience without talking down to them.",
-                "Genre deserves respect, not shortcuts.",
-                "Style means nothing without substance.",
-                "The most interesting stories live in the untamed wild, not the safe zone."
+                "Cinema should provoke, unsettle, and challenge",
+                "Genre deserves respect, not shortcuts",
+                "Style means nothing without substance",
+                "The best stories live in the untamed wild"
               ].map((belief, index) => (
                 <li 
                   key={index}
