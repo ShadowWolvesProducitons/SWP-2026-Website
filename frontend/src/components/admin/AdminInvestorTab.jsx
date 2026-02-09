@@ -1096,4 +1096,154 @@ const ActivityPanel = () => {
   );
 };
 
+// Investor Blog Posts Panel
+const BLOG_CATEGORIES = ['Update', 'Milestone', 'Financial', 'Production'];
+
+const InvestorBlogPanel = () => {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [showEditor, setShowEditor] = useState(false);
+  const [editingPost, setEditingPost] = useState(null);
+  const [form, setForm] = useState({ title: '', content: '', summary: '', category: 'Update', is_published: true });
+  const [saving, setSaving] = useState(false);
+
+  const fetchPosts = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/investors/blog/posts?published_only=false`);
+      if (res.ok) setPosts(await res.json());
+    } catch {
+      toast.error('Failed to load posts');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => { fetchPosts(); }, []);
+
+  const openEditor = (post = null) => {
+    if (post) {
+      setForm({ title: post.title, content: post.content, summary: post.summary || '', category: post.category || 'Update', is_published: post.is_published ?? true });
+      setEditingPost(post);
+    } else {
+      setForm({ title: '', content: '', summary: '', category: 'Update', is_published: true });
+      setEditingPost(null);
+    }
+    setShowEditor(true);
+  };
+
+  const handleSave = async () => {
+    if (!form.title.trim() || !form.content.trim()) {
+      toast.error('Title and content are required');
+      return;
+    }
+    setSaving(true);
+    try {
+      const url = editingPost
+        ? `${process.env.REACT_APP_BACKEND_URL}/api/investors/blog/posts/${editingPost.id}`
+        : `${process.env.REACT_APP_BACKEND_URL}/api/investors/blog/posts`;
+      const res = await fetch(url, {
+        method: editingPost ? 'PUT' : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form)
+      });
+      if (res.ok) {
+        toast.success(editingPost ? 'Post updated' : 'Post created');
+        setShowEditor(false);
+        fetchPosts();
+      } else {
+        toast.error('Failed to save');
+      }
+    } catch {
+      toast.error('Failed to save');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleDelete = async (post) => {
+    if (!window.confirm(`Delete "${post.title}"?`)) return;
+    try {
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/investors/blog/posts/${post.id}`, { method: 'DELETE' });
+      if (res.ok) {
+        toast.success('Post deleted');
+        fetchPosts();
+      }
+    } catch {
+      toast.error('Failed to delete');
+    }
+  };
+
+  const formatDate = (dateStr) => {
+    if (!dateStr) return '-';
+    return new Date(dateStr).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
+  };
+
+  return (
+    <div data-testid="investor-blog-panel">
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h3 className="text-lg font-semibold text-white">Investor Blog Posts</h3>
+          <p className="text-gray-500 text-sm">Private updates visible only in the investor portal.</p>
+        </div>
+        <button onClick={() => openEditor()} className="flex items-center gap-2 px-4 py-2 bg-electric-blue text-white rounded-lg text-sm" data-testid="new-blog-post-btn">
+          <Plus size={16} /> New Post
+        </button>
+      </div>
+
+      {showEditor && (
+        <div className="bg-smoke-gray border border-gray-700 rounded-lg p-6 mb-6 space-y-4">
+          <h4 className="text-white font-semibold">{editingPost ? 'Edit Post' : 'New Post'}</h4>
+          <input type="text" value={form.title} onChange={(e) => setForm(s => ({ ...s, title: e.target.value }))} className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2 text-white" placeholder="Post title" data-testid="blog-title-input" />
+          <input type="text" value={form.summary} onChange={(e) => setForm(s => ({ ...s, summary: e.target.value }))} className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2 text-white" placeholder="Brief summary (optional)" />
+          <div className="flex gap-3">
+            <select value={form.category} onChange={(e) => setForm(s => ({ ...s, category: e.target.value }))} className="bg-black border border-gray-700 rounded-lg px-4 py-2 text-white">
+              {BLOG_CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+            </select>
+            <label className="flex items-center gap-2 text-gray-400 cursor-pointer">
+              <input type="checkbox" checked={form.is_published} onChange={(e) => setForm(s => ({ ...s, is_published: e.target.checked }))} className="rounded" />
+              Published
+            </label>
+          </div>
+          <textarea value={form.content} onChange={(e) => setForm(s => ({ ...s, content: e.target.value }))} className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white resize-none h-48 font-mono text-sm" placeholder="Post content (supports HTML)" data-testid="blog-content-input" />
+          <div className="flex gap-3">
+            <button onClick={handleSave} disabled={saving} className="px-6 py-2 bg-electric-blue text-white rounded-lg text-sm disabled:opacity-50" data-testid="blog-save-btn">{saving ? 'Saving...' : 'Save'}</button>
+            <button onClick={() => setShowEditor(false)} className="px-6 py-2 border border-gray-700 text-gray-400 rounded-lg text-sm">Cancel</button>
+          </div>
+        </div>
+      )}
+
+      {loading ? (
+        <div className="text-center py-8"><RefreshCw className="w-6 h-6 text-electric-blue animate-spin mx-auto" /></div>
+      ) : posts.length === 0 ? (
+        <div className="text-center py-12 bg-smoke-gray rounded-lg border border-gray-800">
+          <Newspaper className="w-10 h-10 text-gray-700 mx-auto mb-3" />
+          <p className="text-gray-400">No blog posts yet. Create one to share updates with investors.</p>
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {posts.map(post => (
+            <div key={post.id} className="flex items-center justify-between bg-smoke-gray border border-gray-800 rounded-lg px-6 py-4">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-3 mb-1">
+                  <h4 className="text-white font-semibold truncate">{post.title}</h4>
+                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono uppercase ${post.is_published ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-400'}`}>
+                    {post.is_published ? 'Published' : 'Draft'}
+                  </span>
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono uppercase bg-white/5 text-gray-400">{post.category}</span>
+                </div>
+                <p className="text-gray-500 text-sm">{formatDate(post.created_at)}</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <button onClick={() => openEditor(post)} className="p-2 text-gray-400 hover:text-white"><Edit2 size={16} /></button>
+                <button onClick={() => handleDelete(post)} className="p-2 text-gray-400 hover:text-red-400"><Trash2 size={16} /></button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 export default AdminInvestorTab;
