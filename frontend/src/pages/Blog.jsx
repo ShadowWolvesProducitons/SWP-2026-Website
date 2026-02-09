@@ -59,14 +59,13 @@ const Blog = () => {
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-4" style={{ fontFamily: 'Cinzel, serif' }}>
             The Den
           </h1>
-          <p className="max-w-2xl text-xl text-gray-400 mb-6">
-            Field notes from the studio — no fluff.
-          </p>
-          {/* Intro Banner */}
-          <div className="bg-black/50 border border-gray-800 rounded-lg p-5 max-w-2xl">
-            <p className="text-gray-300 text-sm leading-relaxed">
-              Casting calls. Crew needs. Production lessons. Tools we actually use. 
-              This is a working blog — grounded in real studio activity, not content for content's sake.
+          {/* Intro Banner - Split text */}
+          <div className="max-w-2xl space-y-3">
+            <p className="text-xl text-gray-400">
+              Casting calls. Crew needs. Production lessons. Tools we actually use.
+            </p>
+            <p className="text-gray-500">
+              A working blog — grounded in real studio activity, not content for content's sake.
             </p>
           </div>
         </div>
@@ -78,13 +77,13 @@ const Blog = () => {
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
               <p className="text-white font-medium">Get The Producer's Playbook (Free)</p>
-              <p className="text-gray-500 text-sm">Practical tools we actually use. No fluff.</p>
+              <p className="text-gray-500 text-sm">A practical, step-by-step roadmap — from development through release.</p>
             </div>
             <Link
               to="/#newsletter"
               className="px-6 py-2 bg-electric-blue hover:bg-electric-blue/90 text-white rounded-full text-sm font-mono uppercase tracking-widest transition-all"
             >
-              Subscribe
+              Get The Playbook
             </Link>
           </div>
         </div>
