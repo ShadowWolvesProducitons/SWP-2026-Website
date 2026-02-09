@@ -49,6 +49,22 @@ const Films = () => {
     }
   }, [selectedGenre, films]);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsGenreDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleGenreSelect = (genre) => {
+    setSelectedGenre(genre);
+    setIsGenreDropdownOpen(false);
+  };
+
   const handleFilmClick = (film) => {
     // Transform API data to match modal expectations
     const modalFilm = {
