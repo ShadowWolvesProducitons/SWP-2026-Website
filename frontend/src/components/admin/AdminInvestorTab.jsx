@@ -45,6 +45,7 @@ const AdminInvestorTab = () => {
       {activeTab === 'settings' && <SettingsPanel />}
       {activeTab === 'credentials' && <CredentialsPanel />}
       {activeTab === 'projects' && <ProjectsPanel />}
+      {activeTab === 'blog' && <InvestorBlogPanel />}
       {activeTab === 'activity' && <ActivityPanel />}
     </div>
   );
