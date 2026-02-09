@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   RefreshCw, Plus, Edit2, Trash2, Copy, Key, 
   FileText, Download, Users, Settings, ChevronDown, ChevronUp, X, Upload,
-  Activity, Clock, User, Mail, Building, Phone
+  Activity, Clock, User, Mail, Building, Phone, Newspaper
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -10,6 +10,7 @@ const TABS = [
   { id: 'settings', label: 'Settings', icon: Settings },
   { id: 'credentials', label: 'Access Codes', icon: Key },
   { id: 'projects', label: 'Slate Projects', icon: FileText },
+  { id: 'blog', label: 'Blog Posts', icon: Newspaper },
   { id: 'activity', label: 'Activity', icon: Activity },
 ];
 
