@@ -3,6 +3,21 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Facebook, Instagram, Youtube, Mail, Phone, MapPin } from 'lucide-react';
 
 const Footer = () => {
+  const navigate = useNavigate();
+  let clickCount = 0;
+  let clickTimer = null;
+
+  const handleSecretClick = () => {
+    clickCount++;
+    if (clickCount === 3) {
+      clickCount = 0;
+      clearTimeout(clickTimer);
+      navigate('/admin');
+    }
+    clearTimeout(clickTimer);
+    clickTimer = setTimeout(() => { clickCount = 0; }, 1000);
+  };
+
   return (
     <footer className="footer bg-black border-t border-gray-800 text-gray-300">
       <div className="container mx-auto px-4 py-16">
