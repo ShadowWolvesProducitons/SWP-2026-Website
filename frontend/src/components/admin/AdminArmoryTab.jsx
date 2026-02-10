@@ -628,15 +628,16 @@ const ProductModal = ({ item, onClose, onSave }) => {
   );
 };
 
-// Landing Page Canonical Template Fields
-const ListEditor = ({ label, items, onChange, placeholder }) => {
+// Reusable list editor for repeating items
+const ListEditor = ({ label, helper, items, onChange, placeholder }) => {
   const [newItem, setNewItem] = useState('');
   const add = () => {
     if (newItem.trim()) { onChange([...items, newItem.trim()]); setNewItem(''); }
   };
   return (
     <div>
-      <label className="block text-gray-400 text-sm mb-2">{label}</label>
+      <label className="block text-gray-400 text-sm mb-1">{label}</label>
+      {helper && <p className="text-gray-600 text-xs mb-2">{helper}</p>}
       <div className="space-y-1.5 mb-2">
         {items.map((item, idx) => (
           <div key={idx} className="flex items-center gap-2 bg-black border border-gray-700 rounded-lg px-3 py-1.5 text-sm">
@@ -647,47 +648,37 @@ const ListEditor = ({ label, items, onChange, placeholder }) => {
         ))}
       </div>
       <div className="flex gap-2">
-        <input type="text" value={newItem} onChange={(e) => setNewItem(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), add())} className="flex-1 bg-black border border-gray-700 rounded-lg px-3 py-1.5 text-white text-sm" placeholder={placeholder} />
+        <input type="text" value={newItem} onChange={(e) => setNewItem(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), add())} className="flex-1 bg-black border border-gray-700 rounded-lg px-3 py-1.5 text-white text-sm focus:border-electric-blue focus:outline-none" placeholder={placeholder} />
         <button type="button" onClick={add} className="px-3 py-1.5 bg-electric-blue text-white rounded-lg text-sm">Add</button>
       </div>
     </div>
   );
 };
 
-const LandingPageFields = ({ formData, setFormData }) => (
-  <div className="space-y-5">
-    <p className="text-gray-500 text-xs border border-gray-800 bg-black/50 rounded-lg p-3">
-      These fields populate the canonical app landing page template. Leave sections empty to skip them.
-    </p>
+// Tag editor with pill display
+const TagEditor = ({ label, helper, tags, onChange }) => {
+  const [newTag, setNewTag] = useState('');
+  const add = () => {
+    if (newTag.trim() && !tags.includes(newTag.trim())) { onChange([...tags, newTag.trim()]); setNewTag(''); }
+  };
+  return (
     <div>
-      <label className="block text-gray-400 text-sm mb-1">Price Status</label>
-      <input type="text" value={formData.price_status} onChange={(e) => setFormData(s => ({ ...s, price_status: e.target.value }))} className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2 text-white" placeholder="Free / Trial / Paid (A$X)" />
+      <label className="block text-gray-400 text-sm mb-1">{label}</label>
+      {helper && <p className="text-gray-600 text-xs mb-2">{helper}</p>}
+      <div className="flex flex-wrap gap-2 mb-2">
+        {tags.map((tag, idx) => (
+          <span key={idx} className="flex items-center gap-1 bg-white/5 border border-gray-700 px-3 py-1 rounded-full text-sm text-gray-300">
+            {tag}
+            <button type="button" onClick={() => onChange(tags.filter((_, i) => i !== idx))} className="text-gray-400 hover:text-red-400"><X size={12} /></button>
+          </span>
+        ))}
+      </div>
+      <div className="flex gap-2">
+        <input type="text" value={newTag} onChange={(e) => setNewTag(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), add())} className="flex-1 bg-black border border-gray-700 rounded-lg px-3 py-1.5 text-white text-sm focus:border-electric-blue focus:outline-none" placeholder="Add a tag..." />
+        <button type="button" onClick={add} className="px-3 py-1.5 bg-gray-700 text-white rounded-lg text-sm">Add</button>
+      </div>
     </div>
-    <div>
-      <label className="block text-gray-400 text-sm mb-1">What It Is (1-2 lines max)</label>
-      <textarea value={formData.what_it_is} onChange={(e) => setFormData(s => ({ ...s, what_it_is: e.target.value }))} className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2 text-white resize-none h-20" placeholder="[App] turns [core activity] into [clear outcome]. Built for [who], without [what it avoids]." />
-    </div>
-    <ListEditor label="Core Actions (short scannable steps)" items={formData.core_actions} onChange={(v) => setFormData(s => ({ ...s, core_actions: v }))} placeholder="e.g. Create a room" />
-    <ListEditor label="What You Get / Experiences" items={formData.experiences} onChange={(v) => setFormData(s => ({ ...s, experiences: v }))} placeholder="e.g. Real-time multiplayer battles" />
-    <ListEditor label="How It Works (numbered flow)" items={formData.how_it_works} onChange={(v) => setFormData(s => ({ ...s, how_it_works: v }))} placeholder="e.g. Choose your character" />
-    <div>
-      <label className="block text-gray-400 text-sm mb-1">How It Works Notes (2-3 clarifying lines)</label>
-      <textarea value={formData.how_it_works_notes} onChange={(e) => setFormData(s => ({ ...s, how_it_works_notes: e.target.value }))} className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2 text-white resize-none h-16" placeholder="What updates in real time. Who controls what..." />
-    </div>
-    <ListEditor label="What It's Not (keep it blunt)" items={formData.what_its_not} onChange={(v) => setFormData(s => ({ ...s, what_its_not: v }))} placeholder="e.g. No ads" />
-    <div>
-      <label className="block text-gray-400 text-sm mb-1">What It's Not — Closing Line</label>
-      <input type="text" value={formData.what_its_not_closing} onChange={(e) => setFormData(s => ({ ...s, what_its_not_closing: e.target.value }))} className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2 text-white" placeholder="Just [core experience] and [emotional payoff]." />
-    </div>
-    <div>
-      <label className="block text-gray-400 text-sm mb-1">Final CTA Text</label>
-      <input type="text" value={formData.final_cta_text} onChange={(e) => setFormData(s => ({ ...s, final_cta_text: e.target.value }))} className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2 text-white" placeholder="[App Name] is [core benefit]." />
-    </div>
-    <div>
-      <label className="block text-gray-400 text-sm mb-1">Final CTA Microcopy</label>
-      <input type="text" value={formData.final_cta_microcopy} onChange={(e) => setFormData(s => ({ ...s, final_cta_microcopy: e.target.value }))} className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2 text-white" placeholder="No subscriptions · No ads · No lock-in" />
-    </div>
-  </div>
-);
+  );
+};
 
 export default AdminArmoryTab;
