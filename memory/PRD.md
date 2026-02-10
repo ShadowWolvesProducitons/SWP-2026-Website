@@ -1,183 +1,103 @@
 # Shadow Wolves Productions - Product Requirements Document
 
 ## Original Problem Statement
-Build a professional, cinematic website for Shadow Wolves Productions - a creator-led, genre-focused film production company. The site has evolved from a static portfolio into a full-stack studio-grade platform with comprehensive content management.
+Professional, cinematic website for "Shadow Wolves Productions" evolved into a full-stack platform with React frontend, FastAPI backend, MongoDB. Features include public site, admin console, investor portal, email notifications, AI tools, analytics, and lead magnet.
 
-**Brand Tone:** Dark, confident, selective, creator-led. No corporate fluff. No inspirational clichés.  
-**Tagline:** "WE DON'T FOLLOW. WE HUNT."
-
----
-
-## Core Requirements
-
-### Public-Facing Website
-
-| Page | Route | Status | Description |
-|------|-------|--------|-------------|
-| Homepage | `/` | ✅ Complete | Hero, featured films, **minimal service cards with modal**, newsletter |
-| Films | `/films` | ✅ Complete | Gallery with genre filters, cinematic lower-third hover effects, modal viewer |
-| About/Manifesto | `/about` | ✅ Complete | Creative manifesto, philosophy, what we do/believe/don't do |
-| The Armory | `/services` | ✅ Complete | E-commerce style product cards for apps, templates, downloads |
-| The Den (Blog) | `/blog` | ✅ Complete | Blog index with SEO-friendly individual post pages |
-| Work With Us | `/work-with-us` | ✅ Complete | Structured submission system with form validation |
-| Contact | `/contact` | ✅ Complete | Contact form (backend) + functional newsletter signup |
-| Investor Portal | `/investors` | ✅ Complete | Password-protected private portal |
-
-### Studio Admin Console (`/admin`)
-
-| Tab | Status | Features |
-|-----|--------|----------|
-| Dashboard | ✅ Complete | Analytics overview, stats cards, recent activity feed, email campaign analytics |
-| Films | ✅ Complete | Full CRUD, image upload, genres, status, featured toggle |
-| The Armory | ✅ Complete | CRUD for apps, templates, downloads, courses, ebooks |
-| The Den (Blog) | ✅ Complete | Tiptap rich text editor with full SEO, YouTube embeds, **AI cover image generation**, draft/published states |
-| Messages | ✅ Complete | View/manage contact form messages with status workflow |
-| Submissions | ✅ Complete | View/manage submissions with status workflow |
-| Newsletter | ✅ Complete | View subscribers, export emails, unsubscribe management, **bulk email sending** |
-| Email Templates | ✅ Complete | Customize all email notifications with Tiptap HTML editor |
-| Investors | ✅ Complete | Portal settings, access codes, slate projects, documents, inquiries |
-
-### Investor Portal Sections
-
-| Section | Status | Description |
-|---------|--------|-------------|
-| Overview | ✅ Complete | Studio philosophy, development-first mindset |
-| Development Slate | ✅ Complete | Projects with poster, hook, description, budget range + **Request Materials chips** |
-| Investment Model | ✅ Complete | Project-by-project and slate investment options |
-| Expression of Interest | ✅ Complete | Private inquiry form with **conditional project dropdown** |
-
-*Note: Track Record and Documents sections removed per user request. Documents are now accessed via Request Materials chips within each project.*
-
----
-
-## Technical Architecture
-
-### Stack
-- **Frontend:** React 19, TailwindCSS, Shadcn/UI, React Router
-- **Backend:** FastAPI, Pydantic, Motor (async MongoDB)
+## Architecture
+- **Frontend:** React + TailwindCSS + Framer Motion + Tiptap
+- **Backend:** FastAPI + Motor (async MongoDB)
 - **Database:** MongoDB
-- **Rich Text:** Tiptap
-- **SEO:** React Helmet
+- **Integrations:** Resend (email), OpenAI via emergentintegrations (AI image gen), pypdf + reportlab (PDF watermark)
 
-### Key Collections
-- `films` - Film entries
-- `den_items` - Armory products
-- `blog_posts` - Blog content (HTML from Tiptap)
-- `submissions` - Work With Us submissions
-- `newsletter` - Newsletter subscribers
-- `investor_settings` - Portal configuration
-- `investor_credentials` - Access codes
-- `investor_projects` - Development slate
-- `investor_documents` - Downloadable files
-- `investor_inquiries` - Expression of interest forms (with project selection)
-- `document_downloads` - Download logging
-- `document_requests` - **New:** Document request tracking (investor details for pitch decks, screeners, scripts)
+## Core Pages & Features
+### Public Site
+- Home, About, Films, The Armory (product catalog), The Den (blog), Work With Us, Contact
+- Individual product landing pages with canonical template (/armory/:slug)
+- Lead Magnet popup ("Producer's Playbook")
+- Genre filter dropdown on Films page
 
-### Design System
-- **Heading Font:** Cinzel (serif)
-- **Primary Color:** Electric Blue (#233dff)
-- **Background:** Black (#0a0a0a)
-- **Card Background:** Smoke Gray (#1a1a1a)
+### Studio Admin Console (/admin)
+- Analytics Dashboard with email campaign stats
+- Films, Armory, Blog (The Den) management
+- **Activity Tab** (merged Messages + Submissions + CineConnect interests) with filter chips
+- Newsletter management with bulk send
+- Email templates
+- **Investor management** with settings, access codes, slate projects, blog posts, activity log
 
----
+### Investor Portal (/investors)
+- Multi-step login with NDA acceptance
+- Development Slate with per-project document access
+- **Studio Updates** (private blog) section
+- Smart document download with PDF watermarking
+- Investment Model overview
+- Expression of Interest form
 
-## Access Credentials
+## What's Been Implemented (as of Feb 10, 2026)
 
-| Portal | URL | Credentials |
-|--------|-----|-------------|
-| Admin | `/admin` | Password: `shadowwolves2024` |
-| Investor | `/investors` | Password: `investor2024` (or access code) |
+### Completed Features
+- Full public site with all pages
+- Admin console with all tabs including merged Activity tab
+- Investor portal with structured journey, NDA, smart downloads
+- AI image generation in blog editor
+- The Armory with individual product landing pages (slug-based routing)
+- **Canonical App Landing Page Template** with sections: Hero, What It Is, Core Actions, What You Get, Features, How It Works, Who It's For, Why It Works, What It's Not, Tags, Final CTA
+- **Unified Armory Admin Modal** — accordion-based Product Page Builder with 5 sections (Product Basics, Product Page Content, Media, Purchase & Access, SEO) + AI SEO Assist
+- **CineConnect Register Interest** button on Work With Us page
+- **Back button** on product pages and admin panel
+- **Hidden admin link** (triple-click company name in footer)
+- **Investor private blog** — Studio Updates visible in portal, manageable from admin
+- **Connection error fix** — improved error handling across LeadMagnetPopup and InvestorPortal
+- **Get The Playbook fix** — button now triggers popup directly via custom event
+- Database query optimizations (8 critical fixes)
+- Deployment readiness (.gitignore fix, health check)
 
----
+### Admin Credentials
+- Admin: /admin, Password: shadowwolves2024
+- Investor: /investors, Password: investor2024
+- Test Access Code: SMITH2024
 
-## Third-Party Integrations
+## Prioritized Backlog
 
-| Service | Status | Notes |
-|---------|--------|-------|
-| Resend (Email) | ✅ Active | Domain `newsletter.shadowwolvesproductions.com.au` verified. Sends welcome emails, admin notifications, and bulk newsletters |
-| Tiptap YouTube | ✅ Active | YouTube video embedding in blog posts |
-| OpenAI GPT Image 1 | ✅ Active | AI cover image generation for blog posts via Emergent LLM key |
+### P1 - Remaining Tasks
+- Email System Expansion (Lead Magnet Delivery, Unsubscribe Confirmation, Investor Access Granted, Submission Confirmation templates)
+- E-commerce for The Armory (Stripe integration)
 
----
+### P2 - Future
+- CineConnect Database (full cast/crew feature)
+- Social media integration
+- SEO improvements
+- `font-['Cinzel']` CSS refactoring to global class
+- Producer's Playbook PDF: move from artifact URL to /frontend/public/assets
 
-## What's Been Implemented
-
-### December 2025 - Initial Build
-- Full-stack application with React frontend and FastAPI backend
-- Films page with genre filtering and cinematic modal
-- Admin console with Films CRUD
-
-### January 2026 - CMS Expansion
-- The Armory (products) with admin management
-- The Den (blog) with Tiptap rich text editor
-- E-commerce style product cards
-
-### February 2026 - Studio Infrastructure Expansion
-- **About/Manifesto page** - Complete creative manifesto
-- **Work With Us/Submissions** - Structured submission form with backend storage
-- **Investor Portal** - Password + access code auth, 4 sections, admin controls
-- **Newsletter** - Functional subscription connected to database
-- **Admin Submissions tab** - View/manage with status workflow
-- **Admin Investors tab** - Full portal management with sub-tabs
-- **Admin Messages tab** - View contact form submissions
-- **Admin Newsletter tab** - View subscribers with export, unsubscribe, and bulk email features
-- **Bulk Email Campaigns** - Compose and send newsletters to all subscribers with test mode
-- **Email Campaign Analytics** - Track sent, delivered, opened, clicked, bounced with open/click rates
-- **Admin Analytics Dashboard** - Overview stats, recent activity feed, campaign performance
-- **Resend Webhook Integration** - Real-time email event tracking
-- **Blog YouTube Embed** - Tiptap YouTube extension for embedding videos
-- **Resend Email Integration** - Welcome emails for newsletter signups (requires domain verification)
-- **AI Cover Image Generation** - GPT-powered cover images for blog posts
-- **Lead Magnet Popup** - Producer's Playbook download with newsletter signup
-
-### February 2026 - Investor Portal Overhaul
-- **Removed Track Record section** - Investors can find this via IMDB/research
-- **Removed standalone Documents section** - Documents now per-project
-- **Request Materials in Development Slate** - Per-project chips: Request Pitch Deck, Request Screener, Request Script
-- **Smart Download System:**
-  - **Personal Access Code users** → Direct "Download" buttons, auto-watermarked with their name, instant download
-  - **Global password users** → "Request" form (name, email, company, phone) then watermarked download
-- **Auto PDF Watermarking** - All downloaded PDFs are watermarked with investor name, company, timestamp
-- **Download Logging** - Every download is logged with investor details and timestamp
-- **Project Selection in Expression of Interest** - Conditional dropdown when "Single Project" is selected
-- **AI Image URL Fix** - Fixed broken images by correcting API path
-
----
-
-## Known Limitations
-
-1. **File uploads** - Stored locally in `/app/backend/uploads/`
-2. **Rate limits** - Resend free tier allows 2 emails/second
-
----
-
-## Backlog / Future Tasks
-
-### P1 - High Priority
-- [ ] E-commerce for The Armory (payment integration)
-- [ ] Upload actual PDF documents for projects in admin (pitch decks, scripts, screeners)
-
-### P2 - Medium Priority  
-- [ ] Admin view for document download logs (who downloaded what, when)
-- [ ] Investor credential management UI improvements
-
-### P3 - Low Priority
-- [ ] Social media integration
-- [ ] SEO improvements
-- [ ] Performance optimization
-- [ ] Abstract font-['Cinzel'] into global CSS class
-
----
-
-## Admin Component Reference
-
+## Code Architecture
 ```
-/app/frontend/src/components/admin/
-├── AdminFilmsTab.jsx       - Film CRUD management
-├── AdminArmoryTab.jsx      - Product/resource management
-├── AdminBlogTab.jsx        - Blog with Tiptap editor + YouTube
-├── AdminMessagesTab.jsx    - Contact form submissions
-├── AdminSubmissionsTab.jsx - Work With Us submissions
-├── AdminNewsletterTab.jsx  - Newsletter subscriber management
-└── AdminInvestorTab.jsx    - Investor portal management
+/app
+├── backend/
+│   ├── models/
+│   │   ├── den_item.py        # Canonical template fields (who_its_for, why_it_works, etc.)
+│   │   └── investor.py
+│   ├── routes/
+│   │   ├── ai.py, blog.py, contact.py, den_items.py
+│   │   ├── investors.py       # Includes investor blog CRUD
+│   │   ├── newsletter.py, submissions.py, upload.py, webhooks.py
+│   ├── utils/watermark.py
+│   └── server.py
+└── frontend/src/
+    ├── components/
+    │   ├── admin/
+    │   │   ├── AdminActivityTab.jsx    # Merged Messages/Submissions/CineConnect
+    │   │   ├── AdminArmoryTab.jsx      # Accordion-based Product Page Builder
+    │   │   ├── AdminInvestorTab.jsx    # With Blog Posts panel
+    │   │   └── ...other admin tabs
+    │   ├── Footer.jsx                  # Triple-click admin link
+    │   ├── Header.jsx
+    │   └── LeadMagnetPopup.jsx         # Custom event trigger
+    ├── pages/
+    │   ├── About.jsx, Blog.jsx, Films.jsx, Home.jsx
+    │   ├── AdminDashboard.jsx          # Back to Website button
+    │   ├── InvestorPortal.jsx          # Studio Updates section
+    │   ├── ProductPage.jsx             # Canonical template with all sections
+    │   ├── TheDen.jsx, WorkWithUs.jsx  # CineConnect section
+    │   └── ...
+    └── App.js
 ```
