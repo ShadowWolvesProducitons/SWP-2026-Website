@@ -8,6 +8,15 @@ const LeadMagnetPopup = () => {
   const [email, setEmail] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
+  // Listen for manual trigger events from other components
+  useEffect(() => {
+    const handleTrigger = () => {
+      setIsVisible(true);
+    };
+    window.addEventListener('trigger-lead-magnet', handleTrigger);
+    return () => window.removeEventListener('trigger-lead-magnet', handleTrigger);
+  }, []);
+
   // Check if popup should show
   const shouldShowPopup = useCallback(() => {
     // Never show if already subscribed
