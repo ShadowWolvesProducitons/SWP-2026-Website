@@ -30,6 +30,8 @@ class DenItemBase(BaseModel):
     how_it_works_notes: Optional[str] = None  # 2-3 clarifying lines
     what_its_not: List[str] = []  # "No ads", "No social feeds", etc
     what_its_not_closing: Optional[str] = None  # Closing line
+    who_its_for: List[str] = []  # Audience descriptors
+    why_it_works: Optional[str] = None  # Short paragraph, max 3 lines
     final_cta_text: Optional[str] = None  # Final CTA line
     final_cta_microcopy: Optional[str] = None  # "No subscriptions · No ads"
     price_status: Optional[str] = None  # "Free", "Trial", "Paid (A$X)"
