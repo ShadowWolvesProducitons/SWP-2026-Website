@@ -1,21 +1,21 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Facebook, Instagram, Youtube, Mail, Phone, MapPin } from 'lucide-react';
 
 const Footer = () => {
   const navigate = useNavigate();
-  let clickCount = 0;
-  let clickTimer = null;
+  const clickCountRef = useRef(0);
+  const clickTimerRef = useRef(null);
 
   const handleSecretClick = () => {
-    clickCount++;
-    if (clickCount === 3) {
-      clickCount = 0;
-      clearTimeout(clickTimer);
+    clickCountRef.current++;
+    if (clickCountRef.current === 3) {
+      clickCountRef.current = 0;
+      clearTimeout(clickTimerRef.current);
       navigate('/admin');
     }
-    clearTimeout(clickTimer);
-    clickTimer = setTimeout(() => { clickCount = 0; }, 1000);
+    clearTimeout(clickTimerRef.current);
+    clickTimerRef.current = setTimeout(() => { clickCountRef.current = 0; }, 1000);
   };
 
   return (
