@@ -56,8 +56,9 @@ const AppContent = () => {
   const isAdminRoute = location.pathname.startsWith('/admin');
   const isInvestorRoute = location.pathname.startsWith('/investors');
   
-  // Show popup only on Home, About, Blog, and Blog Post pages
-  const showPopup = ['/', '/about', '/blog'].includes(location.pathname) || location.pathname.startsWith('/blog/');
+  // Show popup on content pages (auto-trigger via scroll/timer)
+  // Manual trigger via window event works on all pages
+  const showPopup = !isAdminRoute && !isInvestorRoute;
 
   return (
     <Layout showLayout={!isAdminRoute && !isInvestorRoute} showPopup={showPopup}>
