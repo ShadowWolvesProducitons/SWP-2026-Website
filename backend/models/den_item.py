@@ -76,6 +76,8 @@ class DenItemUpdate(BaseModel):
     how_it_works_notes: Optional[str] = None
     what_its_not: Optional[List[str]] = None
     what_its_not_closing: Optional[str] = None
+    who_its_for: Optional[List[str]] = None
+    why_it_works: Optional[str] = None
     final_cta_text: Optional[str] = None
     final_cta_microcopy: Optional[str] = None
     price_status: Optional[str] = None
