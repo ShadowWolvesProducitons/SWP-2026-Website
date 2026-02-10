@@ -280,6 +280,33 @@ const ProductPage = () => {
         </section>
       )}
 
+      {/* WHO IT'S FOR */}
+      {product.who_its_for?.length > 0 && (
+        <section className="container mx-auto px-4 py-12 border-t border-gray-800/50" data-testid="section-who-its-for">
+          <div className="max-w-3xl">
+            <h2 className="text-2xl font-bold text-white mb-6" style={{ fontFamily: 'Cinzel, serif' }}>Who It's For</h2>
+            <ul className="space-y-3">
+              {product.who_its_for.map((item, idx) => (
+                <li key={idx} className="flex items-start gap-3 text-gray-300">
+                  <span className="w-1.5 h-1.5 rounded-full bg-electric-blue mt-2.5 flex-shrink-0" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
+      {/* WHY IT WORKS */}
+      {product.why_it_works && (
+        <section className="container mx-auto px-4 py-12 border-t border-gray-800/50" data-testid="section-why-it-works">
+          <div className="max-w-3xl">
+            <h2 className="text-2xl font-bold text-white mb-4" style={{ fontFamily: 'Cinzel, serif' }}>Why It Works</h2>
+            <p className="text-gray-400 text-lg leading-relaxed">{product.why_it_works}</p>
+          </div>
+        </section>
+      )}
+
       {/* Screenshots Gallery */}
       {product.screenshots?.length > 0 && (
         <section className="container mx-auto px-4 py-12 border-t border-gray-800/50" data-testid="section-screenshots">
