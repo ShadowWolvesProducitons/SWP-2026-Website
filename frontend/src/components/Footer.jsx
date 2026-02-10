@@ -69,7 +69,7 @@ const Footer = () => {
 
         <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm text-gray-500 mb-4 md:mb-0">
-            © 2026 <Link to="/admin" className="text-gray-500 hover:text-gray-500 cursor-default" tabIndex={-1} data-testid="hidden-admin-link" aria-hidden="true">Shadow Wolves Productions</Link> Pty Ltd. All rights reserved.
+            © 2026 <span onClick={handleSecretClick} className="cursor-default select-none" data-testid="hidden-admin-link">Shadow Wolves Productions</span> Pty Ltd. All rights reserved.
           </p>
           
           {/* Social Links - Right Side */}
