@@ -79,12 +79,13 @@ const Blog = () => {
               <p className="text-white font-medium">Get The Producer's Playbook (Free)</p>
               <p className="text-gray-500 text-sm">A practical, step-by-step roadmap — from development through release.</p>
             </div>
-            <Link
-              to="/#newsletter"
+            <button
+              onClick={() => window.dispatchEvent(new Event('trigger-lead-magnet'))}
               className="px-6 py-2 bg-electric-blue hover:bg-electric-blue/90 text-white rounded-full text-sm font-mono uppercase tracking-widest transition-all"
+              data-testid="get-the-playbook-btn"
             >
               Get The Playbook
-            </Link>
+            </button>
           </div>
         </div>
       </section>
