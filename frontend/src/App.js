@@ -6,13 +6,14 @@ import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Films from "./pages/Films";
-import Services from "./pages/Services";
 import TheDen from "./pages/TheDen";
 import Contact from "./pages/Contact";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import ProductPage from "./pages/ProductPage";
 import WorkWithUs from "./pages/WorkWithUs";
+import InvestorsPublic from "./pages/InvestorsPublic";
+import InvestorSignup from "./pages/InvestorSignup";
 import InvestorLogin from "./pages/InvestorLogin";
 import InvestorPortal from "./pages/InvestorPortal";
 import AdminLogin from "./pages/AdminLogin";
@@ -20,11 +21,8 @@ import AdminDashboard from "./pages/AdminDashboard";
 import LeadMagnetPopup from "./components/LeadMagnetPopup";
 import { Toaster } from "./components/ui/sonner";
 
-// Layout wrapper that conditionally renders Header/Footer
 const Layout = ({ children, showLayout, showPopup }) => {
-  if (!showLayout) {
-    return <>{children}</>;
-  }
+  if (!showLayout) return <>{children}</>;
   return (
     <>
       <Header />
@@ -35,15 +33,11 @@ const Layout = ({ children, showLayout, showPopup }) => {
   );
 };
 
-// Protected route component
 const ProtectedRoute = ({ children, isAuthenticated }) => {
-  if (!isAuthenticated) {
-    return <Navigate to="/admin" replace />;
-  }
+  if (!isAuthenticated) return <Navigate to="/admin" replace />;
   return children;
 };
 
-// Main App content (needs to be inside BrowserRouter for useLocation)
 const AppContent = () => {
   const location = useLocation();
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(
@@ -54,60 +48,64 @@ const AppContent = () => {
   );
   
   const isAdminRoute = location.pathname.startsWith('/admin');
-  const isInvestorRoute = location.pathname.startsWith('/investors');
+  const isInvestorPortalRoute = location.pathname === '/investors/portal' || location.pathname === '/investors/login';
+  const isInvestorAuthRoute = location.pathname === '/investors/signup' || location.pathname === '/investors/login';
   
-  // Show popup on content pages (auto-trigger via scroll/timer)
-  // Manual trigger via window event works on all pages
-  const showPopup = !isAdminRoute && !isInvestorRoute;
+  // Show header/footer for public pages + public investors page + signup
+  const showLayout = !isAdminRoute && !isInvestorPortalRoute;
+  const showPopup = !isAdminRoute && !isInvestorPortalRoute && !isInvestorAuthRoute;
 
   return (
-    <Layout showLayout={!isAdminRoute && !isInvestorRoute} showPopup={showPopup}>
+    <Layout showLayout={showLayout} showPopup={showPopup}>
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/films" element={<Films />} />
-        <Route path="/services" element={<TheDen />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
         <Route path="/work-with-us" element={<WorkWithUs />} />
         
-        {/* The Armory Routes */}
+        {/* The Armory */}
         <Route path="/armory" element={<TheDen />} />
         <Route path="/armory/:slug" element={<ProductPage />} />
         
-        {/* Legacy redirect */}
+        {/* Legacy redirects */}
         <Route path="/services" element={<Navigate to="/armory" replace />} />
         <Route path="/den" element={<Navigate to="/armory" replace />} />
         
-        {/* Investor Portal Routes */}
-        <Route 
-          path="/investors" 
-          element={
-            isInvestorAuthenticated ? 
-              <InvestorPortal onLogout={() => setIsInvestorAuthenticated(false)} /> : 
-              <InvestorLogin onLogin={() => setIsInvestorAuthenticated(true)} />
-          } 
-        />
+        {/* Investors — Public Marketing Page */}
+        <Route path="/investors" element={<InvestorsPublic />} />
+        
+        {/* Investor Signup (with invite token) */}
+        <Route path="/investors/signup" element={<InvestorSignup />} />
+        
+        {/* Investor Login */}
+        <Route path="/investors/login" element={
+          isInvestorAuthenticated ?
+            <Navigate to="/investors/portal" replace /> :
+            <InvestorLogin onLogin={() => setIsInvestorAuthenticated(true)} />
+        } />
+        
+        {/* Investor Portal (gated) */}
+        <Route path="/investors/portal" element={
+          isInvestorAuthenticated ?
+            <InvestorPortal onLogout={() => { setIsInvestorAuthenticated(false); sessionStorage.removeItem('investorAuth'); }} /> :
+            <Navigate to="/investors/login" replace />
+        } />
         
         {/* Admin Routes */}
-        <Route 
-          path="/admin" 
-          element={
-            isAdminAuthenticated ? 
-              <Navigate to="/admin/dashboard" replace /> : 
-              <AdminLogin onLogin={() => setIsAdminAuthenticated(true)} />
-          } 
-        />
-        <Route 
-          path="/admin/dashboard" 
-          element={
-            <ProtectedRoute isAuthenticated={isAdminAuthenticated}>
-              <AdminDashboard onLogout={() => setIsAdminAuthenticated(false)} />
-            </ProtectedRoute>
-          } 
-        />
+        <Route path="/admin" element={
+          isAdminAuthenticated ?
+            <Navigate to="/admin/dashboard" replace /> :
+            <AdminLogin onLogin={() => setIsAdminAuthenticated(true)} />
+        } />
+        <Route path="/admin/dashboard" element={
+          <ProtectedRoute isAuthenticated={isAdminAuthenticated}>
+            <AdminDashboard onLogout={() => setIsAdminAuthenticated(false)} />
+          </ProtectedRoute>
+        } />
       </Routes>
       <Toaster />
     </Layout>
