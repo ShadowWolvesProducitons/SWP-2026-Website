@@ -862,3 +862,240 @@ async def delete_investor_blog_post(post_id: str):
         raise HTTPException(status_code=404, detail="Post not found")
     return {"message": "Post deleted"}
 
+
+# ========== INVESTOR ACCESS REQUEST + AUTH ==========
+
+def hash_password(password: str) -> str:
+    return hashlib.sha256(password.encode()).hexdigest()
+
+def verify_password(password: str, password_hash: str) -> bool:
+    return hash_password(password) == password_hash
+
+
+class AccessRequestData(BaseModel):
+    name: str
+    email: EmailStr
+    investor_type: str = "Individual"
+    area_of_interest: str = "Single Project"
+    message: Optional[str] = None
+    confidentiality_ack: bool = False
+    risk_ack: bool = False
+
+
+@router.post("/request-access")
+async def request_investor_access(data: AccessRequestData, background_tasks: BackgroundTasks):
+    """Public endpoint: request investor portal access. Auto-generates invite link + emails it."""
+    if not data.confidentiality_ack or not data.risk_ack:
+        raise HTTPException(status_code=400, detail="You must acknowledge both disclaimers")
+
+    # Check if already has an account
+    existing = await db.investor_accounts.find_one({"email": data.email}, {"_id": 0})
+    if existing:
+        raise HTTPException(status_code=400, detail="An account with this email already exists. Please log in.")
+
+    # Check for existing unused invite
+    existing_invite = await db.invite_tokens.find_one({"email": data.email, "used": False}, {"_id": 0})
+    if existing_invite:
+        return {"message": "An invite has already been sent to this email. Check your inbox."}
+
+    # Generate invite token
+    token = secrets.token_urlsafe(32)
+    expires_at = datetime.now(timezone.utc) + timedelta(days=7)
+
+    invite = {
+        "id": str(__import__('uuid').uuid4()),
+        "token": token,
+        "email": data.email,
+        "name": data.name,
+        "investor_type": data.investor_type,
+        "area_of_interest": data.area_of_interest,
+        "message": data.message,
+        "expires_at": expires_at.isoformat(),
+        "used": False,
+        "used_at": None,
+        "created_at": datetime.now(timezone.utc).isoformat()
+    }
+    await db.invite_tokens.insert_one(invite)
+    del invite["_id"]
+
+    # Build invite link
+    frontend_url = os.environ.get('FRONTEND_URL', os.environ.get('REACT_APP_BACKEND_URL', ''))
+    # Remove /api suffix if present for frontend URL
+    base_url = frontend_url.rstrip('/')
+    invite_link = f"{base_url}/investors/signup?token={token}"
+
+    # Email investor
+    async def send_invite_email():
+        try:
+            resend_api_key = os.environ.get('RESEND_API_KEY')
+            if not resend_api_key:
+                print("No RESEND_API_KEY, skipping invite email")
+                return
+            import resend
+            resend.api_key = resend_api_key
+            from_email = os.environ.get('FROM_EMAIL', 'onboarding@resend.dev')
+            await asyncio.to_thread(resend.Emails.send, {
+                "from": from_email,
+                "to": data.email,
+                "subject": "Your Shadow Wolves Investor Access",
+                "html": f"""<div style="font-family:Arial;max-width:600px;margin:0 auto;background:#0a0a0a;color:#fff;padding:40px;border-radius:12px;">
+                    <h1 style="color:#fff;font-size:24px;">Investor Portal Access</h1>
+                    <p style="color:#9ca3af;line-height:1.6;">Hi {data.name},</p>
+                    <p style="color:#9ca3af;line-height:1.6;">Thanks for your interest in Shadow Wolves Productions. Your personal investor portal access link is below.</p>
+                    <div style="margin:30px 0;">
+                        <a href="{invite_link}" style="display:inline-block;padding:14px 28px;background:#233dff;color:#fff;text-decoration:none;border-radius:8px;font-weight:bold;">Create Your Investor Account</a>
+                    </div>
+                    <p style="color:#6b7280;font-size:13px;">This link expires in 7 days. Use it to create your account with the same email address ({data.email}).</p>
+                    <hr style="border:none;border-top:1px solid #1f2937;margin:30px 0;"/>
+                    <p style="color:#233dff;font-size:12px;">Shadow Wolves Productions — Confidential</p>
+                </div>"""
+            })
+        except Exception as e:
+            print(f"Failed to send invite email: {e}")
+
+    # Notify admin
+    async def notify_admin():
+        try:
+            resend_api_key = os.environ.get('RESEND_API_KEY')
+            if not resend_api_key:
+                return
+            import resend
+            resend.api_key = resend_api_key
+            admin_email = os.environ.get('ADMIN_EMAIL', 'Brendan@shadowwolvesproductions.com.au')
+            from_email = os.environ.get('FROM_EMAIL', 'onboarding@resend.dev')
+            await asyncio.to_thread(resend.Emails.send, {
+                "from": from_email,
+                "to": admin_email,
+                "subject": f"New Investor Request: {data.name}",
+                "html": f"""<div style="font-family:Arial;max-width:600px;margin:0 auto;background:#0a0a0a;color:#fff;padding:40px;">
+                    <h1 style="color:#fff;font-size:20px;">New Investor Access Request</h1>
+                    <p style="color:#9ca3af;">Invite link was automatically generated and emailed.</p>
+                    <table style="width:100%;margin:20px 0;color:#d1d5db;">
+                        <tr><td style="padding:8px 0;color:#6b7280;">Name</td><td>{data.name}</td></tr>
+                        <tr><td style="padding:8px 0;color:#6b7280;">Email</td><td>{data.email}</td></tr>
+                        <tr><td style="padding:8px 0;color:#6b7280;">Type</td><td>{data.investor_type}</td></tr>
+                        <tr><td style="padding:8px 0;color:#6b7280;">Interest</td><td>{data.area_of_interest}</td></tr>
+                        <tr><td style="padding:8px 0;color:#6b7280;">Status</td><td>Invite Sent</td></tr>
+                        <tr><td style="padding:8px 0;color:#6b7280;">Time</td><td>{datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}</td></tr>
+                    </table>
+                    {f'<p style="color:#9ca3af;">Message: {data.message}</p>' if data.message else ''}
+                </div>"""
+            })
+        except Exception as e:
+            print(f"Failed to send admin notification: {e}")
+
+    background_tasks.add_task(send_invite_email)
+    background_tasks.add_task(notify_admin)
+
+    return {"message": "Your personal investor access link has been emailed to you."}
+
+
+class InvestorSignupData(BaseModel):
+    token: str
+    email: EmailStr
+    password: str
+    name: Optional[str] = None
+
+
+@router.post("/signup")
+async def investor_signup(data: InvestorSignupData):
+    """Sign up with an invite token. Creates investor account."""
+    # Validate token
+    invite = await db.invite_tokens.find_one({"token": data.token, "used": False}, {"_id": 0})
+    if not invite:
+        raise HTTPException(status_code=400, detail="Invalid or expired invite link")
+
+    # Check expiry
+    expires_at = invite.get("expires_at")
+    if expires_at:
+        exp = datetime.fromisoformat(expires_at) if isinstance(expires_at, str) else expires_at
+        if datetime.now(timezone.utc) > exp:
+            raise HTTPException(status_code=400, detail="This invite link has expired. Please request a new one.")
+
+    # Email must match
+    if data.email.lower() != invite["email"].lower():
+        raise HTTPException(status_code=400, detail="Email must match the invited email address")
+
+    # Check no existing account
+    existing = await db.investor_accounts.find_one({"email": data.email.lower()}, {"_id": 0})
+    if existing:
+        raise HTTPException(status_code=400, detail="An account with this email already exists")
+
+    # Create account
+    account = {
+        "id": str(__import__('uuid').uuid4()),
+        "name": data.name or invite.get("name", ""),
+        "email": data.email.lower(),
+        "investor_type": invite.get("investor_type", ""),
+        "area_of_interest": invite.get("area_of_interest", ""),
+        "password_hash": hash_password(data.password),
+        "status": "Active",
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "last_login": datetime.now(timezone.utc).isoformat()
+    }
+    await db.investor_accounts.insert_one(account)
+    del account["_id"]
+
+    # Mark token as used
+    await db.invite_tokens.update_one(
+        {"token": data.token},
+        {"$set": {"used": True, "used_at": datetime.now(timezone.utc).isoformat()}}
+    )
+
+    # Return account info (without password hash)
+    return {
+        "message": "Account created successfully",
+        "investor": {k: v for k, v in account.items() if k != "password_hash"}
+    }
+
+
+class InvestorLoginData(BaseModel):
+    email: EmailStr
+    password: str
+
+
+@router.post("/login")
+async def investor_login(data: InvestorLoginData):
+    """Login with email/password for registered investors."""
+    account = await db.investor_accounts.find_one({"email": data.email.lower()}, {"_id": 0})
+    if not account:
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+    if account.get("status") == "Suspended":
+        raise HTTPException(status_code=403, detail="Your account has been suspended")
+    if not verify_password(data.password, account.get("password_hash", "")):
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+
+    # Update last login
+    await db.investor_accounts.update_one(
+        {"email": data.email.lower()},
+        {"$set": {"last_login": datetime.now(timezone.utc).isoformat()}}
+    )
+
+    return {
+        "message": "Login successful",
+        "investor": {k: v for k, v in account.items() if k != "password_hash"}
+    }
+
+
+@router.get("/validate-token/{token}")
+async def validate_invite_token(token: str):
+    """Validate an invite token (for signup page)."""
+    invite = await db.invite_tokens.find_one({"token": token, "used": False}, {"_id": 0})
+    if not invite:
+        raise HTTPException(status_code=404, detail="Invalid or already used invite link")
+
+    expires_at = invite.get("expires_at")
+    if expires_at:
+        exp = datetime.fromisoformat(expires_at) if isinstance(expires_at, str) else expires_at
+        if datetime.now(timezone.utc) > exp:
+            raise HTTPException(status_code=410, detail="This invite link has expired")
+
+    return {"email": invite["email"], "name": invite.get("name", "")}
+
+
+@router.get("/accounts")
+async def get_investor_accounts():
+    """Get all investor accounts (admin)."""
+    accounts = await db.investor_accounts.find({}, {"_id": 0, "password_hash": 0}).to_list(500)
+    return accounts
+
