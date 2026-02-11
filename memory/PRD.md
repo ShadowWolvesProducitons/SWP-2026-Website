@@ -18,6 +18,7 @@ Professional, cinematic website for "Shadow Wolves Productions" evolved into a f
 
 ### Armory Admin Modal — Tabbed Product Page Builder
 - **5 Tabs:** Basics, Content, Media, Access, SEO
+- **Quick Fill Templates:** When creating a new product, a "Quick Fill" button pre-populates all Content fields with type-specific prompts (Apps, Courses, Templates, Downloads, eBooks). Each template includes structured placeholder copy for What This Is, Core Actions, What You Get, Features, How It Works, Who It's For, Why It Works, Tags, and CTA. Auto-switches to Content tab after applying.
 - **Content tab:** Hero/Above the Fold, What This Is, Core Actions, What You Get, Features, How It Works, Who It's For, Why It Works, Final CTA, Tags
 - **SEO tab:** Focus Keyword, SEO Title/Description with char count bars, OG Image, Google Preview, Social Card Preview, 9-item SEO Checklist, Generate SEO button
 - "What It's Not" section removed from Content tab per user request
