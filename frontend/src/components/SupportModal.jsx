@@ -126,8 +126,7 @@ const SupportModal = ({ open, onClose, supportKey }) => {
             <div className="sticky top-0 bg-[#0f0f0f] border-b border-gray-800 px-6 py-5 flex items-start justify-between z-10">
               <div>
                 <h2 
-                  className="text-xl md:text-2xl font-bold text-white flex items-center gap-3"
-                  style={{ fontFamily: 'Cinzel, serif' }}
+                  className="text-xl md:text-2xl font-bold text-white flex items-center gap-3 font-cinzel"
                 >
                   <span className="text-2xl">{content.emoji}</span>
                   {content.title}

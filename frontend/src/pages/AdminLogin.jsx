@@ -50,7 +50,7 @@ const AdminLogin = ({ onLogin }) => {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-electric-blue/20 rounded-full mb-4">
             <Lock className="w-8 h-8 text-electric-blue" />
           </div>
-          <h1 className="text-2xl font-bold text-white" style={{ fontFamily: 'Cinzel, serif' }}>
+          <h1 className="text-2xl font-bold text-white font-cinzel">
             Admin Access
           </h1>
           <p className="text-gray-500 text-sm mt-2">Shadow Wolves Productions</p>

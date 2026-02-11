@@ -126,8 +126,7 @@ const ServicesModal = ({ open, onClose, serviceKey }) => {
               <div>
                 <h2 
                   id="modal-title" 
-                  className="text-2xl md:text-3xl font-bold text-white"
-                  style={{ fontFamily: 'Cinzel, serif' }}
+                  className="text-2xl md:text-3xl font-bold text-white font-cinzel"
                 >
                   {content.title}
                 </h2>

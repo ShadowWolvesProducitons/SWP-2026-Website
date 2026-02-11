@@ -38,7 +38,7 @@ const CineConnectSection = () => {
   if (ccSubmitted) {
     return (
       <div className="mt-10 bg-green-500/5 border border-green-500/20 rounded-lg p-5" data-testid="cineconnect-section">
-        <h4 className="text-white font-bold mb-2" style={{ fontFamily: 'Cinzel, serif' }}>CineConnect</h4>
+        <h4 className="text-white font-bold mb-2 font-cinzel">CineConnect</h4>
         <p className="text-green-400 text-sm">You're on the list. We'll be in touch when CineConnect launches.</p>
       </div>
     );
@@ -46,7 +46,7 @@ const CineConnectSection = () => {
 
   return (
     <div className="mt-10 bg-electric-blue/5 border border-electric-blue/20 rounded-lg p-5" data-testid="cineconnect-section">
-      <h4 className="text-white font-bold mb-2" style={{ fontFamily: 'Cinzel, serif' }}>CineConnect</h4>
+      <h4 className="text-white font-bold mb-2 font-cinzel">CineConnect</h4>
       <p className="text-gray-400 text-sm mb-3">Cast & Crew Network (Coming Soon)</p>
       <p className="text-gray-500 text-xs mb-4">
         A curated database for production talent. Register your interest to be notified when we launch.
@@ -209,8 +209,7 @@ const WorkWithUs = () => {
           <div className="max-w-2xl mx-auto text-center">
             <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-8" />
             <h1 
-              className="text-4xl md:text-5xl font-bold text-white mb-6"
-              style={{ fontFamily: 'Cinzel, serif' }}
+              className="text-4xl md:text-5xl font-bold text-white mb-6 font-cinzel"
             >
               Thanks for your submission.
             </h1>
@@ -243,8 +242,7 @@ const WorkWithUs = () => {
             Submissions
           </p>
           <h1 
-            className="text-5xl md:text-6xl font-bold text-white mb-4"
-            style={{ fontFamily: 'Cinzel, serif' }}
+            className="text-5xl md:text-6xl font-bold text-white mb-4 font-cinzel"
           >
             Work With Us
           </h1>
@@ -262,8 +260,7 @@ const WorkWithUs = () => {
             {/* Left: Form */}
             <div>
               <h2 
-                className="text-3xl font-bold text-white mb-8"
-                style={{ fontFamily: 'Cinzel, serif' }}
+                className="text-3xl font-bold text-white mb-8 font-cinzel"
               >
                 Submit Your Project
               </h2>
@@ -470,8 +467,7 @@ const WorkWithUs = () => {
               {/* What We're Open To */}
               <div className="mb-10">
                 <h3 
-                  className="text-2xl font-bold text-white mb-6"
-                  style={{ fontFamily: 'Cinzel, serif' }}
+                  className="text-2xl font-bold text-white mb-6 font-cinzel"
                 >
                   What We're Open To
                 </h3>
@@ -494,8 +490,7 @@ const WorkWithUs = () => {
               {/* What We're Not Open To */}
               <div className="mb-10">
                 <h3 
-                  className="text-2xl font-bold text-white mb-6"
-                  style={{ fontFamily: 'Cinzel, serif' }}
+                  className="text-2xl font-bold text-white mb-6 font-cinzel"
                 >
                   What We're Not Open To
                 </h3>

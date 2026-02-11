@@ -56,7 +56,7 @@ const Blog = () => {
           <div className="absolute top-0 right-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl"></div>
         </div>
         <div className="container mx-auto px-4 relative z-10">
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-4" style={{ fontFamily: 'Cinzel, serif' }}>
+          <h1 className="text-5xl md:text-7xl font-bold text-white mb-4 font-cinzel">
             The Den
           </h1>
           {/* Intro Banner - Split text */}
@@ -157,7 +157,7 @@ const Blog = () => {
                           )}
                           <div className="p-6">
                             <span className="text-electric-blue text-xs font-mono uppercase tracking-widest mb-3 block">Featured</span>
-                            <h2 className="text-3xl font-bold text-white group-hover:text-electric-blue transition-colors mb-3" style={{ fontFamily: 'Cinzel, serif' }}>
+                            <h2 className="text-3xl font-bold text-white group-hover:text-electric-blue transition-colors mb-3 font-cinzel">
                               {featuredPost.title}
                             </h2>
                             {featuredPost.excerpt && (

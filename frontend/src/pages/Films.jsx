@@ -92,7 +92,7 @@ const Films = () => {
           <div className="absolute top-0 right-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl"></div>
         </div>
         <div className="container mx-auto px-4 relative z-10">
-          <h1 className="md:text-7xl !font-bold !text-6xl mb-6 text-white" style={{ fontFamily: 'Cinzel, serif' }}>Films</h1>
+          <h1 className="md:text-7xl !font-bold !text-6xl mb-6 text-white font-cinzel">Films</h1>
           <p className="max-w-2xl !text-xl text-gray-400">Original screen stories — past, present, and in development.</p>
         </div>
       </section>
@@ -227,7 +227,7 @@ const Films = () => {
                             </svg>
                           </div>
                           {/* Film Title */}
-                          <h4 className="text-white text-sm font-bold text-center mb-3 px-2" style={{ fontFamily: 'Cinzel, serif' }}>
+                          <h4 className="text-white text-sm font-bold text-center mb-3 px-2 font-cinzel">
                             {film.title}
                           </h4>
                           {/* Status Badge */}

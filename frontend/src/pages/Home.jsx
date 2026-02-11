@@ -141,7 +141,7 @@ const Home = () => {
             <span className="uppercase !font-mono !text-sm !italic !text-[#FFFFFF]">We Don’t Follow. We Hunt.</span>
           </div>
           
-          <h1 className="hero-title text-6xl md:text-8xl font-bold text-white mb-12 leading-tight" style={{ fontFamily: 'Cinzel, serif' }}>
+          <h1 className="hero-title text-6xl md:text-8xl font-bold text-white mb-12 leading-tight font-cinzel">
             SHADOW WOLVES
             <br />
             <span className="text-electric-blue">PRODUCTIONS</span>
@@ -230,7 +230,7 @@ const Home = () => {
       <section className="featured-films-section py-24 bg-black">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-5xl md:text-6xl font-bold text-white mb-4" style={{ fontFamily: 'Cinzel, serif' }}>Featured Films</h2>
+            <h2 className="text-5xl md:text-6xl font-bold text-white mb-4 font-cinzel">Featured Films</h2>
             <p className="!text-xl text-gray-400">A selection from our past work and current slate.</p>
           </div>
           
@@ -322,7 +322,7 @@ const Home = () => {
       <section className="services-section py-24 bg-smoke-gray">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="md:text-6xl !font-bold !text-5xl mb-4 text-white" style={{ fontFamily: 'Cinzel, serif' }}>What We Do</h2>
+            <h2 className="md:text-6xl !font-bold !text-5xl mb-4 text-white font-cinzel">What We Do</h2>
             <p className="!text-xl text-gray-400">We develop, produce, and support screen stories from first idea to final delivery.</p>
           </div>
           
@@ -342,8 +342,7 @@ const Home = () => {
               >
                 {/* Large Number */}
                 <span 
-                  className="absolute top-6 right-6 text-6xl md:text-7xl font-bold text-white/[0.06] group-hover:text-white/[0.12] transition-opacity duration-300 select-none"
-                  style={{ fontFamily: 'Cinzel, serif' }}
+                  className="absolute top-6 right-6 text-6xl md:text-7xl font-bold text-white/[0.06] group-hover:text-white/[0.12] transition-opacity duration-300 select-none font-cinzel"
                 >
                   {service.num}
                 </span>
@@ -351,8 +350,7 @@ const Home = () => {
                 {/* Content */}
                 <div className="relative z-10">
                   <h3 
-                    className="text-2xl md:text-3xl font-bold text-white mb-4 group-hover:text-electric-blue transition-colors duration-300"
-                    style={{ fontFamily: 'Cinzel, serif' }}
+                    className="text-2xl md:text-3xl font-bold text-white mb-4 group-hover:text-electric-blue transition-colors duration-300 font-cinzel"
                   >
                     {service.title}
                   </h3>
@@ -400,7 +398,7 @@ const Home = () => {
         </div>
         
         <div className="container mx-auto px-4 text-center relative z-10">
-          <h2 className="md:text-5xl !font-bold !text-4xl mb-4 text-white" style={{ fontFamily: 'Cinzel, serif' }}>🐺 JOIN THE PACK</h2>
+          <h2 className="md:text-5xl !font-bold !text-4xl mb-4 text-white font-cinzel">🐺 JOIN THE PACK</h2>
           <p className="max-w-2xl !text-lg mb-8 mx-auto text-gray-300">Inside access to casting calls, industry updates, and the tools, apps, and templates we actually use.</p>
           
           <form onSubmit={handleNewsletterSubmit} className="max-w-md mx-auto">

@@ -180,7 +180,7 @@ const BlogPost = () => {
           </Link>
 
           {/* Title */}
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-6" style={{ fontFamily: 'Cinzel, serif' }}>
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 font-cinzel">
             {post.title}
           </h1>
 

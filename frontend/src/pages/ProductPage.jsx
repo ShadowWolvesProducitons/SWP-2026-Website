@@ -262,7 +262,7 @@ const PurchaseBlock = ({ product, primaryLink, ctaLabel, priceDisplay, microReas
       <span className="px-2 py-0.5 bg-white/5 border border-gray-700 rounded text-gray-500 text-[10px] font-mono uppercase tracking-wider">{product.item_type}</span>
       {product.featured && <Star size={14} className="text-electric-blue" fill="currentColor" />}
     </div>
-    <h2 className="text-xl font-bold text-white mb-1" style={{ fontFamily: 'Cinzel, serif' }} data-testid="purchase-title">{product.title}</h2>
+    <h2 className="text-xl font-bold text-white mb-1 font-cinzel" data-testid="purchase-title">{product.title}</h2>
     {product.short_description && <p className="text-gray-400 text-sm mb-5 leading-relaxed">{product.short_description}</p>}
 
     {/* Price */}
@@ -317,7 +317,7 @@ const PurchaseBlock = ({ product, primaryLink, ctaLabel, priceDisplay, microReas
 /* ═══ CONTENT SECTION WRAPPER ═══ */
 const ContentSection = ({ title, testId, children }) => (
   <section className="mb-10 pb-10 border-b border-gray-800/50 last:border-0" data-testid={testId}>
-    <h2 className="text-lg font-bold text-white mb-4" style={{ fontFamily: 'Cinzel, serif' }}>{title}</h2>
+    <h2 className="text-lg font-bold text-white mb-4 font-cinzel">{title}</h2>
     {children}
   </section>
 );

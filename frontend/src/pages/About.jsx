@@ -21,13 +21,13 @@ const About = () => {
           <div className="max-w-4xl">
             {/* Manifesto lines - Cinzel bold, no periods */}
             <div className="space-y-2 mb-8">
-              <p className="text-lg md:text-xl text-gray-300 tracking-wide font-bold" style={{ fontFamily: 'Cinzel, serif' }}>
+              <p className="text-lg md:text-xl text-gray-300 tracking-wide font-bold font-cinzel">
                 We don't chase <span className="text-electric-blue">trends</span>
               </p>
-              <p className="text-lg md:text-xl text-gray-300 tracking-wide font-bold" style={{ fontFamily: 'Cinzel, serif' }}>
+              <p className="text-lg md:text-xl text-gray-300 tracking-wide font-bold font-cinzel">
                 We don't ask <span className="text-electric-blue">permission</span>
               </p>
-              <p className="text-lg md:text-xl text-gray-300 tracking-wide font-bold" style={{ fontFamily: 'Cinzel, serif' }}>
+              <p className="text-lg md:text-xl text-gray-300 tracking-wide font-bold font-cinzel">
                 We don't make noise for the <span className="text-electric-blue">sake of it</span>
               </p>
             </div>
@@ -43,8 +43,7 @@ const About = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl">
             <h2 
-              className="text-2xl md:text-3xl font-bold text-white mb-6"
-              style={{ fontFamily: 'Cinzel, serif' }}
+              className="text-2xl md:text-3xl font-bold text-white mb-6 font-cinzel"
             >
               What We Believe
             </h2>
@@ -69,8 +68,7 @@ const About = () => {
             {/* Standout Quote */}
             <div className="border-l-2 border-electric-blue pl-5 py-1">
               <p 
-                className="text-xl md:text-2xl text-white font-medium italic"
-                style={{ fontFamily: 'Cinzel, serif' }}
+                className="text-xl md:text-2xl text-white font-medium italic font-cinzel"
               >
                 "If it doesn't scare us a little, it's probably not worth making."
               </p>
@@ -84,8 +82,7 @@ const About = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl">
             <h2 
-              className="text-2xl md:text-3xl font-bold text-white mb-6"
-              style={{ fontFamily: 'Cinzel, serif' }}
+              className="text-2xl md:text-3xl font-bold text-white mb-6 font-cinzel"
             >
               How We Work
             </h2>
@@ -114,8 +111,7 @@ const About = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl">
             <h2 
-              className="text-2xl md:text-3xl font-bold text-white mb-6"
-              style={{ fontFamily: 'Cinzel, serif' }}
+              className="text-2xl md:text-3xl font-bold text-white mb-6 font-cinzel"
             >
               What We're Building
             </h2>

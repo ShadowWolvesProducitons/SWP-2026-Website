@@ -90,7 +90,7 @@ const InvestorLogin = ({ onLogin }) => {
         </Helmet>
         <div className="text-center">
           <Lock className="w-16 h-16 text-gray-700 mx-auto mb-6" />
-          <h1 className="text-2xl font-bold text-white mb-4" style={{ fontFamily: 'Cinzel, serif' }}>
+          <h1 className="text-2xl font-bold text-white mb-4 font-cinzel">
             Portal Unavailable
           </h1>
           <p className="text-gray-500">The investor portal is currently closed.</p>
@@ -113,7 +113,7 @@ const InvestorLogin = ({ onLogin }) => {
             <div className="w-16 h-16 bg-smoke-gray rounded-full flex items-center justify-center mx-auto mb-6 border border-gray-800">
               <Shield className="w-8 h-8 text-electric-blue" />
             </div>
-            <h1 className="text-2xl font-bold text-white mb-2" style={{ fontFamily: 'Cinzel, serif' }}>
+            <h1 className="text-2xl font-bold text-white mb-2 font-cinzel">
               Confidentiality Agreement
             </h1>
             <p className="text-gray-500">Please review and accept before accessing the portal</p>
@@ -204,8 +204,7 @@ const InvestorLogin = ({ onLogin }) => {
             <Lock className="w-8 h-8 text-electric-blue" />
           </div>
           <h1 
-            className="text-3xl font-bold text-white mb-2"
-            style={{ fontFamily: 'Cinzel, serif' }}
+            className="text-3xl font-bold text-white mb-2 font-cinzel"
           >
             Investor Portal
           </h1>

@@ -81,7 +81,7 @@ const InvestorPortal = ({ onLogout }) => {
               <span className="text-sm">Back to Site</span>
             </Link>
             <div>
-              <h1 className="text-xl font-bold text-white" style={{ fontFamily: 'Cinzel, serif' }}>
+              <h1 className="text-xl font-bold text-white font-cinzel">
                 Investor Portal
               </h1>
               <p className="text-gray-500 text-sm">Welcome, {investorName}</p>
@@ -167,7 +167,7 @@ const InvestorPortal = ({ onLogout }) => {
 const OverviewSection = () => (
   <div className="space-y-8">
     <div>
-      <h2 className="text-3xl font-bold text-white mb-6" style={{ fontFamily: 'Cinzel, serif' }}>
+      <h2 className="text-3xl font-bold text-white mb-6 font-cinzel">
         Welcome to Shadow Wolves
       </h2>
       <div className="prose-content text-gray-300 space-y-4 leading-relaxed">
@@ -214,7 +214,7 @@ const OverviewSection = () => (
 // Development Slate Section
 const SlateSection = ({ projects, selectedProject, setSelectedProject }) => (
   <div>
-    <h2 className="text-3xl font-bold text-white mb-2" style={{ fontFamily: 'Cinzel, serif' }}>
+    <h2 className="text-3xl font-bold text-white mb-2 font-cinzel">
       Development Slate
     </h2>
     <p className="text-gray-500 mb-8">Current projects in various stages of development. Click on a project to view details and request materials.</p>
@@ -384,7 +384,7 @@ const ProjectDetailModal = ({ project, onClose }) => {
         <div className="p-6 -mt-16 relative">
           <div className="flex items-start justify-between gap-4 mb-4">
             <div>
-              <h2 className="text-2xl font-bold text-white" style={{ fontFamily: 'Cinzel, serif' }}>
+              <h2 className="text-2xl font-bold text-white font-cinzel">
                 {project.title}
               </h2>
               <p className="text-electric-blue">{project.genre}</p>
@@ -692,7 +692,7 @@ const StudioUpdatesSection = () => {
   return (
     <div className="space-y-6" data-testid="studio-updates-section">
       <div>
-        <h2 className="text-3xl font-bold text-white mb-2" style={{ fontFamily: 'Cinzel, serif' }}>Studio Updates</h2>
+        <h2 className="text-3xl font-bold text-white mb-2 font-cinzel">Studio Updates</h2>
         <p className="text-gray-500">Investor-only updates from the production floor.</p>
       </div>
 
@@ -747,7 +747,7 @@ const StudioUpdatesSection = () => {
 const InvestmentSection = () => (
   <div className="space-y-8">
     <div>
-      <h2 className="text-3xl font-bold text-white mb-2" style={{ fontFamily: 'Cinzel, serif' }}>
+      <h2 className="text-3xl font-bold text-white mb-2 font-cinzel">
         Investment Model
       </h2>
       <p className="text-gray-500 mb-8">How we structure investment opportunities.</p>
@@ -877,7 +877,7 @@ const InterestSection = ({ projects }) => {
     return (
       <div className="text-center py-16">
         <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-6" />
-        <h2 className="text-2xl font-bold text-white mb-4" style={{ fontFamily: 'Cinzel, serif' }}>
+        <h2 className="text-2xl font-bold text-white mb-4 font-cinzel">
           Thank You
         </h2>
         <p className="text-gray-400">
@@ -889,7 +889,7 @@ const InterestSection = ({ projects }) => {
 
   return (
     <div>
-      <h2 className="text-3xl font-bold text-white mb-2" style={{ fontFamily: 'Cinzel, serif' }}>
+      <h2 className="text-3xl font-bold text-white mb-2 font-cinzel">
         Expression of Interest
       </h2>
       <p className="text-gray-500 mb-8">

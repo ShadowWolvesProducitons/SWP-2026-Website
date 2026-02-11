@@ -95,7 +95,7 @@ const FilmModal = ({ film, isOpen, onClose }) => {
             </div>
             <div className="flex items-end justify-between gap-4">
               <div>
-                <h2 className="text-5xl font-bold text-white mb-3" style={{ fontFamily: 'Cinzel, serif' }}>
+                <h2 className="text-5xl font-bold text-white mb-3 font-cinzel">
                   {film.title}
                 </h2>
                 {/* Genres - Under Title */}

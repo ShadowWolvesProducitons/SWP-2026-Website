@@ -198,8 +198,7 @@ const LeadMagnetPopup = () => {
 
               {/* Heading */}
               <h2 
-                className="text-2xl font-bold text-white text-center mb-2"
-                style={{ fontFamily: 'Cinzel, serif' }}
+                className="text-2xl font-bold text-white text-center mb-2 font-cinzel"
               >
                 Get The Producer's Playbook
               </h2>

@@ -83,7 +83,7 @@ const TheDen = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl">
             <p className="text-electric-blue font-mono text-sm uppercase tracking-widest mb-4">Collection</p>
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6" style={{ fontFamily: 'Cinzel, serif' }}>
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 font-cinzel">
               The Armory
             </h1>
             <p className="text-xl text-gray-400 leading-relaxed">
