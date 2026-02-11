@@ -181,7 +181,49 @@ class InvestorInquiry(InvestorInquiryBase):
 # Investor Portal Settings
 class InvestorPortalSettings(BaseModel):
     portal_enabled: bool = True
-    global_password: Optional[str] = None  # For simple password access
-    require_code: bool = False  # Whether to require invite codes
+    global_password: Optional[str] = None  # For simple password access (admin fallback)
+    require_code: bool = False
     welcome_message: Optional[str] = None
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+# Investor Account (registered user with email/password)
+class InvestorAccountBase(BaseModel):
+    name: str
+    email: EmailStr
+    investor_type: Optional[str] = None  # Individual, Family Office, VC, Strategic, Other
+    area_of_interest: Optional[str] = None
+    company: Optional[str] = None
+    phone: Optional[str] = None
+
+class InvestorAccountCreate(InvestorAccountBase):
+    password: str
+    invite_token: Optional[str] = None
+
+class InvestorAccount(InvestorAccountBase):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    password_hash: str = ""
+    status: str = "Active"  # Active, Suspended
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    last_login: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+
+# Invite Token (auto-generated on access request)
+class InviteToken(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    token: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    email: EmailStr
+    name: str
+    investor_type: Optional[str] = None
+    area_of_interest: Optional[str] = None
+    message: Optional[str] = None
+    expires_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    used: bool = False
+    used_at: Optional[datetime] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+    class Config:
+        from_attributes = True
