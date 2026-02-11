@@ -7,13 +7,16 @@ from models.investor import (
     InvestorDocument, InvestorDocumentCreate, InvestorDocumentUpdate,
     InvestorInquiry, InvestorInquiryCreate, InvestorInquiryUpdate,
     InvestorPortalSettings, DocumentDownloadLog,
-    DocumentRequest, DocumentRequestCreate
+    DocumentRequest, DocumentRequestCreate,
+    InvestorAccountCreate, InvestorAccount, InviteToken
 )
 from datetime import datetime, timezone, timedelta
 from pydantic import BaseModel, EmailStr
 import os
 import asyncio
 import io
+import hashlib
+import secrets
 from pathlib import Path
 
 router = APIRouter(prefix="/investors", tags=["investors"])
