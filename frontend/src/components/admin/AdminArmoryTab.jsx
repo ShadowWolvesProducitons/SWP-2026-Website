@@ -364,6 +364,14 @@ const ProductModal = ({ item, onClose, onSave }) => {
                   <TI type="number" value={formData.sort_order} onChange={e => setFormData(s => ({ ...s, sort_order: parseInt(e.target.value) || 0 }))} />
                 </Fl>
               </div>
+
+              {/* Quick Fill Template */}
+              {!item && (
+                <button type="button" onClick={applyTemplate} className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-electric-blue/5 border border-electric-blue/20 rounded-lg text-electric-blue text-sm hover:bg-electric-blue/10 transition-colors" data-testid="quick-fill-btn">
+                  <Star size={16} />
+                  Quick Fill: Apply {formData.item_type} Template
+                </button>
+              )}
               <div className="flex flex-wrap gap-5 pt-1">
                 {[{ k: 'featured', l: 'Featured' }, { k: 'is_published', l: 'Published' }, { k: 'is_archived', l: 'Archived' }].map(({ k, l }) => (
                   <label key={k} className="flex items-center gap-2 text-gray-400 text-sm cursor-pointer">
