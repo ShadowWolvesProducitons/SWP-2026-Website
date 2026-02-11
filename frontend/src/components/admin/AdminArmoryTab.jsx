@@ -4,6 +4,80 @@ import { toast } from 'sonner';
 
 const ITEM_TYPES = ['Apps', 'Templates', 'Downloads', 'Courses', 'eBooks'];
 
+// Quick Fill templates per product type
+const PRODUCT_TEMPLATES = {
+  Apps: {
+    what_it_is: '[App Name] is a [type of app] that helps [target audience] [achieve specific outcome] — without [common frustration it eliminates].',
+    core_actions: ['Create or join a [session/room/workspace]', 'Choose your [key option/mode/character]', 'Start [the core experience]'],
+    experiences: ['Real-time [core interaction]', '[Key feature] with [unique twist]', 'Live [competitive/collaborative element]', '[Social/community feature]', '[Reward/progression system]'],
+    features: ['Works offline', 'No account required', 'Cross-platform sync', 'Push notifications', 'Dark mode'],
+    how_it_works: ['[First user action — e.g. Open the app]', '[Core setup step — e.g. Select your preferences]', '[Trigger moment — e.g. Start a session]', '[Live interaction — e.g. Play in real time]', '[Outcome — e.g. See your results]'],
+    how_it_works_notes: 'Everything updates in real time. Your data stays on your device.',
+    who_its_for: ['[Primary audience — e.g. Mobile gamers]', '[Secondary audience — e.g. Friends looking for quick sessions]', '[Niche audience — e.g. Competitive strategy fans]'],
+    why_it_works: '',
+    tags: ['App', 'Mobile', 'Free', 'iOS', 'Android'],
+    final_cta_text: '[App Name] is [one-line benefit]. Try it now.',
+    final_cta_microcopy: 'No subscriptions · No ads · No lock-in',
+    price_status: 'Free',
+  },
+  Courses: {
+    what_it_is: '[Course Name] is a [format — self-paced / cohort / masterclass] designed to take [target audience] from [starting point] to [end result] in [timeframe].',
+    core_actions: [],
+    experiences: ['[Module 1 outcome]', '[Module 2 outcome]', '[Module 3 outcome]', '[Practical project or assignment]', '[Certificate or credential on completion]'],
+    features: ['Lifetime access', 'Downloadable resources', 'Community access', 'Mobile-friendly', 'Progress tracking'],
+    how_it_works: ['Enrol and get instant access', 'Work through [X] modules at your own pace', 'Complete hands-on assignments', 'Get feedback from [instructor/peers]', 'Receive your certificate'],
+    how_it_works_notes: 'Each module builds on the last. Go at your speed — no deadlines.',
+    who_its_for: ['[Beginners looking to break in]', '[Working professionals wanting to level up]', '[Creatives switching careers]'],
+    why_it_works: 'This course is built by practitioners, not theorists. Every lesson comes from real-world projects, not textbook exercises.',
+    tags: ['Course', 'Online', 'Self-paced', 'Certificate'],
+    final_cta_text: 'Start learning today.',
+    final_cta_microcopy: 'Lifetime access · Learn at your pace',
+    price_status: '',
+  },
+  Templates: {
+    what_it_is: '[Template Name] is a ready-to-use [type — script template / pitch deck / shot list / budget sheet] built for [who] who need [outcome] without starting from scratch.',
+    core_actions: [],
+    experiences: ['[What the template includes — e.g. Pre-formatted structure]', '[Key section — e.g. Industry-standard layout]', '[Bonus — e.g. Example content included]', '[Customisation — e.g. Fully editable in Google Docs / Notion / Excel]'],
+    features: ['Instant download', 'Fully editable', 'Print-ready', 'Multiple formats', 'Instructions included'],
+    how_it_works: ['Purchase and download instantly', 'Open in [software]', 'Replace placeholder content with yours', 'Export or share'],
+    how_it_works_notes: 'No special software needed. Works with tools you already use.',
+    who_its_for: ['[Filmmakers prepping for production]', '[Writers structuring their first draft]', '[Producers building pitch packages]'],
+    why_it_works: '',
+    tags: ['Template', 'Download', 'Filmmaking', 'Production'],
+    final_cta_text: 'Skip the blank page. Start with structure.',
+    final_cta_microcopy: 'Instant download · One-time purchase',
+    price_status: '',
+  },
+  Downloads: {
+    what_it_is: '[Resource Name] is a downloadable [type — guide / toolkit / asset pack / checklist] for [who] working on [what].',
+    core_actions: [],
+    experiences: ['[What it contains]', '[Key resource]', '[Practical use case]'],
+    features: ['PDF format', 'Mobile-friendly', 'Printable', 'No DRM'],
+    how_it_works: ['Download the file', 'Open on any device', 'Use it in your workflow'],
+    how_it_works_notes: '',
+    who_its_for: ['[Primary audience]', '[Secondary audience]'],
+    why_it_works: '',
+    tags: ['Download', 'Resource', 'Free'],
+    final_cta_text: 'Grab it and get to work.',
+    final_cta_microcopy: 'Free download · No signup required',
+    price_status: 'Free',
+  },
+  eBooks: {
+    what_it_is: '[Book Title] is a [length — short / comprehensive] guide to [topic], written for [audience] who want [outcome].',
+    core_actions: [],
+    experiences: ['[Chapter/section 1 topic]', '[Chapter/section 2 topic]', '[Chapter/section 3 topic]', '[Practical exercises or case studies]'],
+    features: ['PDF + ePub formats', 'Mobile-optimised', 'Highlight & bookmark', 'Printable'],
+    how_it_works: ['Purchase and download', 'Read on any device', 'Apply the frameworks to your projects'],
+    how_it_works_notes: 'Written to be read in [X hours]. Every chapter ends with actionable takeaways.',
+    who_its_for: ['[Aspiring filmmakers]', '[Industry professionals]', '[Students and self-learners]'],
+    why_it_works: 'Written from years of hands-on experience — not recycled advice.',
+    tags: ['eBook', 'Guide', 'Filmmaking', 'Education'],
+    final_cta_text: 'The knowledge you need. The format you want.',
+    final_cta_microcopy: 'Instant delivery · Read anywhere',
+    price_status: '',
+  },
+};
+
 const AdminArmoryTab = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
