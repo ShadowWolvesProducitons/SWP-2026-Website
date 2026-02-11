@@ -385,6 +385,18 @@ const ProductModal = ({ item, onClose, onSave }) => {
           {/* ─── CONTENT ─── */}
           {activeTab === 'content' && (
             <div className="space-y-5">
+              {/* Quick Fill prompt when content is empty */}
+              {contentIsEmpty && (
+                <div className="flex items-center justify-between bg-electric-blue/5 border border-electric-blue/20 rounded-lg p-4" data-testid="template-prompt">
+                  <div>
+                    <p className="text-white text-sm font-medium">Start with a template?</p>
+                    <p className="text-gray-500 text-xs mt-0.5">Pre-fill all content sections with {formData.item_type}-specific prompts and structure.</p>
+                  </div>
+                  <button type="button" onClick={applyTemplate} className="flex items-center gap-2 px-4 py-2 bg-electric-blue text-white rounded-lg text-sm whitespace-nowrap hover:bg-electric-blue/90" data-testid="template-apply-btn">
+                    <Star size={14} /> Apply Template
+                  </button>
+                </div>
+              )}
               <div className="bg-black/30 rounded-lg p-4 space-y-4 border border-gray-800/50">
                 <p className="text-gray-500 text-[10px] font-mono uppercase tracking-widest">Hero / Above the Fold</p>
                 <Fl label="Short Positioning Line" helper="One line under the product name in the purchase block">
