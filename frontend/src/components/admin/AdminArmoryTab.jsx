@@ -255,6 +255,31 @@ const ProductModal = ({ item, onClose, onSave }) => {
   const [uploading, setUploading] = useState(false);
   const [activeTab, setActiveTab] = useState('basics');
 
+  const applyTemplate = () => {
+    const template = PRODUCT_TEMPLATES[formData.item_type];
+    if (!template) return;
+    const hasContent = formData.what_it_is || formData.core_actions.length || formData.experiences.length || formData.features.length;
+    if (hasContent && !window.confirm('This will overwrite your current content fields. Continue?')) return;
+    setFormData(s => ({
+      ...s,
+      what_it_is: template.what_it_is,
+      core_actions: [...template.core_actions],
+      experiences: [...template.experiences],
+      features: [...template.features],
+      how_it_works: [...template.how_it_works],
+      how_it_works_notes: template.how_it_works_notes,
+      who_its_for: [...template.who_its_for],
+      why_it_works: template.why_it_works,
+      tags: s.tags.length ? s.tags : [...template.tags],
+      final_cta_text: s.final_cta_text || template.final_cta_text,
+      final_cta_microcopy: s.final_cta_microcopy || template.final_cta_microcopy,
+      price_status: s.price_status || template.price_status,
+    }));
+    setActiveTab('content');
+    toast.success(`${formData.item_type} template applied — edit the placeholders`);
+  };
+  const contentIsEmpty = !formData.what_it_is && !formData.core_actions.length && !formData.experiences.length && !formData.features.length;
+
   const up = (e, field) => {
     const file = e.target.files[0]; if (!file) return;
     const fd = new FormData(); fd.append('file', file); setUploading(true);
