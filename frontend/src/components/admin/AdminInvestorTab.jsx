@@ -706,6 +706,8 @@ const ProjectDocumentsSection = ({ projectId, documents, onRefresh }) => {
     if (!file) return;
     const fd = new FormData();
     fd.append('file', file);
+    fd.append('source', 'investor-document');
+    fd.append('tags', `investor,document,${newDoc.doc_type || 'file'}`);
     setUploading(true);
     try {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/upload/file`, {
