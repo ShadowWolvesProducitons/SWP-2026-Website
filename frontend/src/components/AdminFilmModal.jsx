@@ -35,6 +35,7 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [assetPickerOpen, setAssetPickerOpen] = useState(false);
   const fileInputRef = useRef(null);
 
   useEffect(() => {
