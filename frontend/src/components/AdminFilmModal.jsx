@@ -291,30 +291,38 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
               </div>
               
               {/* Upload Zone */}
-              <div
-                className={`flex-1 border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-all ${
-                  isDragging 
-                    ? 'border-electric-blue bg-electric-blue/10' 
-                    : 'border-gray-700 hover:border-gray-500'
-                }`}
-                onDragOver={handleDragOver}
-                onDragLeave={handleDragLeave}
-                onDrop={handleDrop}
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <Upload size={24} className={`mx-auto mb-2 ${isDragging ? 'text-electric-blue' : 'text-gray-500'}`} />
-                <p className={`text-sm ${isDragging ? 'text-electric-blue' : 'text-gray-400'}`}>
-                  {uploading ? 'Uploading...' : 'Drag & Drop or Click to Upload'}
-                </p>
-                <p className="text-xs text-gray-600 mt-1">JPG, PNG, GIF, WebP</p>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileSelect}
-                  className="hidden"
-                  disabled={uploading}
-                />
+              <div className="flex-1 flex flex-col gap-3">
+                <div
+                  className={`flex-1 border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-all ${
+                    isDragging 
+                      ? 'border-electric-blue bg-electric-blue/10' 
+                      : 'border-gray-700 hover:border-gray-500'
+                  }`}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  <Upload size={20} className={`mx-auto mb-1 ${isDragging ? 'text-electric-blue' : 'text-gray-500'}`} />
+                  <p className={`text-xs ${isDragging ? 'text-electric-blue' : 'text-gray-400'}`}>
+                    {uploading ? 'Uploading...' : 'Drag & Drop or Click'}
+                  </p>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileSelect}
+                    className="hidden"
+                    disabled={uploading}
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setAssetPickerOpen(true)}
+                  className="flex items-center justify-center gap-2 px-4 py-2 bg-electric-blue/10 border border-electric-blue/30 rounded-lg text-electric-blue text-sm hover:bg-electric-blue/20"
+                >
+                  <FolderOpen size={16} /> Browse Library
+                </button>
               </div>
             </div>
           </div>
