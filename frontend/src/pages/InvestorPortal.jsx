@@ -364,13 +364,13 @@ const ProjectDetailModal = ({ project, onClose }) => {
           <X size={24} />
         </button>
 
-        {/* Poster Header */}
-        <div className="h-64 bg-gray-900 relative">
+        {/* Poster Header - 2:3 aspect ratio with contain */}
+        <div className="aspect-[2/3] max-h-80 bg-gray-900 relative">
           {project.poster_url ? (
             <img 
               src={`${process.env.REACT_APP_BACKEND_URL}${project.poster_url}`}
               alt={project.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain bg-black"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
