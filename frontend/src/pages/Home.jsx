@@ -227,7 +227,7 @@ const Home = () => {
       </section>
 
       {/* Featured Films Section */}
-      <section className="featured-films-section py-24 bg-black">
+      <section className="featured-films-section py-12 bg-black">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-5xl md:text-6xl font-bold text-white mb-4 font-cinzel">Featured Films</h2>
@@ -319,7 +319,7 @@ const Home = () => {
       </section>
 
       {/* Services Section */}
-      <section className="services-section py-24 bg-smoke-gray">
+      <section className="services-section py-12 bg-smoke-gray">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="md:text-6xl !font-bold !text-5xl mb-4 text-white font-cinzel">What We Do</h2>
@@ -391,7 +391,7 @@ const Home = () => {
       </section>
 
       {/* Join The Pack Newsletter Section */}
-      <section className="join-pack-newsletter py-20 bg-gradient-to-br from-navy-dark via-black to-navy-dark relative overflow-hidden">
+      <section className="join-pack-newsletter py-12 bg-gradient-to-br from-navy-dark via-black to-navy-dark relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 right-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl"></div>
           <div className="absolute bottom-0 left-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl"></div>
