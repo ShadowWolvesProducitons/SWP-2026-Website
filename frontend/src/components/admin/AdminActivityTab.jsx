@@ -229,8 +229,8 @@ const AdminActivityTab = () => {
                     <p className="text-gray-500 text-sm truncate">{item.email}</p>
                   </div>
                   {/* Note indicator */}
-                  {item.admin_note && (
-                    <span className="px-2 py-0.5 bg-amber-500/20 text-amber-400 text-[10px] rounded-full" title={item.admin_note}>Note</span>
+                  {item.admin_notes && (
+                    <span className="px-2 py-0.5 bg-amber-500/20 text-amber-400 text-[10px] rounded-full" title={item.admin_notes}>Note</span>
                   )}
                 </div>
 
