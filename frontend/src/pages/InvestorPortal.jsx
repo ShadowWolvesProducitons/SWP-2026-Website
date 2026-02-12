@@ -133,7 +133,7 @@ const InvestorPortal = ({ onLogout }) => {
               </div>
             ) : (
               <>
-                {activeSection === 'overview' && <OverviewSection />}
+                {activeSection === 'overview' && <OverviewSection projects={projects} />}
                 {activeSection === 'slate' && (
                   <SlateSection 
                     projects={projects} 
@@ -142,8 +142,8 @@ const InvestorPortal = ({ onLogout }) => {
                   />
                 )}
                 {activeSection === 'updates' && <StudioUpdatesSection />}
-                {activeSection === 'investment' && <InvestmentSection />}
-                {activeSection === 'interest' && <InterestSection projects={projects} />}
+                {activeSection === 'documents' && <DocumentsSection />}
+                {activeSection === 'request' && <InterestSection projects={projects} />}
               </>
             )}
           </main>
