@@ -368,6 +368,42 @@ const AdminActivityTab = () => {
           ))}
         </div>
       )}
+
+      {/* Note Modal */}
+      {noteModal.open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80">
+          <div className="bg-smoke-gray border border-gray-800 rounded-xl w-full max-w-md">
+            <div className="flex items-center justify-between p-4 border-b border-gray-800">
+              <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                <StickyNote size={18} className="text-amber-400" />
+                Admin Note
+              </h3>
+              <button onClick={() => setNoteModal({ open: false, item: null, text: '' })} className="p-1 text-gray-400 hover:text-white">
+                <X size={20} />
+              </button>
+            </div>
+            <div className="p-4">
+              <p className="text-gray-400 text-sm mb-2">For: {noteModal.item?.name}</p>
+              <textarea
+                value={noteModal.text}
+                onChange={(e) => setNoteModal(prev => ({ ...prev, text: e.target.value }))}
+                rows={4}
+                className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none resize-none"
+                placeholder="Add internal notes about this contact..."
+                data-testid="note-textarea"
+              />
+            </div>
+            <div className="flex justify-end gap-3 p-4 border-t border-gray-800">
+              <button onClick={() => setNoteModal({ open: false, item: null, text: '' })} className="px-4 py-2 border border-gray-700 text-gray-400 rounded-lg hover:text-white text-sm">
+                Cancel
+              </button>
+              <button onClick={handleSaveNote} className="px-4 py-2 bg-electric-blue text-white rounded-lg text-sm" data-testid="save-note-btn">
+                Save Note
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
