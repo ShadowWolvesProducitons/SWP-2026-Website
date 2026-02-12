@@ -688,10 +688,13 @@ const CATEGORY_COLORS = {
   'Production': 'bg-purple-500/20 text-purple-400 border-purple-500/40',
 };
 
+const UPDATE_CATEGORIES = ['All', 'Milestone', 'Finance', 'Production', 'Update', 'Announcement'];
+
 const StudioUpdatesSection = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expandedPost, setExpandedPost] = useState(null);
+  const [activeCategory, setActiveCategory] = useState('All');
 
   useEffect(() => {
     fetchPosts();
@@ -714,6 +717,10 @@ const StudioUpdatesSection = () => {
     return new Date(dateStr).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' });
   };
 
+  const filteredPosts = activeCategory === 'All' 
+    ? posts 
+    : posts.filter(p => p.category === activeCategory);
+
   return (
     <div className="space-y-6" data-testid="studio-updates-section">
       <div>
@@ -721,19 +728,37 @@ const StudioUpdatesSection = () => {
         <p className="text-gray-500">Investor-only updates from the production floor.</p>
       </div>
 
+      {/* Filter Chips */}
+      <div className="flex gap-2 flex-wrap">
+        {UPDATE_CATEGORIES.map(cat => (
+          <button
+            key={cat}
+            onClick={() => setActiveCategory(cat)}
+            className={`px-4 py-2 rounded-full text-sm font-mono uppercase tracking-widest transition-all ${
+              activeCategory === cat
+                ? 'bg-white text-black'
+                : 'bg-smoke-gray text-gray-400 border border-gray-700 hover:text-white hover:border-gray-500'
+            }`}
+            data-testid={`filter-${cat.toLowerCase()}`}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+
       {loading ? (
         <div className="text-center py-12">
           <RefreshCw className="w-8 h-8 text-electric-blue animate-spin mx-auto" />
         </div>
-      ) : posts.length === 0 ? (
+      ) : filteredPosts.length === 0 ? (
         <div className="text-center py-16 bg-smoke-gray rounded-lg border border-gray-800">
           <Newspaper className="w-12 h-12 text-gray-700 mx-auto mb-4" />
-          <p className="text-gray-400 mb-1">No updates posted yet</p>
+          <p className="text-gray-400 mb-1">{activeCategory === 'All' ? 'No updates posted yet' : `No ${activeCategory.toLowerCase()} updates`}</p>
           <p className="text-gray-600 text-sm">Check back for production news, milestones, and investor-specific updates.</p>
         </div>
       ) : (
         <div className="space-y-4">
-          {posts.map((post) => (
+          {filteredPosts.map((post) => (
             <div
               key={post.id}
               className="bg-smoke-gray border border-gray-800 hover:border-gray-700 rounded-lg overflow-hidden transition-colors cursor-pointer"
