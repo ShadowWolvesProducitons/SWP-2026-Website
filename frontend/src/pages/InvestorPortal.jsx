@@ -769,13 +769,13 @@ const StudioUpdatesSection = () => {
 };
 
 // Investment Model Section
-const InvestmentSection = () => (
+const DocumentsSection = () => (
   <div className="space-y-8">
     <div>
       <h2 className="text-3xl font-bold text-white mb-2 font-cinzel">
-        Investment Model
+        Investor Documents
       </h2>
-      <p className="text-gray-500 mb-8">How we structure investment opportunities.</p>
+      <p className="text-gray-500 mb-8">Key documents and investment structure information.</p>
     </div>
 
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
