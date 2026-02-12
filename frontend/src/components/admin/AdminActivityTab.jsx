@@ -28,6 +28,7 @@ const AdminActivityTab = () => {
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState('all');
   const [expandedId, setExpandedId] = useState(null);
+  const [noteModal, setNoteModal] = useState({ open: false, item: null, text: '' });
 
   const fetchAll = async () => {
     setLoading(true);
