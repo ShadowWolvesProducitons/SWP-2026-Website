@@ -25,6 +25,7 @@ from routes.email_templates import router as email_templates_router, set_db as s
 from routes.ai import router as ai_router
 from routes.analytics import router as analytics_router, set_db as set_analytics_db
 from routes.webhooks import router as webhooks_router, set_db as set_webhooks_db
+from routes.assets import router as assets_router, set_db as set_assets_db
 
 
 ROOT_DIR = Path(__file__).parent
