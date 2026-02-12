@@ -485,6 +485,7 @@ const ProjectModal = ({ project, onClose, onSave }) => {
   const [activeSection, setActiveSection] = useState('details');
   const [documents, setDocuments] = useState([]);
   const [loadingDocs, setLoadingDocs] = useState(false);
+  const [assetPickerOpen, setAssetPickerOpen] = useState(false);
 
   useEffect(() => {
     if (project?.id) {
