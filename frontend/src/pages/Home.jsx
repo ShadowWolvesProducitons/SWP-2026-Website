@@ -152,7 +152,7 @@ const Home = () => {
             {/* Primary CTA - Dominant */}
             <Link
               to="/films"
-              className="bg-electric-blue hover:bg-electric-blue/90 text-white px-10 py-5 rounded-full font-mono text-base uppercase tracking-widest transition-all inline-flex items-center justify-center gap-3 shadow-lg shadow-electric-blue/30"
+              className="bg-electric-blue hover:bg-electric-blue/90 text-white px-8 py-3.5 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2 shadow-lg shadow-electric-blue/30"
               data-testid="hero-cta-films"
             >
               <Play size={20} />
