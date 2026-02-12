@@ -28,7 +28,7 @@ const Header = () => {
           {/* Logo */}
           <Link to="/" className="logo flex items-center gap-3 group">
             <img 
-              src="https://customer-assets.emergentagent.com/job_wolfmedia/artifacts/bifyh7bv_Black%20Logo%20Only.png" 
+              src="/api/upload/images/header-banner.png" 
               alt="Shadow Wolves Productions"
               className="h-12 w-auto transition-opacity group-hover:opacity-80"
             />

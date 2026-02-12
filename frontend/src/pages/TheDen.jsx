@@ -221,8 +221,8 @@ const ProductCard = ({ item }) => {
       {/* Card Container */}
       <div className="relative bg-smoke-gray rounded-xl overflow-hidden border border-gray-800/50 hover:border-gray-700 transition-all duration-300">
         
-        {/* Image Container */}
-        <div className="relative aspect-square overflow-hidden bg-gray-900">
+        {/* Image Container - 2:3 aspect ratio for poster-style display */}
+        <div className="relative aspect-[2/3] overflow-hidden bg-gray-900">
           {item.thumbnail_url ? (
             <img
               src={`${process.env.REACT_APP_BACKEND_URL}${item.thumbnail_url}`}
