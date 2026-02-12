@@ -51,19 +51,19 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Quick Links - 2 columns */}
           <div>
             <h3 className="text-white font-bold text-lg mb-6 uppercase tracking-wide">Quick Links</h3>
-            <ul className="space-y-3">
-              <li><Link to="/" className="text-sm hover:text-white transition-colors">Home</Link></li>
-              <li><Link to="/films" className="text-sm hover:text-white transition-colors">Films</Link></li>
-              <li><Link to="/about" className="text-sm hover:text-white transition-colors">About</Link></li>
-              <li><Link to="/services" className="text-sm hover:text-white transition-colors">The Armory</Link></li>
-              <li><Link to="/blog" className="text-sm hover:text-white transition-colors">The Den</Link></li>
-              <li><Link to="/work-with-us" className="text-sm hover:text-white transition-colors">Work With Us</Link></li>
-              <li><Link to="/contact" className="text-sm hover:text-white transition-colors">Contact</Link></li>
-              <li><Link to="/investors" className="text-sm text-gray-600 hover:text-gray-400 transition-colors">Investor Portal</Link></li>
-            </ul>
+            <div className="grid grid-cols-2 gap-x-8 gap-y-3">
+              <Link to="/" className="text-sm hover:text-white transition-colors">Home</Link>
+              <Link to="/services" className="text-sm hover:text-white transition-colors">The Armory</Link>
+              <Link to="/films" className="text-sm hover:text-white transition-colors">Films</Link>
+              <Link to="/blog" className="text-sm hover:text-white transition-colors">The Den</Link>
+              <Link to="/about" className="text-sm hover:text-white transition-colors">About</Link>
+              <Link to="/work-with-us" className="text-sm hover:text-white transition-colors">Work With Us</Link>
+              <Link to="/investors" className="text-sm hover:text-white transition-colors">Investors</Link>
+              <Link to="/contact" className="text-sm hover:text-white transition-colors">Contact</Link>
+            </div>
           </div>
         </div>
 

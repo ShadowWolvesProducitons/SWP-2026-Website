@@ -145,11 +145,11 @@ const About = () => {
                 <ArrowRight size={18} />
               </Link>
               <Link
-                to="/contact"
+                to="/investors"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 border border-gray-700 hover:border-gray-500 text-white rounded-full font-mono text-sm uppercase tracking-widest transition-all"
-                data-testid="about-cta-contact"
+                data-testid="about-cta-invest"
               >
-                Contact
+                Invest With Us
               </Link>
             </div>
           </div>
