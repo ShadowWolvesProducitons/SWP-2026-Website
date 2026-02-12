@@ -228,21 +228,54 @@ const AdminActivityTab = () => {
                     <h3 className="text-white font-semibold truncate">{item.name}</h3>
                     <p className="text-gray-500 text-sm truncate">{item.email}</p>
                   </div>
+                  {/* Note indicator */}
+                  {item.admin_note && (
+                    <span className="px-2 py-0.5 bg-amber-500/20 text-amber-400 text-[10px] rounded-full" title={item.admin_note}>Note</span>
+                  )}
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
+                  {/* Quick Actions - Visible on hover */}
+                  {item._type !== 'cineconnect' && item.status === 'New' && (
+                    <button
+                      onClick={(e) => handleStatusChange(item, 'Read', e)}
+                      className="p-1.5 text-gray-500 hover:text-green-400 hover:bg-green-500/10 rounded transition-colors"
+                      title="Mark as Read"
+                      data-testid={`quick-read-${item.id}`}
+                    >
+                      <Check size={16} />
+                    </button>
+                  )}
+                  {item._type !== 'cineconnect' && (
+                    <button
+                      onClick={(e) => { e.stopPropagation(); setNoteModal({ open: true, item, text: item.admin_note || '' }); }}
+                      className={`p-1.5 hover:bg-amber-500/10 rounded transition-colors ${item.admin_note ? 'text-amber-400' : 'text-gray-500 hover:text-amber-400'}`}
+                      title="Add/Edit Note"
+                      data-testid={`quick-note-${item.id}`}
+                    >
+                      <StickyNote size={16} />
+                    </button>
+                  )}
+                  <a
+                    href={`mailto:${item.email}`}
+                    onClick={(e) => e.stopPropagation()}
+                    className="p-1.5 text-gray-500 hover:text-electric-blue hover:bg-electric-blue/10 rounded transition-colors"
+                    title="Reply via Email"
+                  >
+                    <Mail size={16} />
+                  </a>
                   {/* Submission type or service */}
                   {item._type === 'submission' && item.submission_type && (
-                    <span className="hidden md:block text-gray-400 text-sm">{item.submission_type}</span>
+                    <span className="hidden md:block text-gray-400 text-sm ml-2">{item.submission_type}</span>
                   )}
                   {item._type === 'message' && item.service && (
-                    <span className="hidden md:block text-gray-400 text-sm capitalize">{item.service.replace('-', ' ')}</span>
+                    <span className="hidden md:block text-gray-400 text-sm ml-2 capitalize">{item.service.replace('-', ' ')}</span>
                   )}
-                  <span className="hidden lg:block text-gray-500 text-sm">{formatDate(item.created_at)}</span>
+                  <span className="hidden lg:block text-gray-500 text-sm ml-2">{formatDate(item.created_at)}</span>
                   {expandedId === `${item._type}-${item.id}` ? (
-                    <ChevronUp size={20} className="text-gray-400" />
+                    <ChevronUp size={20} className="text-gray-400 ml-2" />
                   ) : (
-                    <ChevronDown size={20} className="text-gray-400" />
+                    <ChevronDown size={20} className="text-gray-400 ml-2" />
                   )}
                 </div>
               </div>
