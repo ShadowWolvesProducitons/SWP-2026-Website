@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import Optional
+from datetime import datetime, timezone
 import os
 import base64
 import uuid
@@ -10,6 +11,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 router = APIRouter(prefix="/ai", tags=["ai"])
+
+# Database reference (set from server.py)
+db = None
+
+def set_db(database):
+    global db
+    db = database
 
 UPLOAD_DIR = Path(__file__).parent.parent / "uploads"
 UPLOAD_DIR.mkdir(exist_ok=True)
