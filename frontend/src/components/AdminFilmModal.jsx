@@ -462,6 +462,15 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
           </div>
         </form>
       </div>
+
+      {/* Asset Picker for Poster */}
+      <AssetPicker 
+        isOpen={assetPickerOpen}
+        onClose={() => setAssetPickerOpen(false)}
+        onSelect={(url) => { setFormData(prev => ({ ...prev, poster_url: url })); toast.success('Poster selected'); }}
+        assetType="image"
+        title="Select Film Poster"
+      />
     </div>
   );
 };
