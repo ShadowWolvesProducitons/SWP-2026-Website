@@ -936,17 +936,14 @@ async def request_investor_access(data: AccessRequestData, background_tasks: Bac
             await asyncio.to_thread(resend.Emails.send, {
                 "from": from_email,
                 "to": data.email,
-                "subject": "Your Shadow Wolves Investor Access",
-                "html": f"""<div style="font-family:Arial;max-width:600px;margin:0 auto;background:#0a0a0a;color:#fff;padding:40px;border-radius:12px;">
-                    <h1 style="color:#fff;font-size:24px;">Investor Portal Access</h1>
-                    <p style="color:#9ca3af;line-height:1.6;">Hi {data.name},</p>
-                    <p style="color:#9ca3af;line-height:1.6;">Thanks for your interest in Shadow Wolves Productions. Your personal investor portal access link is below.</p>
-                    <div style="margin:30px 0;">
-                        <a href="{invite_link}" style="display:inline-block;padding:14px 28px;background:#233dff;color:#fff;text-decoration:none;border-radius:8px;font-weight:bold;">Create Your Investor Account</a>
-                    </div>
-                    <p style="color:#6b7280;font-size:13px;">This link expires in 7 days. Use it to create your account with the same email address ({data.email}).</p>
-                    <hr style="border:none;border-top:1px solid #1f2937;margin:30px 0;"/>
-                    <p style="color:#233dff;font-size:12px;">Shadow Wolves Productions — Confidential</p>
+                "subject": "Shadow Wolves — Investor Portal Access",
+                "html": f"""<div style="font-family:Georgia,serif;max-width:580px;margin:0 auto;padding:40px 20px;">
+                    <p style="color:#333;font-size:16px;line-height:1.7;">Dear {data.name},</p>
+                    <p style="color:#333;font-size:16px;line-height:1.7;">Thank you for your interest in Shadow Wolves Productions. We have created a personal investor portal account for you.</p>
+                    <p style="color:#333;font-size:16px;line-height:1.7;">To set up your account, please visit:</p>
+                    <p style="margin:24px 0;"><a href="{invite_link}" style="color:#233dff;font-size:16px;word-break:break-all;">{invite_link}</a></p>
+                    <p style="color:#666;font-size:14px;">This link is valid for 7 days. Please use the email address {data.email} when creating your account.</p>
+                    <p style="color:#333;font-size:16px;line-height:1.7;margin-top:24px;">Kind regards,<br/>Shadow Wolves Productions</p>
                 </div>"""
             })
         except Exception as e:
