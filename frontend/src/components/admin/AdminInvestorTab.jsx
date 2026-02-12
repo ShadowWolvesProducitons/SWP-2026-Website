@@ -654,15 +654,20 @@ const ProjectModal = ({ project, onClose, onSave }) => {
             </div>
             <div>
               <label className="block text-gray-400 text-sm mb-1">Poster Image</label>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4 flex-wrap">
                 {formData.poster_url && (
                   <img src={`${process.env.REACT_APP_BACKEND_URL}${formData.poster_url}`} alt="" className="w-16 h-24 object-cover rounded" />
                 )}
-                <label className="flex items-center gap-2 px-4 py-2 bg-black border border-gray-700 rounded-lg cursor-pointer">
-                  <Upload size={16} className="text-gray-400" />
-                  <span className="text-gray-400 text-sm">{uploading ? 'Uploading...' : 'Upload'}</span>
-                  <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
-                </label>
+                <div className="flex gap-2">
+                  <label className="flex items-center gap-2 px-4 py-2 bg-black border border-gray-700 rounded-lg cursor-pointer">
+                    <Upload size={16} className="text-gray-400" />
+                    <span className="text-gray-400 text-sm">{uploading ? 'Uploading...' : 'Upload'}</span>
+                    <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
+                  </label>
+                  <button type="button" onClick={() => setAssetPickerOpen(true)} className="flex items-center gap-2 px-4 py-2 bg-electric-blue/10 border border-electric-blue/30 rounded-lg text-electric-blue text-sm hover:bg-electric-blue/20">
+                    <FolderOpen size={16} /> Browse
+                  </button>
+                </div>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -687,6 +692,15 @@ const ProjectModal = ({ project, onClose, onSave }) => {
         {activeSection === 'documents' && project && (
           <ProjectDocumentsSection projectId={project.id} documents={documents} onRefresh={fetchProjectDocuments} />
         )}
+
+        {/* Asset Picker for Poster */}
+        <AssetPicker 
+          isOpen={assetPickerOpen}
+          onClose={() => setAssetPickerOpen(false)}
+          onSelect={(url) => { setFormData(s => ({ ...s, poster_url: url })); toast.success('Poster selected'); }}
+          assetType="image"
+          title="Select Poster Image"
+        />
       </div>
     </div>
   );
