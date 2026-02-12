@@ -95,6 +95,7 @@ const AdminDashboard = ({ onLogout }) => {
         {activeTab === 'films' && <AdminFilmsTab />}
         {activeTab === 'armory' && <AdminArmoryTab />}
         {activeTab === 'blog' && <AdminBlogTab />}
+        {activeTab === 'assets' && <AdminAssetsTab />}
         {activeTab === 'activity' && <AdminActivityTab />}
         {activeTab === 'newsletter' && <AdminNewsletterTab />}
         {activeTab === 'email-templates' && <AdminEmailTemplatesTab />}
