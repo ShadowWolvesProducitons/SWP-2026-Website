@@ -53,7 +53,7 @@ const InvestorsPublic = () => {
       </Helmet>
 
       {/* HERO */}
-      <section className="container mx-auto px-4 py-20 lg:py-28">
+      <section className="container mx-auto px-4 py-12 lg:py-16">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-3xl">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4 font-cinzel" data-testid="investors-hero-title">Investors</h1>
           <p className="text-lg text-gray-400 mb-8 leading-relaxed">Development-first genre storytelling. Structured investment pathways.</p>

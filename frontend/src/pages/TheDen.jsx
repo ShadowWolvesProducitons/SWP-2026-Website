@@ -75,7 +75,7 @@ const TheDen = () => {
       </Helmet>
 
       {/* Page Header */}
-      <section className="page-header py-20 bg-gradient-to-br from-black via-smoke-gray/50 to-black relative overflow-hidden">
+      <section className="page-header py-12 bg-gradient-to-br from-black via-smoke-gray/50 to-black relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-electric-blue rounded-full filter blur-[120px]"></div>
           <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-purple-600 rounded-full filter blur-[100px]"></div>

@@ -233,7 +233,7 @@ const WorkWithUs = () => {
       </Helmet>
 
       {/* Hero Section */}
-      <section className="py-20 bg-gradient-to-br from-black via-smoke-gray to-black relative overflow-hidden">
+      <section className="py-12 bg-gradient-to-br from-black via-smoke-gray to-black relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute top-0 right-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl"></div>
         </div>
