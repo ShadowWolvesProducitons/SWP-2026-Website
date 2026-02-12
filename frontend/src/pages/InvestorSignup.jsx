@@ -6,8 +6,9 @@ import { toast } from 'sonner';
 
 const InvestorSignup = () => {
   const [searchParams] = useSearchParams();
+  const params = useParams();
   const navigate = useNavigate();
-  const token = searchParams.get('token');
+  const token = params.token || searchParams.get('token');
   
   const [validating, setValidating] = useState(true);
   const [tokenData, setTokenData] = useState(null);
