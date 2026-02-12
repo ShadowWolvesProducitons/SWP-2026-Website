@@ -352,6 +352,20 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [generatingAI, setGeneratingAI] = useState(false);
+  const [assetPickerOpen, setAssetPickerOpen] = useState(false);
+  const [assetPickerField, setAssetPickerField] = useState(null);
+
+  const openAssetPicker = (field) => {
+    setAssetPickerField(field);
+    setAssetPickerOpen(true);
+  };
+
+  const handleAssetSelect = (url) => {
+    if (assetPickerField) {
+      setFormData(prev => ({ ...prev, [assetPickerField]: url }));
+      toast.success('Image selected');
+    }
+  };
 
   const editor = useEditor({
     extensions: [
