@@ -136,6 +136,28 @@ async def generate_cover_image(request: CoverImageRequest):
         # Return the correct API path for serving images
         image_url = f"/api/upload/images/{filename}"
         
+        # Step 4: Auto-add to asset library
+        if db is not None:
+            asset = {
+                "id": str(uuid.uuid4()),
+                "filename": filename,
+                "original_name": f"AI Cover: {request.title[:30]}",
+                "asset_type": "image",
+                "tags": ["ai-generated", "blog", "cover"] + (request.tags or []),
+                "visibility": "admin_only",
+                "related_project_id": None,
+                "notes": f"AI-generated blog cover. Prompt: {optimized_prompt[:200]}...",
+                "file_url": image_url,
+                "file_size": len(image_bytes),
+                "mime_type": "image/png",
+                "uploaded_by": "ai",
+                "created_at": datetime.now(timezone.utc).isoformat()
+            }
+            try:
+                await db.assets.insert_one(asset)
+            except Exception:
+                pass  # Non-blocking - image still works if asset save fails
+        
         return CoverImageResponse(
             image_url=image_url,
             prompt_used=optimized_prompt
