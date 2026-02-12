@@ -255,6 +255,22 @@ const ProductModal = ({ item, onClose, onSave }) => {
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [activeTab, setActiveTab] = useState('basics');
+  const [assetPickerOpen, setAssetPickerOpen] = useState(false);
+  const [assetPickerField, setAssetPickerField] = useState(null);
+
+  const openAssetPicker = (field) => {
+    setAssetPickerField(field);
+    setAssetPickerOpen(true);
+  };
+
+  const handleAssetSelect = (url) => {
+    if (assetPickerField === 'screenshot') {
+      setFormData(s => ({ ...s, screenshots: [...s.screenshots, url] }));
+    } else if (assetPickerField) {
+      setFormData(s => ({ ...s, [assetPickerField]: url }));
+    }
+    toast.success('Asset selected');
+  };
 
   const applyTemplate = () => {
     const template = PRODUCT_TEMPLATES[formData.item_type];
