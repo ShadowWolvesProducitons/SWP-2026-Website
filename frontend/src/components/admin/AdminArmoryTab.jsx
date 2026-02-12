@@ -475,17 +475,22 @@ const ProductModal = ({ item, onClose, onSave }) => {
           {activeTab === 'media' && (
             <div className="space-y-6">
               <Fl label="Hero Image" helper="Appears in product header and Armory grid.">
-                <div className="flex items-start gap-4">
+                <div className="flex items-start gap-4 flex-wrap">
                   {formData.hero_image_url && (
                     <div className="relative">
                       <img src={imgUrl(formData.hero_image_url)} alt="" className="w-48 h-28 object-cover rounded-lg" />
                       <button type="button" onClick={() => setFormData(s => ({ ...s, hero_image_url: '' }))} className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center"><X size={12} /></button>
                     </div>
                   )}
-                  <label className="flex items-center gap-2 px-4 py-2 bg-black border border-gray-700 rounded-lg cursor-pointer hover:bg-gray-900 text-sm">
-                    <Upload size={16} className="text-gray-400" /><span className="text-gray-400">{uploading ? 'Uploading...' : 'Upload'}</span>
-                    <input type="file" accept="image/*" onChange={e => up(e, 'hero_image_url')} className="hidden" />
-                  </label>
+                  <div className="flex gap-2">
+                    <label className="flex items-center gap-2 px-4 py-2 bg-black border border-gray-700 rounded-lg cursor-pointer hover:bg-gray-900 text-sm">
+                      <Upload size={16} className="text-gray-400" /><span className="text-gray-400">{uploading ? 'Uploading...' : 'Upload'}</span>
+                      <input type="file" accept="image/*" onChange={e => up(e, 'hero_image_url')} className="hidden" />
+                    </label>
+                    <button type="button" onClick={() => openAssetPicker('hero_image_url')} className="flex items-center gap-2 px-4 py-2 bg-electric-blue/10 border border-electric-blue/30 rounded-lg text-electric-blue text-sm hover:bg-electric-blue/20">
+                      <FolderOpen size={16} /> Browse Library
+                    </button>
+                  </div>
                 </div>
               </Fl>
               <Fl label="Screenshots Gallery" helper="Optional. Gallery images on the product page.">
@@ -497,10 +502,15 @@ const ProductModal = ({ item, onClose, onSave }) => {
                     </div>
                   ))}
                 </div>
-                <label className="inline-flex items-center gap-2 px-4 py-2 bg-black border border-gray-700 rounded-lg cursor-pointer hover:bg-gray-900 text-sm">
-                  <Upload size={16} className="text-gray-400" /><span className="text-gray-400">{uploading ? 'Uploading...' : 'Add Screenshot'}</span>
-                  <input type="file" accept="image/*" onChange={upScreenshot} className="hidden" />
-                </label>
+                <div className="flex gap-2">
+                  <label className="inline-flex items-center gap-2 px-4 py-2 bg-black border border-gray-700 rounded-lg cursor-pointer hover:bg-gray-900 text-sm">
+                    <Upload size={16} className="text-gray-400" /><span className="text-gray-400">{uploading ? 'Uploading...' : 'Add Screenshot'}</span>
+                    <input type="file" accept="image/*" onChange={upScreenshot} className="hidden" />
+                  </label>
+                  <button type="button" onClick={() => openAssetPicker('screenshot')} className="flex items-center gap-2 px-4 py-2 bg-electric-blue/10 border border-electric-blue/30 rounded-lg text-electric-blue text-sm hover:bg-electric-blue/20">
+                    <FolderOpen size={16} /> Browse Library
+                  </button>
+                </div>
               </Fl>
               <Fl label="Video Embed URL" helper="YouTube or Vimeo embed URL">
                 <TI type="url" value={formData.video_url} onChange={e => setFormData(s => ({ ...s, video_url: e.target.value }))} placeholder="https://www.youtube.com/embed/..." />
