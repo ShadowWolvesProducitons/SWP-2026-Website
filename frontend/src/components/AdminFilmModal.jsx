@@ -88,6 +88,8 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
 
     const formDataUpload = new FormData();
     formDataUpload.append('file', file);
+    formDataUpload.append('source', 'films');
+    formDataUpload.append('tags', `films,poster,${formData.title ? formData.title.slice(0, 20) : 'film'}`);
 
     setUploading(true);
     try {
