@@ -17,6 +17,7 @@ from routes import (
     den_items_router, blog_posts_router,
     set_films_db, set_den_items_db, set_blog_posts_db
 )
+from routes.upload import set_db as set_upload_db
 from routes.submissions import router as submissions_router, set_db as set_submissions_db
 from routes.investors import router as investors_router, set_db as set_investors_db
 from routes.newsletter import router as newsletter_router, set_db as set_newsletter_db
