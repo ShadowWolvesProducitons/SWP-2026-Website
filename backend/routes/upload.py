@@ -155,8 +155,13 @@ ALLOWED_FILE_EXTENSIONS = {'.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.p
 MAX_DOC_SIZE = 50 * 1024 * 1024  # 50MB
 
 @router.post("/file")
-async def upload_file(file: UploadFile = File(...)):
-    """Upload a document file (PDF, etc.)"""
+async def upload_file(
+    file: UploadFile = File(...),
+    auto_library: bool = Form(True),
+    source: str = Form("upload"),
+    tags: str = Form("")
+):
+    """Upload a document file (PDF, etc.). Auto-adds to asset library by default."""
     ext = Path(file.filename).suffix.lower()
     if ext not in ALLOWED_FILE_EXTENSIONS:
         raise HTTPException(
@@ -168,23 +173,45 @@ async def upload_file(file: UploadFile = File(...)):
     file_path = UPLOAD_DIR / unique_filename
     
     try:
+        content = await file.read()
+        if len(content) > MAX_DOC_SIZE:
+            raise HTTPException(
+                status_code=400,
+                detail=f"File too large. Maximum size is {MAX_DOC_SIZE // (1024*1024)}MB"
+            )
         with open(file_path, "wb") as buffer:
-            content = await file.read()
-            if len(content) > MAX_DOC_SIZE:
-                raise HTTPException(
-                    status_code=400,
-                    detail=f"File too large. Maximum size is {MAX_DOC_SIZE // (1024*1024)}MB"
-                )
             buffer.write(content)
     except HTTPException:
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to save file: {str(e)}")
     
+    file_url = f"/api/upload/files/{unique_filename}"
+    
+    # Determine asset type from extension
+    asset_type = "pdf" if ext == ".pdf" else "other"
+    
+    # Auto-add to asset library
+    asset = None
+    if auto_library and db is not None:
+        tag_list = [t.strip() for t in tags.split(",") if t.strip()] if tags else []
+        tag_list.append(source) if source and source not in tag_list else None
+        asset = await add_to_asset_library(
+            filename=unique_filename,
+            original_name=file.filename,
+            file_url=file_url,
+            file_size=len(content),
+            mime_type=file.content_type or "application/octet-stream",
+            asset_type=asset_type,
+            tags=tag_list,
+            source=source
+        )
+    
     return {
         "filename": unique_filename,
         "original_name": file.filename,
-        "url": f"/api/upload/files/{unique_filename}"
+        "url": file_url,
+        "asset_id": asset["id"] if asset else None
     }
 
 
