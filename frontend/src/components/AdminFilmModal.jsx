@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { X, Upload, Plus, Image } from 'lucide-react';
+import { X, Upload, Plus, Image, FolderOpen } from 'lucide-react';
 import { toast } from 'sonner';
+import AssetPicker from './admin/AssetPicker';
 
 const STATUS_OPTIONS = [
   'Development',
