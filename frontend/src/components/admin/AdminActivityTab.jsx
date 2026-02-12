@@ -248,8 +248,8 @@ const AdminActivityTab = () => {
                   )}
                   {item._type !== 'cineconnect' && (
                     <button
-                      onClick={(e) => { e.stopPropagation(); setNoteModal({ open: true, item, text: item.admin_note || '' }); }}
-                      className={`p-1.5 hover:bg-amber-500/10 rounded transition-colors ${item.admin_note ? 'text-amber-400' : 'text-gray-500 hover:text-amber-400'}`}
+                      onClick={(e) => { e.stopPropagation(); setNoteModal({ open: true, item, text: item.admin_notes || '' }); }}
+                      className={`p-1.5 hover:bg-amber-500/10 rounded transition-colors ${item.admin_notes ? 'text-amber-400' : 'text-gray-500 hover:text-amber-400'}`}
                       title="Add/Edit Note"
                       data-testid={`quick-note-${item.id}`}
                     >
