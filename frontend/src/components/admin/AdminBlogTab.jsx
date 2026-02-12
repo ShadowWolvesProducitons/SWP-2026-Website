@@ -665,6 +665,13 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
                     </label>
                     <button
                       type="button"
+                      onClick={() => openAssetPicker('cover_image_url')}
+                      className="flex items-center gap-2 px-4 py-2 bg-electric-blue/10 border border-electric-blue/30 rounded-lg text-electric-blue text-sm hover:bg-electric-blue/20"
+                    >
+                      <FolderOpen size={16} /> Browse
+                    </button>
+                    <button
+                      type="button"
                       onClick={handleGenerateAICover}
                       disabled={generatingAI || !formData.title.trim()}
                       className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-electric-blue rounded-lg hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
