@@ -164,52 +164,77 @@ const InvestorPortal = ({ onLogout }) => {
 };
 
 // Overview Section
-const OverviewSection = () => (
-  <div className="space-y-8">
-    <div>
-      <h2 className="text-3xl font-bold text-white mb-6 font-cinzel">
-        Welcome to Shadow Wolves
-      </h2>
-      <div className="prose-content text-gray-300 space-y-4 leading-relaxed">
-        <p>
-          Shadow Wolves Productions is a development-first production company focused on bold, 
-          genre-driven storytelling. We specialize in horror, thriller, and psychological narratives 
-          that challenge audiences while delivering commercial viability.
-        </p>
-        <p>
-          Our approach is disciplined: we develop projects thoroughly before seeking production 
-          financing, ensuring every project that moves forward has been rigorously tested and refined.
-        </p>
-        <p>
-          This portal provides an overview of our current development slate, investment structure, 
-          and opportunities. All information is confidential and intended for qualified investors only.
-        </p>
+const OverviewSection = ({ projects }) => {
+  const projectCount = projects?.length || 0;
+  const activeProjects = projects?.filter(p => ['Script', 'Development', 'Pre-Production'].includes(p.status))?.length || 0;
+  
+  return (
+    <div className="space-y-8">
+      {/* Summary Tiles */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="bg-smoke-gray border border-gray-800 rounded-lg p-4">
+          <div className="text-3xl font-bold text-electric-blue">{projectCount}</div>
+          <div className="text-gray-400 text-sm mt-1">Projects in Slate</div>
+        </div>
+        <div className="bg-smoke-gray border border-gray-800 rounded-lg p-4">
+          <div className="text-3xl font-bold text-green-400">{activeProjects}</div>
+          <div className="text-gray-400 text-sm mt-1">In Development</div>
+        </div>
+        <div className="bg-smoke-gray border border-gray-800 rounded-lg p-4">
+          <div className="text-3xl font-bold text-amber-400">Q2 2026</div>
+          <div className="text-gray-400 text-sm mt-1">Next Production</div>
+        </div>
+        <div className="bg-smoke-gray border border-gray-800 rounded-lg p-4">
+          <div className="text-3xl font-bold text-purple-400">Active</div>
+          <div className="text-gray-400 text-sm mt-1">Investor Portal</div>
+        </div>
+      </div>
+
+      <div>
+        <h2 className="text-3xl font-bold text-white mb-6 font-cinzel">
+          Welcome to Shadow Wolves
+        </h2>
+        <div className="prose-content text-gray-300 space-y-4 leading-relaxed">
+          <p>
+            Shadow Wolves Productions is a development-first production company focused on bold, 
+            genre-driven storytelling. We specialize in horror, thriller, and psychological narratives 
+            that challenge audiences while delivering commercial viability.
+          </p>
+          <p>
+            Our approach is disciplined: we develop projects thoroughly before seeking production 
+            financing, ensuring every project that moves forward has been rigorously tested and refined.
+          </p>
+          <p>
+            This portal provides an overview of our current development slate, investment structure, 
+            and opportunities. All information is confidential and intended for qualified investors only.
+          </p>
+        </div>
+      </div>
+
+      <div className="bg-smoke-gray border border-gray-800 rounded-lg p-6">
+        <h3 className="text-xl font-bold text-white mb-4">Our Philosophy</h3>
+        <ul className="space-y-3 text-gray-400">
+          <li className="flex items-start gap-3">
+            <span className="text-electric-blue mt-1">▪</span>
+            <span><strong className="text-white">Development-First:</strong> We don't rush to production. Every project is developed with intention.</span>
+          </li>
+          <li className="flex items-start gap-3">
+            <span className="text-electric-blue mt-1">▪</span>
+            <span><strong className="text-white">Genre Expertise:</strong> We understand the commercial and creative mechanics of genre filmmaking.</span>
+          </li>
+          <li className="flex items-start gap-3">
+            <span className="text-electric-blue mt-1">▪</span>
+            <span><strong className="text-white">Risk-Aware:</strong> We structure investments to manage downside while maximizing upside potential.</span>
+          </li>
+          <li className="flex items-start gap-3">
+            <span className="text-electric-blue mt-1">▪</span>
+            <span><strong className="text-white">Creator-Led:</strong> Projects are driven by creative vision, not committee decisions.</span>
+          </li>
+        </ul>
       </div>
     </div>
-
-    <div className="bg-smoke-gray border border-gray-800 rounded-lg p-6">
-      <h3 className="text-xl font-bold text-white mb-4">Our Philosophy</h3>
-      <ul className="space-y-3 text-gray-400">
-        <li className="flex items-start gap-3">
-          <span className="text-electric-blue mt-1">▪</span>
-          <span><strong className="text-white">Development-First:</strong> We don't rush to production. Every project is developed with intention.</span>
-        </li>
-        <li className="flex items-start gap-3">
-          <span className="text-electric-blue mt-1">▪</span>
-          <span><strong className="text-white">Genre Expertise:</strong> We understand the commercial and creative mechanics of genre filmmaking.</span>
-        </li>
-        <li className="flex items-start gap-3">
-          <span className="text-electric-blue mt-1">▪</span>
-          <span><strong className="text-white">Risk-Aware:</strong> We structure investments to manage downside while maximizing upside potential.</span>
-        </li>
-        <li className="flex items-start gap-3">
-          <span className="text-electric-blue mt-1">▪</span>
-          <span><strong className="text-white">Creator-Led:</strong> Projects are driven by creative vision, not committee decisions.</span>
-        </li>
-      </ul>
-    </div>
-  </div>
-);
+  );
+};
 
 // Development Slate Section
 const SlateSection = ({ projects, selectedProject, setSelectedProject }) => (
