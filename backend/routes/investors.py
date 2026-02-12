@@ -898,8 +898,8 @@ async def request_investor_access(data: AccessRequestData, background_tasks: Bac
     if existing_invite:
         return {"message": "An invite has already been sent to this email. Check your inbox."}
 
-    # Generate invite token
-    token = secrets.token_urlsafe(32)
+    # Generate invite token (short to avoid security software flags)
+    token = secrets.token_urlsafe(16)  # 22 chars - shorter to avoid threat detection
     expires_at = datetime.now(timezone.utc) + timedelta(days=7)
 
     invite = {
