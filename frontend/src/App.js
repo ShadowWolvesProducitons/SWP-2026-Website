@@ -78,7 +78,8 @@ const AppContent = () => {
         {/* Investors — Public Marketing Page */}
         <Route path="/investors" element={<InvestorsPublic />} />
         
-        {/* Investor Signup (with invite token) */}
+        {/* Investor Signup (with invite token — path-based) */}
+        <Route path="/investors/signup/:token" element={<InvestorSignup />} />
         <Route path="/investors/signup" element={<InvestorSignup />} />
         
         {/* Investor Login */}
