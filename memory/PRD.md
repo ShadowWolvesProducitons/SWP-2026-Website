@@ -9,7 +9,24 @@ Professional, cinematic website for "Shadow Wolves Productions" evolved into a f
 - **Database:** MongoDB
 - **Integrations:** Resend (email), OpenAI via emergentintegrations (AI image gen), pypdf + reportlab (PDF watermark)
 
-## What's Been Implemented (as of Feb 10, 2026)
+## What's Been Implemented
+
+### Admin Assets Library (Feb 12, 2026)
+- **Centralized Asset Management:** All files uploaded anywhere in admin auto-catalogue to the Assets Library
+- **Backend Integration:** `/api/upload/image` and `/api/upload/file` endpoints now accept `source` and `tags` parameters
+- **Auto-cataloguing:** Every upload automatically creates an entry in the `assets` MongoDB collection
+- **Asset Picker Component:** Reusable `AssetPicker.jsx` for selecting existing assets from library
+- **Features:** Search, filter by type (Images/PDFs/Other), visibility controls (Admin/Public/Investor), preview modal
+- **Source Tracking:** Assets tagged with origin (armory, blog, investor-project, etc.)
+
+### Investor Auto-Invite System (Feb 12, 2026)
+- **Public Request Form:** `/investors` page with access request form
+- **Token-Based Signup:** Unique invite links sent via Resend email
+- **Dual Auth:** New email/password login + legacy password fallback (`investor2024`)
+- **Security Fix:** Changed invite URLs from query params to clean paths (`/investors/signup/:token`)
+
+### CSS Refactor (Feb 12, 2026)
+- Abstracted `font-['Cinzel']` to global `.font-cinzel` class across ~20 files
 
 ### Product Pages — Two-Column Layout
 - **Desktop:** Left column (scrollable content), Right column (sticky purchase block)
@@ -18,10 +35,8 @@ Professional, cinematic website for "Shadow Wolves Productions" evolved into a f
 
 ### Armory Admin Modal — Tabbed Product Page Builder
 - **5 Tabs:** Basics, Content, Media, Access, SEO
-- **Quick Fill Templates:** When creating a new product, a "Quick Fill" button pre-populates all Content fields with type-specific prompts (Apps, Courses, Templates, Downloads, eBooks). Each template includes structured placeholder copy for What This Is, Core Actions, What You Get, Features, How It Works, Who It's For, Why It Works, Tags, and CTA. Auto-switches to Content tab after applying.
-- **Content tab:** Hero/Above the Fold, What This Is, Core Actions, What You Get, Features, How It Works, Who It's For, Why It Works, Final CTA, Tags
-- **SEO tab:** Focus Keyword, SEO Title/Description with char count bars, OG Image, Google Preview, Social Card Preview, 9-item SEO Checklist, Generate SEO button
-- "What It's Not" section removed from Content tab per user request
+- **Quick Fill Templates:** Type-specific content prompts (Apps, Courses, Templates, Downloads, eBooks)
+- **SEO tab:** Focus Keyword, SEO Title/Description with char count, Google/Social Preview, SEO Checklist
 
 ### Other Completed Features
 - Full public site (Home, About, Films, Armory, Den/Blog, Work With Us, Contact)
@@ -30,20 +45,27 @@ Professional, cinematic website for "Shadow Wolves Productions" evolved into a f
 - CineConnect Register Interest button
 - Hidden admin link (triple-click footer company name)
 - AI image generation, lead magnet popup, genre filter dropdown
-- Database query optimizations, deployment readiness
 
 ### Credentials
 - Admin: /admin, Password: shadowwolves2024
-- Investor: /investors, Password: investor2024
-- Test Access Code: SMITH2024
+- Investor: /investors/login, Email/Password OR Password: investor2024
 
 ## Prioritized Backlog
 
+### P0 (In Progress)
+- **Investor Portal Refactor:**
+  - Simplify navigation: Overview, Development Slate, Updates, Documents, Request Materials
+  - Build Overview dashboard with summary tiles
+  - Fix Development Slate poster display (aspect ratio 2:3, `object-fit: contain`)
+  - Add filter chips to Studio Updates page
+
 ### P1
-- Email System Expansion (4 templates)
-- E-commerce for The Armory (Stripe)
+- Update Header Image to specified local asset
+- Admin Panel Quick Actions (Mark as Read, Assign Status, Add Note in Activity tab)
+- Email System Expansion (Lead Magnet Delivery, Submission Confirmation templates)
 
 ### P2
+- E-commerce for The Armory (Stripe)
 - CineConnect Database (cast/crew)
-- CSS refactoring (font-['Cinzel'] to global class)
-- Producer's Playbook PDF → /frontend/public/assets
+- Migrate Producer's Playbook PDF to Assets Library (currently uses temp URL)
+
