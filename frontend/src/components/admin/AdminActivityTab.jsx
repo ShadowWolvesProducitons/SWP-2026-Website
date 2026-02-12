@@ -73,7 +73,8 @@ const AdminActivityTab = () => {
 
   const filtered = activeFilter === 'all' ? items : items.filter(i => i._type === activeFilter);
 
-  const handleStatusChange = async (item, newStatus) => {
+  const handleStatusChange = async (item, newStatus, e) => {
+    if (e) e.stopPropagation(); // Prevent row expansion
     const endpoint = item._type === 'message' ? 'contact' : 'submissions';
     try {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/${endpoint}/${item.id}`, {
@@ -87,6 +88,25 @@ const AdminActivityTab = () => {
       }
     } catch {
       toast.error('Failed to update status');
+    }
+  };
+
+  const handleSaveNote = async () => {
+    if (!noteModal.item) return;
+    const endpoint = noteModal.item._type === 'message' ? 'contact' : 'submissions';
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/${endpoint}/${noteModal.item.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ admin_note: noteModal.text })
+      });
+      if (response.ok) {
+        toast.success('Note saved');
+        setNoteModal({ open: false, item: null, text: '' });
+        fetchAll();
+      }
+    } catch {
+      toast.error('Failed to save note');
     }
   };
 
