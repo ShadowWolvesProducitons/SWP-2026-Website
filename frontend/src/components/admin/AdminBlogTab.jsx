@@ -452,6 +452,8 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
 
     const formDataUpload = new FormData();
     formDataUpload.append('file', file);
+    formDataUpload.append('source', 'blog');
+    formDataUpload.append('tags', `blog,${field},${formData.title ? formData.title.slice(0, 20) : 'post'}`);
 
     setUploading(true);
     try {
