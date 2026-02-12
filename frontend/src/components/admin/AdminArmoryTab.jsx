@@ -611,6 +611,15 @@ const ProductModal = ({ item, onClose, onSave }) => {
           </button>
         </div>
       </div>
+
+      {/* Asset Picker Modal */}
+      <AssetPicker 
+        isOpen={assetPickerOpen}
+        onClose={() => setAssetPickerOpen(false)}
+        onSelect={handleAssetSelect}
+        assetType="image"
+        title="Select Image from Library"
+      />
     </div>
   );
 };
