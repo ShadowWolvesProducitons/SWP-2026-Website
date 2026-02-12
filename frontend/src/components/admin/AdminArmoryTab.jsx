@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { RefreshCw, Plus, Edit2, Trash2, Star, ExternalLink, Link as LinkIcon, Upload, X, Eye, Image } from 'lucide-react';
+import { RefreshCw, Plus, Edit2, Trash2, Star, ExternalLink, Link as LinkIcon, Upload, X, Eye, Image, FolderOpen } from 'lucide-react';
 import { toast } from 'sonner';
+import AssetPicker from './AssetPicker';
 
 const ITEM_TYPES = ['Apps', 'Templates', 'Downloads', 'Courses', 'eBooks'];
 
