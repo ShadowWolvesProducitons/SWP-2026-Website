@@ -54,11 +54,11 @@ const InvestorPortal = ({ onLogout }) => {
   };
 
   const sections = [
-    { id: 'overview', label: 'Overview', icon: Briefcase },
+    { id: 'overview', label: 'Overview', icon: Home },
     { id: 'slate', label: 'Development Slate', icon: Film },
-    { id: 'updates', label: 'Studio Updates', icon: Newspaper },
-    { id: 'investment', label: 'Investment Model', icon: TrendingUp },
-    { id: 'interest', label: 'Expression of Interest', icon: Mail },
+    { id: 'updates', label: 'Updates', icon: Newspaper },
+    { id: 'documents', label: 'Documents', icon: FileText },
+    { id: 'request', label: 'Request Materials', icon: Mail },
   ];
 
   return (
