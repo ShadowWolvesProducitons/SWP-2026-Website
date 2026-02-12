@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { 
   RefreshCw, Plus, Edit2, Trash2, Copy, Key, 
   FileText, Download, Users, Settings, ChevronDown, ChevronUp, X, Upload,
-  Activity, Clock, User, Mail, Building, Phone, Newspaper
+  Activity, Clock, User, Mail, Building, Phone, Newspaper, FolderOpen
 } from 'lucide-react';
 import { toast } from 'sonner';
+import AssetPicker from './AssetPicker';
 
 const TABS = [
   { id: 'settings', label: 'Settings', icon: Settings },
