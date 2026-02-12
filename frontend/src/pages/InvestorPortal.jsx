@@ -234,13 +234,13 @@ const SlateSection = ({ projects, selectedProject, setSelectedProject }) => (
             onClick={() => setSelectedProject(project)}
             data-testid={`project-card-${project.id}`}
           >
-            {/* Poster */}
-            <div className="h-48 bg-gray-900">
+            {/* Poster - 2:3 aspect ratio */}
+            <div className="aspect-[2/3] bg-gray-900">
               {project.poster_url ? (
                 <img 
                   src={`${process.env.REACT_APP_BACKEND_URL}${project.poster_url}`}
                   alt={project.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain bg-black"
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
