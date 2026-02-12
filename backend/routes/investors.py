@@ -918,11 +918,10 @@ async def request_investor_access(data: AccessRequestData, background_tasks: Bac
     await db.invite_tokens.insert_one(invite)
     del invite["_id"]
 
-    # Build invite link
+    # Build invite link — use path-based token (cleaner, fewer antivirus flags)
     frontend_url = os.environ.get('FRONTEND_URL', os.environ.get('REACT_APP_BACKEND_URL', ''))
-    # Remove /api suffix if present for frontend URL
     base_url = frontend_url.rstrip('/')
-    invite_link = f"{base_url}/investors/signup?token={token}"
+    invite_link = f"{base_url}/investors/signup/{token}"
 
     # Email investor
     async def send_invite_email():
