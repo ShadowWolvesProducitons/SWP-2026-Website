@@ -98,7 +98,7 @@ const AdminActivityTab = () => {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/${endpoint}/${noteModal.item.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ admin_note: noteModal.text })
+        body: JSON.stringify({ admin_notes: noteModal.text })
       });
       if (response.ok) {
         toast.success('Note saved');
