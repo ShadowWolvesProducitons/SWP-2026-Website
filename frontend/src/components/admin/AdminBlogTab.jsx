@@ -884,6 +884,15 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
           </div>
         </form>
       </div>
+
+      {/* Asset Picker for Cover Image */}
+      <AssetPicker 
+        isOpen={assetPickerOpen}
+        onClose={() => setAssetPickerOpen(false)}
+        onSelect={handleAssetSelect}
+        assetType="image"
+        title="Select Cover Image"
+      />
     </div>
   );
 };
