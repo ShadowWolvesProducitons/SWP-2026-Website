@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { RefreshCw, Mail, Trash2, ChevronDown, ChevronUp, MessageSquare, FileText, ExternalLink, Users } from 'lucide-react';
+import { RefreshCw, Mail, Trash2, ChevronDown, ChevronUp, MessageSquare, FileText, ExternalLink, Users, Check, StickyNote, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 const TYPE_FILTERS = [
