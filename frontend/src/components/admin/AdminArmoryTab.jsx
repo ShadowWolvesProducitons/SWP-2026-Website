@@ -282,14 +282,22 @@ const ProductModal = ({ item, onClose, onSave }) => {
 
   const up = (e, field) => {
     const file = e.target.files[0]; if (!file) return;
-    const fd = new FormData(); fd.append('file', file); setUploading(true);
+    const fd = new FormData(); 
+    fd.append('file', file);
+    fd.append('source', 'armory');
+    fd.append('tags', `armory,${formData.item_type || 'product'},${field}`);
+    setUploading(true);
     fetch(`${process.env.REACT_APP_BACKEND_URL}/api/upload/image`, { method: 'POST', body: fd })
       .then(r => r.ok ? r.json() : Promise.reject()).then(d => { setFormData(s => ({ ...s, [field]: d.url })); toast.success('Uploaded'); })
       .catch(() => toast.error('Upload failed')).finally(() => setUploading(false));
   };
   const upScreenshot = (e) => {
     const file = e.target.files[0]; if (!file) return;
-    const fd = new FormData(); fd.append('file', file); setUploading(true);
+    const fd = new FormData(); 
+    fd.append('file', file);
+    fd.append('source', 'armory');
+    fd.append('tags', `armory,${formData.item_type || 'product'},screenshot`);
+    setUploading(true);
     fetch(`${process.env.REACT_APP_BACKEND_URL}/api/upload/image`, { method: 'POST', body: fd })
       .then(r => r.ok ? r.json() : Promise.reject()).then(d => { setFormData(s => ({ ...s, screenshots: [...s.screenshots, d.url] })); toast.success('Added'); })
       .catch(() => toast.error('Upload failed')).finally(() => setUploading(false));
