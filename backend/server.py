@@ -50,6 +50,7 @@ set_analytics_db(db)
 set_webhooks_db(db)
 set_assets_db(db)
 set_upload_db(db)
+set_ai_db(db)
 
 # Create the main app
 app = FastAPI(title="Shadow Wolves Productions API")
