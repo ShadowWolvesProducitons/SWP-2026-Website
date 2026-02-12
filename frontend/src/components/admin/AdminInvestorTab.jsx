@@ -512,6 +512,8 @@ const ProjectModal = ({ project, onClose, onSave }) => {
     if (!file) return;
     const fd = new FormData();
     fd.append('file', file);
+    fd.append('source', 'investor-project');
+    fd.append('tags', `investor,slate,poster,${formData.title || 'project'}`);
     setUploading(true);
     try {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/upload/image`, {
