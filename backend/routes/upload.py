@@ -1,11 +1,20 @@
-from fastapi import APIRouter, UploadFile, File, HTTPException
+from fastapi import APIRouter, UploadFile, File, HTTPException, Form
 from fastapi.responses import FileResponse
+from datetime import datetime, timezone
+from typing import Optional
 import os
 import uuid
 from pathlib import Path
 import shutil
 
 router = APIRouter(prefix="/upload", tags=["upload"])
+
+# Database reference (set from server.py)
+db = None
+
+def set_db(database):
+    global db
+    db = database
 
 # Upload directory
 UPLOAD_DIR = Path(__file__).parent.parent / "uploads"
@@ -16,9 +25,45 @@ ALLOWED_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.gif', '.webp'}
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
 
 
+async def add_to_asset_library(filename: str, original_name: str, file_url: str, 
+                               file_size: int, mime_type: str, asset_type: str = "image",
+                               tags: list = None, source: str = "upload"):
+    """Auto-add uploaded file to the assets library"""
+    if db is None:
+        return None
+    
+    asset = {
+        "id": str(uuid.uuid4()),
+        "filename": filename,
+        "original_name": original_name,
+        "asset_type": asset_type,
+        "tags": tags or [source],
+        "visibility": "admin_only",
+        "related_project_id": None,
+        "notes": f"Auto-added from {source}",
+        "file_url": file_url,
+        "file_size": file_size,
+        "mime_type": mime_type,
+        "uploaded_by": "admin",
+        "created_at": datetime.now(timezone.utc).isoformat()
+    }
+    
+    try:
+        await db.assets.insert_one(asset)
+        del asset["_id"]
+        return asset
+    except Exception:
+        return None
+
+
 @router.post("/image")
-async def upload_image(file: UploadFile = File(...)):
-    """Upload an image file"""
+async def upload_image(
+    file: UploadFile = File(...),
+    auto_library: bool = Form(True),
+    source: str = Form("upload"),
+    tags: str = Form("")
+):
+    """Upload an image file. Auto-adds to asset library by default."""
     # Validate file extension
     ext = Path(file.filename).suffix.lower()
     if ext not in ALLOWED_EXTENSIONS:
@@ -33,23 +78,41 @@ async def upload_image(file: UploadFile = File(...)):
     
     # Save file
     try:
+        content = await file.read()
+        if len(content) > MAX_FILE_SIZE:
+            raise HTTPException(
+                status_code=400,
+                detail=f"File too large. Maximum size is {MAX_FILE_SIZE // (1024*1024)}MB"
+            )
         with open(file_path, "wb") as buffer:
-            content = await file.read()
-            if len(content) > MAX_FILE_SIZE:
-                raise HTTPException(
-                    status_code=400,
-                    detail=f"File too large. Maximum size is {MAX_FILE_SIZE // (1024*1024)}MB"
-                )
             buffer.write(content)
     except HTTPException:
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to save file: {str(e)}")
     
-    # Return the URL path to access the image
+    file_url = f"/api/upload/images/{unique_filename}"
+    
+    # Auto-add to asset library
+    asset = None
+    if auto_library and db is not None:
+        tag_list = [t.strip() for t in tags.split(",") if t.strip()] if tags else []
+        tag_list.append(source) if source and source not in tag_list else None
+        asset = await add_to_asset_library(
+            filename=unique_filename,
+            original_name=file.filename,
+            file_url=file_url,
+            file_size=len(content),
+            mime_type=file.content_type or "image/jpeg",
+            asset_type="image",
+            tags=tag_list,
+            source=source
+        )
+    
     return {
         "filename": unique_filename,
-        "url": f"/api/upload/images/{unique_filename}"
+        "url": file_url,
+        "asset_id": asset["id"] if asset else None
     }
 
 
