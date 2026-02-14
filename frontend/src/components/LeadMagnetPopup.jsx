@@ -190,7 +190,7 @@ const LeadMagnetPopup = () => {
               {/* Mockup Image */}
               <div className="mb-6">
                 <img 
-                  src="https://customer-assets.emergentagent.com/job_04afc1ac-41b6-4e3d-938f-409263bdaadd/artifacts/i8yb09b1_The%20Producer-s%20Playbook%20Mockup.png"
+                  src={`${process.env.REACT_APP_BACKEND_URL}/api/upload/images/producers-playbook-mockup.png`}
                   alt="The Producer's Playbook"
                   className="w-48 h-auto mx-auto"
                 />
