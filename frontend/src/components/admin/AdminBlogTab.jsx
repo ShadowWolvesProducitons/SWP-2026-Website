@@ -354,6 +354,8 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
   const [generatingAI, setGeneratingAI] = useState(false);
   const [assetPickerOpen, setAssetPickerOpen] = useState(false);
   const [assetPickerField, setAssetPickerField] = useState(null);
+  const [seoGenerating, setSeoGenerating] = useState(false);
+  const [seoResult, setSeoResult] = useState(null);
 
   const openAssetPicker = (field) => {
     setAssetPickerField(field);
