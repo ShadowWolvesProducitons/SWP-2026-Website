@@ -175,7 +175,7 @@ const TheDen = () => {
   );
 };
 
-// Product Card Component
+// Product Card Component — compact style matching Films page
 const ProductCard = ({ item }) => {
   const getTypeIcon = (type) => {
     switch (type) {
@@ -189,124 +189,70 @@ const ProductCard = ({ item }) => {
   };
 
   const Icon = getTypeIcon(item.item_type);
-  
-  // Use slug-based link if available, otherwise fall back to external link
   const hasLandingPage = item.slug && item.is_published !== false;
   const linkUrl = hasLandingPage ? `/armory/${item.slug}` : (item.primary_link_url || item.file_url || '#');
   const isExternalLink = !hasLandingPage && linkUrl !== '#';
 
   const CardWrapper = ({ children }) => {
     if (hasLandingPage) {
-      return (
-        <Link to={linkUrl} className="product-card group block" data-testid={`product-card-${item.id}`}>
-          {children}
-        </Link>
-      );
+      return <Link to={linkUrl} className="product-card group block" data-testid={`product-card-${item.id}`}>{children}</Link>;
     }
     return (
-      <a
-        href={linkUrl}
-        target={isExternalLink ? '_blank' : undefined}
-        rel={isExternalLink ? 'noopener noreferrer' : undefined}
-        className="product-card group block"
-        data-testid={`product-card-${item.id}`}
-      >
-        {children}
-      </a>
+      <a href={linkUrl} target={isExternalLink ? '_blank' : undefined} rel={isExternalLink ? 'noopener noreferrer' : undefined}
+        className="product-card group block" data-testid={`product-card-${item.id}`}>{children}</a>
     );
   };
 
   return (
     <CardWrapper>
-      {/* Card Container */}
-      <div className="relative bg-smoke-gray rounded-xl overflow-hidden border border-gray-800/50 hover:border-gray-700 transition-all duration-300">
-        
-        {/* Image Container - 2:3 aspect ratio for poster-style display */}
-        <div className="relative aspect-[2/3] overflow-hidden bg-gray-900">
+      <div className="relative overflow-hidden rounded-lg aspect-[2/3] cursor-pointer border-2 border-transparent hover:border-white/30 transition-all duration-300">
+        {/* Image / Placeholder */}
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900">
           {item.thumbnail_url ? (
-            <img
-              src={`${process.env.REACT_APP_BACKEND_URL}${item.thumbnail_url}`}
-              alt={item.title}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-              loading="lazy"
-            />
+            <img src={`${process.env.REACT_APP_BACKEND_URL}${item.thumbnail_url}`} alt={item.title}
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
           ) : (
-            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900">
-              <Icon className="w-16 h-16 text-gray-700 group-hover:text-gray-600 transition-colors" />
+            <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
+              <Icon className="w-10 h-10 text-gray-700 mb-3" />
+              <h4 className="text-white text-xs font-bold text-center font-cinzel">{item.title}</h4>
             </div>
           )}
-          
-          {/* Hover Overlay */}
-          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
-          
-          {/* Featured Badge */}
-          {item.featured && (
-            <div className="absolute top-3 left-3 px-2.5 py-1 bg-electric-blue text-white text-xs font-medium rounded-md flex items-center gap-1.5 shadow-lg">
-              <Star size={12} fill="currentColor" />
-              Featured
-            </div>
-          )}
-          
-          {/* Quick View Button */}
-          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <span className="px-4 py-2 bg-white text-black text-sm font-medium rounded-full flex items-center gap-2 shadow-xl transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-              {hasLandingPage ? 'View Details' : 'Get It'}
-              {!hasLandingPage && isExternalLink && <ExternalLink size={14} />}
+        </div>
+
+        {/* Featured Badge */}
+        {item.featured && (
+          <div className="absolute top-2 left-2 px-2 py-0.5 bg-electric-blue text-white text-[10px] font-medium rounded-md flex items-center gap-1 shadow-lg z-10">
+            <Star size={10} fill="currentColor" /> Featured
+          </div>
+        )}
+
+        {/* Default overlay — title + price at bottom */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-300 group-hover:opacity-0">
+          <div className="absolute bottom-0 left-0 right-0 p-3">
+            <span className="text-gray-400 text-[10px] font-mono uppercase tracking-wider block mb-0.5">{item.item_type}</span>
+            <h3 className="text-white font-bold text-sm line-clamp-2">{item.title}</h3>
+            <span className="text-xs mt-1 block">
+              {item.is_free ? <span className="text-green-400">Free</span> : item.price ? <span className="text-white">{item.price}</span> : null}
             </span>
           </div>
         </div>
 
-        {/* Card Content */}
-        <div className="p-4">
-          {/* Category Tag */}
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-xs text-gray-500 font-mono uppercase tracking-wider">
+        {/* Hover overlay — full info */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-3">
+          <div>
+            <span className="inline-block px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider bg-white/10 text-white/80 rounded">
               {item.item_type}
             </span>
           </div>
-          
-          {/* Title */}
-          <h3 className="text-white font-semibold text-lg leading-tight mb-2 group-hover:text-electric-blue transition-colors line-clamp-2">
-            {item.title}
-          </h3>
-          
-          {/* Description */}
-          {item.short_description && (
-            <p className="text-gray-500 text-sm line-clamp-2 mb-3">
-              {item.short_description}
-            </p>
-          )}
-          
-          {/* Price - Standardized A$ format */}
-          <div className="flex items-center justify-between mt-auto pt-2 border-t border-gray-800/50">
-            <div className="price-display">
-              {item.is_free ? (
-                <span className="text-green-400 font-semibold text-lg">Free</span>
-              ) : item.price ? (
-                <span className="text-white font-semibold text-lg">
-                  {/* Ensure A$ prefix if price is numeric */}
-                  {item.price.startsWith('A$') || item.price.startsWith('$') ? item.price.replace('$', 'A$').replace('A$A$', 'A$') : `A$${item.price}`}
-                </span>
-              ) : item.price_note ? (
-                <span className="text-gray-400 text-sm">{item.price_note}</span>
-              ) : (
-                <span className="text-gray-500 text-sm">View pricing</span>
-              )}
+          <div>
+            <h3 className="text-white font-bold text-sm mb-1">{item.title}</h3>
+            {item.short_description && <p className="text-gray-300 text-xs line-clamp-2 mb-2">{item.short_description}</p>}
+            <div className="flex items-end justify-between">
+              <span className="text-xs">
+                {item.is_free ? <span className="text-green-400">Free</span> : item.price ? <span className="text-white">{item.price}</span> : null}
+              </span>
+              <span className="text-white/60 text-xs">{hasLandingPage ? 'View' : 'Get It'} →</span>
             </div>
-            
-            {/* Tags Preview */}
-            {item.tags?.length > 0 && (
-              <div className="flex gap-1">
-                {item.tags.slice(0, 2).map((tag, idx) => (
-                  <span
-                    key={idx}
-                    className="px-2 py-0.5 bg-white/5 text-gray-500 rounded text-xs"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            )}
           </div>
         </div>
       </div>
