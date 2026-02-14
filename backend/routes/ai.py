@@ -374,7 +374,7 @@ async def generate_blog_seo(request: BlogSeoRequest):
     content_preview = request.content[:2000] if request.content else ""
     tags_str = ", ".join(request.tags) if request.tags else "None"
 
-    user_prompt = f"""Generate SEO metadata for this blog post:
+    user_prompt = f"""Generate SEO metadata and content helpers for this blog post:
 
 Title: {request.title}
 Existing Tags: {tags_str}
@@ -388,7 +388,9 @@ Return JSON with exactly these keys:
   "seo_description": "max 160 chars, action-oriented meta description",
   "excerpt": "1-2 sentence engaging summary for blog card previews (max 200 chars)",
   "tags": ["tag1", "tag2", ... up to 8 lowercase tags],
-  "seo_keywords": "comma-separated keywords for meta keywords tag"
+  "seo_keywords": "comma-separated keywords for meta keywords tag",
+  "cta_text": "compelling call-to-action statement for end of the blog post (e.g. 'Ready to start your next project?')",
+  "cta_microcopy": "one line of reassurance or next step below the CTA button (e.g. 'No sign-up required. Start creating today.')"
 }}"""
 
     try:
