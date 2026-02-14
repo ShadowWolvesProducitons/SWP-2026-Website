@@ -22,8 +22,12 @@ class BlogPostBase(BaseModel):
     content: str = ""
     tags: List[str] = []
     status: str = "Draft"  # Draft, Published
+    featured: bool = False
     published_at: Optional[datetime] = None
     is_archived: bool = False
+    # CTA Fields
+    cta_text: Optional[str] = None
+    cta_microcopy: Optional[str] = None
     # SEO Fields
     seo_title: Optional[str] = None  # Custom page title for SEO
     seo_description: Optional[str] = None  # Meta description
@@ -45,8 +49,12 @@ class BlogPostUpdate(BaseModel):
     content: Optional[str] = None
     tags: Optional[List[str]] = None
     status: Optional[str] = None
+    featured: Optional[bool] = None
     published_at: Optional[datetime] = None
     is_archived: Optional[bool] = None
+    # CTA Fields
+    cta_text: Optional[str] = None
+    cta_microcopy: Optional[str] = None
     # SEO Fields
     seo_title: Optional[str] = None
     seo_description: Optional[str] = None
