@@ -531,6 +531,57 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
     }
   };
 
+  const handleGenerateSEO = async () => {
+    const content = editor ? editor.getHTML() : formData.content;
+    if (!formData.title.trim() && !content.trim()) {
+      toast.error('Please add a title or content first');
+      return;
+    }
+    setSeoGenerating(true);
+    setSeoResult(null);
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/ai/generate-blog-seo`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: formData.title,
+          content: content,
+          tags: formData.tags,
+          excerpt: formData.excerpt
+        })
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setSeoResult(data);
+        toast.success('SEO content generated! Review and apply below.');
+      } else {
+        const error = await response.json();
+        toast.error(error.detail || 'Failed to generate SEO');
+      }
+    } catch (err) {
+      toast.error('Error generating SEO content');
+    } finally {
+      setSeoGenerating(false);
+    }
+  };
+
+  const applySeoField = (field) => {
+    if (!seoResult) return;
+    const updates = {};
+    if (field === 'all') {
+      if (seoResult.seo_title) updates.seo_title = seoResult.seo_title;
+      if (seoResult.seo_description) updates.seo_description = seoResult.seo_description;
+      if (seoResult.excerpt) updates.excerpt = seoResult.excerpt;
+      if (seoResult.tags) updates.tags = seoResult.tags;
+      if (seoResult.seo_keywords) updates.seo_keywords = seoResult.seo_keywords;
+      setSeoResult(null);
+    } else {
+      updates[field] = seoResult[field];
+    }
+    setFormData(prev => ({ ...prev, ...updates }));
+    toast.success(field === 'all' ? 'All SEO fields applied' : `${field} applied`);
+  };
+
   const handleAddTag = () => {
     const tag = tagInput.trim();
     if (tag && !formData.tags.includes(tag)) {
