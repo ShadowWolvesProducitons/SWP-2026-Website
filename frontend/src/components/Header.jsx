@@ -30,7 +30,7 @@ const Header = () => {
             <img 
               src="/api/upload/images/header-banner.png" 
               alt="Shadow Wolves Productions"
-              className="h-16 w-auto transition-opacity group-hover:opacity-80"
+              className="h-20 w-auto transition-opacity group-hover:opacity-80"
             />
           </Link>
 
