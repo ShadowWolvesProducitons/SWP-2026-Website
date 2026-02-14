@@ -901,7 +901,7 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
               {/* SEO Title */}
               <div>
                 <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
-                  SEO Title <span className="text-gray-600">(max 60 chars recommended)</span>
+                  SEO Title <span className="text-gray-600">({(formData.seo_title || formData.title || '').length}/60)</span>
                 </label>
                 <input
                   type="text"
@@ -910,8 +910,11 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
                   onChange={handleChange}
                   className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none"
                   placeholder={formData.title || 'Custom SEO title (optional)'}
+                  data-testid="seo-title-input"
                 />
-                <p className="text-gray-600 text-xs mt-1">{(formData.seo_title || formData.title || '').length}/60 characters</p>
+                <div className="w-full bg-gray-800 rounded-full h-1 mt-2">
+                  <div className={`h-1 rounded-full ${(formData.seo_title||'').length>60?'bg-red-500':(formData.seo_title||'').length>=30?'bg-green-500':'bg-yellow-500'}`} style={{width:`${Math.min(((formData.seo_title||'').length/60)*100,100)}%`}} />
+                </div>
               </div>
 
               {/* Meta Description */}
