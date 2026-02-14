@@ -46,11 +46,18 @@ class DenItemBase(BaseModel):
     demo_url: Optional[str] = None  # Demo/preview link
     video_url: Optional[str] = None  # Promo video embed
     # Pricing
+    pricing_model: str = "free"  # free, one_time, subscription
     price: Optional[str] = None
     price_note: Optional[str] = None  # e.g., "one-time purchase", "per month"
+    monthly_price: Optional[str] = None
+    annual_price: Optional[str] = None
+    billing_note: Optional[str] = None
+    includes_trial: bool = False
+    trial_days: int = 14
     is_free: bool = True
     # Meta
     tags: List[str] = []
+    focus_keyword: Optional[str] = None
     seo_title: Optional[str] = None  # Custom SEO title
     seo_description: Optional[str] = None  # Custom meta description
     sort_order: int = 0
@@ -89,10 +96,17 @@ class DenItemUpdate(BaseModel):
     file_url: Optional[str] = None
     demo_url: Optional[str] = None
     video_url: Optional[str] = None
+    pricing_model: Optional[str] = None
     price: Optional[str] = None
     price_note: Optional[str] = None
+    monthly_price: Optional[str] = None
+    annual_price: Optional[str] = None
+    billing_note: Optional[str] = None
+    includes_trial: Optional[bool] = None
+    trial_days: Optional[int] = None
     is_free: Optional[bool] = None
     tags: Optional[List[str]] = None
+    focus_keyword: Optional[str] = None
     seo_title: Optional[str] = None
     seo_description: Optional[str] = None
     sort_order: Optional[int] = None
