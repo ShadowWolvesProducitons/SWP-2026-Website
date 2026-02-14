@@ -11,41 +11,26 @@ Professional, cinematic website for "Shadow Wolves Productions" evolved into a f
 
 ## What's Been Implemented
 
+### Bug Fixes — Armory, Blog, AI Cover (Feb 14, 2026)
+- **Armory Page:** Compact 6-column grid matching Films page. ProductCard rewritten as poster-style overlay cards (no content section below).
+- **Blog/Den Page:** Alternating zigzag layout — even posts show image-left/content-right, odd posts reverse. Wolf placeholder for posts without cover images. Container widened to max-w-5xl.
+- **AI Cover Image:** Fixed `generate_images()` call — removed unsupported `size` parameter. Blog AI image generation now works correctly.
+
 ### Armory Product Page Builder Refactor (Feb 14, 2026)
-- **5-Tab Modal:** Basics, Pricing & Access, Product Page Content, Media, SEO
-- **AI Content Generation:** Full product page content generation via OpenAI GPT-4o-mini
-  - Global "Generate Product Page Content" button opens overlay with pre-filled inputs
-  - Generates: positioning line, description, audience, features/deliverables, CTA, tags, SEO
-  - Overwrite protection: Apply All / Apply Selected / Cancel
-- **Section-Level AI Regeneration:** Sparkle icons on individual fields for targeted regen
-  - Supported sections: positioning line, what this is, features, what you get, CTA, SEO fields
-  - Inline preview with Apply/Cancel before overwriting
-- **SEO AI Generation:** "Generate SEO from Content" button with preview/apply controls
-- **Pricing Model System:** Dropdown (Free/One-time/Subscription) with conditional fields
-  - One-time: Price + Price Note
-  - Subscription: Monthly/Annual Price, Billing Note, Trial Days
-- **Backend Schema Update:** Added pricing_model, monthly_price, annual_price, billing_note, includes_trial, trial_days, focus_keyword to DenItem model
-- **Conditional Content Sections:** Apps show Features + Core Actions; others show What You Get + How It Works
-- **Editable List Items:** Click-to-edit inline for all list editors
-- **Auto Slug Generation:** Slug auto-updates from title until manually edited
+- 5-Tab Modal: Basics, Pricing & Access, Content, Media, SEO
+- AI Content Generation with overwrite protection
+- Section-Level AI Regeneration (sparkle icons)
+- SEO AI Generation with preview/apply controls
+- Pricing Model System (Free/One-time/Subscription)
+- Backend schema updated with new pricing fields
 
-### Backend AI Endpoints (Feb 14, 2026)
-- `POST /api/ai/generate-product-content` — Full content generation
-- `POST /api/ai/regenerate-product-section` — Single section regeneration
-- `POST /api/ai/generate-product-seo` — SEO from existing content
-
-### Header Banner Adjustment (Feb 14, 2026)
-- Enlarged header banner image from h-12 to h-20 for better readability
-- Reduced header padding from fixed h-20 container to py-2
-
-### Producer's Playbook Mockup Migration (Feb 14, 2026)
-- Migrated mockup image from temporary external URL to local storage
-- Added to Assets Library in MongoDB
+### Header & Assets (Feb 14, 2026)
+- Header banner enlarged (h-20) with reduced padding
+- Producer's Playbook mockup migrated to local Assets Library
 
 ### Admin Assets Library (Feb 12, 2026)
-- Centralized Asset Management with auto-cataloging
-- Asset Picker Component for reuse across all admin modals
-- Browse Library button in Armory, Films, Blog, Investor modals
+- Centralized asset management with auto-cataloging
+- Browse Library button across all admin modals
 
 ### Other Completed Features
 - Full public site (Home, About, Films, Armory, Den/Blog, Work With Us, Contact)
@@ -69,7 +54,3 @@ Professional, cinematic website for "Shadow Wolves Productions" evolved into a f
 ### P2
 - E-commerce for The Armory (Stripe)
 - CineConnect Database (cast/crew full build-out)
-
-### Console Warnings (Non-blocking)
-- Duplicate tiptap extension names in blog editor
-- UNSAFE_componentWillMount in react-helmet
