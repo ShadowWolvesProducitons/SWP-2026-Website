@@ -28,6 +28,7 @@ const AdminBlogTab = () => {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingPost, setEditingPost] = useState(null);
+  const [newsletterPost, setNewsletterPost] = useState(null);
 
   const fetchPosts = async () => {
     setLoading(true);
