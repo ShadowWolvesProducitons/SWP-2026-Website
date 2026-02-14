@@ -920,7 +920,7 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
               {/* Meta Description */}
               <div>
                 <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
-                  Meta Description <span className="text-gray-600">(max 160 chars recommended)</span>
+                  Meta Description <span className="text-gray-600">({(formData.seo_description || formData.excerpt || '').length}/160)</span>
                 </label>
                 <textarea
                   name="seo_description"
@@ -929,8 +929,11 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
                   rows={3}
                   className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none resize-none"
                   placeholder={formData.excerpt || 'Description for search engines (optional)'}
+                  data-testid="seo-description-input"
                 />
-                <p className="text-gray-600 text-xs mt-1">{(formData.seo_description || formData.excerpt || '').length}/160 characters</p>
+                <div className="w-full bg-gray-800 rounded-full h-1 mt-2">
+                  <div className={`h-1 rounded-full ${(formData.seo_description||'').length>160?'bg-red-500':(formData.seo_description||'').length>=100?'bg-green-500':'bg-yellow-500'}`} style={{width:`${Math.min(((formData.seo_description||'').length/160)*100,100)}%`}} />
+                </div>
               </div>
 
               {/* Meta Keywords */}
