@@ -801,19 +801,98 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
           {/* SEO Tab */}
           {activeTab === 'seo' && (
             <div className="p-6 space-y-6">
+              {/* AI Generate SEO Button */}
+              <button
+                type="button"
+                onClick={handleGenerateSEO}
+                disabled={seoGenerating || (!formData.title.trim())}
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-electric-blue/10 to-purple-500/10 border border-electric-blue/30 rounded-lg text-electric-blue text-sm hover:from-electric-blue/20 hover:to-purple-500/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                data-testid="ai-generate-seo-btn"
+              >
+                {seoGenerating ? <Loader2 size={16} className="animate-spin" /> : <Sparkles size={16} />}
+                {seoGenerating ? 'Generating SEO...' : 'Generate SEO from Content'}
+              </button>
+
+              {/* AI Result Preview */}
+              {seoResult && (
+                <div className="bg-electric-blue/5 border border-electric-blue/20 rounded-lg p-4 space-y-3" data-testid="blog-seo-result-preview">
+                  <p className="text-white text-sm font-medium flex items-center gap-2">
+                    <Sparkles size={14} className="text-electric-blue" /> AI-Generated SEO
+                  </p>
+                  {seoResult.seo_title && (
+                    <div className="flex items-center gap-2" data-testid="seo-result-title">
+                      <div className="flex-1 min-w-0">
+                        <p className="text-gray-500 text-xs">SEO Title</p>
+                        <p className="text-white text-sm truncate">{seoResult.seo_title}</p>
+                      </div>
+                      <button type="button" onClick={() => applySeoField('seo_title')} className="px-3 py-1 text-electric-blue text-xs border border-electric-blue/30 rounded hover:bg-electric-blue/10">Apply</button>
+                    </div>
+                  )}
+                  {seoResult.seo_description && (
+                    <div className="flex items-center gap-2" data-testid="seo-result-description">
+                      <div className="flex-1 min-w-0">
+                        <p className="text-gray-500 text-xs">Meta Description</p>
+                        <p className="text-white text-sm line-clamp-2">{seoResult.seo_description}</p>
+                      </div>
+                      <button type="button" onClick={() => applySeoField('seo_description')} className="px-3 py-1 text-electric-blue text-xs border border-electric-blue/30 rounded hover:bg-electric-blue/10 flex-shrink-0">Apply</button>
+                    </div>
+                  )}
+                  {seoResult.excerpt && (
+                    <div className="flex items-center gap-2" data-testid="seo-result-excerpt">
+                      <div className="flex-1 min-w-0">
+                        <p className="text-gray-500 text-xs">Excerpt</p>
+                        <p className="text-white text-sm line-clamp-2">{seoResult.excerpt}</p>
+                      </div>
+                      <button type="button" onClick={() => applySeoField('excerpt')} className="px-3 py-1 text-electric-blue text-xs border border-electric-blue/30 rounded hover:bg-electric-blue/10 flex-shrink-0">Apply</button>
+                    </div>
+                  )}
+                  {seoResult.tags && seoResult.tags.length > 0 && (
+                    <div className="flex items-center gap-2" data-testid="seo-result-tags">
+                      <div className="flex-1 min-w-0">
+                        <p className="text-gray-500 text-xs">Tags</p>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {seoResult.tags.map((tag, i) => (
+                            <span key={i} className="px-2 py-0.5 bg-white/5 border border-gray-700 rounded-full text-gray-300 text-xs">{tag}</span>
+                          ))}
+                        </div>
+                      </div>
+                      <button type="button" onClick={() => applySeoField('tags')} className="px-3 py-1 text-electric-blue text-xs border border-electric-blue/30 rounded hover:bg-electric-blue/10 flex-shrink-0">Apply</button>
+                    </div>
+                  )}
+                  {seoResult.seo_keywords && (
+                    <div className="flex items-center gap-2" data-testid="seo-result-keywords">
+                      <div className="flex-1 min-w-0">
+                        <p className="text-gray-500 text-xs">Meta Keywords</p>
+                        <p className="text-white text-sm truncate">{seoResult.seo_keywords}</p>
+                      </div>
+                      <button type="button" onClick={() => applySeoField('seo_keywords')} className="px-3 py-1 text-electric-blue text-xs border border-electric-blue/30 rounded hover:bg-electric-blue/10 flex-shrink-0">Apply</button>
+                    </div>
+                  )}
+                  <div className="flex gap-2 pt-2">
+                    <button type="button" onClick={() => applySeoField('all')} className="flex-1 px-4 py-2 bg-electric-blue text-white rounded-lg text-sm hover:bg-electric-blue/90" data-testid="seo-apply-all-btn">
+                      Apply All
+                    </button>
+                    <button type="button" onClick={() => setSeoResult(null)} className="px-4 py-2 border border-gray-700 text-gray-400 rounded-lg text-sm hover:text-white">
+                      Dismiss
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* SEO Preview */}
               <div className="bg-black/50 border border-gray-800 rounded-lg p-4 mb-6">
                 <h3 className="text-white font-medium mb-2 flex items-center gap-2">
                   <Search size={16} className="text-electric-blue" />
-                  SEO Preview
+                  Google Preview
                 </h3>
                 <div className="space-y-1">
-                  <p className="text-blue-400 text-lg truncate">
+                  <p className="text-[#8ab4f8] text-lg truncate">
                     {formData.seo_title || formData.title || 'Page Title'}
                   </p>
-                  <p className="text-green-500 text-sm truncate">
+                  <p className="text-[#bdc1c6] text-sm truncate">
                     shadowwolvesproductions.com.au/blog/{formData.slug || 'post-slug'}
                   </p>
-                  <p className="text-gray-400 text-sm line-clamp-2">
+                  <p className="text-[#969ba1] text-sm line-clamp-2">
                     {formData.seo_description || formData.excerpt || 'Add a meta description to improve search visibility...'}
                   </p>
                 </div>
