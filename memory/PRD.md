@@ -24,6 +24,15 @@ Professional, cinematic website for "Shadow Wolves Productions" evolved into a f
 - Pricing Model System (Free/One-time/Subscription)
 - Backend schema updated with new pricing fields
 
+### Blog SEO AI Generation (Feb 14, 2026)
+- Added "Generate SEO from Content" button to blog Edit Post modal (SEO tab)
+- New backend endpoint: POST /api/ai/generate-blog-seo
+- AI generates: SEO Title, Meta Description, Excerpt, Tags, Meta Keywords
+- Result preview with individual Apply buttons + Apply All
+- Google Preview section, character count progress bars, SEO Checklist
+- Mirrors Armory's AI generation UX pattern
+- 100% test pass rate (backend: 5/5, frontend: 14/14)
+
 ### Header & Assets (Feb 14, 2026)
 - Header banner enlarged (h-20) with reduced padding
 - Producer's Playbook mockup migrated to local Assets Library
