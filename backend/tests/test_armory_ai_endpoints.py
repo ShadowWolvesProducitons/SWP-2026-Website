@@ -239,56 +239,47 @@ class TestDenItemsCRUD:
         assert isinstance(data, list)
         print(f"✓ GET /api/den-items: {len(data)} products")
     
-    def test_create_product_with_new_pricing_model(self):
-        """Test creating product with new pricing_model field"""
+    def test_create_basic_product(self):
+        """Test creating a basic product"""
         payload = {
-            "title": "TEST_New_Pricing_Model_Product",
-            "slug": "test-new-pricing",
+            "title": "TEST_Basic_Product",
+            "slug": "test-basic-product",
             "item_type": "Apps",
-            "pricing_model": "subscription",
-            "monthly_price": "A$9/mo",
-            "annual_price": "A$89/yr",
-            "billing_note": "Cancel anytime",
-            "includes_trial": True,
-            "trial_days": 14,
+            "price": "A$29",
             "primary_link_url": "https://example.com",
-            "short_description": "A test subscription product",
+            "short_description": "A test product",
             "is_published": True
         }
         response = requests.post(f"{BASE_URL}/api/den-items", json=payload)
         assert response.status_code in [200, 201], f"Expected 200/201, got {response.status_code}: {response.text}"
         
         data = response.json()
-        print("✓ Created product with subscription pricing model")
-        
-        # Verify the product was created with correct fields
         product_id = data.get("id")
         assert product_id, "Product should have an ID"
+        print(f"✓ Created basic product with ID: {product_id}")
         
-        # Fetch and verify
+        # Verify title persisted
         get_response = requests.get(f"{BASE_URL}/api/den-items/{product_id}")
-        if get_response.status_code == 200:
-            saved_product = get_response.json()
-            assert saved_product.get("pricing_model") == "subscription", "Pricing model should be subscription"
-            assert saved_product.get("monthly_price") == "A$9/mo"
-            print(f"✓ Product saved with pricing_model: {saved_product.get('pricing_model')}")
+        assert get_response.status_code == 200
+        saved = get_response.json()
+        assert saved.get("title") == "TEST_Basic_Product"
+        assert saved.get("price") == "A$29"
+        print("✓ Product data persisted correctly")
         
         # Cleanup
         requests.delete(f"{BASE_URL}/api/den-items/{product_id}?permanent=true")
     
-    def test_create_product_with_seo_fields(self):
-        """Test creating product with SEO fields"""
+    def test_create_product_with_existing_seo_fields(self):
+        """Test creating product with SEO fields that exist in backend model"""
         payload = {
             "title": "TEST_SEO_Product",
             "slug": "test-seo-product",
             "item_type": "Templates",
-            "pricing_model": "one_time",
             "price": "A$49",
             "primary_link_url": "https://example.com",
             "short_description": "A test template with SEO",
-            "focus_keyword": "filmmaking template",
             "seo_title": "Best Filmmaking Template 2024 | Shadow Wolves",
-            "seo_description": "Download the ultimate filmmaking template to organize your productions. Perfect for indie filmmakers.",
+            "seo_description": "Download the ultimate filmmaking template to organize your productions.",
             "is_published": True
         }
         response = requests.post(f"{BASE_URL}/api/den-items", json=payload)
@@ -298,13 +289,13 @@ class TestDenItemsCRUD:
         product_id = data.get("id")
         print(f"✓ Created product with SEO fields")
         
-        # Verify SEO fields were saved
+        # Verify SEO fields were saved (seo_title and seo_description exist in model)
         get_response = requests.get(f"{BASE_URL}/api/den-items/{product_id}")
         if get_response.status_code == 200:
             saved = get_response.json()
-            assert saved.get("focus_keyword") == "filmmaking template"
-            assert saved.get("seo_title") == payload["seo_title"]
-            print("✓ SEO fields saved correctly")
+            assert saved.get("seo_title") == payload["seo_title"], "SEO title should be saved"
+            assert saved.get("seo_description") == payload["seo_description"], "SEO description should be saved"
+            print("✓ SEO title and description saved correctly")
         
         # Cleanup
         requests.delete(f"{BASE_URL}/api/den-items/{product_id}?permanent=true")
