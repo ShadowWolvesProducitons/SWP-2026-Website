@@ -24,6 +24,18 @@ Professional, cinematic website for "Shadow Wolves Productions" evolved into a f
 - Pricing Model System (Free/One-time/Subscription)
 - Backend schema updated with new pricing fields
 
+### Blog Post Builder Refactor + Newsletter (Feb 14, 2026)
+- Restructured blog Edit Post modal to 4-tab layout: Basics | Content | Media | SEO
+- Unified theme matching The Armory modal (same tab bar, field components, footer)
+- Added "Generate Blog Post Metadata" AI button on Content tab (opens overlay with 7 selectable sections)
+- Added CTA Text + CTA Microcopy fields to blog posts
+- Featured/Pinned toggle added to Basics tab
+- Removed: Canonical URL, Social Share Image fields
+- "Send as Newsletter" button on published blog posts — generates email with excerpt, cover image, tags, and "Read Full Story" CTA linking back to the blog page
+- Backend model updated: added featured, cta_text, cta_microcopy fields
+- Backend AI endpoint updated to return cta_text and cta_microcopy
+- 100% test pass rate (backend: 12/12, frontend: 25/25)
+
 ### Blog SEO AI Generation (Feb 14, 2026)
 - Added "Generate SEO from Content" button to blog Edit Post modal (SEO tab)
 - New backend endpoint: POST /api/ai/generate-blog-seo
