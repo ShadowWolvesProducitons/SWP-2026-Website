@@ -337,6 +337,77 @@ Tags: {', '.join(ctx.get('tags', [])[:5])}"""
         raise HTTPException(status_code=500, detail=f"Section regeneration failed: {str(e)}")
 
 
+# ═══════════════════════════════════════════════════════════════
+# Blog SEO AI Generation System
+# ═══════════════════════════════════════════════════════════════
+
+BLOG_SEO_SYSTEM_PROMPT = """You are generating SEO and metadata for Shadow Wolves Productions' blog "The Den".
+
+Brand: Shadow Wolves Productions — film production company.
+Tone: Dark, cinematic, bold, genre-focused (horror, thriller, drama, indie film).
+Audience: Filmmakers, horror fans, indie creators, industry professionals.
+
+Rules:
+- SEO title must be ≤60 characters, compelling and keyword-rich
+- Meta description must be ≤160 characters, action-oriented
+- Tags should be relevant, lowercase, 3-8 tags
+- Keywords should be comma-separated, relevant to content and brand
+- Excerpt should be 1-2 sentences, engaging summary for blog previews
+
+Return valid JSON only. No markdown code fences, no commentary."""
+
+
+class BlogSeoRequest(BaseModel):
+    title: str
+    content: Optional[str] = ""
+    tags: Optional[list] = []
+    excerpt: Optional[str] = ""
+
+
+@router.post("/generate-blog-seo")
+async def generate_blog_seo(request: BlogSeoRequest):
+    """Generate SEO metadata for a blog post from its content."""
+    api_key = os.environ.get("EMERGENT_LLM_KEY")
+    if not api_key:
+        raise HTTPException(status_code=500, detail="EMERGENT_LLM_KEY not configured")
+
+    content_preview = request.content[:2000] if request.content else ""
+    tags_str = ", ".join(request.tags) if request.tags else "None"
+
+    user_prompt = f"""Generate SEO metadata for this blog post:
+
+Title: {request.title}
+Existing Tags: {tags_str}
+Existing Excerpt: {request.excerpt or 'None'}
+Content:
+{content_preview}
+
+Return JSON with exactly these keys:
+{{
+  "seo_title": "max 60 chars, compelling, keyword-rich",
+  "seo_description": "max 160 chars, action-oriented meta description",
+  "excerpt": "1-2 sentence engaging summary for blog card previews (max 200 chars)",
+  "tags": ["tag1", "tag2", ... up to 8 lowercase tags],
+  "seo_keywords": "comma-separated keywords for meta keywords tag"
+}}"""
+
+    try:
+        from emergentintegrations.llm.openai import LlmChat
+        from emergentintegrations.llm.chat import UserMessage
+
+        chat = LlmChat(
+            api_key=api_key,
+            session_id=str(uuid.uuid4()),
+            system_message=BLOG_SEO_SYSTEM_PROMPT,
+        )
+        chat = chat.with_model(provider="openai", model="gpt-4o-mini")
+        response = await chat.send_message(UserMessage(text=user_prompt))
+        result = _parse_json_response(response)
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Blog SEO generation failed: {str(e)}")
+
+
 @router.post("/generate-product-seo")
 async def generate_product_seo(request: ProductSeoRequest):
     """Generate SEO fields from existing content."""
