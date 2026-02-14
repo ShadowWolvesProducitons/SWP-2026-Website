@@ -660,6 +660,134 @@ const AIResultOverlay = ({ result, onClose, onApply }) => {
   );
 };
 
+/* ═══════════════════════════════════════════════════════════════
+   BLOG NEWSLETTER MODAL — Send blog post as newsletter
+   ═══════════════════════════════════════════════════════════════ */
+
+const BlogNewsletterModal = ({ post, onClose }) => {
+  const [sending, setSending] = useState(false);
+  const [testMode, setTestMode] = useState(false);
+  const [result, setResult] = useState(null);
+  const [subscriberCount, setSubscriberCount] = useState(0);
+
+  useEffect(() => {
+    fetch(`${API}/api/newsletter?active_only=true`)
+      .then(r => r.ok ? r.json() : []).then(d => setSubscriberCount(d.length)).catch(() => {});
+  }, []);
+
+  const siteUrl = window.location.origin;
+  const blogUrl = `${siteUrl}/blog/${post.slug}`;
+  const coverUrl = post.cover_image_url ? (post.cover_image_url.startsWith('http') ? post.cover_image_url : `${API}${post.cover_image_url}`) : '';
+  const excerpt = post.excerpt || post.seo_description || 'Check out our latest blog post.';
+  const ctaText = post.cta_text || 'Read Full Story';
+
+  const subject = `New from The Den: ${post.title}`;
+
+  const htmlContent = `
+    <div style="text-align: center; margin-bottom: 32px;">
+      <p style="color: #233dff; font-size: 12px; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 8px;">The Den — New Post</p>
+      <h1 style="color: #ffffff; font-size: 28px; line-height: 1.3; margin: 0;">${post.title}</h1>
+    </div>
+    ${coverUrl ? `<div style="margin: 24px 0;"><img src="${coverUrl}" alt="${post.title}" style="width: 100%; max-width: 560px; height: auto; border-radius: 12px; display: block; margin: 0 auto;" /></div>` : ''}
+    <p style="color: #d1d5db; line-height: 1.8; font-size: 16px; margin: 24px 0;">${excerpt}</p>
+    ${post.tags?.length ? `<div style="margin: 16px 0;">${post.tags.slice(0, 5).map(t => `<span style="display: inline-block; background: #1a1a2e; color: #9ca3af; padding: 4px 12px; border-radius: 50px; font-size: 12px; margin: 2px 4px;">${t}</span>`).join('')}</div>` : ''}
+    <div style="text-align: center; margin: 32px 0;">
+      <a href="${blogUrl}" style="display: inline-block; background: #233dff; color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${ctaText}</a>
+      ${post.cta_microcopy ? `<p style="color: #6b7280; font-size: 12px; margin-top: 12px;">${post.cta_microcopy}</p>` : ''}
+    </div>
+  `;
+
+  const handleSend = async () => {
+    setSending(true);
+    setResult(null);
+    try {
+      const r = await fetch(`${API}/api/newsletter/send-bulk`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ subject, html_content: htmlContent, test_mode: testMode })
+      });
+      const data = await r.json();
+      if (r.ok) {
+        setResult(data);
+        if (data.sent > 0) toast.success(`Newsletter sent to ${data.sent} subscriber${data.sent !== 1 ? 's' : ''}`);
+        if (data.failed > 0) toast.error(`Failed: ${data.failed}`);
+      } else { toast.error(data.detail || 'Failed to send'); }
+    } catch { toast.error('Error sending newsletter'); }
+    finally { setSending(false); }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 overflow-y-auto">
+      <div className="bg-smoke-gray border border-gray-800 rounded-lg w-full max-w-2xl my-8 max-h-[90vh] overflow-hidden flex flex-col" data-testid="newsletter-modal">
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-800 flex-shrink-0">
+          <div>
+            <h3 className="text-lg font-bold text-white flex items-center gap-2"><Send size={18} className="text-electric-blue" /> Send as Newsletter</h3>
+            <p className="text-gray-600 text-xs">{subscriberCount} active subscriber{subscriberCount !== 1 ? 's' : ''}</p>
+          </div>
+          <button onClick={onClose} className="p-2 text-gray-400 hover:text-white"><X size={20} /></button>
+        </div>
+
+        {/* Preview */}
+        <div className="flex-1 overflow-y-auto p-6 space-y-4">
+          <Fl label="Subject" helper="Email subject line">
+            <div className="bg-black border border-gray-700 rounded-lg px-4 py-2 text-white text-sm">{subject}</div>
+          </Fl>
+
+          {/* Email Preview */}
+          <div>
+            <label className="block text-gray-400 text-sm mb-1">Email Preview</label>
+            <div className="bg-[#0a0a0a] border border-gray-700 rounded-lg p-6 max-h-80 overflow-y-auto">
+              <div style={{ textAlign: 'center', marginBottom: 24 }}>
+                <p style={{ color: '#233dff', fontSize: 12, textTransform: 'uppercase', letterSpacing: 3, marginBottom: 8 }}>The Den — New Post</p>
+                <h2 style={{ color: '#fff', fontSize: 22, margin: 0 }}>{post.title}</h2>
+              </div>
+              {coverUrl && <img src={coverUrl} alt="" style={{ width: '100%', maxHeight: 200, objectFit: 'cover', borderRadius: 12, marginBottom: 16 }} />}
+              <p style={{ color: '#d1d5db', lineHeight: 1.8, fontSize: 14 }}>{excerpt}</p>
+              {post.tags?.length > 0 && (
+                <div style={{ margin: '12px 0' }}>
+                  {post.tags.slice(0, 5).map((t, i) => (
+                    <span key={i} style={{ display: 'inline-block', background: '#1a1a2e', color: '#9ca3af', padding: '3px 10px', borderRadius: 50, fontSize: 11, margin: '2px 3px' }}>{t}</span>
+                  ))}
+                </div>
+              )}
+              <div style={{ textAlign: 'center', margin: '24px 0' }}>
+                <span style={{ display: 'inline-block', background: '#233dff', color: '#fff', padding: '12px 32px', borderRadius: 8, fontSize: 13, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1 }}>{ctaText}</span>
+                {post.cta_microcopy && <p style={{ color: '#6b7280', fontSize: 11, marginTop: 8 }}>{post.cta_microcopy}</p>}
+              </div>
+            </div>
+          </div>
+
+          {/* Test Mode */}
+          <label className="flex items-center gap-2 text-gray-400 text-sm cursor-pointer">
+            <input type="checkbox" checked={testMode} onChange={e => setTestMode(e.target.checked)} className="rounded" />
+            <span><span className="text-white">Test Mode</span> — Send to one subscriber first</span>
+          </label>
+
+          {/* Result */}
+          {result && (
+            <div className={`rounded-lg p-4 border ${result.failed === 0 ? 'bg-green-500/10 border-green-500/30' : 'bg-red-500/10 border-red-500/30'}`}>
+              <div className="flex items-center gap-4 text-sm">
+                <span className="text-gray-400">Total: {result.total}</span>
+                <span className="text-green-400">Sent: {result.sent}</span>
+                {result.failed > 0 && <span className="text-red-400">Failed: {result.failed}</span>}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div className="flex items-center justify-between p-5 border-t border-gray-800 bg-black/30 flex-shrink-0">
+          <button type="button" onClick={onClose} className="px-5 py-2 border border-gray-700 text-gray-400 rounded-lg hover:text-white text-sm">Cancel</button>
+          <button onClick={handleSend} disabled={sending || subscriberCount === 0}
+            className="flex items-center gap-2 px-6 py-2 bg-electric-blue hover:bg-electric-blue/90 disabled:bg-gray-700 text-white rounded-lg text-sm" data-testid="send-newsletter-btn">
+            {sending ? <><Loader2 size={16} className="animate-spin" /> Sending...</> : <><Send size={16} /> {testMode ? 'Send Test' : 'Send Newsletter'}</>}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 /* ═══ Shared UI Components ═══ */
 
 const Fl = ({ label, helper, children }) => (
