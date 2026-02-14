@@ -61,17 +61,17 @@ class TestPublicAPIs:
             print(f"  First post: {post.get('title', 'N/A')}")
     
     def test_post_contact_submit(self):
-        """Test POST /api/contact/submit (Contact form)"""
+        """Test POST /api/contact (Contact form)"""
         payload = {
             "name": "TEST_Regression_Contact",
             "email": "test.regression@example.com",
             "message": "This is a regression test submission",
             "service": "general"
         }
-        response = requests.post(f"{BASE_URL}/api/contact/submit", json=payload)
+        response = requests.post(f"{BASE_URL}/api/contact", json=payload)
         assert response.status_code in [200, 201]
         data = response.json()
-        print(f"✓ POST /api/contact/submit: Success")
+        print(f"✓ POST /api/contact: Success")
         assert "id" in data or "message" in data
 
 
@@ -165,57 +165,50 @@ class TestInvestorAPIs:
         print(f"✓ GET /api/investors/blog/posts: {len(data)} posts returned")
     
     def test_validate_investor_password(self):
-        """Test POST /api/investors/auth/validate (Password validation)"""
+        """Test POST /api/investors/auth (Password validation)"""
         # Test with correct password
         response = requests.post(
-            f"{BASE_URL}/api/investors/auth/validate",
+            f"{BASE_URL}/api/investors/auth",
             json={"password": "investor2024"}
         )
-        assert response.status_code in [200, 401]
-        if response.status_code == 200:
-            data = response.json()
-            assert data.get("valid") == True
-            print("✓ POST /api/investors/auth/validate: Correct password validated")
-        else:
-            print("⚠ POST /api/investors/auth/validate: Password validation returned 401")
+        assert response.status_code == 200
+        data = response.json()
+        assert data.get("success") == True
+        print("✓ POST /api/investors/auth: Correct password validated")
         
         # Test with wrong password
         response_wrong = requests.post(
-            f"{BASE_URL}/api/investors/auth/validate",
+            f"{BASE_URL}/api/investors/auth",
             json={"password": "wrongpassword"}
         )
-        assert response_wrong.status_code in [200, 401]
-        if response_wrong.status_code == 200:
-            data = response_wrong.json()
-            assert data.get("valid") == False
-            print("✓ Wrong password correctly rejected")
+        assert response_wrong.status_code == 200
+        data = response_wrong.json()
+        assert data.get("success") == False
+        print("✓ Wrong password correctly rejected")
 
 
 class TestAdminAuthentication:
     """Test admin authentication"""
     
     def test_validate_admin_password(self):
-        """Test POST /api/admin/auth/validate"""
+        """Test POST /api/admin/login"""
         # Test with correct password
         response = requests.post(
-            f"{BASE_URL}/api/admin/auth/validate",
+            f"{BASE_URL}/api/admin/login",
             json={"password": "shadowwolves2024"}
         )
-        assert response.status_code in [200, 401]
-        if response.status_code == 200:
-            data = response.json()
-            assert data.get("valid") == True
-            print("✓ POST /api/admin/auth/validate: Admin password validated")
-        else:
-            print("⚠ POST /api/admin/auth/validate: Returned 401")
+        assert response.status_code == 200
+        data = response.json()
+        assert data.get("success") == True
+        print("✓ POST /api/admin/login: Admin password validated")
         
         # Test with wrong password
         response_wrong = requests.post(
-            f"{BASE_URL}/api/admin/auth/validate",
+            f"{BASE_URL}/api/admin/login",
             json={"password": "wrongpassword"}
         )
-        assert response_wrong.status_code in [200, 401]
-        print("✓ Wrong admin password correctly handled")
+        assert response_wrong.status_code == 401
+        print("✓ Wrong admin password correctly rejected")
 
 
 class TestNewsletterAPI:
