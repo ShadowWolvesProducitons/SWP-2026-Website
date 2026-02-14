@@ -4,7 +4,7 @@ import {
   Bold, Italic, Underline, Strikethrough, List, ListOrdered, Quote, Code, 
   Link as LinkIcon, AlignLeft, AlignCenter, AlignRight, AlignJustify,
   Heading1, Heading2, Heading3, Heading4, Highlighter, Subscript, Superscript,
-  Minus, Undo, Redo, Search, Youtube, Sparkles, FolderOpen
+  Minus, Undo, Redo, Search, Youtube, Sparkles, FolderOpen, Loader2, Check
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useEditor, EditorContent } from '@tiptap/react';
