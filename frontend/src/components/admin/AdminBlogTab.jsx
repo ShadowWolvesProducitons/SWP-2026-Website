@@ -1009,6 +1009,23 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
                   <p className="text-gray-600 text-xs">Add noindex meta tag to this post</p>
                 </div>
               </div>
+
+              {/* SEO Checklist */}
+              <div className="bg-black/30 rounded-lg p-4 border border-gray-800/50 space-y-2">
+                <p className="text-gray-500 text-[10px] font-mono uppercase tracking-widest mb-2">SEO Checklist</p>
+                {[
+                  { ok: (formData.seo_title||'').length>=30&&(formData.seo_title||'').length<=60, label: 'Title length optimal (30-60)' },
+                  { ok: (formData.seo_description||'').length>=100&&(formData.seo_description||'').length<=160, label: 'Description length optimal (100-160)' },
+                  { ok: !!formData.slug, label: 'Slug set' },
+                  { ok: formData.seo_keywords?.length>0, label: 'Meta keywords added' },
+                  { ok: formData.tags?.length>0, label: 'Tags added' },
+                ].map(({ ok, label }, i) => (
+                  <div key={i} className="flex items-center gap-2 text-sm">
+                    <span className={`w-4 h-4 rounded-full flex items-center justify-center text-xs ${ok ? 'bg-green-500/20 text-green-400' : 'bg-gray-700/50 text-gray-500'}`}>{ok ? '\u2713' : '\u2013'}</span>
+                    <span className={ok ? 'text-gray-300' : 'text-gray-500'}>{label}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 
