@@ -174,59 +174,67 @@ const Blog = () => {
                 </div>
               )}
 
-              {/* Regular Posts */}
-              <div className="space-y-8">
-              {filteredPosts.filter(post => selectedTag || !post.featured).map((post) => (
+              {/* Regular Posts — Alternating zigzag layout */}
+              <div className="space-y-12">
+              {filteredPosts.filter(post => selectedTag || !post.featured).map((post, idx) => {
+                const isEven = idx % 2 === 0;
+                return (
                 <article 
                   key={post.id} 
-                  className="group border-b border-gray-800 pb-8 last:border-0"
+                  className="group"
                 >
                   <Link to={`/blog/${post.slug}`}>
-                    <div className="flex flex-col md:flex-row md:items-start gap-6">
-                      {/* Thumbnail */}
-                      {post.cover_image && (
-                        <div className="w-full md:w-48 h-32 md:h-28 flex-shrink-0 rounded-lg overflow-hidden bg-smoke-gray">
+                    <div className={`flex flex-col md:flex-row gap-8 items-center ${!isEven ? 'md:flex-row-reverse' : ''}`}>
+                      {/* Cover Image */}
+                      <div className="w-full md:w-1/2 aspect-video rounded-xl overflow-hidden bg-smoke-gray border border-gray-800/50 flex-shrink-0">
+                        {post.cover_image ? (
                           <img 
                             src={post.cover_image.startsWith('http') ? post.cover_image : `${process.env.REACT_APP_BACKEND_URL}${post.cover_image}`}
                             alt={post.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           />
-                        </div>
-                      )}
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900">
+                            <div className="text-center">
+                              <div className="w-12 h-12 mx-auto mb-3 opacity-30">
+                                <svg viewBox="0 0 100 100" fill="currentColor" className="text-electric-blue">
+                                  <path d="M50 10L20 40L10 90L50 70L90 90L80 40L50 10Z" stroke="currentColor" strokeWidth="2" fill="none"/>
+                                </svg>
+                              </div>
+                              <span className="text-gray-600 text-xs font-mono uppercase tracking-widest">Shadow Wolves</span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
                       {/* Content */}
-                      <div className="flex-1">
-                        <h2 className="text-2xl font-bold text-white group-hover:text-electric-blue transition-colors mb-3">
+                      <div className="w-full md:w-1/2">
+                        {post.tags?.length > 0 && (
+                          <div className="flex gap-2 mb-3">
+                            {post.tags.slice(0, 3).map((tag, tidx) => (
+                              <span key={tidx} className="px-2.5 py-0.5 bg-white/5 text-gray-400 rounded-full text-xs font-mono uppercase tracking-wider">{tag}</span>
+                            ))}
+                          </div>
+                        )}
+                        <h2 className="text-2xl lg:text-3xl font-bold text-white group-hover:text-electric-blue transition-colors mb-3 font-cinzel leading-tight">
                           {post.title}
                         </h2>
                         {post.excerpt && (
-                          <p className="text-gray-400 mb-4 line-clamp-2">
+                          <p className="text-gray-400 mb-4 line-clamp-3 leading-relaxed">
                             {post.excerpt}
                           </p>
                         )}
-                        <div className="flex items-center gap-4 text-sm">
-                          <span className="text-gray-500">{formatDate(post.published_at)}</span>
-                          {post.tags?.length > 0 && (
-                            <div className="flex gap-2">
-                              {post.tags.slice(0, 3).map((tag, idx) => (
-                                <span 
-                                  key={idx}
-                                  className="px-2 py-0.5 bg-white/5 text-gray-400 rounded text-xs"
-                                >
-                                  {tag}
-                                </span>
-                              ))}
-                            </div>
-                          )}
+                        <div className="flex items-center gap-4">
+                          <span className="text-gray-500 text-sm">{formatDate(post.published_at)}</span>
+                          <span className="text-electric-blue text-sm font-mono uppercase tracking-wider flex items-center gap-1 group-hover:gap-2 transition-all">
+                            Read <ArrowRight size={14} />
+                          </span>
                         </div>
-                      </div>
-                      {/* Arrow */}
-                      <div className="hidden md:flex items-center text-gray-600 group-hover:text-electric-blue transition-colors">
-                        <ArrowRight size={20} className="transform group-hover:translate-x-1 transition-transform" />
                       </div>
                     </div>
                   </Link>
                 </article>
-              ))}
+                );
+              })}
               </div>
             </div>
           )}
