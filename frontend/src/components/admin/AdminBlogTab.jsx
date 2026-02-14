@@ -948,6 +948,7 @@ const BlogPostModal = ({ isOpen, onClose, onSave, post }) => {
                   onChange={handleChange}
                   className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none"
                   placeholder="horror, film, production, shadow wolves"
+                  data-testid="seo-keywords-input"
                 />
               </div>
 
