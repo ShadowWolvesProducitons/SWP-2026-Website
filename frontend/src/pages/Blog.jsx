@@ -137,7 +137,7 @@ const Blog = () => {
               <p className="text-gray-400 text-xl">No posts published yet.</p>
             </div>
           ) : (
-            <div className="max-w-4xl mx-auto">
+            <div className="max-w-5xl mx-auto">
               {/* Featured Post - First featured post gets larger layout */}
               {!selectedTag && filteredPosts.find(p => p.featured) && (
                 <div className="mb-12">
