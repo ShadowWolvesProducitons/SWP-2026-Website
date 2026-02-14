@@ -7,61 +7,59 @@ Professional, cinematic website for "Shadow Wolves Productions" evolved into a f
 - **Frontend:** React + TailwindCSS + Framer Motion + Tiptap
 - **Backend:** FastAPI + Motor (async MongoDB)
 - **Database:** MongoDB
-- **Integrations:** Resend (email), OpenAI via emergentintegrations (AI image gen), pypdf + reportlab (PDF watermark)
+- **Integrations:** Resend (email), OpenAI via emergentintegrations (AI image gen + product content), pypdf + reportlab (PDF watermark)
 
 ## What's Been Implemented
 
+### Armory Product Page Builder Refactor (Feb 14, 2026)
+- **5-Tab Modal:** Basics, Pricing & Access, Product Page Content, Media, SEO
+- **AI Content Generation:** Full product page content generation via OpenAI GPT-4o-mini
+  - Global "Generate Product Page Content" button opens overlay with pre-filled inputs
+  - Generates: positioning line, description, audience, features/deliverables, CTA, tags, SEO
+  - Overwrite protection: Apply All / Apply Selected / Cancel
+- **Section-Level AI Regeneration:** Sparkle icons on individual fields for targeted regen
+  - Supported sections: positioning line, what this is, features, what you get, CTA, SEO fields
+  - Inline preview with Apply/Cancel before overwriting
+- **SEO AI Generation:** "Generate SEO from Content" button with preview/apply controls
+- **Pricing Model System:** Dropdown (Free/One-time/Subscription) with conditional fields
+  - One-time: Price + Price Note
+  - Subscription: Monthly/Annual Price, Billing Note, Trial Days
+- **Backend Schema Update:** Added pricing_model, monthly_price, annual_price, billing_note, includes_trial, trial_days, focus_keyword to DenItem model
+- **Conditional Content Sections:** Apps show Features + Core Actions; others show What You Get + How It Works
+- **Editable List Items:** Click-to-edit inline for all list editors
+- **Auto Slug Generation:** Slug auto-updates from title until manually edited
+
+### Backend AI Endpoints (Feb 14, 2026)
+- `POST /api/ai/generate-product-content` — Full content generation
+- `POST /api/ai/regenerate-product-section` — Single section regeneration
+- `POST /api/ai/generate-product-seo` — SEO from existing content
+
 ### Header Banner Adjustment (Feb 14, 2026)
 - Enlarged header banner image from h-12 to h-20 for better readability
-- Reduced header padding from fixed h-20 container to py-2 for tighter layout
+- Reduced header padding from fixed h-20 container to py-2
 
 ### Producer's Playbook Mockup Migration (Feb 14, 2026)
-- Migrated mockup image from temporary external URL to local `/api/upload/images/producers-playbook-mockup.png`
-- Added mockup image to the Assets Library in MongoDB with proper tags
-
-### Full Regression Test (Feb 14, 2026)
-- Backend: 100% pass rate (17/17 tests)
-- Frontend: 92% pass rate (22/24 tests, 2 minor Playwright-specific checkbox issues)
-- Test report: `/app/test_reports/iteration_11.json`
+- Migrated mockup image from temporary external URL to local storage
+- Added to Assets Library in MongoDB
 
 ### Admin Assets Library (Feb 12, 2026)
-- Centralized Asset Management: All files uploaded anywhere in admin auto-catalogue to the Assets Library
-- Backend Integration: `/api/upload/image` and `/api/upload/file` endpoints accept `source` and `tags` parameters
-- Auto-cataloguing: Every upload automatically creates an entry in the `assets` MongoDB collection
-- Asset Picker Component: Reusable `AssetPicker.jsx` for selecting existing assets from library
-- Features: Search, filter by type (Images/PDFs/Other), visibility controls, preview modal
-- Source Tracking: Assets tagged with origin (armory, blog, investor-project, etc.)
-
-### Browse Library Feature (Feb 12, 2026)
-- "Browse Library" button integrated into all admin modals (Armory, Films, Blog, Investors)
-
-### Site-Wide Aspect Ratio Fix (Feb 12, 2026)
-- All poster/product images standardized to 2:3 aspect ratio with object-contain
-
-### Admin Quick Actions (Feb 12, 2026)
-- Inline "Mark as Read" and "Add Note" actions on Activity tab
-
-### Investor Portal Refactor (Feb 12, 2026)
-- New Overview dashboard with summary tiles
-- Simplified navigation
-- Filter chips on Updates page
-
-### Investor Auto-Invite System (Feb 12, 2026)
-- Public request form, token-based signup, dual auth (email/password + legacy)
+- Centralized Asset Management with auto-cataloging
+- Asset Picker Component for reuse across all admin modals
+- Browse Library button in Armory, Films, Blog, Investor modals
 
 ### Other Completed Features
 - Full public site (Home, About, Films, Armory, Den/Blog, Work With Us, Contact)
-- Admin console with Activity tab (merged Messages/Submissions/CineConnect)
-- Investor portal with NDA, smart document downloads, Studio Updates
-- CineConnect Register Interest button
-- Hidden admin link (triple-click footer company name)
-- AI image generation, lead magnet popup, genre filter dropdown
-- Product page two-column layout
-- Armory admin modal with tabbed product page builder (5 tabs + SEO)
+- Admin console with Activity tab, inline quick actions
+- Investor portal with NDA, Overview dashboard, filter chips
+- Investor Auto-Invite System (Resend email)
+- CineConnect Register Interest
+- AI image generation for blog covers
+- Lead magnet popup system
+- Site-wide 2:3 aspect ratio standardization
 
 ### Credentials
 - Admin: /admin, Password: shadowwolves2024
-- Investor: /investors/login, Email/Password OR Password: investor2024
+- Investor: /investors/login, Password: investor2024
 
 ## Prioritized Backlog
 
@@ -73,5 +71,5 @@ Professional, cinematic website for "Shadow Wolves Productions" evolved into a f
 - CineConnect Database (cast/crew full build-out)
 
 ### Console Warnings (Non-blocking)
-- Duplicate tiptap extension names ['link', 'underline'] in blog editor
-- UNSAFE_componentWillMount in react-helmet SideEffect component
+- Duplicate tiptap extension names in blog editor
+- UNSAFE_componentWillMount in react-helmet
