@@ -167,3 +167,206 @@ async def generate_cover_image(request: CoverImageRequest):
         raise HTTPException(status_code=500, detail=f"Missing dependency: {str(e)}. Please install emergentintegrations.")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Image generation failed: {str(e)}")
+
+
+# ═══════════════════════════════════════════════════════════════
+# Product Content AI Generation System
+# ═══════════════════════════════════════════════════════════════
+
+PRODUCT_SYSTEM_PROMPT = """You are generating structured product page content for Shadow Wolves Productions' "The Armoury".
+
+Tone: Cinematic, Direct, No fluff, Confident, Short, scannable.
+
+Avoid: Buzzwords like "ultimate" or "revolutionary". Avoid overly long paragraphs. Avoid corporate jargon.
+
+Content logic:
+- If type = App → emphasize Features + Core Actions
+- If type = Course/Template/Download/eBook → emphasize What You Get + How It Works
+
+SEO rules:
+- SEO title must be 60 characters or fewer
+- SEO description must be 160 characters or fewer
+- Focus keyword naturally included
+
+Return valid JSON only. No markdown code fences, no commentary."""
+
+
+class ProductContentRequest(BaseModel):
+    product_name: str
+    product_type: str
+    pricing_model: str = "free"
+    price: Optional[str] = None
+    primary_url: Optional[str] = None
+    short_description: str
+    who_its_for: Optional[str] = None
+    key_outcomes: Optional[str] = None
+    tone: Optional[str] = "Cinematic, direct, no fluff"
+    constraints: Optional[str] = None
+
+
+class ProductSectionRequest(BaseModel):
+    section: str
+    product_name: str
+    product_type: str
+    existing_content: dict = {}
+
+
+class ProductSeoRequest(BaseModel):
+    title: str
+    positioning_line: Optional[str] = ""
+    what_this_is: Optional[str] = ""
+    tags: Optional[list] = []
+
+
+def _parse_json_response(text: str) -> dict:
+    """Parse JSON from LLM response, handling markdown fences."""
+    import json as json_mod
+    cleaned = text.strip()
+    if cleaned.startswith("```"):
+        lines = cleaned.split("\n")
+        lines = [l for l in lines if not l.strip().startswith("```")]
+        cleaned = "\n".join(lines).strip()
+    try:
+        return json_mod.loads(cleaned)
+    except Exception:
+        start = cleaned.find("{")
+        end = cleaned.rfind("}") + 1
+        if start >= 0 and end > start:
+            return json_mod.loads(cleaned[start:end])
+        raise
+
+
+async def _get_chat(api_key: str):
+    from emergentintegrations.llm.openai import LlmChat
+    chat = LlmChat(
+        api_key=api_key,
+        session_id=str(uuid.uuid4()),
+        system_message=PRODUCT_SYSTEM_PROMPT,
+    )
+    return chat.with_model(provider="openai", model="gpt-4o-mini")
+
+
+@router.post("/generate-product-content")
+async def generate_product_content(request: ProductContentRequest):
+    """Generate full product page content using AI."""
+    api_key = os.environ.get("EMERGENT_LLM_KEY")
+    if not api_key:
+        raise HTTPException(status_code=500, detail="EMERGENT_LLM_KEY not configured")
+
+    is_app = request.product_type == "Apps"
+    type_specific = (
+        '"features": ["feature 1", "feature 2", ...], "core_actions": ["step 1", "step 2", ...],'
+        if is_app
+        else '"what_you_get": ["item 1", "item 2", ...], "how_it_works": ["step 1", "step 2", ...],'
+    )
+
+    user_prompt = f"""Generate complete product page content for:
+
+Product Name: {request.product_name}
+Product Type: {request.product_type}
+Pricing: {request.pricing_model}{f' — {request.price}' if request.price else ''}
+{f'URL: {request.primary_url}' if request.primary_url else ''}
+Description: {request.short_description}
+{f'Target Audience: {request.who_its_for}' if request.who_its_for else ''}
+{f'Key Outcomes: {request.key_outcomes}' if request.key_outcomes else ''}
+{f'Tone: {request.tone}' if request.tone and request.tone != 'Cinematic, direct, no fluff' else ''}
+{f'Constraints: {request.constraints}' if request.constraints else ''}
+
+Return JSON with exactly these keys:
+{{
+  "positioning_line": "one punchy line under the product name",
+  "what_this_is": "1-2 paragraphs max 600 chars",
+  "who_its_for": ["audience 1", "audience 2", "audience 3"],
+  {type_specific}
+  "how_it_works_notes": "2-3 short clarifying lines",
+  "cta_text": "final CTA statement",
+  "cta_microcopy": "one line of reassurance",
+  "tags": ["tag1", "tag2", ... up to 10 tags],
+  "focus_keyword": "primary SEO keyword",
+  "seo_title": "max 60 chars",
+  "seo_description": "max 160 chars"
+}}"""
+
+    try:
+        from emergentintegrations.llm.chat import UserMessage
+
+        chat = await _get_chat(api_key)
+        response = await chat.send_message(UserMessage(text=user_prompt))
+        result = _parse_json_response(response)
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"AI generation failed: {str(e)}")
+
+
+@router.post("/regenerate-product-section")
+async def regenerate_product_section(request: ProductSectionRequest):
+    """Regenerate a single section of product page content."""
+    api_key = os.environ.get("EMERGENT_LLM_KEY")
+    if not api_key:
+        raise HTTPException(status_code=500, detail="EMERGENT_LLM_KEY not configured")
+
+    ctx = request.existing_content
+    ctx_str = f"""Product: {request.product_name} ({request.product_type})
+Positioning: {ctx.get('short_description', '')}
+What it is: {ctx.get('what_it_is', '')[:200]}
+Tags: {', '.join(ctx.get('tags', [])[:5])}"""
+
+    section_prompts = {
+        "positioning_line": f"Generate ONE punchy positioning line (under 80 chars) for this product.\n{ctx_str}\nReturn JSON: {{\"value\": \"the line\"}}",
+        "what_this_is": f"Generate a 1-2 paragraph description (max 600 chars) for this product.\n{ctx_str}\nReturn JSON: {{\"value\": \"the text\"}}",
+        "features": f"Generate 4-6 feature bullet points for this product.\n{ctx_str}\nReturn JSON: {{\"value\": [\"feature 1\", ...]}}",
+        "what_you_get": f"Generate 4-6 deliverable/outcome bullet points.\n{ctx_str}\nReturn JSON: {{\"value\": [\"item 1\", ...]}}",
+        "core_actions": f"Generate 3-5 short action steps.\n{ctx_str}\nReturn JSON: {{\"value\": [\"step 1\", ...]}}",
+        "how_it_works": f"Generate 3-5 numbered how-it-works steps.\n{ctx_str}\nReturn JSON: {{\"value\": [\"step 1\", ...]}}",
+        "cta": f"Generate a CTA text and microcopy.\n{ctx_str}\nReturn JSON: {{\"cta_text\": \"...\", \"cta_microcopy\": \"...\"}}",
+        "focus_keyword": f"Suggest ONE primary SEO keyword.\n{ctx_str}\nReturn JSON: {{\"value\": \"keyword\"}}",
+        "seo_title": f"Generate an SEO title (max 60 chars).\n{ctx_str}\nReturn JSON: {{\"value\": \"title\"}}",
+        "seo_description": f"Generate an SEO description (max 160 chars).\n{ctx_str}\nReturn JSON: {{\"value\": \"description\"}}",
+    }
+
+    prompt = section_prompts.get(request.section)
+    if not prompt:
+        raise HTTPException(status_code=400, detail=f"Unknown section: {request.section}")
+
+    try:
+        from emergentintegrations.llm.chat import UserMessage
+
+        chat = await _get_chat(api_key)
+        response = await chat.send_message(UserMessage(text=prompt))
+        result = _parse_json_response(response)
+        return {"section": request.section, **result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Section regeneration failed: {str(e)}")
+
+
+@router.post("/generate-product-seo")
+async def generate_product_seo(request: ProductSeoRequest):
+    """Generate SEO fields from existing content."""
+    api_key = os.environ.get("EMERGENT_LLM_KEY")
+    if not api_key:
+        raise HTTPException(status_code=500, detail="EMERGENT_LLM_KEY not configured")
+
+    user_prompt = f"""Generate SEO data for this product page:
+
+Title: {request.title}
+Positioning: {request.positioning_line}
+Description: {request.what_this_is[:400] if request.what_this_is else ''}
+Tags: {', '.join(request.tags[:10]) if request.tags else ''}
+
+Return JSON:
+{{
+  "focus_keyword": "primary keyword",
+  "seo_title": "max 60 chars, include keyword naturally",
+  "seo_description": "max 160 chars, compelling meta description"
+}}"""
+
+    try:
+        from emergentintegrations.llm.chat import UserMessage
+
+        chat = await _get_chat(api_key)
+        response = await chat.send_message(UserMessage(text=user_prompt))
+        result = _parse_json_response(response)
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"SEO generation failed: {str(e)}")
+
