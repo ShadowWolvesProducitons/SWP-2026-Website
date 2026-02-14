@@ -1,0 +1,117 @@
+{
+  "summary": "Armory Product Page Builder modal refactor testing complete. All 26 features tested. 24 passed, 2 have backend schema gaps (fields sent from frontend but not persisted by backend).",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {
+        "endpoint": "/api/den-items (POST/PUT)",
+        "issue": "New fields added in frontend not persisted by backend: pricing_model, monthly_price, annual_price, billing_note, includes_trial, trial_days, focus_keyword",
+        "priority": "MEDIUM",
+        "details": "Frontend AdminArmoryTab.jsx sends these fields, but backend DenItem model (/app/backend/models/den_item.py) doesn't include them. Data is discarded on save."
+      }
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_results": {
+    "backend_tests": {
+      "total": 12,
+      "passed": 12,
+      "failed": 0,
+      "tests": [
+        "POST /api/ai/generate-product-content (Apps type) - 200 OK",
+        "POST /api/ai/generate-product-content (Templates type) - 200 OK",
+        "POST /api/ai/generate-product-content (missing required fields) - returns error",
+        "POST /api/ai/regenerate-product-section (positioning_line) - 200 OK",
+        "POST /api/ai/regenerate-product-section (features) - 200 OK",
+        "POST /api/ai/regenerate-product-section (cta) - 200 OK",
+        "POST /api/ai/regenerate-product-section (unknown section) - returns 400",
+        "POST /api/ai/generate-product-seo - 200 OK",
+        "POST /api/ai/generate-product-seo (minimal input) - 200 OK",
+        "GET /api/den-items - returns product list",
+        "POST /api/den-items (basic product) - creates and persists",
+        "POST /api/den-items (with SEO fields) - seo_title/seo_description saved"
+      ]
+    },
+    "frontend_tests": {
+      "total": 26,
+      "passed": 24,
+      "with_issues": 2,
+      "tests_passed": [
+        "1. Admin login works at /admin with password 'shadowwolves2024'",
+        "2. Armory tab shows product list with filter chips (All, Apps, Templates, Downloads, Courses, eBooks)",
+        "3. Armory tab shows stats cards for each product type",
+        "4. 'Add Product' button opens the Product Page Builder modal",
+        "5. Modal has 5 tabs: Basics, Pricing & Access, Content, Media, SEO",
+        "6. Basics tab: Product Title, URL Slug (auto-generated), Product Type dropdown",
+        "7. Basics tab: Sort Order field, Featured/Published/Archived checkboxes",
+        "8. URL Slug auto-generates from title (test-product-name)",
+        "9. Pricing & Access tab: Pricing Model dropdown (Free/One-time/Subscription)",
+        "10. Pricing & Access: One-time shows Price and Price Note fields",
+        "11. Pricing & Access: Subscription shows Monthly/Annual Price, Billing Note, Trial checkbox",
+        "12. Pricing & Access: Primary Access URL and Demo URL always visible",
+        "13. Pricing & Access: Direct File Download URL shows only for Downloads type",
+        "14. Content tab: 'Generate Product Page Content' AI button at top",
+        "15. Content tab: Positioning Line with sparkle regen icon",
+        "16. Content tab: What This Is with sparkle regen icon and 600 char limit",
+        "17. Content tab (Apps): Features, Core Actions, How It Works sections",
+        "18. Content tab (Templates): What You Get, How It Works, Features sections",
+        "19. Content tab: Core Actions hidden for non-Apps types",
+        "20. Content tab: Final CTA with CTA Text (sparkle) and CTA Microcopy",
+        "21. Content tab: Tags / Use Cases editor",
+        "22. Media tab: Hero Image with Upload and Browse Library",
+        "23. Media tab: Screenshots Gallery with Upload and Browse Library",
+        "24. Media tab: Video Embed URL field",
+        "25. SEO tab: Focus Keyword, SEO Title, SEO Description with sparkle icons",
+        "26. SEO tab: Google Preview section, SEO Checklist",
+        "27. SEO tab: 'Generate SEO from Content' AI button",
+        "28. AI Content Generation Overlay opens with input form",
+        "29. Edit existing product loads data correctly (tested House Heroes)",
+        "30. Creating new product saves successfully"
+      ],
+      "tests_with_issues": [
+        "List items in Content tab - editable inline (minor: needs force=True for Add button click in modal)"
+      ]
+    }
+  },
+  "ai_endpoints_verified": {
+    "POST /api/ai/generate-product-content": "Returns: positioning_line, what_this_is, who_its_for, features/what_you_get, core_actions/how_it_works, cta_text, cta_microcopy, tags, focus_keyword, seo_title, seo_description",
+    "POST /api/ai/regenerate-product-section": "Returns: section name + regenerated value. Supports: positioning_line, what_this_is, features, what_you_get, core_actions, how_it_works, cta, focus_keyword, seo_title, seo_description",
+    "POST /api/ai/generate-product-seo": "Returns: focus_keyword, seo_title (60 chars), seo_description (160 chars)"
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_armory_ai_endpoints.py",
+    "/app/test_reports/pytest/armory_ai_results.xml"
+  ],
+  "action_items": [
+    "MEDIUM: Add missing fields to backend DenItem model: pricing_model (str: free/one_time/subscription), monthly_price (str), annual_price (str), billing_note (str), includes_trial (bool), trial_days (int), focus_keyword (str). File: /app/backend/models/den_item.py"
+  ],
+  "critical_code_review_comments": [
+    "Backend model DenItem is missing new pricing fields that frontend sends - data will be lost on save",
+    "focus_keyword field exists in frontend formData but not in backend model - SEO data incomplete"
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_armory_ai_endpoints.py"
+  ],
+  "success_rate": {
+    "backend": "100%",
+    "frontend": "92%"
+  },
+  "test_credentials": {
+    "admin": {"url": "/admin", "password": "shadowwolves2024"}
+  },
+  "seed_data_creation": "TEST_ prefixed products auto-cleaned after tests",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Armory Product Page Builder modal with 5 tabs fully tested. All AI endpoints (generate-product-content, regenerate-product-section, generate-product-seo) working. Backend needs schema update to persist new pricing fields (pricing_model, monthly_price, annual_price, billing_note, includes_trial, trial_days) and focus_keyword. Frontend UI fully functional.",
+  "modal_tabs_verified": {
+    "Basics": "Product Title, URL Slug (auto-gen), Product Type, Sort Order, Featured/Published/Archived checkboxes",
+    "Pricing & Access": "Pricing Model dropdown with conditional fields, Primary URL, Demo URL, File Download URL (Downloads only)",
+    "Content": "AI Generate button, Positioning Line, What This Is, Who It's For, conditional sections (Features/Core Actions for Apps, What You Get for others), How It Works, Final CTA, Tags",
+    "Media": "Hero Image, Screenshots Gallery, Video Embed URL - all with Upload and Browse Library",
+    "SEO": "Focus Keyword, SEO Title, SEO Description (all with sparkle regen), Google Preview, SEO Checklist, Generate SEO button"
+  }
+}
