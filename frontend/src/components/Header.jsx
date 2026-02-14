@@ -24,13 +24,13 @@ const Header = () => {
   return (
     <header className="header fixed top-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-sm border-b border-gray-800">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between py-2">
           {/* Logo */}
           <Link to="/" className="logo flex items-center gap-3 group">
             <img 
               src="/api/upload/images/header-banner.png" 
               alt="Shadow Wolves Productions"
-              className="h-12 w-auto transition-opacity group-hover:opacity-80"
+              className="h-16 w-auto transition-opacity group-hover:opacity-80"
             />
           </Link>
 
