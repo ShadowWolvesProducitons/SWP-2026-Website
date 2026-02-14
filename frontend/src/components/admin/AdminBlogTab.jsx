@@ -120,6 +120,13 @@ const AdminBlogTab = () => {
           onSave={() => { setIsModalOpen(false); fetchPosts(); }}
         />
       )}
+
+      {newsletterPost && (
+        <BlogNewsletterModal
+          post={newsletterPost}
+          onClose={() => setNewsletterPost(null)}
+        />
+      )}
     </div>
   );
 };
