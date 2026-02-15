@@ -3,10 +3,27 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 
+const API = process.env.REACT_APP_BACKEND_URL;
+
 const LeadMagnetPopup = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [email, setEmail] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [playbookAssets, setPlaybookAssets] = useState({ mockup: null, pdf: null });
+
+  // Fetch playbook assets from library
+  useEffect(() => {
+    fetch(`${API}/api/assets?search=playbook`)
+      .then(r => r.ok ? r.json() : [])
+      .then(assets => {
+        const mockup = assets.find(a => a.asset_type === 'image' && a.original_name?.toLowerCase().includes('mockup'));
+        const pdf = assets.find(a => a.asset_type === 'pdf');
+        setPlaybookAssets({
+          mockup: mockup ? `${API}${mockup.file_url}` : `${API}/api/upload/images/producers-playbook-mockup.png`,
+          pdf: pdf ? `${API}${pdf.file_url}` : null
+        });
+      }).catch(() => {});
+  }, []);
 
   // Listen for manual trigger events from other components
   useEffect(() => {
