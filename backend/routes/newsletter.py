@@ -47,7 +47,16 @@ async def send_welcome_email(email: str, lead_magnet: str = None):
         email_footer = f'<div style="padding: 20px 40px; border-top: 1px solid #1a1a1a;"><p style="color: #555; font-size: 11px; text-align: center;"><a href="{unsub_url}" style="color: #233dff;">Unsubscribe</a></p></div>'
 
         if lead_magnet == 'producers_playbook':
-            pdf_url = "https://customer-assets.emergentagent.com/job_04afc1ac-41b6-4e3d-938f-409263bdaadd/artifacts/kzkfolyg_Producer%27s%20Playbook%20%28Editable%29.pdf"
+            # Fetch PDF URL from assets library
+            pdf_url = None
+            if db is not None:
+                asset = await db.assets.find_one({"asset_type": "pdf", "original_name": {"$regex": "playbook", "$options": "i"}}, {"_id": 0, "file_url": 1})
+                if asset:
+                    pdf_url = f"{logo_url}{asset['file_url']}"
+            if not pdf_url:
+                pdf_url = f"{logo_url}/api/upload/files/c8f36645-6f39-4307-88b6-9b9681a2925c.pdf"
+            
+            mockup_url = f"{logo_url}/api/upload/images/23806c86-8d26-4a08-9fff-138ab19a86bd.png"
             html_content = f"""
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #ffffff; padding: 0;">
                 {email_header}
