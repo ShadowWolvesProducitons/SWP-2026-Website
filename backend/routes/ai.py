@@ -341,13 +341,14 @@ Tags: {', '.join(ctx.get('tags', [])[:5])}"""
 # Blog SEO AI Generation System
 # ═══════════════════════════════════════════════════════════════
 
-BLOG_SEO_SYSTEM_PROMPT = """You are generating SEO and metadata for Shadow Wolves Productions' blog "The Den".
+BLOG_SEO_SYSTEM_PROMPT = """You are generating SEO, metadata, and content helpers for Shadow Wolves Productions' blog "The Den".
 
 Brand: Shadow Wolves Productions — film production company.
 Tone: Dark, cinematic, bold, genre-focused (horror, thriller, drama, indie film).
 Audience: Filmmakers, horror fans, indie creators, industry professionals.
 
 Rules:
+- Title should be compelling, concise, and attention-grabbing for the brand
 - SEO title must be ≤60 characters, compelling and keyword-rich
 - Meta description must be ≤160 characters, action-oriented
 - Tags should be relevant, lowercase, 3-8 tags
