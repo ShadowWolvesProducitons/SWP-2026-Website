@@ -176,7 +176,7 @@ const Home = () => {
                 We don't make noise for the <span className="text-electric-blue">sake of it</span>
               </p>
             </div>
-            <p className="text-xl md:text-2xl text-gray-400 leading-relaxed max-w-3xl mx-auto">
+            <p className="text-xl md:text-2xl text-gray-400 leading-relaxed mx-auto whitespace-nowrap">
               Shadow Wolves Productions exists to create bold, genre-driven stories with teeth.
             </p>
           </div>
