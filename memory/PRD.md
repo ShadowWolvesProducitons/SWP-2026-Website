@@ -47,6 +47,23 @@ Professional, cinematic website for "Shadow Wolves Productions" evolved into a f
 - Button theme verified as pill-shaped (rounded-full) across public pages
 - 100% test pass rate (backend: 12/12, frontend: 16/16)
 
+### Home/About Page Merge (Feb 15, 2026)
+- Merged About page content into Home page
+- New page structure:
+  1. Hero section with video background
+  2. Manifesto section: "We don't chase trends / We don't ask permission / We don't make noise for the sake of it"
+  3. Stats section (15+ Films, 25+ Awards, 5+ Projects, 20+ Years)
+  4. "What We Do" section (Development, Pre-Production, Post-Production cards + Additional Support chips)
+  5. Quote separator: "If it doesn't scare us a little, it's probably not worth making."
+  6. "What We're Building" section
+  7. "Work With Us" / "Invest With Us" CTA buttons
+  8. "Join The Pack" newsletter section
+- Removed: Feature Films section, "What We Believe" section, "How We Work" section
+- Changed page title from "HOME" to "ABOUT"
+- Updated navigation: removed separate "About" link, renamed "Home" to "About" pointing to `/`
+- Updated footer: Quick Links now shows "About" instead of "Home"
+- `/about` route now redirects to `/`
+
 ### Admin Tab Unification (Feb 15, 2026)
 - Updated Armory filter tabs to pill style (rounded-full) - "All", "Apps", "Templates", "Downloads", "Courses", "eBooks"
 - Updated Armory modal tabs to pill style (rounded-full) - "Basics", "Pricing & Access", "Content", "Media", "SEO"
