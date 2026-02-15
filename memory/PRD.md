@@ -24,6 +24,30 @@ Professional, cinematic website for "Shadow Wolves Productions" evolved into a f
 - Pricing Model System (Free/One-time/Subscription)
 - Backend schema updated with new pricing fields
 
+### Comprehensive UI/UX Update (Feb 15, 2026)
+**Items 0-5 (Quick fixes):**
+- Unsubscribe link in all newsletter/email sends (per-subscriber URL)
+- Header logo image added to all email templates (welcome + newsletter)
+- Producer's Playbook PDF migrated to central Assets Library (LeadMagnetPopup fetches from API)
+- Slug regenerate button on Basics tab (data-testid='regenerate-slug-btn')
+- AI generation now returns Post Title as a selectable field
+- Tiptap editor toolbar made sticky (stays visible while scrolling content)
+
+**Items 6-8 (UI/UX fixes):**
+- Armory product cards: top 3/4 square image (object-contain auto-fit), bottom 1/4 info strip
+- Image dimension hints added to all upload fields (Blog: 1200x630, Armory: 800x800)
+- Producer's Playbook image on The Den page "Get the Playbook" section with blue glow effect
+- Blog cards made compact (horizontal cards with small square thumbnail)
+- Fixed blog cover images using correct field name (cover_image_url)
+
+**Items 9-11 (Site-wide theming):**
+- Generated unique cinematic header background images for all 7 pages (About, Films, Armory, Den, Investors, Work With Us, Contact)
+- Created shared PageHeader component for consistent header styling
+- All page titles use Cinzel font matching Films page style
+- Button theme verified as pill-shaped (rounded-full) across public pages
+- Admin modal tab themes already unified (both use border-b-2 underline)
+- 100% test pass rate (backend: 12/12, frontend: 16/16)
+
 ### Blog Post Builder Refactor + Newsletter (Feb 14, 2026)
 - Restructured blog Edit Post modal to 4-tab layout: Basics | Content | Media | SEO
 - Unified theme matching The Armory modal (same tab bar, field components, footer)
