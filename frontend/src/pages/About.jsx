@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
+import PageHeader from '../components/PageHeader';
 
 const About = () => {
   useEffect(() => {
@@ -15,8 +16,11 @@ const About = () => {
         <meta name="description" content="Shadow Wolves Productions exists to create bold, genre-driven stories with teeth — stories that entertain first, but leave a mark long after the screen goes black." />
       </Helmet>
 
+      {/* Page Header */}
+      <PageHeader page="about" title="About" subtitle="Shadow Wolves Productions exists to create bold, genre-driven stories with teeth." />
+
       {/* Hero Section - Reduced padding */}
-      <section className="py-16 md:py-20">
+      <section className="py-12 md:py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl">
             {/* Manifesto lines - Cinzel bold, no periods */}
