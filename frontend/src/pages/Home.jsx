@@ -230,7 +230,7 @@ const Home = () => {
                 key={service.key}
                 onClick={() => openServicesModal(service.key)}
                 onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && openServicesModal(service.key)}
-                className="service-card-minimal group relative bg-smoke-gray p-8 md:p-10 rounded-xl border border-gray-800 hover:border-electric-blue/50 transition-all duration-300 text-left focus:outline-none focus:ring-2 focus:ring-electric-blue focus:ring-offset-2 focus:ring-offset-black hover:-translate-y-0.5"
+                className="service-card-minimal group relative bg-smoke-gray p-8 md:p-10 rounded-xl border border-gray-800 hover:border-electric-blue/50 transition-all duration-300 text-left focus:outline-none focus:ring-2 focus:ring-electric-blue focus:ring-offset-2 focus:ring-offset-black hover:-translate-y-0.5 shadow-[0_0_20px_rgba(35,61,255,0.08)] hover:shadow-[0_0_30px_rgba(35,61,255,0.15)]"
                 aria-label={`Learn more about ${service.title}`}
               >
                 <span 
