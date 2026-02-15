@@ -375,9 +375,9 @@ async def generate_blog_seo(request: BlogSeoRequest):
     content_preview = request.content[:2000] if request.content else ""
     tags_str = ", ".join(request.tags) if request.tags else "None"
 
-    user_prompt = f"""Generate SEO metadata and content helpers for this blog post:
+    user_prompt = f"""Generate blog post metadata and content helpers:
 
-Title: {request.title}
+Title: {request.title or 'Not provided — suggest one'}
 Existing Tags: {tags_str}
 Existing Excerpt: {request.excerpt or 'None'}
 Content:
@@ -385,6 +385,7 @@ Content:
 
 Return JSON with exactly these keys:
 {{
+  "title": "attention-grabbing blog post title (if original title is good, refine it slightly; if blank, create one from content)",
   "seo_title": "max 60 chars, compelling, keyword-rich",
   "seo_description": "max 160 chars, action-oriented meta description",
   "excerpt": "1-2 sentence engaging summary for blog card previews (max 200 chars)",
