@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { services, testimonials } from '../mock';
-import { ArrowRight, Star, Award, Users, Film, Play, Loader2 } from 'lucide-react';
+import { Helmet } from 'react-helmet';
+import { ArrowRight, Award, Users, Film, Play, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
-import FilmModal from '../components/FilmModal';
 import ServicesModal from '../components/ServicesModal';
 import SupportModal from '../components/SupportModal';
 
 const Home = () => {
-  const [selectedFilm, setSelectedFilm] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [featuredFilms, setFeaturedFilms] = useState([]);
   const [servicesModalOpen, setServicesModalOpen] = useState(false);
   const [activeServiceKey, setActiveServiceKey] = useState(null);
   const [supportModalOpen, setSupportModalOpen] = useState(false);
@@ -20,41 +16,7 @@ const Home = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    fetchFeaturedFilms();
   }, []);
-
-  const fetchFeaturedFilms = async () => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/films`);
-      if (response.ok) {
-        const data = await response.json();
-        // Filter featured films and take first 3
-        const featured = data.filter(film => film.featured).slice(0, 3);
-        setFeaturedFilms(featured);
-      }
-    } catch (err) {
-      console.error('Failed to load films:', err);
-    }
-  };
-
-  const handleFilmClick = (film) => {
-    // Transform API data to match modal expectations
-    const modalFilm = {
-      ...film,
-      posterColor: film.poster_color,
-      imdbUrl: film.imdb_url,
-      watchUrl: film.watch_url,
-      watchUrlTitle: film.watch_url_title,
-      posterUrl: film.poster_url
-    };
-    setSelectedFilm(modalFilm);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setTimeout(() => setSelectedFilm(null), 300);
-  };
 
   const openServicesModal = (key) => {
     setActiveServiceKey(key);
@@ -97,7 +59,6 @@ const Home = () => {
       if (response.ok) {
         toast.success('Welcome to the pack! Check your email.');
         setNewsletterEmail('');
-        // Mark as subscribed in localStorage for popup logic
         localStorage.setItem('swp_subscribed', 'true');
       } else {
         const error = await response.json();
@@ -112,6 +73,11 @@ const Home = () => {
 
   return (
     <div className="home-page">
+      <Helmet>
+        <title>About | Shadow Wolves Productions</title>
+        <meta name="description" content="Shadow Wolves Productions exists to create bold, genre-driven stories with teeth — stories that entertain first, but leave a mark long after the screen goes black." />
+      </Helmet>
+
       {/* Hero Section */}
       <section className="hero-section relative flex items-center justify-center overflow-hidden min-h-screen">
         {/* Cinematic Video Background */}
@@ -122,7 +88,6 @@ const Home = () => {
             muted
             playsInline
             className="absolute inset-0 w-full h-full object-cover hero-video">
-
             <source src="https://customer-assets.emergentagent.com/job_wolfmedia/artifacts/0n4k6t8k_SWP_Hero_BG.mp4" type="video/mp4" />
           </video>
           
@@ -138,7 +103,7 @@ const Home = () => {
         
         <div className="hero-content relative z-10 container mx-auto px-4 py-32 text-center">
           <div className="inline-block mb-6 px-4 py-2 rounded-full border border-electric-blue/30 bg-electric-blue/10">
-            <span className="uppercase !font-mono !text-sm !italic !text-[#FFFFFF]">We Don’t Follow. We Hunt.</span>
+            <span className="uppercase !font-mono !text-sm !italic !text-[#FFFFFF]">We Don't Follow. We Hunt.</span>
           </div>
           
           <h1 className="hero-title text-6xl md:text-8xl font-bold text-white mb-12 leading-tight font-cinzel">
@@ -147,9 +112,8 @@ const Home = () => {
             <span className="text-electric-blue">PRODUCTIONS</span>
           </h1>
           
-          {/* CTA Hierarchy: Primary > Secondary > Tertiary */}
+          {/* CTA Hierarchy */}
           <div className="flex flex-col items-center gap-4">
-            {/* Primary CTA - Dominant */}
             <Link
               to="/films"
               className="bg-electric-blue hover:bg-electric-blue/90 text-white px-8 py-3.5 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2 shadow-lg shadow-electric-blue/30"
@@ -159,7 +123,6 @@ const Home = () => {
               View Our Films
             </Link>
             
-            {/* Secondary & Tertiary CTAs */}
             <div className="flex flex-col sm:flex-row gap-3 mt-2">
               <Link
                 to="/work-with-us"
@@ -191,9 +154,31 @@ const Home = () => {
               strokeLinecap="round"
               strokeLinejoin="round"
               className="text-white/60">
-
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
+          </div>
+        </div>
+      </section>
+
+      {/* Manifesto Section */}
+      <section className="py-16 md:py-20 bg-black">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            {/* Manifesto lines */}
+            <div className="space-y-3 mb-8">
+              <p className="text-xl md:text-2xl text-gray-300 tracking-wide font-bold font-cinzel">
+                We don't chase <span className="text-electric-blue">trends</span>
+              </p>
+              <p className="text-xl md:text-2xl text-gray-300 tracking-wide font-bold font-cinzel">
+                We don't ask <span className="text-electric-blue">permission</span>
+              </p>
+              <p className="text-xl md:text-2xl text-gray-300 tracking-wide font-bold font-cinzel">
+                We don't make noise for the <span className="text-electric-blue">sake of it</span>
+              </p>
+            </div>
+            <p className="text-xl md:text-2xl text-gray-400 leading-relaxed max-w-3xl mx-auto">
+              Shadow Wolves Productions exists to create bold, genre-driven stories with teeth.
+            </p>
           </div>
         </div>
       </section>
@@ -218,7 +203,7 @@ const Home = () => {
               <div className="uppercase !text-xs text-gray-400">Projects In Development</div>
             </div>
             <div className="stat-item text-center">
-              <Star className="w-10 h-10 mx-auto mb-2 text-electric-blue" />
+              <Film className="w-10 h-10 mx-auto mb-2 text-electric-blue" />
               <div className="text-3xl font-bold text-white mb-1">20+</div>
               <div className="uppercase !text-xs text-gray-400">Years Combined Experience</div>
             </div>
@@ -226,100 +211,8 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Featured Films Section */}
-      <section className="featured-films-section py-12 bg-black">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl md:text-6xl font-bold text-white mb-4 font-cinzel">Featured Films</h2>
-            <p className="!text-xl text-gray-400">A selection from our past work and current slate.</p>
-          </div>
-          
-          <div className="flex flex-wrap justify-center gap-4">
-            {featuredFilms.map((film) => (
-              <button
-                key={film.id}
-                onClick={() => handleFilmClick(film)}
-                className="film-card group relative overflow-hidden rounded-lg aspect-[2/3] cursor-pointer border-2 border-transparent hover:border-white/30 transition-all duration-300 w-[calc(50%-8px)] md:w-[calc(25%-12px)] lg:w-[calc(16.666%-14px)] max-w-[200px]"
-              >
-                {/* Poster / Placeholder */}
-                <div
-                  className="absolute inset-0"
-                  style={{ backgroundColor: film.poster_color || '#1a1a2e' }}
-                >
-                  {film.poster_url ? (
-                    <img
-                      src={`${process.env.REACT_APP_BACKEND_URL}${film.poster_url}`}
-                      alt={film.title}
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-gray-600 text-xs font-mono uppercase tracking-widest text-center px-2">
-                        Poster<br />Coming Soon
-                      </span>
-                    </div>
-                  )}
-                </div>
-                
-                {/* Default State - Simple gradient with title */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-300 group-hover:opacity-0">
-                  <div className="absolute bottom-0 left-0 right-0 p-3">
-                    <h3 className="text-white font-bold text-sm line-clamp-2">{film.title}</h3>
-                  </div>
-                </div>
-
-                {/* Hover State - Cinematic Lower-Third */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-3">
-                  {/* Status Pill - Top Left */}
-                  <div>
-                    <span className="inline-block px-2 py-1 text-[10px] font-mono uppercase tracking-wider bg-white/10 text-white/80 rounded">
-                      {film.status}
-                    </span>
-                  </div>
-                  
-                  {/* Lower Third Content */}
-                  <div>
-                    <h3 className="text-white font-bold text-sm mb-1">{film.title}</h3>
-                    {film.tagline && (
-                      <p className="text-gray-300 text-xs line-clamp-1 mb-2">{film.tagline}</p>
-                    )}
-                    <div className="flex items-end justify-between">
-                      {/* Genre Tags */}
-                      <div className="flex flex-wrap gap-1">
-                        {film.genres?.slice(0, 3).map((genre, idx) => (
-                          <span
-                            key={idx}
-                            className="px-2 py-0.5 text-[10px] rounded bg-white/10 text-white/70"
-                          >
-                            {genre}
-                          </span>
-                        ))}
-                      </div>
-                      {/* View Cue */}
-                      <span className="text-white/60 text-xs shrink-0 ml-2">
-                        View →
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </button>
-            ))}
-          </div>
-          
-          <div className="text-center mt-12">
-            <Link
-              to="/films"
-              className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full bg-electric-blue hover:bg-electric-blue/90 text-white transition-all font-mono text-sm uppercase tracking-widest">
-
-              View All Films
-              <ArrowRight size={18} />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Services Section */}
-      <section className="services-section py-12 bg-smoke-gray">
+      {/* What We Do Section */}
+      <section className="services-section py-12 bg-black">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="md:text-6xl !font-bold !text-5xl mb-4 text-white font-cinzel">What We Do</h2>
@@ -337,17 +230,15 @@ const Home = () => {
                 key={service.key}
                 onClick={() => openServicesModal(service.key)}
                 onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && openServicesModal(service.key)}
-                className="service-card-minimal group relative bg-black p-8 md:p-10 rounded-xl border border-gray-800 hover:border-electric-blue/50 transition-all duration-300 text-left focus:outline-none focus:ring-2 focus:ring-electric-blue focus:ring-offset-2 focus:ring-offset-black hover:-translate-y-0.5"
+                className="service-card-minimal group relative bg-smoke-gray p-8 md:p-10 rounded-xl border border-gray-800 hover:border-electric-blue/50 transition-all duration-300 text-left focus:outline-none focus:ring-2 focus:ring-electric-blue focus:ring-offset-2 focus:ring-offset-black hover:-translate-y-0.5"
                 aria-label={`Learn more about ${service.title}`}
               >
-                {/* Large Number */}
                 <span 
                   className="absolute top-6 right-6 text-6xl md:text-7xl font-bold text-white/[0.06] group-hover:text-white/[0.12] transition-opacity duration-300 select-none font-cinzel"
                 >
                   {service.num}
                 </span>
                 
-                {/* Content */}
                 <div className="relative z-10">
                   <h3 
                     className="text-2xl md:text-3xl font-bold text-white mb-4 group-hover:text-electric-blue transition-colors duration-300 font-cinzel"
@@ -361,7 +252,6 @@ const Home = () => {
                   </span>
                 </div>
 
-                {/* Subtle glow on hover */}
                 <div className="absolute inset-0 rounded-xl bg-electric-blue/0 group-hover:bg-electric-blue/[0.02] transition-colors duration-300 pointer-events-none" />
               </button>
             ))}
@@ -380,11 +270,72 @@ const Home = () => {
                 <button
                   key={chip.key}
                   onClick={() => openSupportModal(chip.key)}
-                  className="px-5 py-2.5 rounded-full bg-black border border-gray-700 text-gray-400 hover:border-electric-blue/50 hover:text-white transition-all text-sm focus:outline-none focus:ring-2 focus:ring-electric-blue"
+                  className="px-5 py-2.5 rounded-full bg-smoke-gray border border-gray-700 text-gray-400 hover:border-electric-blue/50 hover:text-white transition-all text-sm focus:outline-none focus:ring-2 focus:ring-electric-blue"
                 >
                   {chip.label}
                 </button>
               ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Quote Separator */}
+      <section className="py-16 bg-smoke-gray">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center">
+            <div className="border-l-4 border-electric-blue pl-6 py-2 text-left">
+              <p className="text-2xl md:text-3xl text-white font-medium italic font-cinzel">
+                "If it doesn't scare us a little, it's probably not worth making."
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* What We're Building Section */}
+      <section className="py-16 bg-black">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-8 font-cinzel text-center">
+              What We're Building
+            </h2>
+            
+            <div className="space-y-6 text-gray-300 text-lg leading-relaxed">
+              <p>
+                We're developing a slate of genre-driven projects across film, television, and emerging formats. Each project is selected for its creative ambition and commercial viability.
+              </p>
+              <p>
+                Beyond production, we're building a studio ecosystem — films, tools, and resources designed to support independent creators who share our approach.
+              </p>
+              <p>
+                This is long-term development, not a quick flip. We build what we believe in.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section - Work With Us / Invest With Us */}
+      <section className="py-16 bg-smoke-gray">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                to="/work-with-us"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-electric-blue hover:bg-electric-blue/90 text-white rounded-full font-mono text-sm uppercase tracking-widest transition-all"
+                data-testid="about-cta-work"
+              >
+                Work With Us
+                <ArrowRight size={18} />
+              </Link>
+              <Link
+                to="/investors"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 border border-gray-700 hover:border-gray-500 text-white rounded-full font-mono text-sm uppercase tracking-widest transition-all"
+                data-testid="about-cta-invest"
+              >
+                Invest With Us
+              </Link>
             </div>
           </div>
         </div>
@@ -398,7 +349,7 @@ const Home = () => {
         </div>
         
         <div className="container mx-auto px-4 text-center relative z-10">
-          <h2 className="md:text-5xl !font-bold !text-4xl mb-4 text-white font-cinzel">🐺 JOIN THE PACK</h2>
+          <h2 className="md:text-5xl !font-bold !text-4xl mb-4 text-white font-cinzel">JOIN THE PACK</h2>
           <p className="max-w-2xl !text-lg mb-8 mx-auto text-gray-300">Inside access to casting calls, industry updates, and the tools, apps, and templates we actually use.</p>
           
           <form onSubmit={handleNewsletterSubmit} className="max-w-md mx-auto">
@@ -422,7 +373,7 @@ const Home = () => {
                     Joining...
                   </>
                 ) : (
-                  <>📬 Subscribe</>
+                  <>Subscribe</>
                 )}
               </button>
             </div>
@@ -432,13 +383,6 @@ const Home = () => {
           </form>
         </div>
       </section>
-
-      {/* Film Modal */}
-      <FilmModal
-        film={selectedFilm}
-        isOpen={isModalOpen}
-        onClose={closeModal}
-      />
 
       {/* Services Modal */}
       <ServicesModal
@@ -453,8 +397,8 @@ const Home = () => {
         onClose={closeSupportModal}
         supportKey={activeSupportKey}
       />
-    </div>);
-
+    </div>
+  );
 };
 
 export default Home;
