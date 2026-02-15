@@ -4,7 +4,6 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-route
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
-import About from "./pages/About";
 import Films from "./pages/Films";
 import TheDen from "./pages/TheDen";
 import Contact from "./pages/Contact";
@@ -60,7 +59,7 @@ const AppContent = () => {
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
+        <Route path="/about" element={<Navigate to="/" replace />} />
         <Route path="/films" element={<Films />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/blog" element={<Blog />} />
