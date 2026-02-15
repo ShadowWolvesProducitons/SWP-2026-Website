@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Film, Package, FileText, LogOut, RefreshCw, Briefcase, Users, Mail, BarChart3, ArrowLeft, Activity, FolderOpen } from 'lucide-react';
+import { Film, Package, FileText, LogOut, RefreshCw, Briefcase, Users, Mail, BarChart3, ArrowLeft, Activity, FolderOpen, Settings } from 'lucide-react';
 import { toast } from 'sonner';
 import AdminFilmsTab from '../components/admin/AdminFilmsTab';
 import AdminArmoryTab from '../components/admin/AdminArmoryTab';
@@ -11,6 +11,7 @@ import AdminNewsletterTab from '../components/admin/AdminNewsletterTab';
 import AdminEmailTemplatesTab from '../components/admin/AdminEmailTemplatesTab';
 import AdminAnalyticsTab from '../components/admin/AdminAnalyticsTab';
 import AdminAssetsTab from '../components/admin/AdminAssetsTab';
+import AdminSiteSettingsTab from '../components/admin/AdminSiteSettingsTab';
 
 const TABS = [
   { id: 'analytics', label: 'Dashboard', icon: BarChart3 },
@@ -22,6 +23,7 @@ const TABS = [
   { id: 'newsletter', label: 'Newsletter', icon: Users },
   { id: 'email-templates', label: 'Templates', icon: Mail },
   { id: 'investors', label: 'Investors', icon: Briefcase },
+  { id: 'site-settings', label: 'Site Settings', icon: Settings },
 ];
 
 const AdminDashboard = ({ onLogout }) => {
