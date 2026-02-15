@@ -446,7 +446,7 @@ const ProductModal = ({ item, onClose, onSave }) => {
           {/* ─── MEDIA ─── */}
           {activeTab === 'media' && (
             <div className="space-y-6">
-              <Fl label="Hero Image" helper="Appears in product header and Armory grid">
+              <Fl label="Hero Image" helper="Appears in product header and Armory grid. Ideal: 800 x 800px (square, auto-fit)">
                 <div className="flex items-start gap-4 flex-wrap">
                   {formData.hero_image_url && (
                     <div className="relative">
