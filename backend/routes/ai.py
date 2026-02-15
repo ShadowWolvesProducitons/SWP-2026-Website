@@ -359,7 +359,7 @@ Return valid JSON only. No markdown code fences, no commentary."""
 
 
 class BlogSeoRequest(BaseModel):
-    title: str
+    title: Optional[str] = ""
     content: Optional[str] = ""
     tags: Optional[list] = []
     excerpt: Optional[str] = ""
