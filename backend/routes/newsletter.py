@@ -50,9 +50,19 @@ async def send_welcome_email(email: str, lead_magnet: str = None):
             # Fetch PDF URL from assets library
             pdf_url = None
             if db is not None:
-                asset = await db.assets.find_one({"asset_type": "pdf", "original_name": {"$regex": "playbook", "$options": "i"}}, {"_id": 0, "file_url": 1})
+                # Search for playbook PDF in assets
+                asset = await db.assets.find_one(
+                    {"asset_type": "pdf", "$or": [
+                        {"original_name": {"$regex": "playbook", "$options": "i"}},
+                        {"filename": {"$regex": "playbook", "$options": "i"}}
+                    ]},
+                    {"_id": 0, "file_url": 1}
+                )
                 if asset:
                     pdf_url = f"{logo_url}{asset['file_url']}"
+                    print(f"Found playbook PDF: {pdf_url}")
+                else:
+                    print("Playbook PDF not found in assets, using fallback")
             if not pdf_url:
                 pdf_url = f"{logo_url}/api/upload/files/c8f36645-6f39-4307-88b6-9b9681a2925c.pdf"
             
