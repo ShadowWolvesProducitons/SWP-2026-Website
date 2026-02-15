@@ -372,10 +372,10 @@ const BlogPostModal = ({ post, onClose, onSave }) => {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-1 px-6 pt-4 pb-0 border-b border-gray-800 overflow-x-auto flex-shrink-0">
+        <div className="flex gap-2 px-6 pt-4 pb-4 overflow-x-auto flex-shrink-0">
           {MODAL_TABS.map(tab => (
             <button key={tab.id} type="button" onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-2.5 text-sm whitespace-nowrap border-b-2 transition-colors ${activeTab === tab.id ? 'text-white border-electric-blue' : 'text-gray-500 border-transparent hover:text-gray-300'}`}
+              className={`px-4 py-2 text-sm whitespace-nowrap rounded-full transition-colors ${activeTab === tab.id ? 'bg-electric-blue text-white' : 'bg-smoke-gray text-gray-400 hover:text-white'}`}
               data-testid={`tab-${tab.id}`}>{tab.label}</button>
           ))}
         </div>

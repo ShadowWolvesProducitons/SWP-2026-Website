@@ -45,7 +45,7 @@ const AdminArmoryTab = () => {
       </div>
       <div className="flex gap-2 mb-6 flex-wrap">
         {['All', ...ITEM_TYPES].map((type) => (
-          <button key={type} onClick={() => setFilterType(type)} className={`px-4 py-2 rounded-lg text-sm transition-all ${filterType === type ? 'bg-white text-black' : 'bg-smoke-gray text-gray-400 hover:text-white'}`}>{type}</button>
+          <button key={type} onClick={() => setFilterType(type)} className={`px-4 py-2 rounded-full text-sm transition-all ${filterType === type ? 'bg-white text-black' : 'bg-smoke-gray text-gray-400 hover:text-white'}`} data-testid={`filter-tab-${type.toLowerCase()}`}>{type}</button>
         ))}
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 mb-6">
@@ -266,10 +266,10 @@ const ProductModal = ({ item, onClose, onSave }) => {
           <button onClick={onClose} className="p-2 text-gray-400 hover:text-white"><X size={20} /></button>
         </div>
         {/* Tabs */}
-        <div className="flex gap-1 px-6 pt-4 pb-0 border-b border-gray-800 overflow-x-auto flex-shrink-0">
+        <div className="flex gap-2 px-6 pt-4 pb-4 overflow-x-auto flex-shrink-0">
           {MODAL_TABS.map(tab => (
             <button key={tab.id} type="button" onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-2.5 text-sm whitespace-nowrap border-b-2 transition-colors ${activeTab === tab.id ? 'text-white border-electric-blue' : 'text-gray-500 border-transparent hover:text-gray-300'}`}
+              className={`px-4 py-2 text-sm whitespace-nowrap rounded-full transition-colors ${activeTab === tab.id ? 'bg-electric-blue text-white' : 'bg-smoke-gray text-gray-400 hover:text-white'}`}
               data-testid={`tab-${tab.id}`}>{tab.label}</button>
           ))}
         </div>
