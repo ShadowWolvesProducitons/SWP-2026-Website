@@ -175,7 +175,7 @@ const TheDen = () => {
   );
 };
 
-// Product Card Component — compact style matching Films page
+// Product Card Component — Top 3/4 image auto-fit, bottom 1/4 info strip
 const ProductCard = ({ item }) => {
   const getTypeIcon = (type) => {
     switch (type) {
@@ -205,55 +205,31 @@ const ProductCard = ({ item }) => {
 
   return (
     <CardWrapper>
-      <div className="relative overflow-hidden rounded-lg aspect-[2/3] cursor-pointer border-2 border-transparent hover:border-white/30 transition-all duration-300">
-        {/* Image / Placeholder */}
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900">
+      <div className="relative overflow-hidden rounded-lg border border-gray-800/50 hover:border-white/20 transition-all duration-300 bg-smoke-gray">
+        {/* Top 3/4 — Image area (square aspect) */}
+        <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900">
           {item.thumbnail_url ? (
             <img src={`${process.env.REACT_APP_BACKEND_URL}${item.thumbnail_url}`} alt={item.title}
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+              className="absolute inset-0 w-full h-full object-contain bg-black transition-transform duration-500 group-hover:scale-105" loading="lazy" />
           ) : (
             <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
-              <Icon className="w-10 h-10 text-gray-700 mb-3" />
-              <h4 className="text-white text-xs font-bold text-center font-cinzel">{item.title}</h4>
+              <Icon className="w-10 h-10 text-gray-700 mb-2" />
+            </div>
+          )}
+          {/* Featured Badge */}
+          {item.featured && (
+            <div className="absolute top-2 left-2 px-2 py-0.5 bg-electric-blue text-white text-[10px] font-medium rounded-full flex items-center gap-1 z-10">
+              <Star size={10} fill="currentColor" /> Featured
             </div>
           )}
         </div>
-
-        {/* Featured Badge */}
-        {item.featured && (
-          <div className="absolute top-2 left-2 px-2 py-0.5 bg-electric-blue text-white text-[10px] font-medium rounded-md flex items-center gap-1 shadow-lg z-10">
-            <Star size={10} fill="currentColor" /> Featured
-          </div>
-        )}
-
-        {/* Default overlay — title + price at bottom */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-300 group-hover:opacity-0">
-          <div className="absolute bottom-0 left-0 right-0 p-3">
-            <span className="text-gray-400 text-[10px] font-mono uppercase tracking-wider block mb-0.5">{item.item_type}</span>
-            <h3 className="text-white font-bold text-sm line-clamp-2">{item.title}</h3>
-            <span className="text-xs mt-1 block">
-              {item.is_free ? <span className="text-green-400">Free</span> : item.price ? <span className="text-white">{item.price}</span> : null}
-            </span>
-          </div>
-        </div>
-
-        {/* Hover overlay — full info */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-3">
-          <div>
-            <span className="inline-block px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider bg-white/10 text-white/80 rounded">
-              {item.item_type}
-            </span>
-          </div>
-          <div>
-            <h3 className="text-white font-bold text-sm mb-1">{item.title}</h3>
-            {item.short_description && <p className="text-gray-300 text-xs line-clamp-2 mb-2">{item.short_description}</p>}
-            <div className="flex items-end justify-between">
-              <span className="text-xs">
-                {item.is_free ? <span className="text-green-400">Free</span> : item.price ? <span className="text-white">{item.price}</span> : null}
-              </span>
-              <span className="text-white/60 text-xs">{hasLandingPage ? 'View' : 'Get It'} →</span>
-            </div>
-          </div>
+        {/* Bottom 1/4 — Info strip */}
+        <div className="p-2.5">
+          <span className="text-gray-500 text-[10px] font-mono uppercase tracking-wider block">{item.item_type}</span>
+          <h3 className="text-white font-bold text-xs line-clamp-1 mt-0.5">{item.title}</h3>
+          <span className="text-[10px] mt-1 block">
+            {item.is_free ? <span className="text-green-400">Free</span> : item.price ? <span className="text-gray-400">{item.price}</span> : null}
+          </span>
         </div>
       </div>
     </CardWrapper>
