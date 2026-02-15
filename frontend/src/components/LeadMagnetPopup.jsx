@@ -207,7 +207,7 @@ const LeadMagnetPopup = () => {
               {/* Mockup Image */}
               <div className="mb-6">
                 <img 
-                  src={`${process.env.REACT_APP_BACKEND_URL}/api/upload/images/producers-playbook-mockup.png`}
+                  src={playbookAssets.mockup}
                   alt="The Producer's Playbook"
                   className="w-48 h-auto mx-auto"
                 />
