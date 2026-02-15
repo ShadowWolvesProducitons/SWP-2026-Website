@@ -230,7 +230,7 @@ const Home = () => {
                 key={service.key}
                 onClick={() => openServicesModal(service.key)}
                 onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && openServicesModal(service.key)}
-                className="service-card-minimal group relative bg-smoke-gray p-8 md:p-10 rounded-xl border border-gray-800 hover:border-electric-blue/50 transition-all duration-300 text-left focus:outline-none focus:ring-2 focus:ring-electric-blue focus:ring-offset-2 focus:ring-offset-black hover:-translate-y-0.5 shadow-[0_0_20px_rgba(35,61,255,0.08)] hover:shadow-[0_0_30px_rgba(35,61,255,0.15)]"
+                className="service-card-minimal group relative bg-smoke-gray p-8 md:p-10 rounded-xl border border-gray-700 hover:border-electric-blue/60 transition-all duration-300 text-left focus:outline-none focus:ring-2 focus:ring-electric-blue focus:ring-offset-2 focus:ring-offset-black hover:-translate-y-1 shadow-[0_4px_20px_rgba(0,0,0,0.4),0_0_30px_rgba(35,61,255,0.15)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.5),0_0_40px_rgba(35,61,255,0.25)]"
                 aria-label={`Learn more about ${service.title}`}
               >
                 <span 
@@ -252,7 +252,7 @@ const Home = () => {
                   </span>
                 </div>
 
-                <div className="absolute inset-0 rounded-xl bg-electric-blue/0 group-hover:bg-electric-blue/[0.02] transition-colors duration-300 pointer-events-none" />
+                <div className="absolute inset-0 rounded-xl bg-electric-blue/0 group-hover:bg-electric-blue/[0.03] transition-colors duration-300 pointer-events-none" />
               </button>
             ))}
           </div>
@@ -270,7 +270,7 @@ const Home = () => {
                 <button
                   key={chip.key}
                   onClick={() => openSupportModal(chip.key)}
-                  className="px-5 py-2.5 rounded-full bg-smoke-gray border border-gray-700 text-gray-400 hover:border-electric-blue/50 hover:text-white transition-all text-sm focus:outline-none focus:ring-2 focus:ring-electric-blue shadow-[0_0_12px_rgba(35,61,255,0.06)] hover:shadow-[0_0_20px_rgba(35,61,255,0.12)]"
+                  className="px-5 py-2.5 rounded-full bg-smoke-gray border border-gray-600 text-gray-400 hover:border-electric-blue/60 hover:text-white transition-all text-sm focus:outline-none focus:ring-2 focus:ring-electric-blue shadow-[0_2px_10px_rgba(0,0,0,0.3),0_0_20px_rgba(35,61,255,0.12)] hover:shadow-[0_4px_15px_rgba(0,0,0,0.4),0_0_25px_rgba(35,61,255,0.2)]"
                 >
                   {chip.label}
                 </button>
