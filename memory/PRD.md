@@ -47,6 +47,19 @@ Professional, cinematic website for "Shadow Wolves Productions" evolved into a f
 - Button theme verified as pill-shaped (rounded-full) across public pages
 - 100% test pass rate (backend: 12/12, frontend: 16/16)
 
+### Site Settings Admin Panel (Feb 15, 2026)
+- Created new "Site Settings" tab in Admin Console
+- Page header editing with:
+  - Live preview of header appearance
+  - Image upload functionality
+  - Horizontal position slider (0-100%)
+  - Vertical position slider (0-100%) - adjusts which part of image is visible
+  - Overlay darkness slider (0-100%)
+  - Save per page, with "Preview Page" link
+- Settings stored in MongoDB site_settings collection
+- PageHeader component now fetches settings from database
+- Supports all pages: Films, Armory, Den, Investors, Work With Us, Contact, About
+
 ### Home/About Page Merge (Feb 15, 2026)
 - Merged About page content into Home page
 - New page structure:
