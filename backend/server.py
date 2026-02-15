@@ -115,6 +115,7 @@ api_router.include_router(ai_router)
 api_router.include_router(analytics_router)
 api_router.include_router(webhooks_router)
 api_router.include_router(assets_router)
+api_router.include_router(site_settings_router)
 
 # Include the main API router
 app.include_router(api_router)
