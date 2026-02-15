@@ -16,13 +16,13 @@ const PageHeader = ({ page, title, subtitle, children }) => {
   const bgImage = PAGE_HEADERS[page];
 
   return (
-    <section className="page-header relative py-20 md:py-28 overflow-hidden" data-testid={`page-header-${page}`}>
+    <section className="page-header relative py-12 overflow-hidden" data-testid={`page-header-${page}`}>
       {/* Background Image */}
       {bgImage && (
         <div className="absolute inset-0">
-          <img src={`${API}${bgImage}`} alt="" className="w-full h-full object-cover object-top" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-black/50" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/30" />
+          <img src={`${API}${bgImage}`} alt="" className="w-full h-full object-cover object-[center_30%]" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/85 to-black/60" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40" />
         </div>
       )}
       {!bgImage && (
