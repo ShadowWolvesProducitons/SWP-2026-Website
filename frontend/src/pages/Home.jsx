@@ -308,8 +308,16 @@ const Home = () => {
               <p>
                 Beyond production, we're building a studio ecosystem — films, tools, and resources designed to support independent creators who share our approach.
               </p>
-              <p>
-                This is long-term development, not a quick flip. We build what we believe in.
+              <p className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <span>This is long-term development, not a quick flip. We build what we believe in.</span>
+                <Link
+                  to="/investors"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-electric-blue hover:bg-electric-blue/90 text-white rounded-full font-mono text-sm uppercase tracking-widest transition-all whitespace-nowrap shrink-0"
+                  data-testid="about-cta-invest"
+                >
+                  Invest With Us
+                  <ArrowRight size={16} />
+                </Link>
               </p>
             </div>
           </div>

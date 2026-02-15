@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { useNavigate, Link } from 'react-router-dom';
+import { Lock, Eye, EyeOff, AlertCircle, ArrowLeft } from 'lucide-react';
 import { toast } from 'sonner';
 
 const AdminLogin = ({ onLogin }) => {
@@ -45,6 +45,16 @@ const AdminLogin = ({ onLogin }) => {
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-4">
       <div className="w-full max-w-md">
+        {/* Back to Website */}
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-8"
+          data-testid="back-to-website"
+        >
+          <ArrowLeft size={18} />
+          <span className="font-mono text-sm">Back to Website</span>
+        </Link>
+
         {/* Logo/Branding */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-electric-blue/20 rounded-full mb-4">
