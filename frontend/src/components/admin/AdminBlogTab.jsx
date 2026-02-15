@@ -467,7 +467,7 @@ const BlogPostModal = ({ post, onClose, onSave }) => {
           {/* ─── MEDIA ─── */}
           {activeTab === 'media' && (
             <div className="space-y-6">
-              <Fl label="Cover Image" helper="Appears in blog listings and as the post header">
+              <Fl label="Cover Image" helper="Appears in blog listings and as the post header. Ideal: 1200 x 630px (16:9 landscape)">
                 <div className="flex items-start gap-4 flex-wrap">
                   {formData.cover_image_url && (
                     <div className="relative">
