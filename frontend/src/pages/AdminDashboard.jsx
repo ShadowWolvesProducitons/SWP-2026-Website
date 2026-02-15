@@ -102,6 +102,7 @@ const AdminDashboard = ({ onLogout }) => {
         {activeTab === 'newsletter' && <AdminNewsletterTab />}
         {activeTab === 'email-templates' && <AdminEmailTemplatesTab />}
         {activeTab === 'investors' && <AdminInvestorTab />}
+        {activeTab === 'site-settings' && <AdminSiteSettingsTab />}
       </main>
     </div>
   );
