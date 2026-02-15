@@ -390,10 +390,20 @@ const BlogPostModal = ({ post, onClose, onSave }) => {
                 <TI value={formData.title} onChange={e => set('title', e.target.value)} placeholder="e.g. Behind the Scenes: Horror Lighting" data-testid="input-title" />
               </Fl>
               <Fl label="URL Slug" helper="Auto-generated from title. Edit to customize.">
-                <div className="flex items-center">
-                  <span className="text-gray-500 bg-black px-3 py-2 border border-r-0 border-gray-700 rounded-l-lg text-xs font-mono">/blog/</span>
-                  <input type="text" value={formData.slug} onChange={e => { setSlugManuallyEdited(true); set('slug', e.target.value); }}
-                    className="flex-1 bg-black border border-gray-700 rounded-r-lg px-3 py-2 text-white font-mono text-sm focus:border-electric-blue focus:outline-none" placeholder="post-slug" data-testid="input-slug" />
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center flex-1">
+                    <span className="text-gray-500 bg-black px-3 py-2 border border-r-0 border-gray-700 rounded-l-lg text-xs font-mono">/blog/</span>
+                    <input type="text" value={formData.slug} onChange={e => { setSlugManuallyEdited(true); set('slug', e.target.value); }}
+                      className="flex-1 bg-black border border-gray-700 rounded-r-lg px-3 py-2 text-white font-mono text-sm focus:border-electric-blue focus:outline-none" placeholder="post-slug" data-testid="input-slug" />
+                  </div>
+                  <button type="button" onClick={() => {
+                    if (formData.title) {
+                      const slug = formData.title.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/[\s_]+/g, '-').replace(/-+/g, '-').trim();
+                      set('slug', slug); setSlugManuallyEdited(false); toast.success('Slug regenerated');
+                    }
+                  }} className="p-2 text-gray-400 hover:text-electric-blue border border-gray-700 rounded-lg bg-black" title="Regenerate from title" data-testid="regenerate-slug-btn">
+                    <RefreshCw size={16} />
+                  </button>
                 </div>
               </Fl>
               <Fl label="Status" helper="Draft posts are not visible to the public">
