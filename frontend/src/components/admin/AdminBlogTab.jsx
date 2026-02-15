@@ -614,6 +614,7 @@ const BlogPostModal = ({ post, onClose, onSave }) => {
    ═══════════════════════════════════════════════════════════════ */
 
 const SECTION_LABELS = {
+  title: 'Post Title',
   seo_title: 'SEO Title',
   seo_description: 'Meta Description',
   excerpt: 'Excerpt',
