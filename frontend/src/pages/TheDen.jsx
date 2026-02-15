@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Smartphone, Download, FileText, BookOpen, GraduationCap, ExternalLink, RefreshCw, Star, ShoppingBag } from 'lucide-react';
 import { Helmet } from 'react-helmet';
+import PageHeader from '../components/PageHeader';
 
 const TheDen = () => {
   const [activeTab, setActiveTab] = useState('All');
@@ -75,23 +76,7 @@ const TheDen = () => {
       </Helmet>
 
       {/* Page Header */}
-      <section className="page-header py-12 bg-gradient-to-br from-black via-smoke-gray/50 to-black relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-electric-blue rounded-full filter blur-[120px]"></div>
-          <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-purple-600 rounded-full filter blur-[100px]"></div>
-        </div>
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-3xl">
-            <p className="text-electric-blue font-mono text-sm uppercase tracking-widest mb-4">Collection</p>
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 font-cinzel">
-              The Armory
-            </h1>
-            <p className="text-xl text-gray-400 leading-relaxed">
-              Your creative arsenal — apps, templates, resources, and courses built for real-world filmmaking.
-            </p>
-          </div>
-        </div>
-      </section>
+      <PageHeader page="armory" title="The Armory" subtitle="Your creative arsenal — apps, templates, resources, and courses built for real-world filmmaking." />
 
       {/* Filter Bar */}
       <section className="filter-bar py-6 bg-smoke-gray/50 border-y border-gray-800/50 sticky top-20 z-40 backdrop-blur-md">
