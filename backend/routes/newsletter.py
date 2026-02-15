@@ -231,11 +231,12 @@ async def send_bulk_email(request: BulkEmailRequest):
     
     for subscriber in subscribers:
         try:
+            per_sub_html = make_html_for(subscriber['email'])
             result = await asyncio.to_thread(resend.Emails.send, {
                 "from": from_email,
                 "to": subscriber['email'],
                 "subject": request.subject,
-                "html": styled_html
+                "html": per_sub_html
             })
             sent += 1
             # Track email ID for analytics
