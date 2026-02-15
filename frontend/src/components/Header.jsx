@@ -7,8 +7,7 @@ const Header = () => {
   const location = useLocation();
 
   const navLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'About', path: '/about' },
+    { name: 'About', path: '/' },
     { name: 'Films', path: '/films' },
     { name: 'The Armory', path: '/services' },
     { name: 'The Den', path: '/blog' },
