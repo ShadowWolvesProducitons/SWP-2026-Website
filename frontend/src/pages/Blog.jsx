@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { RefreshCw, ArrowRight } from 'lucide-react';
 import { Helmet } from 'react-helmet';
+import PageHeader from '../components/PageHeader';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
@@ -44,18 +45,7 @@ const Blog = () => {
       </Helmet>
 
       {/* Page Header */}
-      <section className="page-header py-16 bg-gradient-to-br from-black via-smoke-gray to-black relative overflow-hidden">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl" />
-        </div>
-        <div className="container mx-auto px-4 relative z-10">
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-4 font-cinzel">The Den</h1>
-          <div className="max-w-2xl space-y-3">
-            <p className="text-xl text-gray-400">Casting calls. Crew needs. Production lessons. Tools we actually use.</p>
-            <p className="text-gray-500">A working blog — grounded in real studio activity, not content for content's sake.</p>
-          </div>
-        </div>
-      </section>
+      <PageHeader page="den" title="The Den" subtitle="Casting calls. Crew needs. Production lessons. Tools we actually use." />
 
       {/* Subscribe CTA — Get The Playbook with image + blue glow */}
       <section className="py-8 bg-smoke-gray border-b border-gray-800 relative overflow-hidden">
