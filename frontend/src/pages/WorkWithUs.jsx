@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Send, CheckCircle, ChevronDown } from 'lucide-react';
 import { toast } from 'sonner';
+import PageHeader from '../components/PageHeader';
 
 const CineConnectSection = () => {
   const [showForm, setShowForm] = useState(false);
@@ -233,24 +234,7 @@ const WorkWithUs = () => {
       </Helmet>
 
       {/* Hero Section */}
-      <section className="py-12 bg-gradient-to-br from-black via-smoke-gray to-black relative overflow-hidden">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl"></div>
-        </div>
-        <div className="container mx-auto px-4 relative z-10">
-          <p className="text-electric-blue font-mono text-sm uppercase tracking-widest mb-4">
-            Submissions
-          </p>
-          <h1 
-            className="text-5xl md:text-6xl font-bold text-white mb-4 font-cinzel"
-          >
-            Work With Us
-          </h1>
-          <p className="text-xl text-gray-400">
-            Submit with intent. Not everything gets through.
-          </p>
-        </div>
-      </section>
+      <PageHeader page="workwithus" title="Work With Us" subtitle="Submit with intent. Not everything gets through." />
 
       {/* Two Column Layout */}
       <section className="py-12 bg-black">
