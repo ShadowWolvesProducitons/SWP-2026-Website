@@ -283,9 +283,9 @@ const Home = () => {
       {/* Quote Separator */}
       <section className="py-16 bg-smoke-gray">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <div className="border-l-4 border-electric-blue pl-6 py-2 text-left">
-              <p className="text-2xl md:text-3xl text-white font-medium italic font-cinzel">
+          <div className="max-w-4xl mx-auto">
+            <div className="border-l-4 border-electric-blue pl-6 py-2">
+              <p className="text-xl md:text-2xl text-white font-medium italic font-cinzel">
                 "If it doesn't scare us a little, it's probably not worth making."
               </p>
             </div>
