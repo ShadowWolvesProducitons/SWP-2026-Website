@@ -45,8 +45,13 @@ Professional, cinematic website for "Shadow Wolves Productions" evolved into a f
 - Created shared PageHeader component for consistent header styling
 - All page titles use Cinzel font matching Films page style
 - Button theme verified as pill-shaped (rounded-full) across public pages
-- Admin modal tab themes already unified (both use border-b-2 underline)
 - 100% test pass rate (backend: 12/12, frontend: 16/16)
+
+### Admin Tab Unification (Feb 15, 2026)
+- Updated Armory filter tabs to pill style (rounded-full) - "All", "Apps", "Templates", "Downloads", "Courses", "eBooks"
+- Updated Armory modal tabs to pill style (rounded-full) - "Basics", "Pricing & Access", "Content", "Media", "SEO"
+- Updated Blog modal tabs to pill style (rounded-full) - "Basics", "Content", "Media", "SEO"
+- Active tabs now use blue background instead of underline style for consistency with public-facing buttons
 
 ### Blog Post Builder Refactor + Newsletter (Feb 14, 2026)
 - Restructured blog Edit Post modal to 4-tab layout: Basics | Content | Media | SEO
