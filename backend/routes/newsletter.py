@@ -69,7 +69,7 @@ async def send_welcome_email(email: str, lead_magnet: str = None):
                 </p>
                 
                 <div style="background: #111; border: 1px solid #333; border-radius: 12px; padding: 24px; margin: 24px 0; text-align: center;">
-                    <img src="https://customer-assets.emergentagent.com/job_04afc1ac-41b6-4e3d-938f-409263bdaadd/artifacts/i8yb09b1_The%20Producer-s%20Playbook%20Mockup.png" alt="Producer's Playbook" style="width: 120px; height: auto; margin-bottom: 16px;" />
+                    <img src="{mockup_url}" alt="Producer's Playbook" style="width: 120px; height: auto; margin-bottom: 16px;" />
                     <p style="color: #ffffff; font-size: 18px; margin-bottom: 16px;">📄 Producer's Playbook</p>
                     <a href="{pdf_url}" style="display: inline-block; background: #233dff; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 50px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Download PDF</a>
                 </div>
