@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Mail, Phone, MapPin, Send, CheckCircle } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
 import { toast as sonnerToast } from 'sonner';
+import PageHeader from '../components/PageHeader';
 
 const Contact = () => {
   const { toast } = useToast();
@@ -64,17 +65,7 @@ const Contact = () => {
   return (
     <div className="contact-page pt-20">
       {/* Page Header */}
-      <section className="page-header py-12 bg-gradient-to-br from-black via-smoke-gray to-black relative overflow-hidden">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl"></div>
-        </div>
-        <div className="container mx-auto px-4 relative z-10">
-          <h1 className="md:text-7xl !font-bold !text-6xl mb-6 text-white font-cinzel">Get in Touch</h1>
-          <p className="max-w-2xl !text-xl text-gray-400">Let us know a bit about your project, and one of the team will be in touch as soon as possible.
-
-          </p>
-        </div>
-      </section>
+      <PageHeader page="contact" title="Get in Touch" subtitle="Let us know a bit about your project, and one of the team will be in touch as soon as possible." />
 
       {/* Contact Section */}
       <section className="contact-section py-16 bg-black">
