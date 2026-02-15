@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
 import { Shield, BarChart3, FileText, Lock, Mail, ChevronRight, Users, Briefcase, TrendingUp, CheckCircle } from 'lucide-react';
 import { toast } from 'sonner';
+import PageHeader from '../components/PageHeader';
 
 const BUDGET_TIERS = [
   { label: 'Seed', range: 'Under $10K', desc: 'Proof-of-concepts, shorts, development tests' },
@@ -53,16 +54,12 @@ const InvestorsPublic = () => {
       </Helmet>
 
       {/* HERO */}
-      <section className="container mx-auto px-4 py-12 lg:py-16">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-3xl">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4 font-cinzel" data-testid="investors-hero-title">Investors</h1>
-          <p className="text-lg text-gray-400 mb-8 leading-relaxed">Development-first genre storytelling. Structured investment pathways.</p>
-          <div className="flex flex-wrap gap-4">
-            <a href="#request-access" className="px-8 py-4 bg-electric-blue hover:bg-electric-blue/90 text-white rounded-full font-mono text-sm uppercase tracking-widest transition-all" data-testid="cta-request-access">Request Investor Access</a>
-            <a href="#investment-model" className="px-8 py-4 border border-gray-700 text-white rounded-full font-mono text-sm uppercase tracking-widest hover:bg-white/5 transition-all" data-testid="cta-view-model">View Investment Model</a>
-          </div>
-        </motion.div>
-      </section>
+      <PageHeader page="investors" title="Investors" subtitle="Development-first genre storytelling. Structured investment pathways.">
+        <div className="flex flex-wrap gap-4 mt-6">
+          <a href="#request-access" className="px-6 py-2.5 bg-electric-blue hover:bg-electric-blue/90 text-white rounded-full font-mono text-sm uppercase tracking-widest transition-all" data-testid="cta-request-access">Request Investor Access</a>
+          <a href="#investment-model" className="px-6 py-2.5 border border-gray-700 text-white rounded-full font-mono text-sm uppercase tracking-widest hover:bg-white/5 transition-all" data-testid="cta-view-model">View Investment Model</a>
+        </div>
+      </PageHeader>
 
       {/* STUDIO OVERVIEW */}
       <section className="container mx-auto px-4 py-16 border-t border-gray-800/50">
