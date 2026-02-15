@@ -40,10 +40,18 @@ async def send_welcome_email(email: str, lead_magnet: str = None):
         resend.api_key = resend_api_key
         
         # Different content based on lead magnet
+        logo_url = os.environ.get('SITE_URL', 'https://shadowwolvesproductions.com.au')
+        header_img = f"{logo_url}/api/upload/images/header-banner.png"
+        unsub_url = f"{logo_url}/api/newsletter/{email}"
+        email_header = f'<div style="text-align: center; padding: 24px 40px 16px; border-bottom: 1px solid #1a1a1a;"><img src="{header_img}" alt="Shadow Wolves Productions" style="max-width: 280px; height: auto;" /></div>'
+        email_footer = f'<div style="padding: 20px 40px; border-top: 1px solid #1a1a1a;"><p style="color: #555; font-size: 11px; text-align: center;"><a href="{unsub_url}" style="color: #233dff;">Unsubscribe</a></p></div>'
+
         if lead_magnet == 'producers_playbook':
             pdf_url = "https://customer-assets.emergentagent.com/job_04afc1ac-41b6-4e3d-938f-409263bdaadd/artifacts/kzkfolyg_Producer%27s%20Playbook%20%28Editable%29.pdf"
             html_content = f"""
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #ffffff; padding: 40px;">
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #ffffff; padding: 0;">
+                {email_header}
+                <div style="padding: 32px 40px;">
                 <h1 style="color: #ffffff; font-size: 28px; margin-bottom: 8px;">Welcome to the Pack</h1>
                 <p style="color: #233dff; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 30px;">Your Producer's Playbook is ready</p>
                 
