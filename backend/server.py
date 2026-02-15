@@ -27,6 +27,7 @@ from routes.ai import router as ai_router, set_db as set_ai_db
 from routes.analytics import router as analytics_router, set_db as set_analytics_db
 from routes.webhooks import router as webhooks_router, set_db as set_webhooks_db
 from routes.assets import router as assets_router, set_db as set_assets_db
+from routes.site_settings import router as site_settings_router, set_db as set_site_settings_db
 
 
 ROOT_DIR = Path(__file__).parent
@@ -51,6 +52,7 @@ set_webhooks_db(db)
 set_assets_db(db)
 set_upload_db(db)
 set_ai_db(db)
+set_site_settings_db(db)
 
 # Create the main app
 app = FastAPI(title="Shadow Wolves Productions API")
