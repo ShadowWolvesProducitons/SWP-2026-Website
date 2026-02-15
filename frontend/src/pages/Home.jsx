@@ -324,31 +324,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* CTA Section - Work With Us / Invest With Us */}
-      <section className="py-16 bg-smoke-gray">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                to="/work-with-us"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-electric-blue hover:bg-electric-blue/90 text-white rounded-full font-mono text-sm uppercase tracking-widest transition-all"
-                data-testid="about-cta-work"
-              >
-                Work With Us
-                <ArrowRight size={18} />
-              </Link>
-              <Link
-                to="/investors"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 border border-gray-700 hover:border-gray-500 text-white rounded-full font-mono text-sm uppercase tracking-widest transition-all"
-                data-testid="about-cta-invest"
-              >
-                Invest With Us
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Join The Pack Newsletter Section */}
       <section className="join-pack-newsletter py-12 bg-gradient-to-br from-navy-dark via-black to-navy-dark relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
