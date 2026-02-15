@@ -193,18 +193,32 @@ async def send_bulk_email(request: BulkEmailRequest):
     if request.test_mode:
         subscribers = subscribers[:1]
     
-    # Wrap content in styled template
+    # Wrap content in styled template with header + unsubscribe
+    logo_url = os.environ.get('SITE_URL', 'https://shadowwolvesproductions.com.au')
+    header_img = f"{logo_url}/api/upload/images/header-banner.png"
     styled_html = f"""
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #ffffff; padding: 40px;">
-        {request.html_content}
-        <hr style="border: none; border-top: 1px solid #333; margin: 30px 0;" />
-        <p style="color: #666; font-size: 12px; text-align: center;">
-            You received this email because you subscribed to Shadow Wolves Productions newsletter.
-            <br />
-            <a href="#" style="color: #233dff;">Unsubscribe</a>
-        </p>
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #ffffff; padding: 0;">
+        <div style="text-align: center; padding: 24px 40px 16px; border-bottom: 1px solid #1a1a1a;">
+            <img src="{header_img}" alt="Shadow Wolves Productions" style="max-width: 280px; height: auto;" />
+        </div>
+        <div style="padding: 32px 40px;">
+            {request.html_content}
+        </div>
+        <div style="padding: 24px 40px; border-top: 1px solid #1a1a1a;">
+            <p style="color: #666; font-size: 11px; text-align: center; margin: 0 0 8px;">
+                Shadow Wolves Productions &bull; Film. Create. Dominate.
+            </p>
+            <p style="color: #555; font-size: 11px; text-align: center; margin: 0;">
+                <a href="{{{{unsubscribe_url}}}}" style="color: #233dff; text-decoration: underline;">Unsubscribe</a>
+            </p>
+        </div>
     </div>
     """
+
+    # Replace unsubscribe placeholder per subscriber
+    def make_html_for(subscriber_email):
+        unsub = f"{logo_url}/api/newsletter/{subscriber_email}"
+        return styled_html.replace("{{unsubscribe_url}}", unsub)
     
     # Generate campaign ID for tracking
     import uuid
