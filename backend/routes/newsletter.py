@@ -76,12 +76,16 @@ async def send_welcome_email(email: str, lead_magnet: str = None):
                 </p>
                 
                 <p style="color: #233dff; margin-top: 30px;">— Shadow Wolves Productions</p>
+                </div>
+                {email_footer}
             </div>
             """
             subject = "Your Producer's Playbook is ready"
         else:
-            html_content = """
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #ffffff; padding: 40px;">
+            html_content = f"""
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #ffffff; padding: 0;">
+                {email_header}
+                <div style="padding: 32px 40px;">
                 <h1 style="color: #ffffff; font-size: 24px; margin-bottom: 20px;">Welcome to the Pack</h1>
                 <p style="color: #9ca3af; line-height: 1.6;">
                     You've joined the Shadow Wolves mailing list. You'll be the first to hear about new projects, 
@@ -91,6 +95,8 @@ async def send_welcome_email(email: str, lead_magnet: str = None):
                     We don't spam. We only reach out when we have something worth saying.
                 </p>
                 <p style="color: #233dff; margin-top: 30px;">— Shadow Wolves Productions</p>
+                </div>
+                {email_footer}
             </div>
             """
             subject = "Welcome to Shadow Wolves Productions"
