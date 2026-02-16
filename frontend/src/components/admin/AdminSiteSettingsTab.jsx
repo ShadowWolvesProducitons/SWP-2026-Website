@@ -130,20 +130,8 @@ const AdminSiteSettingsTab = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold text-white font-cinzel">Site Settings</h2>
-          <p className="text-gray-400 text-sm mt-1">Customize page headers and images</p>
-        </div>
-      </div>
-
       {/* Page Headers */}
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-          <Image size={20} className="text-electric-blue" />
-          Page Headers
-        </h3>
         
         <div className="space-y-3">
           {PAGES.map((page) => {
