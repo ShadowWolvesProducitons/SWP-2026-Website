@@ -51,10 +51,11 @@ const AppContent = () => {
   const isAdminRoute = location.pathname.startsWith('/admin');
   const isInvestorPortalRoute = location.pathname === '/investors/portal' || location.pathname === '/investors/login';
   const isInvestorAuthRoute = location.pathname === '/investors/signup' || location.pathname === '/investors/login';
+  const isStudioAccessRoute = location.pathname.startsWith('/studio-access');
   
   // Show header/footer for public pages + public investors page + signup
-  const showLayout = !isAdminRoute && !isInvestorPortalRoute;
-  const showPopup = !isAdminRoute && !isInvestorPortalRoute && !isInvestorAuthRoute;
+  const showLayout = !isAdminRoute && !isInvestorPortalRoute && !isStudioAccessRoute;
+  const showPopup = !isAdminRoute && !isInvestorPortalRoute && !isInvestorAuthRoute && !isStudioAccessRoute;
 
   return (
     <Layout showLayout={showLayout} showPopup={showPopup}>
