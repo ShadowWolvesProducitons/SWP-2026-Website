@@ -31,8 +31,36 @@ const LEGACY_ROUTE_MAP = {
 };
 
 const AdminDashboard = ({ onLogout }) => {
-  const [activeTab, setActiveTab] = useState('analytics');
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
+  
+  // Get tab from URL or default to 'dashboard'
+  const tabFromUrl = searchParams.get('tab') || 'dashboard';
+  
+  // Handle legacy route redirects
+  const activeTab = LEGACY_ROUTE_MAP[tabFromUrl] || tabFromUrl;
+  
+  // Redirect if we mapped to a different tab
+  useEffect(() => {
+    if (LEGACY_ROUTE_MAP[tabFromUrl]) {
+      const newTab = LEGACY_ROUTE_MAP[tabFromUrl];
+      // For newsletter/templates, redirect to studio with comms sub-tab
+      if (tabFromUrl === 'newsletter' || tabFromUrl === 'email-templates') {
+        setSearchParams({ tab: 'studio', subtab: 'comms' });
+      } else if (tabFromUrl === 'site-settings') {
+        setSearchParams({ tab: 'studio', subtab: 'settings' });
+      } else if (tabFromUrl === 'studio-portal' || tabFromUrl === 'investors') {
+        setSearchParams({ tab: 'studio', subtab: 'portal' });
+      } else {
+        setSearchParams({ tab: newTab });
+      }
+      toast.info(`Redirected from ${tabFromUrl} to ${newTab}`);
+    }
+  }, [tabFromUrl, setSearchParams]);
+
+  const handleTabChange = (tabId) => {
+    setSearchParams({ tab: tabId });
+  };
 
   const handleLogout = () => {
     sessionStorage.removeItem('adminAuth');
@@ -70,17 +98,18 @@ const AdminDashboard = ({ onLogout }) => {
         </div>
       </header>
 
-      {/* Tab Navigation */}
+      {/* Tab Navigation - Streamlined 6-tab structure */}
       <nav className="bg-smoke-gray/50 border-b border-gray-800">
         <div className="container mx-auto px-4">
-          <div className="flex gap-1">
+          <div className="flex gap-1 overflow-x-auto">
             {TABS.map((tab) => {
               const Icon = tab.icon;
               return (
                 <button
                   key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-6 py-4 font-mono text-sm uppercase tracking-widest transition-all border-b-2 ${
+                  onClick={() => handleTabChange(tab.id)}
+                  data-testid={`nav-tab-${tab.id}`}
+                  className={`flex items-center gap-2 px-6 py-4 font-mono text-sm uppercase tracking-widest transition-all border-b-2 whitespace-nowrap ${
                     activeTab === tab.id
                       ? 'text-electric-blue border-electric-blue bg-black/30'
                       : 'text-gray-400 border-transparent hover:text-white hover:bg-black/20'
@@ -97,17 +126,12 @@ const AdminDashboard = ({ onLogout }) => {
 
       {/* Tab Content */}
       <main className="container mx-auto px-4 py-8">
-        {activeTab === 'analytics' && <AdminAnalyticsTab />}
+        {activeTab === 'dashboard' && <AdminDashboardTab />}
         {activeTab === 'films' && <AdminFilmsTab />}
         {activeTab === 'armory' && <AdminArmoryTab />}
         {activeTab === 'blog' && <AdminBlogTab />}
         {activeTab === 'assets' && <AdminAssetsTab />}
-        {activeTab === 'activity' && <AdminActivityTab />}
-        {activeTab === 'studio-portal' && <AdminStudioPortalTab />}
-        {activeTab === 'newsletter' && <AdminNewsletterTab />}
-        {activeTab === 'email-templates' && <AdminEmailTemplatesTab />}
-        {activeTab === 'investors' && <AdminInvestorTab />}
-        {activeTab === 'site-settings' && <AdminSiteSettingsTab />}
+        {activeTab === 'studio' && <AdminStudioTab />}
       </main>
     </div>
   );
