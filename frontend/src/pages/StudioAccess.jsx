@@ -41,13 +41,13 @@ const StudioAccess = () => {
         `${process.env.REACT_APP_BACKEND_URL}/api/studio-access/verify/${slug}?token=${token}`
       );
       
+      const data = await response.json();
+      
       if (response.ok) {
-        const data = await response.json();
         setFilm(data.film);
         setUser(data.user);
       } else {
-        const errorData = await response.json();
-        setError(errorData.detail || 'Access denied');
+        setError(data.detail || 'Access denied');
       }
     } catch (err) {
       console.error('Verification failed:', err);
