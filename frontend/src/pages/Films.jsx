@@ -149,92 +149,192 @@ const Films = () => {
       {/* Page Header */}
       <PageHeader page="films" title="Films" subtitle="Original screen stories — past, present, and in development." />
 
-      {/* Filter Section - Genre Dropdown */}
+      {/* Filter Section - Genre & Status Dropdowns */}
       <section className="filter-section py-6 bg-smoke-gray border-b border-gray-800">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col gap-2">
-            {/* Desktop: Dropdown */}
-            <div className="relative" ref={dropdownRef}>
-              <button
-                onClick={() => setIsGenreDropdownOpen(!isGenreDropdownOpen)}
-                className="flex items-center gap-2 px-4 py-2 bg-black border border-gray-700 rounded-lg text-white hover:border-gray-500 transition-colors"
-              >
-                <span className="font-mono text-sm uppercase tracking-widest">Browse by Genre</span>
-                <ChevronDown size={16} className={`transition-transform ${isGenreDropdownOpen ? 'rotate-180' : ''}`} />
-                {selectedGenre !== 'All' && (
-                  <span className="ml-2 px-2 py-0.5 bg-electric-blue text-white text-xs rounded-full">
-                    {selectedGenre}
-                  </span>
-                )}
-              </button>
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-wrap items-center gap-4">
+              {/* Genre Dropdown */}
+              <div className="relative" ref={genreDropdownRef}>
+                <button
+                  onClick={() => { setIsGenreDropdownOpen(!isGenreDropdownOpen); setIsStatusDropdownOpen(false); }}
+                  className="flex items-center gap-2 px-4 py-2 bg-black border border-gray-700 rounded-lg text-white hover:border-gray-500 transition-colors"
+                  data-testid="genre-filter-btn"
+                >
+                  <span className="font-mono text-sm uppercase tracking-widest">Browse by Genre</span>
+                  <ChevronDown size={16} className={`transition-transform ${isGenreDropdownOpen ? 'rotate-180' : ''}`} />
+                  {selectedGenre !== 'All' && (
+                    <span className="ml-2 px-2 py-0.5 bg-electric-blue text-white text-xs rounded-full">
+                      {selectedGenre}
+                    </span>
+                  )}
+                </button>
 
-              {/* Desktop Popover */}
-              {isGenreDropdownOpen && (
-                <>
-                  {/* Desktop view */}
-                  <div className="hidden md:block absolute top-full left-0 mt-2 bg-smoke-gray border border-gray-700 rounded-lg p-4 shadow-xl z-50 min-w-[300px]">
-                    <div className="flex flex-wrap gap-2">
-                      {genreOptions.map((genre) => (
-                        <button
-                          key={genre}
-                          onClick={() => handleGenreSelect(genre)}
-                          className={`px-3 py-1.5 rounded-full text-xs font-mono uppercase tracking-widest transition-all ${
-                            selectedGenre === genre
-                              ? 'bg-electric-blue text-white'
-                              : 'bg-black text-gray-400 hover:bg-gray-800 hover:text-white border border-gray-700'
-                          }`}
-                        >
-                          {genre}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Mobile Bottom Sheet */}
-                  <div className="md:hidden fixed inset-0 z-50">
-                    <div className="absolute inset-0 bg-black/80" onClick={() => setIsGenreDropdownOpen(false)} />
-                    <div className="absolute bottom-0 left-0 right-0 bg-smoke-gray border-t border-gray-700 rounded-t-2xl p-6 max-h-[70vh] overflow-y-auto">
-                      <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-white font-bold">Select Genre</h3>
-                        <button onClick={() => setIsGenreDropdownOpen(false)} className="p-2 text-gray-400">
-                          <X size={20} />
-                        </button>
-                      </div>
-                      <div className="flex flex-wrap gap-2 mb-4">
+                {/* Genre Desktop Popover */}
+                {isGenreDropdownOpen && (
+                  <>
+                    {/* Desktop view */}
+                    <div className="hidden md:block absolute top-full left-0 mt-2 bg-smoke-gray border border-gray-700 rounded-lg p-4 shadow-xl z-50 min-w-[300px]">
+                      <div className="flex flex-wrap gap-2">
                         {genreOptions.map((genre) => (
                           <button
                             key={genre}
                             onClick={() => handleGenreSelect(genre)}
-                            className={`px-4 py-2 rounded-full text-sm font-mono uppercase tracking-widest transition-all ${
+                            className={`px-3 py-1.5 rounded-full text-xs font-mono uppercase tracking-widest transition-all ${
                               selectedGenre === genre
                                 ? 'bg-electric-blue text-white'
-                                : 'bg-black text-gray-400 border border-gray-700'
+                                : 'bg-black text-gray-400 hover:bg-gray-800 hover:text-white border border-gray-700'
                             }`}
+                            data-testid={`genre-chip-${genre.toLowerCase().replace(/\s+/g, '-')}`}
                           >
                             {genre}
                           </button>
                         ))}
                       </div>
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => { setSelectedGenre('All'); setIsGenreDropdownOpen(false); }}
-                          className="flex-1 py-3 border border-gray-700 text-gray-400 rounded-lg font-mono text-sm uppercase"
-                        >
-                          Reset
-                        </button>
-                        <button
-                          onClick={() => setIsGenreDropdownOpen(false)}
-                          className="flex-1 py-3 bg-electric-blue text-white rounded-lg font-mono text-sm uppercase"
-                        >
-                          Apply
-                        </button>
+                    </div>
+
+                    {/* Genre Mobile Bottom Sheet */}
+                    <div className="md:hidden fixed inset-0 z-50">
+                      <div className="absolute inset-0 bg-black/80" onClick={() => setIsGenreDropdownOpen(false)} />
+                      <div className="absolute bottom-0 left-0 right-0 bg-smoke-gray border-t border-gray-700 rounded-t-2xl p-6 max-h-[70vh] overflow-y-auto">
+                        <div className="flex items-center justify-between mb-4">
+                          <h3 className="text-white font-bold">Select Genre</h3>
+                          <button onClick={() => setIsGenreDropdownOpen(false)} className="p-2 text-gray-400">
+                            <X size={20} />
+                          </button>
+                        </div>
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          {genreOptions.map((genre) => (
+                            <button
+                              key={genre}
+                              onClick={() => handleGenreSelect(genre)}
+                              className={`px-4 py-2 rounded-full text-sm font-mono uppercase tracking-widest transition-all ${
+                                selectedGenre === genre
+                                  ? 'bg-electric-blue text-white'
+                                  : 'bg-black text-gray-400 border border-gray-700'
+                              }`}
+                            >
+                              {genre}
+                            </button>
+                          ))}
+                        </div>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => { setSelectedGenre('All'); setIsGenreDropdownOpen(false); }}
+                            className="flex-1 py-3 border border-gray-700 text-gray-400 rounded-lg font-mono text-sm uppercase"
+                          >
+                            Reset
+                          </button>
+                          <button
+                            onClick={() => setIsGenreDropdownOpen(false)}
+                            className="flex-1 py-3 bg-electric-blue text-white rounded-lg font-mono text-sm uppercase"
+                          >
+                            Apply
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </>
+                  </>
+                )}
+              </div>
+
+              {/* Status Dropdown */}
+              <div className="relative" ref={statusDropdownRef}>
+                <button
+                  onClick={() => { setIsStatusDropdownOpen(!isStatusDropdownOpen); setIsGenreDropdownOpen(false); }}
+                  className="flex items-center gap-2 px-4 py-2 bg-black border border-gray-700 rounded-lg text-white hover:border-gray-500 transition-colors"
+                  data-testid="status-filter-btn"
+                >
+                  <span className="font-mono text-sm uppercase tracking-widest">Browse by Stage</span>
+                  <ChevronDown size={16} className={`transition-transform ${isStatusDropdownOpen ? 'rotate-180' : ''}`} />
+                  {selectedStatus !== 'All' && (
+                    <span className="ml-2 px-2 py-0.5 bg-amber-500 text-black text-xs rounded-full">
+                      {selectedStatus}
+                    </span>
+                  )}
+                </button>
+
+                {/* Status Desktop Popover */}
+                {isStatusDropdownOpen && (
+                  <>
+                    {/* Desktop view */}
+                    <div className="hidden md:block absolute top-full left-0 mt-2 bg-smoke-gray border border-gray-700 rounded-lg p-4 shadow-xl z-50 min-w-[340px]">
+                      <div className="flex flex-wrap gap-2">
+                        {STATUS_OPTIONS.map((status) => (
+                          <button
+                            key={status}
+                            onClick={() => handleStatusSelect(status)}
+                            className={`px-3 py-1.5 rounded-full text-xs font-mono uppercase tracking-widest transition-all ${
+                              selectedStatus === status
+                                ? 'bg-amber-500 text-black'
+                                : 'bg-black text-gray-400 hover:bg-gray-800 hover:text-white border border-gray-700'
+                            }`}
+                            data-testid={`status-chip-${status.toLowerCase().replace(/\s+/g, '-')}`}
+                          >
+                            {status}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Status Mobile Bottom Sheet */}
+                    <div className="md:hidden fixed inset-0 z-50">
+                      <div className="absolute inset-0 bg-black/80" onClick={() => setIsStatusDropdownOpen(false)} />
+                      <div className="absolute bottom-0 left-0 right-0 bg-smoke-gray border-t border-gray-700 rounded-t-2xl p-6 max-h-[70vh] overflow-y-auto">
+                        <div className="flex items-center justify-between mb-4">
+                          <h3 className="text-white font-bold">Select Project Stage</h3>
+                          <button onClick={() => setIsStatusDropdownOpen(false)} className="p-2 text-gray-400">
+                            <X size={20} />
+                          </button>
+                        </div>
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          {STATUS_OPTIONS.map((status) => (
+                            <button
+                              key={status}
+                              onClick={() => handleStatusSelect(status)}
+                              className={`px-4 py-2 rounded-full text-sm font-mono uppercase tracking-widest transition-all ${
+                                selectedStatus === status
+                                  ? 'bg-amber-500 text-black'
+                                  : 'bg-black text-gray-400 border border-gray-700'
+                              }`}
+                            >
+                              {status}
+                            </button>
+                          ))}
+                        </div>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => { setSelectedStatus('All'); setIsStatusDropdownOpen(false); }}
+                            className="flex-1 py-3 border border-gray-700 text-gray-400 rounded-lg font-mono text-sm uppercase"
+                          >
+                            Reset
+                          </button>
+                          <button
+                            onClick={() => setIsStatusDropdownOpen(false)}
+                            className="flex-1 py-3 bg-amber-500 text-black rounded-lg font-mono text-sm uppercase"
+                          >
+                            Apply
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {/* Clear All Filters */}
+              {(selectedGenre !== 'All' || selectedStatus !== 'All') && (
+                <button
+                  onClick={() => { setSelectedGenre('All'); setSelectedStatus('All'); }}
+                  className="flex items-center gap-1 px-3 py-2 text-gray-400 hover:text-white text-sm transition-colors"
+                  data-testid="clear-filters-btn"
+                >
+                  <X size={14} />
+                  Clear filters
+                </button>
               )}
             </div>
-            <p className="text-gray-600 text-sm">Select a genre to explore projects across our slate.</p>
+            <p className="text-gray-600 text-sm">Select a genre or stage to explore projects across our slate.</p>
           </div>
         </div>
       </section>
