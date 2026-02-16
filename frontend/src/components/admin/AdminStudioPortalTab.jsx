@@ -385,20 +385,7 @@ const AdminStudioPortalTab = () => {
 
   return (
     <div className="space-y-6" data-testid="admin-studio-portal-tab">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold text-white font-cinzel">Studio Portal Management</h2>
-          <p className="text-gray-500 text-sm">Manage users, roles, and access permissions</p>
-        </div>
-        <button
-          onClick={fetchData}
-          className="flex items-center gap-2 px-4 py-2 bg-electric-blue/10 hover:bg-electric-blue/20 text-electric-blue rounded-lg text-sm transition-all"
-        >
-          <RefreshCw size={16} />
-          Refresh
-        </button>
-      </div>
+      {/* Header - Removed since it's now wrapped by AdminStudioTab */}
 
       {/* Stats Overview */}
       {stats && (
