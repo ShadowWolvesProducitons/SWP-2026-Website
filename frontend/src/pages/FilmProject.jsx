@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import { ChevronDown, ChevronUp, ArrowLeft, Mail, RefreshCw } from 'lucide-react';
+import { ChevronDown, ChevronUp, ArrowLeft, Mail, RefreshCw, MousePointer2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+
+// IMDB Logo URL
+const IMDB_LOGO = "https://customer-assets.emergentagent.com/job_68938027-079c-4f84-ad55-d8d458f6dee5/artifacts/34y7ru4y_IMDB_Logo_2016.svg";
 
 const FilmProject = () => {
   const { slug } = useParams();
@@ -83,8 +86,8 @@ const FilmProject = () => {
       </Helmet>
 
       <div className="film-project-page bg-black min-h-screen pt-20" data-testid="film-project-page">
-        {/* Back Navigation */}
-        <div className="container mx-auto px-4 py-4">
+        {/* Back Navigation - with padding */}
+        <div className="container mx-auto px-4 py-6">
           <button
             onClick={() => navigate('/films')}
             className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm"
@@ -104,40 +107,72 @@ const FilmProject = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              {/* Poster */}
+              {/* Poster with frame and shadow */}
               <div className="w-full lg:w-1/3 flex-shrink-0">
-                <div 
-                  className="relative aspect-[2/3] rounded-lg overflow-hidden border border-gray-800 shadow-2xl shadow-electric-blue/10"
-                  style={{ backgroundColor: film.poster_color || '#1a1a2e' }}
-                >
-                  {film.poster_url ? (
-                    <img
-                      src={`${process.env.REACT_APP_BACKEND_URL}${film.poster_url}`}
-                      alt={film.title}
-                      className="w-full h-full object-contain bg-black"
-                      data-testid="film-project-poster"
+                <div className="relative">
+                  {/* Poster Frame with shadow and fade */}
+                  <div 
+                    className="relative rounded-lg overflow-hidden"
+                    style={{
+                      boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255,255,255,0.1), 0 0 60px rgba(35, 61, 255, 0.15)'
+                    }}
+                  >
+                    {/* Vignette overlay for fade effect */}
+                    <div 
+                      className="absolute inset-0 z-10 pointer-events-none"
+                      style={{
+                        background: 'radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.5) 100%)',
+                        boxShadow: 'inset 0 0 60px rgba(0,0,0,0.4)'
+                      }}
                     />
-                  ) : (
-                    <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
-                      <div className="w-20 h-20 mb-4 opacity-30">
-                        <svg viewBox="0 0 100 100" fill="currentColor" className="text-electric-blue">
-                          <path d="M50 10L20 40L10 90L50 70L90 90L80 40L50 10Z" stroke="currentColor" strokeWidth="2" fill="none"/>
-                          <circle cx="35" cy="45" r="4" fill="currentColor"/>
-                          <circle cx="65" cy="45" r="4" fill="currentColor"/>
-                        </svg>
-                      </div>
-                      <span className="text-gray-500 text-sm text-center">Poster Coming Soon</span>
+                    
+                    <div
+                      className="relative w-full aspect-[2/3]"
+                      style={{ backgroundColor: film.poster_color || '#1a1a2e' }}
+                    >
+                      {film.poster_url ? (
+                        <img
+                          src={`${process.env.REACT_APP_BACKEND_URL}${film.poster_url}`}
+                          alt={film.title}
+                          className="w-full h-full object-cover"
+                          data-testid="film-project-poster"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 flex flex-col items-center justify-center p-4 bg-gradient-to-br from-gray-900 via-black to-gray-900">
+                          <div className="w-20 h-20 mb-4 opacity-30">
+                            <svg viewBox="0 0 100 100" fill="currentColor" className="text-electric-blue">
+                              <path d="M50 10L20 40L10 90L50 70L90 90L80 40L50 10Z" stroke="currentColor" strokeWidth="2" fill="none"/>
+                              <circle cx="35" cy="45" r="4" fill="currentColor"/>
+                              <circle cx="65" cy="45" r="4" fill="currentColor"/>
+                            </svg>
+                          </div>
+                          <span className="text-gray-500 text-sm text-center">Poster Coming Soon</span>
+                        </div>
+                      )}
                     </div>
-                  )}
+                  </div>
                 </div>
               </div>
 
               {/* Hero Info */}
               <div className="flex-1 lg:pt-4">
-                {/* Title */}
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 font-cinzel" data-testid="film-project-title">
-                  {film.title}
-                </h1>
+                {/* Title Row with IMDB Logo */}
+                <div className="flex items-start justify-between gap-4 mb-4">
+                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white font-cinzel" data-testid="film-project-title">
+                    {film.title}
+                  </h1>
+                  {film.imdb_url && (
+                    <a
+                      href={film.imdb_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-shrink-0 opacity-80 hover:opacity-100 transition-opacity mt-2"
+                      title="View on IMDb"
+                    >
+                      <img src={IMDB_LOGO} alt="IMDb" className="h-10 w-auto" />
+                    </a>
+                  )}
+                </div>
 
                 {/* Genre Tags */}
                 {film.genres && film.genres.length > 0 && (
@@ -170,35 +205,43 @@ const FilmProject = () => {
                 {/* CTA Button */}
                 <button
                   onClick={handleRequestMaterials}
-                  className="inline-flex items-center gap-2 bg-electric-blue hover:bg-electric-blue/90 text-white px-8 py-4 rounded-full font-mono text-sm uppercase tracking-widest transition-all"
+                  className="inline-flex items-center gap-2 bg-electric-blue hover:bg-electric-blue/90 text-white px-8 py-4 rounded-full font-mono text-sm uppercase tracking-widest transition-all mb-6"
                   data-testid="request-materials-btn"
                 >
                   <Mail size={18} />
                   Request Materials
                 </button>
+
+                {/* Logline - moved under CTA */}
+                {film.logline && (
+                  <div className="mt-2">
+                    <h2 className="text-xs font-mono uppercase tracking-widest text-electric-blue mb-3">Logline</h2>
+                    <p className="text-base md:text-lg text-gray-400 leading-relaxed">
+                      {film.logline}
+                    </p>
+                  </div>
+                )}
               </div>
             </motion.div>
           </div>
         </section>
 
-        {/* Logline Section */}
-        {film.logline && (
-          <section className="logline-section py-12 border-t border-gray-800">
-            <div className="container mx-auto px-4">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-              >
-                <h2 className="text-xs font-mono uppercase tracking-widest text-electric-blue mb-4">Logline</h2>
-                <p className="text-lg md:text-xl text-gray-300 leading-relaxed max-w-4xl">
-                  {film.logline}
-                </p>
-              </motion.div>
-            </div>
-          </section>
-        )}
+        {/* Scroll for More Indicator */}
+        <motion.div 
+          className="flex flex-col items-center py-8"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8, duration: 0.6 }}
+        >
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+            className="flex flex-col items-center text-gray-500"
+          >
+            <span className="text-xs font-mono uppercase tracking-widest mb-2">Scroll for more</span>
+            <MousePointer2 size={20} className="rotate-180" />
+          </motion.div>
+        </motion.div>
 
         {/* Extended Synopsis Section - Expandable */}
         {film.extended_synopsis && (
@@ -373,33 +416,20 @@ const FilmProject = () => {
           </div>
         </section>
 
-        {/* Links Section */}
-        {(film.imdb_url || film.watch_url) && (
+        {/* External Link Section (without IMDb - moved to top) */}
+        {film.watch_url && film.watch_url_title && (
           <section className="links-section py-8 border-t border-gray-800">
             <div className="container mx-auto px-4">
               <div className="flex items-center justify-center gap-6">
-                {film.imdb_url && (
-                  <a
-                    href={film.imdb_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-white text-sm transition-colors inline-flex items-center gap-1"
-                  >
-                    View on IMDb
-                    <span className="text-xs">↗</span>
-                  </a>
-                )}
-                {film.watch_url && film.watch_url_title && (
-                  <a
-                    href={film.watch_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-white text-sm transition-colors inline-flex items-center gap-1"
-                  >
-                    {film.watch_url_title}
-                    <span className="text-xs">↗</span>
-                  </a>
-                )}
+                <a
+                  href={film.watch_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-white text-sm transition-colors inline-flex items-center gap-1"
+                >
+                  {film.watch_url_title}
+                  <span className="text-xs">↗</span>
+                </a>
               </div>
             </div>
           </section>
