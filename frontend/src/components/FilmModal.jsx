@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import { X, ArrowRight } from 'lucide-react';
+import { X, ArrowRight, Play, Lock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 // IMDB Logo URL
 const IMDB_LOGO = "https://customer-assets.emergentagent.com/job_68938027-079c-4f84-ad55-d8d458f6dee5/artifacts/34y7ru4y_IMDB_Logo_2016.svg";
