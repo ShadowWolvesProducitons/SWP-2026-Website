@@ -30,6 +30,9 @@ import StudioPortalLayout from "./pages/StudioPortalLayout";
 import StudioDashboard from "./pages/StudioDashboard";
 import StudioProjects from "./pages/StudioProjects";
 import StudioProjectDetail from "./pages/StudioProjectDetail";
+import StudioUpdates from "./pages/StudioUpdates";
+import StudioAssets from "./pages/StudioAssets";
+import StudioAccount from "./pages/StudioAccount";
 
 const Layout = ({ children, showLayout, showPopup }) => {
   if (!showLayout) return <>{children}</>;
