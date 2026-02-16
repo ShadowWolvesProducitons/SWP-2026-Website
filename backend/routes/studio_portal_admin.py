@@ -507,3 +507,156 @@ async def create_admin_user(data: CreateAdminInput):
     await db.studio_users.insert_one(admin)
     
     return {"message": "Admin user created", "email": data.email.lower()}
+
+
+
+# ============ ADMIN CONSOLE ENDPOINTS (Simple Password Auth) ============
+# These endpoints use the main admin console password for authentication
+
+from fastapi import Header
+
+ADMIN_PASSWORD = "shadowwolves2024"
+
+
+async def verify_admin_password(x_admin_password: str = Header(None)):
+    """Verify admin password from header"""
+    if x_admin_password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Invalid admin password")
+    return True
+
+
+@router.get("/console/users")
+async def console_list_users(
+    status: Optional[str] = None,
+    role: Optional[str] = None,
+    search: Optional[str] = None,
+    _: bool = Depends(verify_admin_password)
+):
+    """List all studio portal users (admin console auth)"""
+    query = {}
+    
+    if status:
+        query["status"] = status
+    if role:
+        query["role"] = role
+    if search:
+        query["$or"] = [
+            {"full_name": {"$regex": search, "$options": "i"}},
+            {"email": {"$regex": search, "$options": "i"}}
+        ]
+    
+    users = await db.studio_users.find(
+        query,
+        {"_id": 0, "password_hash": 0, "verification_token": 0, "reset_token": 0}
+    ).sort("created_at", -1).to_list(200)
+    
+    return {"users": users}
+
+
+@router.put("/console/users/{user_id}")
+async def console_update_user(
+    user_id: str,
+    data: UpdateUserInput,
+    _: bool = Depends(verify_admin_password)
+):
+    """Update user role, status, or project access (admin console auth)"""
+    user = await db.studio_users.find_one({"id": user_id})
+    
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    update_data = {"updated_at": datetime.now(timezone.utc).isoformat()}
+    
+    if data.role is not None:
+        update_data["role"] = data.role.value
+    
+    if data.status is not None:
+        update_data["status"] = data.status.value
+    
+    if data.project_permissions is not None:
+        update_data["project_permissions"] = data.project_permissions
+    
+    if data.has_all_projects_access is not None:
+        update_data["has_all_projects_access"] = data.has_all_projects_access
+    
+    await db.studio_users.update_one(
+        {"id": user_id},
+        {"$set": update_data}
+    )
+    
+    return {"message": "User updated successfully"}
+
+
+@router.delete("/console/users/{user_id}")
+async def console_delete_user(user_id: str, _: bool = Depends(verify_admin_password)):
+    """Revoke user access (admin console auth)"""
+    result = await db.studio_users.update_one(
+        {"id": user_id},
+        {"$set": {"status": UserStatus.REVOKED.value, "updated_at": datetime.now(timezone.utc).isoformat()}}
+    )
+    
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    return {"message": "User access revoked"}
+
+
+@router.get("/console/stats")
+async def console_get_stats(_: bool = Depends(verify_admin_password)):
+    """Get portal statistics (admin console auth)"""
+    total_users = await db.studio_users.count_documents({})
+    active_users = await db.studio_users.count_documents({"status": UserStatus.ACTIVE.value})
+    pending_users = await db.studio_users.count_documents({"status": UserStatus.PENDING_VERIFICATION.value})
+    revoked_users = await db.studio_users.count_documents({"status": UserStatus.REVOKED.value})
+    
+    role_counts = {}
+    for role in UserRole:
+        count = await db.studio_users.count_documents({"role": role.value, "status": UserStatus.ACTIVE.value})
+        if count > 0:
+            role_counts[role.value] = count
+    
+    total_updates = await db.portal_updates.count_documents({})
+    total_assets = await db.portal_assets.count_documents({"archived": False})
+    
+    recent_downloads = await db.audit_logs.count_documents({
+        "event_type": AuditEventType.ASSET_DOWNLOAD.value
+    })
+    
+    return {
+        "users": {
+            "total": total_users,
+            "active": active_users,
+            "pending": pending_users,
+            "revoked": revoked_users,
+            "by_role": role_counts
+        },
+        "content": {
+            "updates": total_updates,
+            "assets": total_assets
+        },
+        "activity": {
+            "total_downloads": recent_downloads
+        }
+    }
+
+
+@router.get("/console/audit-logs")
+async def console_get_audit_logs(
+    event_type: Optional[str] = None,
+    user_id: Optional[str] = None,
+    limit: int = 100,
+    _: bool = Depends(verify_admin_password)
+):
+    """Get audit logs (admin console auth)"""
+    query = {}
+    if event_type:
+        query["event_type"] = event_type
+    if user_id:
+        query["user_id"] = user_id
+    
+    logs = await db.audit_logs.find(
+        query,
+        {"_id": 0}
+    ).sort("timestamp", -1).to_list(limit)
+    
+    return {"logs": logs}
