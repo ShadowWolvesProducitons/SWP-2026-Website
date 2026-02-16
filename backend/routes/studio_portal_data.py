@@ -508,21 +508,30 @@ async def download_project_document(
     if not file_path.exists():
         raise HTTPException(status_code=404, detail="File not found")
     
-    # Log download
+    # Log download with full details
     await log_audit_event(
         AuditEventType.ASSET_DOWNLOAD,
         user_id=user["id"],
         user_email=user.get("email"),
         project_id=project["id"],
-        details={"document_type": doc_type, "project": project["title"]},
+        details={
+            "document_type": doc_type,
+            "project": project["title"],
+            "user_name": user.get("full_name"),
+            "company": user.get("company"),
+            "downloaded_at": datetime.now(timezone.utc).isoformat()
+        },
         ip_address=request.client.host if request.client else None
     )
     
-    # Watermark PDF
-    watermark_text = f"CONFIDENTIAL - {user.get('full_name')} ({user.get('email')}) - {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}"
-    
+    # Watermark PDF with user name
     try:
-        watermarked_pdf = await watermark_pdf(str(file_path), watermark_text)
+        watermarked_pdf = await watermark_pdf(
+            str(file_path), 
+            user_name=user.get('full_name', 'Unknown'),
+            user_email=user.get('email'),
+            company=user.get('company')
+        )
         
         return StreamingResponse(
             io.BytesIO(watermarked_pdf),
