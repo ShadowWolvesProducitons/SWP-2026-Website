@@ -241,12 +241,12 @@ Professional, cinematic website for "Shadow Wolves Productions" evolved into a f
 - ✅ Status Filter Chips on /films page
 - ✅ Work With Us + Contact Page Merge
 - ✅ Watermark Enhancement (single diagonal per page)
+- ✅ Admin Management UI for Studio Portal (User Management + Audit Log)
 
 ### P1
-- Admin Management UI for Studio Portal (manage users, roles, project access)
 - Updates Feed Content Management (admin interface to create/edit portal updates)
 - Asset Library Portal Integration (connect Assets Library to portal downloads)
-- Audit Log Viewer (admin interface to view user activity)
+- Audit Log Viewer Enhancements (filtering, export)
 
 ### P2
 - E-commerce for The Armory (Stripe)
