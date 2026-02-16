@@ -4,7 +4,8 @@ import { toast } from 'sonner';
 import AssetPicker from './AssetPicker';
 
 const API = process.env.REACT_APP_BACKEND_URL;
-const ITEM_TYPES = ['Apps', 'Templates', 'Downloads', 'Courses', 'eBooks'];
+// Removed "Templates" - they are now merged into "Downloads"
+const ITEM_TYPES = ['Apps', 'Downloads', 'Courses', 'eBooks'];
 
 const AdminArmoryTab = () => {
   const [items, setItems] = useState([]);
