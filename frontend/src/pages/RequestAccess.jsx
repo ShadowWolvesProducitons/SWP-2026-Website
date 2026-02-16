@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
-import { User, Mail, Building, MessageSquare, ChevronDown, Check, ArrowRight, Shield } from 'lucide-react';
+import { User, Mail, Building, MessageSquare, ChevronDown, Check, ArrowRight, Shield, ArrowLeft } from 'lucide-react';
 import { toast } from 'sonner';
 
 const ROLES = [
@@ -15,11 +15,6 @@ const ROLES = [
   { value: 'crew', label: 'Crew' },
   { value: 'talent_manager', label: 'Talent Manager' },
   { value: 'other', label: 'Other' }
-];
-
-const PROJECT_CATEGORIES = [
-  { id: 'apps', label: 'Apps', isCategory: true },
-  { id: 'films', label: 'Films', isCategory: true }
 ];
 
 const RequestAccess = () => {
