@@ -204,7 +204,7 @@ Professional, cinematic website for "Shadow Wolves Productions" evolved into a f
 - Browse Library button across all admin modals
 
 ### Other Completed Features
-- Full public site (Home, About, Films, Armory, Den/Blog, Work With Us, Contact)
+- Full public site (Home, About, Films, Armory, Den/Blog, Work With Us)
 - Admin console with Activity tab, inline quick actions
 - Investor portal with NDA, Overview dashboard, filter chips
 - Investor Auto-Invite System (Resend email)
@@ -212,6 +212,20 @@ Professional, cinematic website for "Shadow Wolves Productions" evolved into a f
 - AI image generation for blog covers
 - Lead magnet popup system
 - Site-wide 2:3 aspect ratio standardization
+
+### Films Status Filter & Page Merge (Feb 16, 2026)
+- **Status Filter Chips**: Added "Browse by Stage" dropdown on /films page with status options: All, Development, Packaging, Pre-Production, Filming, Post-Production, Marketing, Released
+- **Filter Independence**: Genre and Status filters work independently (can filter by genre OR status, not combined)
+- **Clear Filters**: Button appears when any filter is active to reset both
+- **Contact + Work With Us Merge**: Merged /contact into /work-with-us with two-lane toggle design:
+  - "Submit a Project" lane: Full project submission form (Name, Email, Role, Submission Type, Format, Genres, Project Stage, Logline, Link, Message, Legal acknowledgements)
+  - "General Enquiry" lane: Contact form (Name, Email, Phone, Topic dropdown, Message)
+  - CineConnect card in right column
+  - Single Newsletter section at bottom
+- **/contact redirect**: Route redirects to /work-with-us
+- **Navigation updated**: Removed "Contact" link from header and footer
+- **Watermark Improvements**: Changed PDF watermarks from dense tiled text to single large diagonal watermark per page (8% opacity, user name in uppercase)
+- **Download Logging**: Enhanced audit logging to capture user name, company, email, and timestamp on document downloads
 
 ### Credentials
 - Admin: /admin, Password: shadowwolves2024
@@ -224,9 +238,11 @@ Professional, cinematic website for "Shadow Wolves Productions" evolved into a f
 - ✅ Films System Refactor Part 1 (Public Project Overview)
 - ✅ Films System Refactor Part 2 (Studio Access Page)
 - ✅ Studio Access Portal (Full user-facing portal implementation)
+- ✅ Status Filter Chips on /films page
+- ✅ Work With Us + Contact Page Merge
+- ✅ Watermark Enhancement (single diagonal per page)
 
 ### P1
-- Watermarked Downloads Enhancement (on-demand PDF watermarking for pitch decks/scripts)
 - Admin Management UI for Studio Portal (manage users, roles, project access)
 - Updates Feed Content Management (admin interface to create/edit portal updates)
 - Asset Library Portal Integration (connect Assets Library to portal downloads)
