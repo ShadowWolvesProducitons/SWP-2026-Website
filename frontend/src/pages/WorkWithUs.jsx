@@ -221,61 +221,82 @@ const SubmitProjectForm = ({ onSuccess }) => {
         {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
       </div>
 
-      {/* Role */}
-      <div>
-        <label className="block text-gray-400 text-sm uppercase tracking-wide mb-2">Your Role *</label>
-        <div className="relative">
-          <select
-            name="role"
-            value={formData.role}
-            onChange={handleChange}
-            className={`w-full bg-smoke-gray border ${errors.role ? 'border-red-500' : 'border-gray-700'} rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none appearance-none cursor-pointer`}
-            data-testid="project-role-select"
-          >
-            <option value="">Select role</option>
-            {ROLES.map(role => <option key={role} value={role}>{role}</option>)}
-          </select>
-          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" size={18} />
+      {/* Role & Submission Type - Same Line */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-gray-400 text-sm uppercase tracking-wide mb-2">Your Role *</label>
+          <div className="relative">
+            <select
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+              className={`w-full bg-smoke-gray border ${errors.role ? 'border-red-500' : 'border-gray-700'} rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none appearance-none cursor-pointer`}
+              data-testid="project-role-select"
+            >
+              <option value="">Select role</option>
+              {ROLES.map(role => <option key={role} value={role}>{role}</option>)}
+            </select>
+            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" size={18} />
+          </div>
+          {errors.role && <p className="text-red-500 text-xs mt-1">{errors.role}</p>}
         </div>
-        {errors.role && <p className="text-red-500 text-xs mt-1">{errors.role}</p>}
+
+        <div>
+          <label className="block text-gray-400 text-sm uppercase tracking-wide mb-2">Submission Type *</label>
+          <div className="relative">
+            <select
+              name="submission_type"
+              value={formData.submission_type}
+              onChange={handleChange}
+              className={`w-full bg-smoke-gray border ${errors.submission_type ? 'border-red-500' : 'border-gray-700'} rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none appearance-none cursor-pointer`}
+              data-testid="project-type-select"
+            >
+              <option value="">Select type</option>
+              {SUBMISSION_TYPES.map(type => <option key={type} value={type}>{type}</option>)}
+            </select>
+            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" size={18} />
+          </div>
+          {errors.submission_type && <p className="text-red-500 text-xs mt-1">{errors.submission_type}</p>}
+        </div>
       </div>
 
-      {/* Submission Type */}
-      <div>
-        <label className="block text-gray-400 text-sm uppercase tracking-wide mb-2">Submission Type *</label>
-        <div className="relative">
-          <select
-            name="submission_type"
-            value={formData.submission_type}
-            onChange={handleChange}
-            className={`w-full bg-smoke-gray border ${errors.submission_type ? 'border-red-500' : 'border-gray-700'} rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none appearance-none cursor-pointer`}
-            data-testid="project-type-select"
-          >
-            <option value="">Select type</option>
-            {SUBMISSION_TYPES.map(type => <option key={type} value={type}>{type}</option>)}
-          </select>
-          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" size={18} />
+      {/* Format & Project Stage - Same Line */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-gray-400 text-sm uppercase tracking-wide mb-2">Format *</label>
+          <div className="relative">
+            <select
+              name="format"
+              value={formData.format}
+              onChange={handleChange}
+              className={`w-full bg-smoke-gray border ${errors.format ? 'border-red-500' : 'border-gray-700'} rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none appearance-none cursor-pointer`}
+              data-testid="project-format-select"
+            >
+              <option value="">Select format</option>
+              {FORMATS.map(format => <option key={format} value={format}>{format}</option>)}
+            </select>
+            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" size={18} />
+          </div>
+          {errors.format && <p className="text-red-500 text-xs mt-1">{errors.format}</p>}
         </div>
-        {errors.submission_type && <p className="text-red-500 text-xs mt-1">{errors.submission_type}</p>}
-      </div>
 
-      {/* Format */}
-      <div>
-        <label className="block text-gray-400 text-sm uppercase tracking-wide mb-2">Format *</label>
-        <div className="relative">
-          <select
-            name="format"
-            value={formData.format}
-            onChange={handleChange}
-            className={`w-full bg-smoke-gray border ${errors.format ? 'border-red-500' : 'border-gray-700'} rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none appearance-none cursor-pointer`}
-            data-testid="project-format-select"
-          >
-            <option value="">Select format</option>
-            {FORMATS.map(format => <option key={format} value={format}>{format}</option>)}
-          </select>
-          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" size={18} />
+        <div>
+          <label className="block text-gray-400 text-sm uppercase tracking-wide mb-2">Project Stage *</label>
+          <div className="relative">
+            <select
+              name="project_stage"
+              value={formData.project_stage}
+              onChange={handleChange}
+              className={`w-full bg-smoke-gray border ${errors.project_stage ? 'border-red-500' : 'border-gray-700'} rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none appearance-none cursor-pointer`}
+              data-testid="project-stage-select"
+            >
+              <option value="">Where is the project at?</option>
+              {PROJECT_STAGES.map(stage => <option key={stage} value={stage}>{stage}</option>)}
+            </select>
+            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" size={18} />
+          </div>
+          {errors.project_stage && <p className="text-red-500 text-xs mt-1">{errors.project_stage}</p>}
         </div>
-        {errors.format && <p className="text-red-500 text-xs mt-1">{errors.format}</p>}
       </div>
 
       {/* Genres */}
