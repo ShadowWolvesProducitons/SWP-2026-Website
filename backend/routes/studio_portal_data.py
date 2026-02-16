@@ -409,44 +409,37 @@ async def download_asset(
     )
 
 
-async def watermark_pdf(pdf_path: str, watermark_text: str) -> bytes:
-    """Add watermark to each page of a PDF"""
+async def watermark_pdf(pdf_path: str, user_name: str, user_email: str = None, company: str = None) -> bytes:
+    """Add a single diagonal watermark per page - less intrusive, more readable"""
     from pypdf import PdfReader, PdfWriter
     from reportlab.pdfgen import canvas
     from reportlab.lib.pagesizes import letter
     from reportlab.lib.colors import Color
     
-    # Create watermark PDF
+    # Read original PDF to get page dimensions
+    reader = PdfReader(pdf_path)
+    
+    # Create watermark overlay (single diagonal name per page)
     watermark_buffer = io.BytesIO()
     c = canvas.Canvas(watermark_buffer, pagesize=letter)
     width, height = letter
     
-    # Set watermark properties
-    c.setFillColor(Color(0.5, 0.5, 0.5, alpha=0.3))
-    c.setFont("Helvetica", 10)
+    # Single, large, subtle diagonal watermark
+    c.setFillColor(Color(0.5, 0.5, 0.5, alpha=0.08))  # Very subtle - 8% opacity
+    c.setFont("Helvetica-Bold", 60)  # Large font
     
-    # Add diagonal watermark text
     c.saveState()
     c.translate(width/2, height/2)
     c.rotate(45)
     
-    # Tile the watermark
-    for y_offset in range(-int(height), int(height), 100):
-        for x_offset in range(-int(width), int(width), 300):
-            c.drawString(x_offset, y_offset, watermark_text)
+    # Single centered watermark with user name
+    c.drawCentredString(0, 0, user_name.upper())
     
     c.restoreState()
-    
-    # Add footer watermark
-    c.setFillColor(Color(0.3, 0.3, 0.3, alpha=0.5))
-    c.setFont("Helvetica-Bold", 8)
-    c.drawString(20, 15, watermark_text)
-    
     c.save()
     watermark_buffer.seek(0)
     
-    # Read original PDF
-    reader = PdfReader(pdf_path)
+    # Read watermark
     watermark_reader = PdfReader(watermark_buffer)
     watermark_page = watermark_reader.pages[0]
     
