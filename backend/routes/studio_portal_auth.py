@@ -245,7 +245,7 @@ async def resend_verification(email: str):
     
     # Send email
     try:
-        from routes.email import send_verification_email
+        from services.email_service import send_verification_email
         verification_url = f"{os.environ.get('FRONTEND_URL', 'https://film-system.preview.emergentagent.com')}/verify-access?token={verification_token}"
         await send_verification_email(email, user.get("full_name", ""), verification_url)
     except Exception as e:
