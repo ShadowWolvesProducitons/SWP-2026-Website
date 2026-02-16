@@ -215,7 +215,8 @@ Professional, cinematic website for "Shadow Wolves Productions" evolved into a f
 
 ### Credentials
 - Admin: /admin, Password: shadowwolves2024
-- Investor: /investors/login, Password: investor2024
+- Investor Portal (Legacy): /investors/login, Password: investor2024
+- Studio Portal: /studio-access/login, Test User: investor@test.com / TestPassword123
 
 ## Prioritized Backlog
 
