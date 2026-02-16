@@ -227,6 +227,16 @@ Professional, cinematic website for "Shadow Wolves Productions" evolved into a f
 - **Watermark Improvements**: Changed PDF watermarks from dense tiled text to single large diagonal watermark per page (8% opacity, user name in uppercase)
 - **Download Logging**: Enhanced audit logging to capture user name, company, email, and timestamp on document downloads
 
+### Admin Studio Portal Management (Feb 16, 2026)
+- **New Admin Tab:** Added "Studio Portal" tab to Admin Console
+- **User Management UI:** List all portal users with search, role filter, and status filter
+- **User Cards:** Expandable cards showing user details (Company, Joined date, Last Login, Project Access)
+- **Edit Access:** Inline editing of user role, status, and project permissions
+- **Revoke Access:** One-click revoke access functionality
+- **Stats Dashboard:** Cards showing Total Users, Active Users, Downloads, Revoked count
+- **Audit Log:** Table view of all portal events (logins, downloads, verifications) with timestamps
+- **Backend Console Endpoints:** New `/api/admin/studio-portal/console/*` endpoints using admin password auth
+
 ### Credentials
 - Admin: /admin, Password: shadowwolves2024
 - Investor Portal (Legacy): /investors/login, Password: investor2024
