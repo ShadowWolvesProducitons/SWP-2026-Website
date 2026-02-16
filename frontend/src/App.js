@@ -6,7 +6,6 @@ import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Films from "./pages/Films";
 import TheDen from "./pages/TheDen";
-import Contact from "./pages/Contact";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import ProductPage from "./pages/ProductPage";
