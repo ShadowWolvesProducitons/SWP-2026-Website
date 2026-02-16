@@ -486,7 +486,7 @@ async def forgot_password(data: ForgotPasswordInput):
     
     # Send reset email
     try:
-        from routes.email import send_password_reset_email
+        from services.email_service import send_password_reset_email
         reset_url = f"{os.environ.get('FRONTEND_URL', 'https://film-system.preview.emergentagent.com')}/reset-password?token={reset_token}"
         await send_password_reset_email(data.email, user.get("full_name", ""), reset_url)
     except Exception as e:
