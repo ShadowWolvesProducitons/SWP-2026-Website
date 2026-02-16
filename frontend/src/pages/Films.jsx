@@ -74,7 +74,8 @@ const Films = () => {
       imdbUrl: film.imdb_url,
       watchUrl: film.watch_url,
       watchUrlTitle: film.watch_url_title,
-      posterUrl: film.poster_url
+      posterUrl: film.poster_url,
+      slug: film.slug || film.id
     };
     setSelectedFilm(modalFilm);
     setIsModalOpen(true);
