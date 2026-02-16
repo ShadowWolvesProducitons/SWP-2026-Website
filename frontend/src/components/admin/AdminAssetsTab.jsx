@@ -128,11 +128,17 @@ const AdminAssetsTab = () => {
       {/* Upload Panel */}
       {showUpload && (
         <div className="bg-smoke-gray border border-gray-700 rounded-lg p-5 mb-6 space-y-4" data-testid="upload-panel">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
               <label className="block text-gray-400 text-xs mb-1">Asset Type</label>
               <select value={uploadForm.asset_type} onChange={e => setUploadForm(s => ({ ...s, asset_type: e.target.value }))} className="w-full bg-black border border-gray-700 rounded-lg px-3 py-2 text-white text-sm">
                 {ASSET_TYPES.slice(1).map(t => <option key={t.id} value={t.id}>{t.label}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="block text-gray-400 text-xs mb-1">Collection</label>
+              <select value={uploadForm.collection} onChange={e => setUploadForm(s => ({ ...s, collection: e.target.value }))} className="w-full bg-black border border-gray-700 rounded-lg px-3 py-2 text-white text-sm">
+                {ASSET_COLLECTIONS.slice(1).map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
               </select>
             </div>
             <div>
@@ -154,7 +160,25 @@ const AdminAssetsTab = () => {
         </div>
       )}
 
-      {/* Search + Filters */}
+      {/* Collection Filter Tabs */}
+      <div className="flex gap-2 mb-4">
+        {ASSET_COLLECTIONS.map(c => (
+          <button
+            key={c.id}
+            onClick={() => setFilterCollection(c.id)}
+            className={`px-4 py-2 rounded-full text-xs font-mono uppercase tracking-widest transition-all ${
+              filterCollection === c.id
+                ? 'bg-electric-blue text-white'
+                : 'bg-smoke-gray text-gray-400 hover:text-white border border-gray-700'
+            }`}
+            data-testid={`collection-filter-${c.id}`}
+          >
+            {c.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Search + Type Filters */}
       <div className="flex flex-wrap gap-3 mb-6">
         <div className="relative flex-1 min-w-[200px] max-w-md">
           <Search size={16} className="absolute left-3 top-2.5 text-gray-500" />
