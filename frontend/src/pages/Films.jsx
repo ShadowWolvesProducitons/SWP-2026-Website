@@ -1,22 +1,58 @@
 import React, { useEffect, useState, useMemo, useRef } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { ChevronDown, X, RefreshCw } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import FilmModal from '../components/FilmModal';
 import PageHeader from '../components/PageHeader';
 
 const Films = () => {
+  const { slug } = useParams();
+  const navigate = useNavigate();
   const [films, setFilms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedGenre, setSelectedGenre] = useState('All');
   const [filteredFilms, setFilteredFilms] = useState([]);
   const [selectedFilm, setSelectedFilm] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isGenreDropdownOpen, setIsGenreDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const scrollPositionRef = useRef(0);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    if (!slug) {
+      window.scrollTo(0, 0);
+    }
     fetchFilms();
   }, []);
+
+  // Handle slug changes - open/close modal based on URL
+  useEffect(() => {
+    if (slug && films.length > 0) {
+      const film = films.find(f => f.slug === slug || f.id === slug);
+      if (film) {
+        // Save scroll position before opening modal
+        scrollPositionRef.current = window.scrollY;
+        document.body.style.overflow = 'hidden';
+        
+        const modalFilm = {
+          ...film,
+          posterColor: film.poster_color,
+          imdbUrl: film.imdb_url,
+          watchUrl: film.watch_url,
+          watchUrlTitle: film.watch_url_title,
+          posterUrl: film.poster_url,
+          slug: film.slug || film.id
+        };
+        setSelectedFilm(modalFilm);
+      }
+    } else if (!slug) {
+      // Restore scroll position when modal closes
+      document.body.style.overflow = 'unset';
+      setSelectedFilm(null);
+      if (scrollPositionRef.current > 0) {
+        window.scrollTo(0, scrollPositionRef.current);
+      }
+    }
+  }, [slug, films]);
 
   const fetchFilms = async () => {
     try {
@@ -67,27 +103,28 @@ const Films = () => {
   };
 
   const handleFilmClick = (film) => {
-    // Transform API data to match modal expectations
-    const modalFilm = {
-      ...film,
-      posterColor: film.poster_color,
-      imdbUrl: film.imdb_url,
-      watchUrl: film.watch_url,
-      watchUrlTitle: film.watch_url_title,
-      posterUrl: film.poster_url,
-      slug: film.slug || film.id
-    };
-    setSelectedFilm(modalFilm);
-    setIsModalOpen(true);
+    // Navigate to film route - this will trigger the useEffect to open modal
+    const filmSlug = film.slug || film.id;
+    navigate(`/films/${filmSlug}`);
   };
 
   const closeModal = () => {
-    setIsModalOpen(false);
-    setTimeout(() => setSelectedFilm(null), 300);
+    // Navigate back to /films - this will trigger the useEffect to close modal
+    navigate('/films');
   };
 
   return (
     <div className="films-page pt-20">
+      {/* SEO Meta for film detail route */}
+      {selectedFilm && (
+        <Helmet>
+          <title>{selectedFilm.title} | Shadow Wolves</title>
+          {selectedFilm.logline && (
+            <meta name="description" content={selectedFilm.logline.substring(0, 160)} />
+          )}
+        </Helmet>
+      )}
+
       {/* Page Header */}
       <PageHeader page="films" title="Films" subtitle="Original screen stories — past, present, and in development." />
 
@@ -197,6 +234,7 @@ const Films = () => {
                     key={film.id}
                     onClick={() => handleFilmClick(film)}
                     className="film-card group relative overflow-hidden rounded-lg aspect-[2/3] cursor-pointer border-2 border-transparent hover:border-white/30 transition-all duration-300"
+                    data-testid="film-card"
                   >
                     {/* Poster / Placeholder */}
                     <div
@@ -292,8 +330,8 @@ const Films = () => {
         </div>
       </section>
 
-      {/* Film Modal */}
-      <FilmModal film={selectedFilm} isOpen={isModalOpen} onClose={closeModal} />
+      {/* Film Modal - opens via URL route */}
+      <FilmModal film={selectedFilm} isOpen={!!selectedFilm} onClose={closeModal} />
     </div>
   );
 };
