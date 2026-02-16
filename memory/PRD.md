@@ -222,10 +222,16 @@ Professional, cinematic website for "Shadow Wolves Productions" evolved into a f
 ### P0 (Completed)
 - ✅ Films System Refactor Part 1 (Public Project Overview)
 - ✅ Films System Refactor Part 2 (Studio Access Page)
+- ✅ Studio Access Portal (Full user-facing portal implementation)
 
 ### P1
-- Email System Expansion (Lead Magnet Delivery, Submission Confirmation templates via Resend)
+- Watermarked Downloads Enhancement (on-demand PDF watermarking for pitch decks/scripts)
+- Admin Management UI for Studio Portal (manage users, roles, project access)
+- Updates Feed Content Management (admin interface to create/edit portal updates)
+- Asset Library Portal Integration (connect Assets Library to portal downloads)
+- Audit Log Viewer (admin interface to view user activity)
 
 ### P2
 - E-commerce for The Armory (Stripe)
 - CineConnect Database (cast/crew full build-out)
+- Deprecate Old Investor Portal (/investors routes)
