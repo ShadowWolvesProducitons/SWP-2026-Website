@@ -31,11 +31,12 @@ const AdminAssetsTab = () => {
   const [assets, setAssets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterType, setFilterType] = useState('all');
+  const [filterCollection, setFilterCollection] = useState('all');
   const [search, setSearch] = useState('');
   const [uploading, setUploading] = useState(false);
   const [showUpload, setShowUpload] = useState(false);
   const [preview, setPreview] = useState(null);
-  const [uploadForm, setUploadForm] = useState({ asset_type: 'other', tags: '', visibility: 'admin_only', notes: '' });
+  const [uploadForm, setUploadForm] = useState({ asset_type: 'other', tags: '', visibility: 'admin_only', notes: '', collection: 'website' });
 
   const fetchAssets = useCallback(async () => {
     setLoading(true);
