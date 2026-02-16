@@ -4,7 +4,7 @@
 **Date:** January 8, 2025  
 **Tester:** Testing Agent  
 **Application:** Shadow Wolves Productions Admin CMS  
-**Test Environment:** https://film-system.preview.emergentagent.com
+**Test Environment:** https://studio-access-3.preview.emergentagent.com
 
 ## Test Areas Covered
 

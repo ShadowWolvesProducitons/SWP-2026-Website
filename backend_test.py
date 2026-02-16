@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 load_dotenv('/app/frontend/.env')
 
 # Get base URL from environment
-BASE_URL = os.getenv('REACT_APP_BACKEND_URL', 'https://film-system.preview.emergentagent.com')
+BASE_URL = os.getenv('REACT_APP_BACKEND_URL', 'https://studio-access-3.preview.emergentagent.com')
 API_BASE = f"{BASE_URL}/api"
 
 class Colors:
