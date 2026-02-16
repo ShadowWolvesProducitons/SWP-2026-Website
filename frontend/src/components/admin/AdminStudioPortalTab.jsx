@@ -316,30 +316,21 @@ const AdminStudioPortalTab = () => {
   const [filterStatus, setFilterStatus] = useState('');
   const [activeSubTab, setActiveSubTab] = useState('users');
 
-  const getToken = () => sessionStorage.getItem('studioToken');
-
   const fetchData = useCallback(async () => {
     setLoading(true);
-    const token = getToken();
-    
-    if (!token) {
-      toast.error('Please login to Studio Portal first');
-      setLoading(false);
-      return;
-    }
 
     try {
       // Fetch users, stats, and projects in parallel
       const [usersRes, statsRes, projectsRes, logsRes] = await Promise.all([
-        fetch(`${API_URL}/api/admin/studio-portal/users`, {
-          headers: { 'Authorization': `Bearer ${token}` }
+        fetch(`${API_URL}/api/admin/studio-portal/console/users`, {
+          headers: getAdminHeaders()
         }),
-        fetch(`${API_URL}/api/admin/studio-portal/stats`, {
-          headers: { 'Authorization': `Bearer ${token}` }
+        fetch(`${API_URL}/api/admin/studio-portal/console/stats`, {
+          headers: getAdminHeaders()
         }),
         fetch(`${API_URL}/api/films`),
-        fetch(`${API_URL}/api/admin/studio-portal/audit-logs?limit=50`, {
-          headers: { 'Authorization': `Bearer ${token}` }
+        fetch(`${API_URL}/api/admin/studio-portal/console/audit-logs?limit=50`, {
+          headers: getAdminHeaders()
         })
       ]);
 
