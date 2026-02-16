@@ -28,6 +28,7 @@ from routes.analytics import router as analytics_router, set_db as set_analytics
 from routes.webhooks import router as webhooks_router, set_db as set_webhooks_db
 from routes.assets import router as assets_router, set_db as set_assets_db
 from routes.site_settings import router as site_settings_router, set_db as set_site_settings_db
+from routes.studio_access import router as studio_access_router, set_db as set_studio_access_db
 
 
 ROOT_DIR = Path(__file__).parent
