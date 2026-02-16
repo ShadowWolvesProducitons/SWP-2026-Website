@@ -122,6 +122,9 @@ api_router.include_router(webhooks_router)
 api_router.include_router(assets_router)
 api_router.include_router(site_settings_router)
 api_router.include_router(studio_access_router)
+api_router.include_router(studio_portal_auth_router)
+api_router.include_router(studio_portal_data_router)
+api_router.include_router(studio_portal_admin_router)
 
 # Include the main API router
 app.include_router(api_router)
