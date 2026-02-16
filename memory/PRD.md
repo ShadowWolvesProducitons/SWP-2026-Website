@@ -47,6 +47,44 @@ Professional, cinematic website for "Shadow Wolves Productions" evolved into a f
 - Button theme verified as pill-shaped (rounded-full) across public pages
 - 100% test pass rate (backend: 12/12, frontend: 16/16)
 
+### Films System Refactor (Feb 16, 2026)
+**Part 1 - Public Project Overview:**
+- Refactored FilmModal: poster in 2:3 ratio with `object-contain`, removed old CTAs, added "View Project" button
+- Created new public project page at `/films/{slug}`:
+  - Hero section: poster, title (Cinzel font), genre tags, status badge, tagline, "Request Materials" CTA
+  - Logline section
+  - Extended Synopsis section (expandable)
+  - Tone & Style section (3-5 paragraphs + mood image grid)
+  - Project Status section (current stage, format, "looking for")
+  - Final CTA block ("Interested in {title}?")
+- SEO-friendly with `react-helmet` meta tags
+- URL slug auto-generation from title
+- Admin film modal expanded to 4-tab layout: Basics | Content | Media | Studio Access
+
+**Part 2 - Studio Access Page:**
+- Token-based access control at `/studio-access/{slug}?token=...`
+- Standalone layout (no main site header/footer)
+- Confidential banner showing user name
+- Project Snapshot: genre, format, target budget, status, audience, comparables
+- Financial Overview: budget range, financing structure, tax incentives
+- Pitch Deck section with watermarked PDF download
+- Script Access with NDA confirmation modal
+- Next Steps CTAs: "Schedule Call", "Express Interest"
+- Access logging and token management
+- Backend routes: /api/studio-access/tokens, /api/studio-access/verify, /api/studio-access/watermark
+
+**Film Model Extensions:**
+- slug, extended_synopsis, tone_style_text, mood_images
+- format, target_audience, comparables, looking_for
+- target_budget_range, financing_structure, incentives
+- pitch_deck_url, script_url, studio_access_enabled
+
+**New Collections:**
+- studio_access_tokens: token management with expiry
+- studio_access_logs: action logging
+
+**Test Results:** Backend 14/14, Frontend 12/12
+
 ### Site Settings Admin Panel (Feb 15, 2026)
 - Created new "Site Settings" tab in Admin Console
 - Page header editing with:
