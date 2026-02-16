@@ -54,13 +54,9 @@ const UserCard = ({ user, projects, onUpdate, onViewDetails }) => {
   const handleSave = async () => {
     setSaving(true);
     try {
-      const token = sessionStorage.getItem('studioToken');
-      const response = await fetch(`${API_URL}/api/admin/studio-portal/users/${user.id}`, {
+      const response = await fetch(`${API_URL}/api/admin/studio-portal/console/users/${user.id}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
+        headers: getAdminHeaders(),
         body: JSON.stringify(editData)
       });
 
@@ -83,10 +79,9 @@ const UserCard = ({ user, projects, onUpdate, onViewDetails }) => {
     if (!window.confirm(`Revoke access for ${user.full_name}?`)) return;
     
     try {
-      const token = sessionStorage.getItem('studioToken');
-      const response = await fetch(`${API_URL}/api/admin/studio-portal/users/${user.id}`, {
+      const response = await fetch(`${API_URL}/api/admin/studio-portal/console/users/${user.id}`, {
         method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
+        headers: getAdminHeaders()
       });
 
       if (response.ok) {
