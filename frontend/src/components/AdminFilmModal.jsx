@@ -193,7 +193,7 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
 
     setUploading(true);
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/upload/document`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/upload/file`, {
         method: 'POST',
         body: formDataUpload
       });
