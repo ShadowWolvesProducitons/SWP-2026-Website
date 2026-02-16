@@ -155,6 +155,16 @@ const RequestAccess = () => {
 
       <div className="min-h-screen bg-black pt-20 pb-16 px-4" data-testid="request-access-page">
         <div className="container mx-auto max-w-2xl">
+          {/* Back to Website Button */}
+          <Link 
+            to="/" 
+            className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-8"
+            data-testid="back-to-website-btn"
+          >
+            <ArrowLeft size={18} />
+            <span className="font-mono text-sm uppercase tracking-widest">Back to Website</span>
+          </Link>
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
