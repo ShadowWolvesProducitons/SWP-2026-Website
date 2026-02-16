@@ -3,6 +3,13 @@ import { Users, Shield, Eye, Download, Search, Filter, ChevronDown, X, Check, Al
 import { toast } from 'sonner';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
+const ADMIN_PASSWORD = 'shadowwolves2024';
+
+// Helper to get admin headers
+const getAdminHeaders = () => ({
+  'Content-Type': 'application/json',
+  'X-Admin-Password': ADMIN_PASSWORD
+});
 
 // Role and Status options
 const ROLES = [
