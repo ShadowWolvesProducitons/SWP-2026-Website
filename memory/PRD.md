@@ -98,6 +98,50 @@ Professional, cinematic website for "Shadow Wolves Productions" evolved into a f
 - PageHeader component now fetches settings from database
 - Supports all pages: Films, Armory, Den, Investors, Work With Us, Contact, About
 
+### Studio Access Portal (Feb 16, 2026)
+**New unified role-based portal replacing old Investor Portal:**
+
+**User Flow:**
+1. **Request Access** (`/request-access`): Public form with role selection (Investor, Director, Producer, EP, Sales Agent, Cast, Crew, Talent Manager, Other), project interest selection, and terms agreement
+2. **Email Verification**: Verification email sent via Resend with token-based link
+3. **Set Password** (`/verify-access?token=...`): Complete account setup after email verification
+4. **Login** (`/studio-access/login`): Standard email/password authentication with JWT tokens
+5. **Forgot Password** (`/reset-password?token=...`): Password reset flow
+
+**Portal Pages (all at `/studio-access/*`):**
+- **Dashboard** (`/studio-access`): Welcome message, role badge, projects grid, recent updates, recent assets
+- **Projects** (`/studio-access/projects`): Searchable project list with 2:3 poster cards and status badges
+- **Project Detail** (`/studio-access/projects/{slug}`): Full project info with role-based content visibility:
+  - Overview with logline and extended synopsis
+  - Documents section (Pitch Deck, Script downloads with watermarking)
+  - Financial Overview (investors/producers only)
+  - Project-specific updates and assets
+- **Updates** (`/studio-access/updates`): Role-filtered news feed with tag filtering
+- **Assets** (`/studio-access/assets`): Downloadable documents with type filtering and watermark notice
+- **Account** (`/studio-access/account`): Profile editing (name, company) and password change
+
+**Role-Based Permissions:**
+- Admin: Full access to everything
+- Investor: Full access to financials, scripts, deck, all projects
+- Executive Producer/Producer: Full access to financials, scripts, deck
+- Sales Agent: Deck access only (no financials or scripts)
+- Director: Scripts and deck access (no financials)
+- Cast/Crew/Talent Manager: Limited access (per-project only)
+
+**Backend Implementation:**
+- `/api/studio-portal/request-access`: Create user with pending verification
+- `/api/studio-portal/verify-token`, `/api/studio-portal/set-password`: Email verification flow
+- `/api/studio-portal/login`: JWT authentication
+- `/api/studio-portal/me`: Get/update current user
+- `/api/studio-portal/dashboard`, `/api/studio-portal/projects`, `/api/studio-portal/updates`, `/api/studio-portal/assets`: Protected data endpoints
+- `/api/studio-portal/projects/{slug}/download/{doc_type}`: Watermarked document downloads
+- Audit logging for all user actions
+
+**Test Results:** Frontend 15/15 (100% pass rate)
+
+**Test Credentials:**
+- Studio Portal: investor@test.com / TestPassword123 (Investor role)
+
 ### Home/About Page Merge (Feb 15, 2026)
 - Merged About page content into Home page
 - New page structure:
