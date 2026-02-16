@@ -2,6 +2,9 @@ import React, { useEffect } from 'react';
 import { X, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+// IMDB Logo URL
+const IMDB_LOGO = "https://customer-assets.emergentagent.com/job_68938027-079c-4f84-ad55-d8d458f6dee5/artifacts/34y7ru4y_IMDB_Logo_2016.svg";
+
 const FilmModal = ({ film, isOpen, onClose }) => {
   const navigate = useNavigate();
   
@@ -40,7 +43,7 @@ const FilmModal = ({ film, isOpen, onClose }) => {
       data-testid="film-modal-overlay"
     >
       <div
-        className="film-modal-content relative bg-black border border-gray-800 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+        className="film-modal-content relative bg-black border border-gray-800 rounded-lg max-w-5xl w-full max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
         style={{ animation: 'scaleIn 0.3s ease-out' }}
         data-testid="film-modal-content"
@@ -55,37 +58,55 @@ const FilmModal = ({ film, isOpen, onClose }) => {
         </button>
 
         {/* Content Layout: Side by Side */}
-        <div className="flex flex-col md:flex-row">
-          {/* Poster - Full 2:3 ratio with object-fit: contain */}
-          <div className="md:w-1/3 flex-shrink-0">
-            <div
-              className="relative w-full aspect-[2/3] bg-gray-900"
-              style={{ backgroundColor: film.posterColor || '#1a1a2e' }}
-            >
-              {film.posterUrl ? (
-                <img
-                  src={`${process.env.REACT_APP_BACKEND_URL}${film.posterUrl}`}
-                  alt={film.title}
-                  className="absolute inset-0 w-full h-full object-contain bg-black"
-                  data-testid="film-modal-poster"
+        <div className="flex flex-col md:flex-row p-6 md:p-8 gap-6 md:gap-8">
+          {/* Poster with frame and shadow */}
+          <div className="md:w-2/5 flex-shrink-0">
+            <div className="relative">
+              {/* Poster Frame with shadow and fade */}
+              <div 
+                className="relative rounded-lg overflow-hidden shadow-2xl shadow-black/50"
+                style={{
+                  boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255,255,255,0.1), inset 0 0 80px rgba(0,0,0,0.3)'
+                }}
+              >
+                {/* Vignette overlay for fade effect */}
+                <div 
+                  className="absolute inset-0 z-10 pointer-events-none"
+                  style={{
+                    background: 'radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.4) 100%)'
+                  }}
                 />
-              ) : (
-                <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
-                  <div className="w-16 h-16 mb-4 opacity-30">
-                    <svg viewBox="0 0 100 100" fill="currentColor" className="text-electric-blue">
-                      <path d="M50 10L20 40L10 90L50 70L90 90L80 40L50 10Z" stroke="currentColor" strokeWidth="2" fill="none"/>
-                      <circle cx="35" cy="45" r="4" fill="currentColor"/>
-                      <circle cx="65" cy="45" r="4" fill="currentColor"/>
-                    </svg>
-                  </div>
-                  <span className="text-gray-500 text-sm text-center">Poster Coming Soon</span>
+                
+                <div
+                  className="relative w-full aspect-[2/3]"
+                  style={{ backgroundColor: film.posterColor || '#1a1a2e' }}
+                >
+                  {film.posterUrl ? (
+                    <img
+                      src={`${process.env.REACT_APP_BACKEND_URL}${film.posterUrl}`}
+                      alt={film.title}
+                      className="w-full h-full object-cover"
+                      data-testid="film-modal-poster"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center p-4 bg-gradient-to-br from-gray-900 via-black to-gray-900">
+                      <div className="w-16 h-16 mb-4 opacity-30">
+                        <svg viewBox="0 0 100 100" fill="currentColor" className="text-electric-blue">
+                          <path d="M50 10L20 40L10 90L50 70L90 90L80 40L50 10Z" stroke="currentColor" strokeWidth="2" fill="none"/>
+                          <circle cx="35" cy="45" r="4" fill="currentColor"/>
+                          <circle cx="65" cy="45" r="4" fill="currentColor"/>
+                        </svg>
+                      </div>
+                      <span className="text-gray-500 text-sm text-center">Poster Coming Soon</span>
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
             </div>
           </div>
 
           {/* Content Side */}
-          <div className="md:w-2/3 p-6 md:p-8 flex flex-col">
+          <div className="md:w-3/5 flex flex-col">
             {/* Status Badge */}
             <div className="mb-3">
               <span className="px-4 py-2 rounded-full bg-electric-blue/20 text-electric-blue border border-electric-blue/40 text-xs font-mono uppercase tracking-widest">
@@ -93,10 +114,23 @@ const FilmModal = ({ film, isOpen, onClose }) => {
               </span>
             </div>
             
-            {/* Title */}
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 font-cinzel" data-testid="film-modal-title">
-              {film.title}
-            </h2>
+            {/* Title Row with IMDB */}
+            <div className="flex items-start justify-between gap-4 mb-3">
+              <h2 className="text-3xl md:text-4xl font-bold text-white font-cinzel" data-testid="film-modal-title">
+                {film.title}
+              </h2>
+              {film.imdbUrl && (
+                <a
+                  href={film.imdbUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-shrink-0 opacity-80 hover:opacity-100 transition-opacity"
+                  title="View on IMDb"
+                >
+                  <img src={IMDB_LOGO} alt="IMDb" className="h-8 w-auto" />
+                </a>
+              )}
+            </div>
             
             {/* Genres */}
             {film.genres && film.genres.length > 0 && (
@@ -126,34 +160,20 @@ const FilmModal = ({ film, isOpen, onClose }) => {
               </div>
             )}
 
-            {/* Secondary Links */}
-            <div className="flex items-center gap-4 mb-6">
-              {film.imdbUrl && (
+            {/* Secondary Links (without IMDB) */}
+            {film.watchUrl && film.watchUrlTitle && (
+              <div className="flex items-center gap-4 mb-6">
                 <a
-                  href={film.imdbUrl}
+                  href={film.watchUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-400 hover:text-gray-200 text-sm transition-colors inline-flex items-center gap-1"
                 >
-                  View on IMDb
+                  {film.watchUrlTitle}
                   <span className="text-xs">↗</span>
                 </a>
-              )}
-              {film.watchUrl && film.watchUrlTitle && (
-                <>
-                  {film.imdbUrl && <span className="text-gray-600">|</span>}
-                  <a
-                    href={film.watchUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-gray-200 text-sm transition-colors inline-flex items-center gap-1"
-                  >
-                    {film.watchUrlTitle}
-                    <span className="text-xs">↗</span>
-                  </a>
-                </>
-              )}
-            </div>
+              </div>
+            )}
 
             {/* Spacer */}
             <div className="flex-grow" />
