@@ -252,8 +252,19 @@ Professional, cinematic website for "Shadow Wolves Productions" evolved into a f
 - ✅ Work With Us + Contact Page Merge
 - ✅ Watermark Enhancement (single diagonal per page)
 - ✅ Admin Management UI for Studio Portal (User Management + Audit Log)
+- ✅ Admin Console Refactor (Feb 17, 2026)
+  - Reduced top-level tabs to 6: Dashboard, Films, The Armory, The Den, Assets, Studio
+  - Merged Activity tab into Dashboard (with Overview, Activity Feed, Email Campaigns sections)
+  - Created new Studio master tab with sub-navigation: Portal, Comms, Settings
+  - Merged Newsletter + Email Templates into Studio > Comms
+  - Moved Site Settings into Studio > Settings
+  - Added collection filters to Assets tab (All, Films, Website, Armory, Den)
+  - Removed Templates category from Armory (merged into Downloads)
+  - Removed Contact and Investors from Site Settings pages list
+  - Added legacy route redirects for old URLs
 
 ### P1
+- Multi-select Project Access for Studio Portal users
 - Updates Feed Content Management (admin interface to create/edit portal updates)
 - Asset Library Portal Integration (connect Assets Library to portal downloads)
 - Audit Log Viewer Enhancements (filtering, export)
