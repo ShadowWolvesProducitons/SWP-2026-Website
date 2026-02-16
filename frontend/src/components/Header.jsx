@@ -11,7 +11,7 @@ const Header = () => {
     { name: 'Films', path: '/films' },
     { name: 'The Armory', path: '/services' },
     { name: 'The Den', path: '/blog' },
-    { name: 'Investors', path: '/investors' },
+    { name: 'Studio Portal', path: '/request-access' },
     { name: 'Work With Us', path: '/work-with-us' },
     { name: 'Contact', path: '/contact' }
   ];
