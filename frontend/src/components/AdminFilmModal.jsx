@@ -13,8 +13,6 @@ const STATUS_OPTIONS = [
   'Released'
 ];
 
-const TYPE_OPTIONS = ['Short', 'Feature', 'Series', 'Documentary', 'Other'];
-
 const FORMAT_OPTIONS = ['Feature Film', 'Limited Series', 'Short Film', 'Documentary Feature', 'Web Series', 'Anthology'];
 
 const LOOKING_FOR_OPTIONS = ['Producers', 'Executive Producers', 'Equity Partners', 'Distribution', 'Sales Agents', 'Co-Production Partners', 'Talent Attachments', 'Development Funding'];
@@ -33,7 +31,7 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
   const [formData, setFormData] = useState({
     title: '',
     slug: '',
-    film_type: 'Feature',
+    format: '',
     status: 'Development',
     featured: false,
     poster_url: '',
@@ -43,7 +41,6 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
     tone_style_text: '',
     mood_images: [],
     genres: [],
-    format: '',
     target_audience: '',
     comparables: '',
     looking_for: [],
@@ -63,7 +60,7 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
   const [saving, setSaving] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [assetPickerOpen, setAssetPickerOpen] = useState(false);
-  const [assetPickerTarget, setAssetPickerTarget] = useState('poster'); // poster, mood, pitch_deck, script
+  const [assetPickerTarget, setAssetPickerTarget] = useState('poster');
   const fileInputRef = useRef(null);
 
   useEffect(() => {
@@ -71,7 +68,7 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
       setFormData({
         title: film.title || '',
         slug: film.slug || '',
-        film_type: film.film_type || 'Feature',
+        format: film.format || '',
         status: film.status || 'Development',
         featured: film.featured || false,
         poster_url: film.poster_url || '',
@@ -81,7 +78,6 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
         tone_style_text: film.tone_style_text || '',
         mood_images: film.mood_images || [],
         genres: film.genres || [],
-        format: film.format || '',
         target_audience: film.target_audience || '',
         comparables: film.comparables || '',
         looking_for: film.looking_for || [],
@@ -99,7 +95,7 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
       setFormData({
         title: '',
         slug: '',
-        film_type: 'Feature',
+        format: '',
         status: 'Development',
         featured: false,
         poster_url: '',
@@ -109,7 +105,6 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
         tone_style_text: '',
         mood_images: [],
         genres: [],
-        format: '',
         target_audience: '',
         comparables: '',
         looking_for: [],
@@ -172,42 +167,6 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
       }
     } catch (err) {
       toast.error('Error uploading image');
-    } finally {
-      setUploading(false);
-    }
-  };
-
-  const handleFileUpload = async (file, target) => {
-    if (!file) return;
-
-    const validTypes = ['application/pdf'];
-    if (!validTypes.includes(file.type)) {
-      toast.error('Please upload a PDF file');
-      return;
-    }
-
-    const formDataUpload = new FormData();
-    formDataUpload.append('file', file);
-    formDataUpload.append('source', 'films');
-    formDataUpload.append('tags', `films,${target},${formData.title ? formData.title.slice(0, 20) : 'film'}`);
-
-    setUploading(true);
-    try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/upload/file`, {
-        method: 'POST',
-        body: formDataUpload
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setFormData(prev => ({ ...prev, [target]: data.url }));
-        toast.success('Document uploaded successfully');
-      } else {
-        const error = await response.json();
-        toast.error(error.detail || 'Failed to upload document');
-      }
-    } catch (err) {
-      toast.error('Error uploading document');
     } finally {
       setUploading(false);
     }
@@ -287,7 +246,6 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
 
   const handleRegenerateSlug = async () => {
     if (!film?.id) {
-      // For new films, generate slug from title
       const slug = formData.title.toLowerCase().trim()
         .replace(/[^\w\s-]/g, '')
         .replace(/[\s_-]+/g, '-')
@@ -426,20 +384,21 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                 <p className="text-gray-600 text-xs mt-1">URL: /films/{formData.slug || 'your-film-slug'}</p>
               </div>
 
-              {/* Type & Status Row */}
+              {/* Format & Status Row */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
-                    Type
+                    Format
                   </label>
                   <select
-                    name="film_type"
-                    value={formData.film_type}
+                    name="format"
+                    value={formData.format}
                     onChange={handleChange}
                     className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
                   >
-                    {TYPE_OPTIONS.map(type => (
-                      <option key={type} value={type}>{type}</option>
+                    <option value="">Select format...</option>
+                    {FORMAT_OPTIONS.map(format => (
+                      <option key={format} value={format}>{format}</option>
                     ))}
                   </select>
                 </div>
@@ -460,24 +419,6 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                 </div>
               </div>
 
-              {/* Format */}
-              <div>
-                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
-                  Format
-                </label>
-                <select
-                  name="format"
-                  value={formData.format}
-                  onChange={handleChange}
-                  className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
-                >
-                  <option value="">Select format...</option>
-                  {FORMAT_OPTIONS.map(format => (
-                    <option key={format} value={format}>{format}</option>
-                  ))}
-                </select>
-              </div>
-
               {/* Featured */}
               <div>
                 <label className="flex items-center gap-3 bg-black border border-gray-700 rounded-lg px-4 py-3 cursor-pointer hover:border-gray-600 transition-colors">
@@ -490,6 +431,43 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                   />
                   <span className="text-white">Show as featured film</span>
                 </label>
+              </div>
+            </>
+          )}
+
+          {/* CONTENT TAB */}
+          {activeTab === 'content' && (
+            <>
+              {/* Tagline */}
+              <div>
+                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+                  Tagline
+                </label>
+                <input
+                  type="text"
+                  name="tagline"
+                  value={formData.tagline}
+                  onChange={handleChange}
+                  className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
+                  placeholder="A punchy one-liner hook (e.g., 'Some secrets should stay buried.')"
+                  data-testid="film-tagline-input"
+                />
+              </div>
+
+              {/* Logline */}
+              <div>
+                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+                  Logline <span className="text-gray-600">(single paragraph)</span>
+                </label>
+                <textarea
+                  name="logline"
+                  value={formData.logline}
+                  onChange={handleChange}
+                  rows={3}
+                  className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors resize-none"
+                  placeholder="One paragraph describing the story premise..."
+                  data-testid="film-logline-input"
+                />
               </div>
 
               {/* Genres */}
@@ -537,7 +515,7 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                 )}
               </div>
 
-              {/* External Links */}
+              {/* IMDb URL */}
               <div>
                 <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
                   IMDb URL <span className="text-gray-600">(optional)</span>
@@ -552,6 +530,7 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                 />
               </div>
 
+              {/* External Link */}
               <div>
                 <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
                   External Link <span className="text-gray-600">(optional)</span>
@@ -574,149 +553,6 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                     placeholder="https://..."
                   />
                 </div>
-              </div>
-            </>
-          )}
-
-          {/* CONTENT TAB */}
-          {activeTab === 'content' && (
-            <>
-              {/* Tagline */}
-              <div>
-                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
-                  Tagline
-                </label>
-                <input
-                  type="text"
-                  name="tagline"
-                  value={formData.tagline}
-                  onChange={handleChange}
-                  className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
-                  placeholder="A punchy one-liner hook (e.g., 'Some secrets should stay buried.')"
-                  data-testid="film-tagline-input"
-                />
-              </div>
-
-              {/* Logline */}
-              <div>
-                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
-                  Logline <span className="text-gray-600">(single paragraph)</span>
-                </label>
-                <textarea
-                  name="logline"
-                  value={formData.logline}
-                  onChange={handleChange}
-                  rows={3}
-                  className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors resize-none"
-                  placeholder="One paragraph describing the story premise..."
-                  data-testid="film-logline-input"
-                />
-              </div>
-
-              {/* Extended Synopsis */}
-              <div>
-                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
-                  Extended Synopsis <span className="text-gray-600">(expandable on public page)</span>
-                </label>
-                <textarea
-                  name="extended_synopsis"
-                  value={formData.extended_synopsis}
-                  onChange={handleChange}
-                  rows={6}
-                  className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors resize-none"
-                  placeholder="Full synopsis with paragraph breaks (use blank lines for breaks)..."
-                  data-testid="film-synopsis-input"
-                />
-              </div>
-
-              {/* Tone & Style Text */}
-              <div>
-                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
-                  Tone & Style <span className="text-gray-600">(3-5 paragraphs about vision)</span>
-                </label>
-                <textarea
-                  name="tone_style_text"
-                  value={formData.tone_style_text}
-                  onChange={handleChange}
-                  rows={6}
-                  className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors resize-none"
-                  placeholder="Describe the visual tone, style references, atmosphere, influences..."
-                  data-testid="film-tone-input"
-                />
-              </div>
-
-              {/* Target Audience */}
-              <div>
-                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
-                  Target Audience
-                </label>
-                <input
-                  type="text"
-                  name="target_audience"
-                  value={formData.target_audience}
-                  onChange={handleChange}
-                  className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
-                  placeholder="e.g., Adults 18-35, genre enthusiasts, festival audiences"
-                />
-              </div>
-
-              {/* Comparables */}
-              <div>
-                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
-                  Comparables
-                </label>
-                <input
-                  type="text"
-                  name="comparables"
-                  value={formData.comparables}
-                  onChange={handleChange}
-                  className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
-                  placeholder="e.g., Get Out meets The Witch, A24 aesthetic"
-                />
-              </div>
-
-              {/* Looking For */}
-              <div>
-                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
-                  Currently Seeking
-                </label>
-                <div className="flex flex-wrap gap-2 mb-3">
-                  {LOOKING_FOR_OPTIONS.map((option) => (
-                    <button
-                      key={option}
-                      type="button"
-                      onClick={() => handleAddLookingFor(option)}
-                      disabled={formData.looking_for.includes(option)}
-                      className={`px-3 py-1.5 rounded-full text-xs font-mono uppercase tracking-widest transition-all ${
-                        formData.looking_for.includes(option)
-                          ? 'bg-electric-blue text-white cursor-not-allowed'
-                          : 'bg-black text-gray-400 hover:bg-gray-800 hover:text-white border border-gray-700'
-                      }`}
-                    >
-                      {option}
-                    </button>
-                  ))}
-                </div>
-                {formData.looking_for.length > 0 && (
-                  <div className="flex flex-wrap gap-2 p-3 bg-black/50 rounded-lg border border-gray-800">
-                    <span className="text-gray-500 text-xs uppercase mr-2">Selected:</span>
-                    {formData.looking_for.map((item, idx) => (
-                      <span
-                        key={idx}
-                        className="inline-flex items-center gap-1 px-3 py-1 bg-electric-blue/20 border border-electric-blue/40 rounded-full text-electric-blue text-sm"
-                      >
-                        {item}
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveLookingFor(item)}
-                          className="text-electric-blue/60 hover:text-red-400 transition-colors"
-                        >
-                          <X size={14} />
-                        </button>
-                      </span>
-                    ))}
-                  </div>
-                )}
               </div>
             </>
           )}
@@ -844,9 +680,115 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                   />
                   <div>
                     <span className="text-white">Enable Studio Access Page</span>
-                    <p className="text-gray-500 text-xs mt-1">Allow token-gated access to confidential materials</p>
+                    <p className="text-gray-500 text-xs mt-1">Allow portal users to access confidential materials</p>
                   </div>
                 </label>
+              </div>
+
+              {/* Target Audience */}
+              <div>
+                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+                  Target Audience
+                </label>
+                <input
+                  type="text"
+                  name="target_audience"
+                  value={formData.target_audience}
+                  onChange={handleChange}
+                  className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
+                  placeholder="e.g., Adults 18-35, genre enthusiasts, festival audiences"
+                />
+              </div>
+
+              {/* Comparables */}
+              <div>
+                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+                  Comparables
+                </label>
+                <input
+                  type="text"
+                  name="comparables"
+                  value={formData.comparables}
+                  onChange={handleChange}
+                  className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
+                  placeholder="e.g., Get Out meets The Witch, A24 aesthetic"
+                />
+              </div>
+
+              {/* Looking For */}
+              <div>
+                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+                  Currently Seeking
+                </label>
+                <div className="flex flex-wrap gap-2 mb-3">
+                  {LOOKING_FOR_OPTIONS.map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      onClick={() => handleAddLookingFor(option)}
+                      disabled={formData.looking_for.includes(option)}
+                      className={`px-3 py-1.5 rounded-full text-xs font-mono uppercase tracking-widest transition-all ${
+                        formData.looking_for.includes(option)
+                          ? 'bg-electric-blue text-white cursor-not-allowed'
+                          : 'bg-black text-gray-400 hover:bg-gray-800 hover:text-white border border-gray-700'
+                      }`}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+                {formData.looking_for.length > 0 && (
+                  <div className="flex flex-wrap gap-2 p-3 bg-black/50 rounded-lg border border-gray-800">
+                    <span className="text-gray-500 text-xs uppercase mr-2">Selected:</span>
+                    {formData.looking_for.map((item, idx) => (
+                      <span
+                        key={idx}
+                        className="inline-flex items-center gap-1 px-3 py-1 bg-electric-blue/20 border border-electric-blue/40 rounded-full text-electric-blue text-sm"
+                      >
+                        {item}
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveLookingFor(item)}
+                          className="text-electric-blue/60 hover:text-red-400 transition-colors"
+                        >
+                          <X size={14} />
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Tone & Style Text */}
+              <div>
+                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+                  Tone & Style <span className="text-gray-600">(3-5 paragraphs about vision)</span>
+                </label>
+                <textarea
+                  name="tone_style_text"
+                  value={formData.tone_style_text}
+                  onChange={handleChange}
+                  rows={6}
+                  className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors resize-none"
+                  placeholder="Describe the visual tone, style references, atmosphere, influences..."
+                  data-testid="film-tone-input"
+                />
+              </div>
+
+              {/* Extended Synopsis */}
+              <div>
+                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+                  Extended Synopsis <span className="text-gray-600">(for studio portal)</span>
+                </label>
+                <textarea
+                  name="extended_synopsis"
+                  value={formData.extended_synopsis}
+                  onChange={handleChange}
+                  rows={6}
+                  className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors resize-none"
+                  placeholder="Full synopsis with paragraph breaks (use blank lines for breaks)..."
+                  data-testid="film-synopsis-input"
+                />
               </div>
 
               {formData.studio_access_enabled && (
@@ -962,12 +904,6 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                         </button>
                       )}
                     </div>
-                  </div>
-
-                  <div className="p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
-                    <p className="text-yellow-400 text-sm">
-                      <strong>Note:</strong> Studio access requires a valid token. Share the URL <code className="bg-black/50 px-2 py-0.5 rounded">/studio-access/{formData.slug || 'slug'}?token=...</code> with authorized parties.
-                    </p>
                   </div>
                 </>
               )}
