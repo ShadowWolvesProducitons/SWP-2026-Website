@@ -17,6 +17,11 @@ const ROLES = [
   { value: 'other', label: 'Other' }
 ];
 
+const PROJECT_CATEGORIES = [
+  { id: 'apps', label: 'Apps', isCategory: true },
+  { id: 'films', label: 'Films', isCategory: true }
+];
+
 const RequestAccess = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
