@@ -64,6 +64,7 @@ const AppContent = () => {
         <Route path="/about" element={<Navigate to="/" replace />} />
         <Route path="/films" element={<Films />} />
         <Route path="/films/:slug" element={<FilmProject />} />
+        <Route path="/studio-access/:slug" element={<StudioAccess />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
