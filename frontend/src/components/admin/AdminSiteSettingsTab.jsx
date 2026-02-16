@@ -8,10 +8,9 @@ const PAGES = [
   { id: 'films', label: 'Films', defaultImage: '/api/upload/images/header-films.jpg' },
   { id: 'armory', label: 'The Armory', defaultImage: '/api/upload/images/header-armory.jpg' },
   { id: 'den', label: 'The Den (Blog)', defaultImage: '/api/upload/images/header-den.jpg' },
-  { id: 'investors', label: 'Investors', defaultImage: '/api/upload/images/header-investors.jpg' },
   { id: 'workwithus', label: 'Work With Us', defaultImage: '/api/upload/images/header-workwithus.jpg' },
-  { id: 'contact', label: 'Contact', defaultImage: '/api/upload/images/header-contact.jpg' },
   { id: 'about', label: 'About', defaultImage: '/api/upload/images/header-about.jpg' },
+  // Removed: Contact (merged with Work With Us), Investors (replaced by Studio Portal)
 ];
 
 const AdminSiteSettingsTab = () => {
