@@ -93,6 +93,9 @@ const AppContent = () => {
           <Route index element={<StudioDashboard />} />
           <Route path="projects" element={<StudioProjects />} />
           <Route path="projects/:slug" element={<StudioProjectDetail />} />
+          <Route path="updates" element={<StudioUpdates />} />
+          <Route path="assets" element={<StudioAssets />} />
+          <Route path="account" element={<StudioAccount />} />
         </Route>
         
         {/* Legacy: Token-based studio access (for old links) */}
