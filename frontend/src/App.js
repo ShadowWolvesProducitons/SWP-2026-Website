@@ -61,10 +61,13 @@ const AppContent = () => {
   const isInvestorPortalRoute = location.pathname === '/investors/portal' || location.pathname === '/investors/login';
   const isInvestorAuthRoute = location.pathname === '/investors/signup' || location.pathname === '/investors/login';
   const isStudioAccessRoute = location.pathname.startsWith('/studio-access');
+  const isRequestAccessRoute = location.pathname === '/request-access';
+  const isVerifyAccessRoute = location.pathname === '/verify-access';
+  const isResetPasswordRoute = location.pathname === '/reset-password';
   
   // Show header/footer for public pages + public investors page + signup
-  const showLayout = !isAdminRoute && !isInvestorPortalRoute && !isStudioAccessRoute;
-  const showPopup = !isAdminRoute && !isInvestorPortalRoute && !isInvestorAuthRoute && !isStudioAccessRoute;
+  const showLayout = !isAdminRoute && !isInvestorPortalRoute && !isStudioAccessRoute && !isRequestAccessRoute && !isVerifyAccessRoute && !isResetPasswordRoute;
+  const showPopup = !isAdminRoute && !isInvestorPortalRoute && !isInvestorAuthRoute && !isStudioAccessRoute && !isRequestAccessRoute && !isVerifyAccessRoute && !isResetPasswordRoute;
 
   return (
     <Layout showLayout={showLayout} showPopup={showPopup}>
