@@ -12,8 +12,7 @@ const Header = () => {
     { name: 'The Armory', path: '/services' },
     { name: 'The Den', path: '/blog' },
     { name: 'Studio Portal', path: '/request-access' },
-    { name: 'Work With Us', path: '/work-with-us' },
-    { name: 'Contact', path: '/contact' }
+    { name: 'Work With Us', path: '/work-with-us' }
   ];
 
   const isActive = (path) => {
