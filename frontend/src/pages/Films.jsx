@@ -118,6 +118,11 @@ const Films = () => {
     setIsGenreDropdownOpen(false);
   };
 
+  const handleStatusSelect = (status) => {
+    setSelectedStatus(status);
+    setIsStatusDropdownOpen(false);
+  };
+
   const handleFilmClick = (film) => {
     // Navigate to film route - this will trigger the useEffect to open modal
     const filmSlug = film.slug || film.id;
