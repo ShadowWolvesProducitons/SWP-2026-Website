@@ -14,89 +14,24 @@ const ENQUIRY_TOPICS = ['General Question', 'Investment Opportunities', 'Distrib
 
 // ============ CINECONNECT CARD ============
 const CineConnectCard = () => {
-  const [showForm, setShowForm] = useState(false);
-  const [ccData, setCcData] = useState({ name: '', email: '' });
-  const [submittingCC, setSubmittingCC] = useState(false);
-  const [ccSubmitted, setCcSubmitted] = useState(false);
-
-  const handleCCSubmit = async (e) => {
-    e.preventDefault();
-    if (!ccData.name.trim() || !ccData.email.trim()) {
-      toast.error('Please fill in all fields');
-      return;
-    }
-    setSubmittingCC(true);
-    try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/contact/cineconnect-interest`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(ccData)
-      });
-      if (response.ok) {
-        setCcSubmitted(true);
-        toast.success('Interest registered! We\'ll notify you when CineConnect launches.');
-      } else {
-        toast.error('Failed to register. Please try again.');
-      }
-    } catch {
-      toast.error('Network error. Please try again.');
-    } finally {
-      setSubmittingCC(false);
-    }
+  const handleRegisterClick = () => {
+    window.open('https://www.cognitoforms.com/ShadowWolvesProductions/CastCrewHub', '_blank');
   };
-
-  if (ccSubmitted) {
-    return (
-      <div className="bg-green-500/5 border border-green-500/20 rounded-lg p-5" data-testid="cineconnect-section">
-        <h4 className="text-white font-bold mb-2 font-cinzel">CineConnect</h4>
-        <p className="text-green-400 text-sm">You're on the list. We'll be in touch when CineConnect launches.</p>
-      </div>
-    );
-  }
 
   return (
     <div className="bg-electric-blue/5 border border-electric-blue/20 rounded-lg p-5" data-testid="cineconnect-section">
       <h4 className="text-white font-bold mb-2 font-cinzel">CineConnect</h4>
       <p className="text-gray-400 text-sm mb-3">Cast & Crew Network (Coming Soon)</p>
       <p className="text-gray-500 text-xs mb-4">
-        A curated database for production talent. Register your interest to be notified when we launch.
+        Fill out the form to join our talent database. When CineConnect launches, you'll already be in the system.
       </p>
-      {!showForm ? (
-        <button
-          onClick={() => setShowForm(true)}
-          className="px-5 py-2.5 bg-electric-blue hover:bg-electric-blue/90 text-white rounded-full text-xs font-mono uppercase tracking-widest transition-all"
-          data-testid="cineconnect-register-btn"
-        >
-          Register Interest
-        </button>
-      ) : (
-        <form onSubmit={handleCCSubmit} className="space-y-3">
-          <input
-            type="text"
-            value={ccData.name}
-            onChange={(e) => setCcData(prev => ({ ...prev, name: e.target.value }))}
-            placeholder="Your name"
-            className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2.5 text-white text-sm focus:border-electric-blue focus:outline-none"
-            data-testid="cineconnect-name-input"
-          />
-          <input
-            type="email"
-            value={ccData.email}
-            onChange={(e) => setCcData(prev => ({ ...prev, email: e.target.value }))}
-            placeholder="Your email"
-            className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2.5 text-white text-sm focus:border-electric-blue focus:outline-none"
-            data-testid="cineconnect-email-input"
-          />
-          <button
-            type="submit"
-            disabled={submittingCC}
-            className="w-full px-5 py-2.5 bg-electric-blue hover:bg-electric-blue/90 disabled:bg-gray-700 text-white rounded-full text-xs font-mono uppercase tracking-widest transition-all"
-            data-testid="cineconnect-submit-btn"
-          >
-            {submittingCC ? 'Registering...' : 'Register Interest'}
-          </button>
-        </form>
-      )}
+      <button
+        onClick={handleRegisterClick}
+        className="px-5 py-2.5 bg-electric-blue hover:bg-electric-blue/90 text-white rounded-full text-xs font-mono uppercase tracking-widest transition-all"
+        data-testid="cineconnect-register-btn"
+      >
+        Join the Database
+      </button>
     </div>
   );
 };
