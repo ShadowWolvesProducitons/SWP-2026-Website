@@ -82,21 +82,31 @@ const Films = () => {
     return ['All', ...uniqueGenres];
   }, [films]);
 
+  // Filter films by genre AND status (independently)
   useEffect(() => {
-    if (selectedGenre === 'All') {
-      setFilteredFilms(films);
-    } else {
-      setFilteredFilms(films.filter((film) => 
+    let result = films;
+    
+    if (selectedGenre !== 'All') {
+      result = result.filter((film) => 
         film.genres && film.genres.includes(selectedGenre)
-      ));
+      );
     }
-  }, [selectedGenre, films]);
+    
+    if (selectedStatus !== 'All') {
+      result = result.filter((film) => film.status === selectedStatus);
+    }
+    
+    setFilteredFilms(result);
+  }, [selectedGenre, selectedStatus, films]);
 
-  // Close dropdown when clicking outside
+  // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      if (genreDropdownRef.current && !genreDropdownRef.current.contains(event.target)) {
         setIsGenreDropdownOpen(false);
+      }
+      if (statusDropdownRef.current && !statusDropdownRef.current.contains(event.target)) {
+        setIsStatusDropdownOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
