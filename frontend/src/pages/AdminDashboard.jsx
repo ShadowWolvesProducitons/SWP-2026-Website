@@ -1,32 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { Film, Package, FileText, LogOut, RefreshCw, Briefcase, Users, Mail, BarChart3, ArrowLeft, Activity, FolderOpen, Settings, Shield } from 'lucide-react';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
+import { Film, Package, FileText, LogOut, RefreshCw, Briefcase, Users, Mail, BarChart3, ArrowLeft, Activity, FolderOpen, Settings, Shield, Building2 } from 'lucide-react';
 import { toast } from 'sonner';
 import AdminFilmsTab from '../components/admin/AdminFilmsTab';
 import AdminArmoryTab from '../components/admin/AdminArmoryTab';
 import AdminBlogTab from '../components/admin/AdminBlogTab';
-import AdminActivityTab from '../components/admin/AdminActivityTab';
-import AdminInvestorTab from '../components/admin/AdminInvestorTab';
-import AdminNewsletterTab from '../components/admin/AdminNewsletterTab';
-import AdminEmailTemplatesTab from '../components/admin/AdminEmailTemplatesTab';
-import AdminAnalyticsTab from '../components/admin/AdminAnalyticsTab';
 import AdminAssetsTab from '../components/admin/AdminAssetsTab';
-import AdminSiteSettingsTab from '../components/admin/AdminSiteSettingsTab';
-import AdminStudioPortalTab from '../components/admin/AdminStudioPortalTab';
+import AdminStudioTab from '../components/admin/AdminStudioTab';
+import AdminDashboardTab from '../components/admin/AdminDashboardTab';
 
+// New streamlined navigation - 6 top-level tabs only
 const TABS = [
-  { id: 'analytics', label: 'Dashboard', icon: BarChart3 },
+  { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
   { id: 'films', label: 'Films', icon: Film },
   { id: 'armory', label: 'The Armory', icon: Package },
   { id: 'blog', label: 'The Den', icon: FileText },
   { id: 'assets', label: 'Assets', icon: FolderOpen },
-  { id: 'activity', label: 'Activity', icon: Activity },
-  { id: 'studio-portal', label: 'Studio Portal', icon: Shield },
-  { id: 'newsletter', label: 'Newsletter', icon: Users },
-  { id: 'email-templates', label: 'Templates', icon: Mail },
-  { id: 'investors', label: 'Investors', icon: Briefcase },
-  { id: 'site-settings', label: 'Site Settings', icon: Settings },
+  { id: 'studio', label: 'Studio', icon: Building2 },
 ];
+
+// Route redirects for legacy URLs
+const LEGACY_ROUTE_MAP = {
+  'analytics': 'dashboard',
+  'activity': 'dashboard',
+  'newsletter': 'studio',
+  'email-templates': 'studio',
+  'investors': 'studio',
+  'site-settings': 'studio',
+  'studio-portal': 'studio',
+};
 
 const AdminDashboard = ({ onLogout }) => {
   const [activeTab, setActiveTab] = useState('analytics');
