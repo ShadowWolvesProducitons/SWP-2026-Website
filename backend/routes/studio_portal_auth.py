@@ -365,6 +365,17 @@ class LoginInput(BaseModel):
 async def login(data: LoginInput, request: Request):
     """Login with email and password"""
     print(f"[DEBUG] Login attempt for: {data.email.lower()}")
+    print(f"[DEBUG] DB object: {db}, type: {type(db)}")
+    
+    # List collections as debug
+    try:
+        colls = await db.list_collection_names()
+        print(f"[DEBUG] Collections: {colls}")
+        count = await db.studio_users.count_documents({})
+        print(f"[DEBUG] Total studio_users: {count}")
+    except Exception as e:
+        print(f"[DEBUG] DB error: {e}")
+    
     user = await db.studio_users.find_one({"email": data.email.lower()})
     print(f"[DEBUG] User found: {user is not None}, status: {user.get('status') if user else 'N/A'}")
     
