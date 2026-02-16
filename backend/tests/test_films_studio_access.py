@@ -192,7 +192,8 @@ class TestPosterImageEndpoint:
         
         if poster_url:
             full_url = f"{BASE_URL}{poster_url}"
-            response = requests.head(full_url)
+            # Use GET with stream=True to minimize download
+            response = requests.get(full_url, stream=True)
             assert response.status_code == 200, f"Poster image should be accessible: {response.status_code}"
             print(f"PASS: CROWE poster image accessible at {poster_url}")
         else:
