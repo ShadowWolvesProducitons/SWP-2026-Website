@@ -5,17 +5,23 @@ import { Helmet } from 'react-helmet-async';
 import FilmModal from '../components/FilmModal';
 import PageHeader from '../components/PageHeader';
 
+// Status options for filter chips
+const STATUS_OPTIONS = ['All', 'Development', 'Packaging', 'Pre-Production', 'Filming', 'Post-Production', 'Marketing', 'Released'];
+
 const Films = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const [films, setFilms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedGenre, setSelectedGenre] = useState('All');
+  const [selectedStatus, setSelectedStatus] = useState('All');
   const [filteredFilms, setFilteredFilms] = useState([]);
   const [selectedFilm, setSelectedFilm] = useState(null);
   const [isGenreDropdownOpen, setIsGenreDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null);
-  const scrollPositionRef = useRef(0);
+  const [isStatusDropdownOpen, setIsStatusDropdownOpen] = useState(false);
+  const genreDropdownRef = useRef(null);
+  const statusDropdownRef = useRef(null);
+  const scrollPositionRef = useRef(null);
 
   useEffect(() => {
     if (!slug) {
