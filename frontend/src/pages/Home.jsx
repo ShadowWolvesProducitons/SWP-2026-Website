@@ -270,7 +270,7 @@ const Home = () => {
                 <button
                   key={chip.key}
                   onClick={() => openSupportModal(chip.key)}
-                  className="px-5 py-2.5 rounded-full bg-smoke-gray border border-gray-600 text-gray-400 hover:border-electric-blue/60 hover:text-white transition-all text-sm focus:outline-none focus:ring-2 focus:ring-electric-blue shadow-[0_2px_10px_rgba(0,0,0,0.3),0_0_20px_rgba(35,61,255,0.12)] hover:shadow-[0_4px_15px_rgba(0,0,0,0.4),0_0_25px_rgba(35,61,255,0.2)]"
+                  className="group px-5 py-2.5 rounded-full bg-smoke-gray border border-gray-600 text-gray-400 hover:border-electric-blue/60 hover:text-electric-blue transition-all text-sm focus:outline-none focus:ring-2 focus:ring-electric-blue shadow-[0_2px_10px_rgba(0,0,0,0.3),0_0_20px_rgba(35,61,255,0.12)] hover:shadow-[0_4px_15px_rgba(0,0,0,0.4),0_0_25px_rgba(35,61,255,0.2)]"
                 >
                   {chip.label}
                 </button>
