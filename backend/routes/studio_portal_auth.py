@@ -364,7 +364,9 @@ class LoginInput(BaseModel):
 @router.post("/login")
 async def login(data: LoginInput, request: Request):
     """Login with email and password"""
+    print(f"[DEBUG] Login attempt for: {data.email.lower()}")
     user = await db.studio_users.find_one({"email": data.email.lower()})
+    print(f"[DEBUG] User found: {user is not None}, status: {user.get('status') if user else 'N/A'}")
     
     if not user:
         raise HTTPException(status_code=401, detail="Invalid email or password")
