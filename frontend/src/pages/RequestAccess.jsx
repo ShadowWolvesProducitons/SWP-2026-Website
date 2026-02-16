@@ -275,29 +275,51 @@ const RequestAccess = () => {
               )}
 
               {/* Projects of Interest */}
-              {projects.length > 0 && (
-                <div>
-                  <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
-                    Projects of Interest <span className="text-gray-600">(optional)</span>
-                  </label>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                    {projects.slice(0, 9).map((project) => (
+              <div>
+                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+                  Projects of Interest <span className="text-gray-600">(optional)</span>
+                </label>
+                <div className="space-y-4">
+                  {/* Category Buttons */}
+                  <div className="flex gap-3">
+                    {PROJECT_CATEGORIES.map((category) => (
                       <button
-                        key={project.id}
+                        key={category.id}
                         type="button"
-                        onClick={() => handleProjectToggle(project.id)}
-                        className={`px-4 py-3 rounded-lg text-sm text-left transition-all ${
-                          formData.projects_requested.includes(project.id)
+                        onClick={() => handleProjectToggle(category.id)}
+                        className={`px-5 py-3 rounded-lg text-sm font-mono uppercase tracking-widest transition-all ${
+                          formData.projects_requested.includes(category.id)
                             ? 'bg-electric-blue text-white border border-electric-blue'
                             : 'bg-smoke-gray border border-gray-700 text-gray-300 hover:border-gray-500'
                         }`}
+                        data-testid={`category-${category.id}`}
                       >
-                        {project.title}
+                        {category.label}
                       </button>
                     ))}
                   </div>
+                  
+                  {/* Films Grid */}
+                  {projects.length > 0 && (
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                      {projects.slice(0, 9).map((project) => (
+                        <button
+                          key={project.id}
+                          type="button"
+                          onClick={() => handleProjectToggle(project.id)}
+                          className={`px-4 py-3 rounded-lg text-sm text-left transition-all ${
+                            formData.projects_requested.includes(project.id)
+                              ? 'bg-electric-blue text-white border border-electric-blue'
+                              : 'bg-smoke-gray border border-gray-700 text-gray-300 hover:border-gray-500'
+                          }`}
+                        >
+                          {project.title}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
 
               {/* Message */}
               <div>
