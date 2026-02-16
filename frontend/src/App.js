@@ -22,6 +22,15 @@ import AdminDashboard from "./pages/AdminDashboard";
 import LeadMagnetPopup from "./components/LeadMagnetPopup";
 import { Toaster } from "./components/ui/sonner";
 
+// Studio Portal Pages
+import RequestAccess from "./pages/RequestAccess";
+import VerifyAccess from "./pages/VerifyAccess";
+import StudioLogin from "./pages/StudioLogin";
+import StudioPortalLayout from "./pages/StudioPortalLayout";
+import StudioDashboard from "./pages/StudioDashboard";
+import StudioProjects from "./pages/StudioProjects";
+import StudioProjectDetail from "./pages/StudioProjectDetail";
+
 const Layout = ({ children, showLayout, showPopup }) => {
   if (!showLayout) return <>{children}</>;
   return (
