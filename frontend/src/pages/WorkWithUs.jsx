@@ -772,8 +772,8 @@ const WorkWithUs = () => {
 
               {/* Default state - no form selected */}
               {!activeLane && (
-                <div className="text-center py-16 text-gray-500">
-                  <p className="text-lg">Select an option above to get started.</p>
+                <div className="text-center py-16 text-gray-400">
+                  <p className="text-lg font-bold">Select an option above to get started.</p>
                 </div>
               )}
             </div>
