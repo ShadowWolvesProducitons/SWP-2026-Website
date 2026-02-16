@@ -12,6 +12,15 @@ const ASSET_TYPES = [
   { id: 'other', label: 'Other', icon: File },
 ];
 
+// New collection/grouping filters
+const ASSET_COLLECTIONS = [
+  { id: 'all', label: 'All' },
+  { id: 'films', label: 'Films' },
+  { id: 'website', label: 'Website' },
+  { id: 'armory', label: 'Armory' },
+  { id: 'den', label: 'Den' },
+];
+
 const VISIBILITY = [
   { id: 'public', label: 'Public', icon: Globe, color: 'text-green-400 bg-green-500/10 border-green-500/30' },
   { id: 'investor_only', label: 'Investor', icon: Shield, color: 'text-yellow-400 bg-yellow-500/10 border-yellow-500/30' },
