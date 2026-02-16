@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
-import { X, ArrowRight, Play, Lock } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { X, ArrowRight, Play, Lock, Mail } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 
 // IMDB Logo URL
 const IMDB_LOGO = "https://customer-assets.emergentagent.com/job_68938027-079c-4f84-ad55-d8d458f6dee5/artifacts/34y7ru4y_IMDB_Logo_2016.svg";
@@ -15,26 +14,26 @@ const FilmModal = ({ film, isOpen, onClose }) => {
       if (e.key === 'Escape') onClose();
     };
     
+    // Handle browser back button
+    const handlePopState = () => {
+      // If modal is open when back is pressed, the navigation will already happen via URL change
+    };
+    
     if (isOpen) {
       document.addEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'hidden';
+      window.addEventListener('popstate', handlePopState);
     }
     
     return () => {
       document.removeEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'unset';
+      window.removeEventListener('popstate', handlePopState);
     };
   }, [isOpen, onClose]);
 
   if (!isOpen || !film) return null;
 
-  // Navigate to the public project overview page
-  const handleViewProject = () => {
-    onClose();
-    // Use slug if available, otherwise use id
-    const filmSlug = film.slug || film.id;
-    navigate(`/films/${filmSlug}`);
-  };
+  // Check if film is released
+  const isReleased = film.status?.toLowerCase() === 'released';
 
   return (
     <div
@@ -90,6 +89,7 @@ const FilmModal = ({ film, isOpen, onClose }) => {
                       data-testid="film-modal-poster"
                     />
                   ) : (
+                    /* Intentional placeholder for missing poster */
                     <div className="absolute inset-0 flex flex-col items-center justify-center p-4 bg-gradient-to-br from-gray-900 via-black to-gray-900">
                       <div className="w-16 h-16 mb-4 opacity-30">
                         <svg viewBox="0 0 100 100" fill="currentColor" className="text-electric-blue">
@@ -98,7 +98,14 @@ const FilmModal = ({ film, isOpen, onClose }) => {
                           <circle cx="65" cy="45" r="4" fill="currentColor"/>
                         </svg>
                       </div>
-                      <span className="text-gray-500 text-sm text-center">Poster Coming Soon</span>
+                      <h4 className="text-white text-lg font-bold text-center mb-3 px-2 font-cinzel">
+                        {film.title}
+                      </h4>
+                      {film.status && (
+                        <span className="px-3 py-1 bg-electric-blue/20 border border-electric-blue/40 text-electric-blue text-xs font-mono uppercase tracking-widest rounded-full">
+                          {film.status}
+                        </span>
+                      )}
                     </div>
                   )}
                 </div>
@@ -108,18 +115,21 @@ const FilmModal = ({ film, isOpen, onClose }) => {
 
           {/* Content Side */}
           <div className="md:w-3/5 flex flex-col">
-            {/* Status Badge */}
-            <div className="mb-3">
-              <span className="px-4 py-2 rounded-full bg-electric-blue/20 text-electric-blue border border-electric-blue/40 text-xs font-mono uppercase tracking-widest">
-                {film.status}
-              </span>
-            </div>
+            {/* Status Badge - Only if status exists */}
+            {film.status && (
+              <div className="mb-3">
+                <span className="px-4 py-2 rounded-full bg-electric-blue/20 text-electric-blue border border-electric-blue/40 text-xs font-mono uppercase tracking-widest">
+                  {film.status}
+                </span>
+              </div>
+            )}
             
             {/* Title Row with IMDB */}
             <div className="flex items-start justify-between gap-4 mb-3">
               <h2 className="text-3xl md:text-4xl font-bold text-white font-cinzel" data-testid="film-modal-title">
                 {film.title}
               </h2>
+              {/* IMDB Link - Only if exists */}
               {film.imdbUrl && (
                 <a
                   href={film.imdbUrl}
@@ -133,10 +143,10 @@ const FilmModal = ({ film, isOpen, onClose }) => {
               )}
             </div>
             
-            {/* Genres */}
+            {/* Genres - Only if exists and has items */}
             {film.genres && film.genres.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-4">
-                {film.genres.map((genre, idx) => (
+                {film.genres.slice(0, 3).map((genre, idx) => (
                   <span
                     key={idx}
                     className="px-3 py-1 rounded-full bg-white/10 text-white/80 text-xs"
@@ -147,32 +157,17 @@ const FilmModal = ({ film, isOpen, onClose }) => {
               </div>
             )}
 
-            {/* Tagline */}
+            {/* Tagline - Only if exists */}
             {film.tagline && (
               <p className="text-xl text-gray-300 italic leading-relaxed mb-4">
                 "{film.tagline}"
               </p>
             )}
 
-            {/* Logline (brief) */}
+            {/* Logline - Only if exists */}
             {film.logline && (
-              <div className="text-gray-400 leading-relaxed mb-6 line-clamp-4">
-                {film.logline.split('\n\n')[0]}
-              </div>
-            )}
-
-            {/* Secondary Links (without IMDB) */}
-            {film.watchUrl && film.watchUrlTitle && (
-              <div className="flex items-center gap-4 mb-6">
-                <a
-                  href={film.watchUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-gray-200 text-sm transition-colors inline-flex items-center gap-1"
-                >
-                  {film.watchUrlTitle}
-                  <span className="text-xs">↗</span>
-                </a>
+              <div className="text-gray-400 leading-relaxed mb-6">
+                {film.logline}
               </div>
             )}
 
@@ -180,29 +175,31 @@ const FilmModal = ({ film, isOpen, onClose }) => {
             <div className="flex-grow" />
 
             {/* CTA - Based on Film Status */}
-            {film.status?.toLowerCase() === 'released' ? (
+            {isReleased ? (
               /* Released films: Watch Now button */
-              film.watchUrl ? (
-                <a
-                  href={film.watchUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full bg-electric-blue hover:bg-electric-blue/90 text-white px-8 py-4 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
-                  data-testid="film-modal-watch-btn"
+              <div className="space-y-3">
+                {film.watchUrl ? (
+                  <a
+                    href={film.watchUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full bg-electric-blue hover:bg-electric-blue/90 text-white px-8 py-4 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
+                    data-testid="film-modal-watch-btn"
+                  >
+                    <Play size={18} />
+                    Watch Now
+                  </a>
+                ) : null}
+                <Link
+                  to="/contact"
+                  onClick={onClose}
+                  className="w-full border border-gray-600 hover:border-gray-400 text-white px-8 py-4 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
+                  data-testid="film-modal-contact-btn"
                 >
-                  <Play size={18} />
-                  Watch Now
-                </a>
-              ) : (
-                <button
-                  onClick={handleViewProject}
-                  className="w-full bg-electric-blue hover:bg-electric-blue/90 text-white px-8 py-4 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
-                  data-testid="film-modal-view-project-btn"
-                >
-                  View Project
-                  <ArrowRight size={18} />
-                </button>
-              )
+                  <Mail size={18} />
+                  Contact Us
+                </Link>
+              </div>
             ) : (
               /* Development/Pre-Production/etc: Studio Portal CTA */
               <div className="space-y-4">
@@ -225,6 +222,15 @@ const FilmModal = ({ film, isOpen, onClose }) => {
                 >
                   Request Studio Access
                   <ArrowRight size={18} />
+                </Link>
+                <Link
+                  to="/contact"
+                  onClick={onClose}
+                  className="w-full border border-gray-600 hover:border-gray-400 text-white px-8 py-4 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
+                  data-testid="film-modal-contact-btn"
+                >
+                  <Mail size={18} />
+                  Contact Us
                 </Link>
               </div>
             )}
