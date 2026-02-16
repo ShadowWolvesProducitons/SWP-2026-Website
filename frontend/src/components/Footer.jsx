@@ -60,8 +60,7 @@ const Footer = () => {
               <Link to="/films" className="text-sm hover:text-white transition-colors">Films</Link>
               <Link to="/blog" className="text-sm hover:text-white transition-colors">The Den</Link>
               <Link to="/work-with-us" className="text-sm hover:text-white transition-colors">Work With Us</Link>
-              <Link to="/investors" className="text-sm hover:text-white transition-colors">Investors</Link>
-              <Link to="/contact" className="text-sm hover:text-white transition-colors">Contact</Link>
+              <Link to="/request-access" className="text-sm hover:text-white transition-colors">Studio Portal</Link>
             </div>
           </div>
         </div>
