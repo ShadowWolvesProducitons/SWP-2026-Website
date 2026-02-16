@@ -179,15 +179,55 @@ const FilmModal = ({ film, isOpen, onClose }) => {
             {/* Spacer */}
             <div className="flex-grow" />
 
-            {/* CTA - View Project Button */}
-            <button
-              onClick={handleViewProject}
-              className="w-full bg-electric-blue hover:bg-electric-blue/90 text-white px-8 py-4 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
-              data-testid="film-modal-view-project-btn"
-            >
-              View Project
-              <ArrowRight size={18} />
-            </button>
+            {/* CTA - Based on Film Status */}
+            {film.status?.toLowerCase() === 'released' ? (
+              /* Released films: Watch Now button */
+              film.watchUrl ? (
+                <a
+                  href={film.watchUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full bg-electric-blue hover:bg-electric-blue/90 text-white px-8 py-4 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
+                  data-testid="film-modal-watch-btn"
+                >
+                  <Play size={18} />
+                  Watch Now
+                </a>
+              ) : (
+                <button
+                  onClick={handleViewProject}
+                  className="w-full bg-electric-blue hover:bg-electric-blue/90 text-white px-8 py-4 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
+                  data-testid="film-modal-view-project-btn"
+                >
+                  View Project
+                  <ArrowRight size={18} />
+                </button>
+              )
+            ) : (
+              /* Development/Pre-Production/etc: Studio Portal CTA */
+              <div className="space-y-4">
+                <div className="bg-smoke-gray border border-gray-700 rounded-lg p-4">
+                  <div className="flex items-start gap-3">
+                    <Lock size={20} className="text-electric-blue flex-shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-gray-300 text-sm leading-relaxed">
+                        This film is currently in <span className="text-white font-medium">{film.status?.toLowerCase()}</span>. 
+                        To access confidential materials, financials, and project updates, request access to our Studio Portal.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <Link
+                  to="/request-access"
+                  onClick={onClose}
+                  className="w-full bg-electric-blue hover:bg-electric-blue/90 text-white px-8 py-4 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
+                  data-testid="film-modal-request-access-btn"
+                >
+                  Request Studio Access
+                  <ArrowRight size={18} />
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </div>
