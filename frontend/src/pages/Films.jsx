@@ -443,7 +443,23 @@ const Films = () => {
 
               {filteredFilms.length === 0 && (
                 <div className="text-center py-16">
-                  <p className="text-gray-400 text-xl">No films found in this genre.</p>
+                  <p className="text-gray-400 text-xl">
+                    {selectedGenre !== 'All' && selectedStatus !== 'All' 
+                      ? `No ${selectedStatus} films found in ${selectedGenre}.`
+                      : selectedGenre !== 'All'
+                        ? `No films found in ${selectedGenre}.`
+                        : selectedStatus !== 'All'
+                          ? `No ${selectedStatus} films found.`
+                          : 'No films found.'}
+                  </p>
+                  {(selectedGenre !== 'All' || selectedStatus !== 'All') && (
+                    <button 
+                      onClick={() => { setSelectedGenre('All'); setSelectedStatus('All'); }}
+                      className="mt-4 text-electric-blue hover:underline"
+                    >
+                      Clear filters
+                    </button>
+                  )}
                 </div>
               )}
             </>
