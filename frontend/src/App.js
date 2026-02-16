@@ -71,7 +71,8 @@ const AppContent = () => {
         <Route path="/films" element={<Films />} />
         <Route path="/films/:slug" element={<Films />} />
         
-        <Route path="/contact" element={<Contact />} />
+        {/* Redirect /contact to /work-with-us */}
+        <Route path="/contact" element={<Navigate to="/work-with-us" replace />} />
         
         {/* Request Access Flow (Public) */}
         <Route path="/request-access" element={<RequestAccess />} />
