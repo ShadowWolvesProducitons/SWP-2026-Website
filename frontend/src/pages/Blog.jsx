@@ -48,19 +48,19 @@ const Blog = () => {
       <PageHeader page="den" title="The Den" subtitle="Casting calls. Crew needs. Production lessons. Tools we actually use." />
 
       {/* Subscribe CTA — Get The Playbook with image + blue glow */}
-      <section className="py-8 bg-smoke-gray border-b border-gray-800 relative overflow-hidden">
+      <section className="py-4 bg-smoke-gray border-b border-gray-800 relative overflow-hidden">
         {/* Blue glow behind section */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-electric-blue/8 rounded-full filter blur-[80px]" />
         </div>
         <div className="container mx-auto px-4 relative z-10">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-6">
-              {/* Playbook image with glow */}
+              {/* Playbook image with glow - larger */}
               {playbookImg && (
                 <div className="relative flex-shrink-0 hidden sm:block">
-                  <div className="absolute -inset-3 bg-electric-blue/15 rounded-xl filter blur-xl" />
-                  <img src={playbookImg} alt="Producer's Playbook" className="relative w-20 h-auto rounded-lg shadow-lg shadow-electric-blue/20" />
+                  <div className="absolute -inset-4 bg-electric-blue/15 rounded-xl filter blur-xl" />
+                  <img src={playbookImg} alt="Producer's Playbook" className="relative w-32 h-auto rounded-lg shadow-lg shadow-electric-blue/20" />
                 </div>
               )}
               <div>
