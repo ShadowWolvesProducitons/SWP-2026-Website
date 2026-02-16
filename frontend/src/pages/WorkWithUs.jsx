@@ -322,25 +322,6 @@ const SubmitProjectForm = ({ onSuccess }) => {
         {errors.genres && <p className="text-red-500 text-xs mt-1">{errors.genres}</p>}
       </div>
 
-      {/* Project Stage */}
-      <div>
-        <label className="block text-gray-400 text-sm uppercase tracking-wide mb-2">Project Stage *</label>
-        <div className="relative">
-          <select
-            name="project_stage"
-            value={formData.project_stage}
-            onChange={handleChange}
-            className={`w-full bg-smoke-gray border ${errors.project_stage ? 'border-red-500' : 'border-gray-700'} rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none appearance-none cursor-pointer`}
-            data-testid="project-stage-select"
-          >
-            <option value="">Where is the project at?</option>
-            {PROJECT_STAGES.map(stage => <option key={stage} value={stage}>{stage}</option>)}
-          </select>
-          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" size={18} />
-        </div>
-        {errors.project_stage && <p className="text-red-500 text-xs mt-1">{errors.project_stage}</p>}
-      </div>
-
       {/* Logline */}
       <div>
         <label className="block text-gray-400 text-sm uppercase tracking-wide mb-2">
