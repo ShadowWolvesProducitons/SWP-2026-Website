@@ -4,7 +4,7 @@
 **Date:** January 8, 2025  
 **Tester:** Testing Agent  
 **Application:** Shadow Wolves Productions Admin CMS  
-**Test Environment:** https://studio-stage.preview.emergentagent.com
+**Test Environment:** https://studio-refactor.preview.emergentagent.com
 
 ## Test Areas Covered
 
