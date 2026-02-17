@@ -22,6 +22,41 @@ class HeaderSettings(BaseModel):
     title: Optional[str] = None
     subtitle: Optional[str] = None
 
+# SEO Models
+class GlobalSeoSettings(BaseModel):
+    site_name: Optional[str] = "Shadow Wolves Productions"
+    site_url: Optional[str] = "https://shadowwolvesproductions.com"
+    default_meta_title_template: Optional[str] = "{pageTitle} | Shadow Wolves Productions"
+    default_meta_description: Optional[str] = "Bold, genre-driven stories with teeth."
+    default_og_image_url: Optional[str] = None
+    focus_keyword_default: Optional[str] = None
+
+class OrganizationSchemaSettings(BaseModel):
+    org_name: Optional[str] = "Shadow Wolves Productions"
+    org_logo_url: Optional[str] = None
+    org_sameas_links: Optional[str] = ""  # Comma-separated URLs
+    enable_movie_schema: bool = True
+    enable_faq_schema: bool = True
+
+class RobotsSettings(BaseModel):
+    robots_allow_all: bool = True
+    robots_disallow_paths: Optional[str] = "/admin\n/admin/*\n/studio-access\n/studio-access/*\n/api\n/api/*"
+    robots_custom_override: Optional[str] = None
+
+class SitemapSettings(BaseModel):
+    sitemap_enabled: bool = True
+    include_films: bool = True
+    include_blog: bool = True
+    include_armory: bool = True
+    exclude_drafts: bool = True
+    exclude_archived: bool = True
+
+class SeoSettingsUpdate(BaseModel):
+    global_seo: Optional[GlobalSeoSettings] = None
+    organization_schema: Optional[OrganizationSchemaSettings] = None
+    robots: Optional[RobotsSettings] = None
+    sitemap: Optional[SitemapSettings] = None
+
 class SiteSettingsResponse(BaseModel):
     id: str
     headers: Dict[str, Any]
@@ -36,6 +71,38 @@ DEFAULT_HEADERS = {
     "investors": {"position_x": 50, "position_y": 30, "overlay_opacity": 85},
     "workwithus": {"position_x": 50, "position_y": 30, "overlay_opacity": 85},
     "contact": {"position_x": 50, "position_y": 30, "overlay_opacity": 85},
+}
+
+# Default SEO settings
+DEFAULT_SEO = {
+    "global_seo": {
+        "site_name": "Shadow Wolves Productions",
+        "site_url": "https://shadowwolvesproductions.com",
+        "default_meta_title_template": "{pageTitle} | Shadow Wolves Productions",
+        "default_meta_description": "Bold, genre-driven stories with teeth — stories that entertain first, but leave a mark long after the screen goes black.",
+        "default_og_image_url": None,
+        "focus_keyword_default": None
+    },
+    "organization_schema": {
+        "org_name": "Shadow Wolves Productions",
+        "org_logo_url": None,
+        "org_sameas_links": "",
+        "enable_movie_schema": True,
+        "enable_faq_schema": True
+    },
+    "robots": {
+        "robots_allow_all": True,
+        "robots_disallow_paths": "/admin\n/admin/*\n/studio-access\n/studio-access/*\n/api\n/api/*",
+        "robots_custom_override": None
+    },
+    "sitemap": {
+        "sitemap_enabled": True,
+        "include_films": True,
+        "include_blog": True,
+        "include_armory": True,
+        "exclude_drafts": True,
+        "exclude_archived": True
+    }
 }
 
 @router.get("")
