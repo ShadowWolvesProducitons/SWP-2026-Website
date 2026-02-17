@@ -53,30 +53,50 @@ async def upload_asset(
     collection: str = Form("website"),
     folder: str = Form(""),
     related_project_id: str = Form(""),
-    notes: str = Form("")
+    notes: str = Form(""),
+    convert_webp: bool = Form(True)
 ):
-    """Upload a new asset to the library."""
+    """
+    Upload a new asset to the library.
+    Images are automatically compressed and converted to WebP format.
+    """
     ext = Path(file.filename).suffix.lower()
-    unique_filename = f"{uuid.uuid4()}{ext}"
-    file_path = UPLOAD_DIR / unique_filename
-
+    
     content = await file.read()
-    if len(content) > 100 * 1024 * 1024:  # 100MB limit
+    original_size = len(content)
+    
+    if original_size > 100 * 1024 * 1024:  # 100MB limit
         raise HTTPException(status_code=400, detail="File too large (max 100MB)")
 
-    with open(file_path, "wb") as f:
-        f.write(content)
-
-    # Determine asset type from extension if not specified
-    if asset_type == "other":
-        img_exts = {'.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'}
-        if ext in img_exts:
+    # Check if this is an image that should be processed
+    image_extensions = {'.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp', '.tiff'}
+    
+    if ext in image_extensions:
+        # Process and compress the image
+        processed_content, new_ext, mime_type = compress_image(
+            content, ext, convert_to_webp=convert_webp
+        )
+        unique_filename = f"{uuid.uuid4()}{new_ext}"
+        file_url = f"/api/upload/images/{unique_filename}"
+        final_content = processed_content
+        
+        # Determine asset type
+        if asset_type == "other":
             asset_type = "image"
-        elif ext == '.pdf':
+    else:
+        # Non-image file, save as-is
+        unique_filename = f"{uuid.uuid4()}{ext}"
+        file_url = f"/api/upload/files/{unique_filename}"
+        final_content = content
+        mime_type = file.content_type or 'application/octet-stream'
+        
+        if asset_type == "other" and ext == '.pdf':
             asset_type = "pdf"
 
-    is_image = ext in {'.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'}
-    file_url = f"/api/upload/images/{unique_filename}" if is_image else f"/api/upload/files/{unique_filename}"
+    # Save the file
+    file_path = UPLOAD_DIR / unique_filename
+    with open(file_path, "wb") as f:
+        f.write(final_content)
 
     tag_list = [t.strip() for t in tags.split(",") if t.strip()] if tags else []
     
@@ -85,6 +105,10 @@ async def upload_asset(
         category_list = json.loads(categories) if categories else []
     except json.JSONDecodeError:
         category_list = []
+
+    # Calculate compression stats for images
+    compressed_size = len(final_content)
+    compression_stats = get_compression_stats(original_size, compressed_size) if ext in image_extensions else None
 
     asset = {
         "id": str(uuid.uuid4()),
@@ -99,14 +123,20 @@ async def upload_asset(
         "related_project_id": related_project_id or None,
         "notes": notes or None,
         "file_url": file_url,
-        "file_size": len(content),
-        "mime_type": file.content_type,
+        "file_size": compressed_size,
+        "original_size": original_size if ext in image_extensions else None,
+        "mime_type": mime_type,
         "uploaded_by": "admin",
         "created_at": datetime.now(timezone.utc).isoformat()
     }
 
     await db.assets.insert_one(asset)
     del asset["_id"]
+    
+    # Add compression info to response
+    if compression_stats:
+        asset["compression"] = compression_stats
+    
     return asset
 
 
