@@ -169,13 +169,26 @@ const AdminAssetsTab = () => {
 
   // Get folders for current collection (e.g., film names when in Films collection)
   const getFolders = () => {
-    if (activeCollection !== 'films') return [];
-    
-    // Get unique folders from assets + all films
-    const assetFolders = new Set(assets.filter(a => a.collection === 'films' && a.folder).map(a => a.folder));
-    const allFolders = films.map(f => ({ id: f.id, name: f.title }));
-    
-    return allFolders;
+    switch (activeCollection) {
+      case 'films':
+        return films.map(f => ({ id: f.id, name: f.title }));
+      case 'armory':
+        return armoryItems.map(a => ({ id: a.id, name: a.title }));
+      case 'den':
+        return blogPosts.map(p => ({ id: p.id, name: p.title }));
+      case 'website':
+        // Website assets can have manual folder names or predefined categories
+        const websiteFolders = new Set(assets.filter(a => a.collection === 'website' && a.folder).map(a => a.folder));
+        return [
+          { id: 'general', name: 'General' },
+          { id: 'branding', name: 'Branding' },
+          { id: 'backgrounds', name: 'Backgrounds' },
+          { id: 'icons', name: 'Icons' },
+          ...Array.from(websiteFolders).filter(f => !['general', 'branding', 'backgrounds', 'icons'].includes(f)).map(f => ({ id: f, name: f }))
+        ];
+      default:
+        return [];
+    }
   };
 
   // Count assets per folder
