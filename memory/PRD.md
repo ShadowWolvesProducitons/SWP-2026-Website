@@ -57,10 +57,15 @@ Build a comprehensive "Studio Access Portal" and modernize the public-facing web
 - [x] **Test Rich Results**: Button opens Google Rich Results Test
 - [x] **Preview links**: Direct links to preview robots.txt and sitemap.xml
 
-#### Image Optimization
-- [x] Lazy loading on blog images
-- [x] Lazy loading on product page images
-- [x] Lazy loading on TheDen product cards
+#### Image Optimization (February 2025)
+- [x] Server-side image compression + automatic WebP conversion
+- [x] Compression stats in upload response (original_size, compressed_size, savings_percent)
+- [x] Option to disable WebP conversion (convert_webp=false parameter)
+- [x] Support for JPG, PNG, GIF, BMP, TIFF formats
+- [x] Maximum dimension resize (2000px) to prevent oversized images
+- [x] Native lazy loading on blog images
+- [x] Native lazy loading on product page images
+- [x] Native lazy loading on TheDen product cards
 
 #### Dynamic SEO Endpoints
 - [x] `/api/seo/robots.txt` - Reads from admin settings
