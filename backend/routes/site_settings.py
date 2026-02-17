@@ -107,7 +107,7 @@ DEFAULT_SEO = {
 
 @router.get("")
 async def get_site_settings():
-    """Get all site settings"""
+    """Get all site settings including SEO"""
     if db is None:
         raise HTTPException(status_code=500, detail="Database not initialized")
     
@@ -117,9 +117,94 @@ async def get_site_settings():
         return {
             "id": "default",
             "headers": DEFAULT_HEADERS,
+            "seo": DEFAULT_SEO,
             "updated_at": datetime.now(timezone.utc).isoformat()
         }
+    
+    # Ensure SEO defaults are present
+    if "seo" not in settings:
+        settings["seo"] = DEFAULT_SEO
+    else:
+        # Merge with defaults for any missing fields
+        for key in DEFAULT_SEO:
+            if key not in settings["seo"]:
+                settings["seo"][key] = DEFAULT_SEO[key]
+            elif isinstance(DEFAULT_SEO[key], dict):
+                for subkey in DEFAULT_SEO[key]:
+                    if subkey not in settings["seo"][key]:
+                        settings["seo"][key][subkey] = DEFAULT_SEO[key][subkey]
+    
     return settings
+
+@router.get("/seo")
+async def get_seo_settings():
+    """Get SEO settings only"""
+    if db is None:
+        raise HTTPException(status_code=500, detail="Database not initialized")
+    
+    settings = await db.site_settings.find_one({"type": "global"}, {"_id": 0})
+    if not settings or "seo" not in settings:
+        return DEFAULT_SEO
+    
+    # Merge with defaults
+    seo = settings["seo"]
+    for key in DEFAULT_SEO:
+        if key not in seo:
+            seo[key] = DEFAULT_SEO[key]
+        elif isinstance(DEFAULT_SEO[key], dict):
+            for subkey in DEFAULT_SEO[key]:
+                if subkey not in seo[key]:
+                    seo[key][subkey] = DEFAULT_SEO[key][subkey]
+    
+    return seo
+
+@router.put("/seo")
+async def update_seo_settings(seo_update: SeoSettingsUpdate):
+    """Update SEO settings"""
+    if db is None:
+        raise HTTPException(status_code=500, detail="Database not initialized")
+    
+    current = await db.site_settings.find_one({"type": "global"})
+    
+    update_data = {}
+    if seo_update.global_seo:
+        update_data["seo.global_seo"] = seo_update.global_seo.model_dump()
+    if seo_update.organization_schema:
+        update_data["seo.organization_schema"] = seo_update.organization_schema.model_dump()
+    if seo_update.robots:
+        update_data["seo.robots"] = seo_update.robots.model_dump()
+    if seo_update.sitemap:
+        update_data["seo.sitemap"] = seo_update.sitemap.model_dump()
+    
+    update_data["updated_at"] = datetime.now(timezone.utc).isoformat()
+    
+    if current:
+        await db.site_settings.update_one(
+            {"type": "global"},
+            {"$set": update_data}
+        )
+    else:
+        # Create new with defaults + updates
+        new_settings = {
+            "id": str(uuid.uuid4()),
+            "type": "global",
+            "headers": DEFAULT_HEADERS,
+            "seo": DEFAULT_SEO.copy(),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }
+        # Apply updates
+        if seo_update.global_seo:
+            new_settings["seo"]["global_seo"] = seo_update.global_seo.model_dump()
+        if seo_update.organization_schema:
+            new_settings["seo"]["organization_schema"] = seo_update.organization_schema.model_dump()
+        if seo_update.robots:
+            new_settings["seo"]["robots"] = seo_update.robots.model_dump()
+        if seo_update.sitemap:
+            new_settings["seo"]["sitemap"] = seo_update.sitemap.model_dump()
+        
+        await db.site_settings.insert_one(new_settings)
+    
+    return {"success": True, "message": "SEO settings updated"}
 
 @router.get("/headers/{page}")
 async def get_header_settings(page: str):
