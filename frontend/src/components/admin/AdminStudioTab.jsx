@@ -182,4 +182,13 @@ const StudioSettingsSection = () => {
   );
 };
 
+// ========== SEO SECTION ==========
+const StudioSeoSection = () => {
+  return (
+    <div data-testid="studio-seo-section">
+      <AdminSeoSettingsTab />
+    </div>
+  );
+};
+
 export default AdminStudioTab;
