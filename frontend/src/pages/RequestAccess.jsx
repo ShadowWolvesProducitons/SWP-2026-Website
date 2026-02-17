@@ -28,6 +28,8 @@ const RequestAccess = () => {
     role: '',
     other_role_description: '',
     projects_requested: preselectedProject ? [preselectedProject] : [],
+    other_project_selected: false,
+    other_project_description: '',
     message: '',
     agreed_to_terms: false
   });
@@ -45,7 +47,9 @@ const RequestAccess = () => {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/films`);
       if (response.ok) {
         const data = await response.json();
-        setProjects(data);
+        // Only show films with studio_access_enabled (not released films)
+        const studioAccessFilms = data.filter(film => film.studio_access_enabled === true);
+        setProjects(studioAccessFilms);
       }
     } catch (err) {
       console.error('Failed to fetch projects:', err);
