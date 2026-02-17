@@ -1,0 +1,13 @@
+# Shadow Wolves Productions - Robots.txt
+User-agent: *
+Allow: /
+
+# Disallow admin and private routes
+Disallow: /admin
+Disallow: /admin/*
+Disallow: /studio-access
+Disallow: /studio-access/*
+Disallow: /api
+Disallow: /api/*
+
+Sitemap: https://shadowwolvesproductions.com/sitemap.xml
