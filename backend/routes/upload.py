@@ -7,6 +7,8 @@ import uuid
 from pathlib import Path
 import shutil
 
+from services.image_processor import compress_image, get_compression_stats
+
 router = APIRouter(prefix="/upload", tags=["upload"])
 
 # Database reference (set from server.py)
@@ -21,8 +23,8 @@ UPLOAD_DIR = Path(__file__).parent.parent / "uploads"
 UPLOAD_DIR.mkdir(exist_ok=True)
 
 # Allowed file extensions
-ALLOWED_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.gif', '.webp'}
-MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
+ALLOWED_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp', '.tiff'}
+MAX_FILE_SIZE = 15 * 1024 * 1024  # 15MB (before compression)
 
 
 async def add_to_asset_library(filename: str, original_name: str, file_url: str, 
