@@ -135,7 +135,7 @@ const AdminBlogTab = () => {
    TIPTAP MENU BAR
    ═══════════════════════════════════════════════════════════════ */
 
-const MenuBar = ({ editor }) => {
+const MenuBar = ({ editor, onImageInsert }) => {
   const addLink = useCallback(() => {
     if (!editor) return;
     const prev = editor.getAttributes('link').href;
@@ -146,10 +146,13 @@ const MenuBar = ({ editor }) => {
   }, [editor]);
 
   const addImage = useCallback(() => {
-    if (!editor) return;
-    const url = window.prompt('Enter image URL:');
-    if (url) editor.chain().focus().setImage({ src: url }).run();
-  }, [editor]);
+    if (onImageInsert) {
+      onImageInsert();
+    } else {
+      const url = window.prompt('Enter image URL:');
+      if (url) editor.chain().focus().setImage({ src: url }).run();
+    }
+  }, [editor, onImageInsert]);
 
   const addYoutube = useCallback(() => {
     if (!editor) return;
@@ -161,7 +164,7 @@ const MenuBar = ({ editor }) => {
   if (!editor) return null;
 
   return (
-    <div className="flex flex-wrap gap-0.5 p-2 border-b border-gray-700 bg-gray-900/95 backdrop-blur-sm sticky top-0 z-10">
+    <div className="flex flex-wrap gap-0.5 p-2 border-b border-gray-700 bg-gray-900 sticky top-0 z-20">
       <button type="button" onClick={() => editor.chain().focus().undo().run()} disabled={!editor.can().undo()} className={`${btn(false)} disabled:opacity-30`} title="Undo"><Undo size={16} /></button>
       <button type="button" onClick={() => editor.chain().focus().redo().run()} disabled={!editor.can().redo()} className={`${btn(false)} disabled:opacity-30`} title="Redo"><Redo size={16} /></button>
       <div className="w-px h-6 bg-gray-700 mx-1 self-center" />
