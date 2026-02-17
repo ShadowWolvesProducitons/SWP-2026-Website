@@ -284,29 +284,54 @@ const RequestAccess = () => {
               )}
 
               {/* Projects of Interest */}
-              {projects.length > 0 && (
-                <div>
-                  <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
-                    Projects of Interest <span className="text-gray-600">(optional)</span>
-                  </label>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                    {projects.slice(0, 9).map((project) => (
-                      <button
-                        key={project.id}
-                        type="button"
-                        onClick={() => handleProjectToggle(project.id)}
-                        className={`px-4 py-3 rounded-lg text-sm text-left transition-all ${
-                          formData.projects_requested.includes(project.id)
-                            ? 'bg-electric-blue text-white border border-electric-blue'
-                            : 'bg-smoke-gray border border-gray-700 text-gray-300 hover:border-gray-500'
-                        }`}
-                      >
-                        {project.title}
-                      </button>
-                    ))}
-                  </div>
+              <div>
+                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+                  Projects of Interest <span className="text-gray-600">(optional)</span>
+                </label>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  {projects.map((project) => (
+                    <button
+                      key={project.id}
+                      type="button"
+                      onClick={() => handleProjectToggle(project.id)}
+                      className={`px-4 py-3 rounded-lg text-sm text-left transition-all ${
+                        formData.projects_requested.includes(project.id)
+                          ? 'bg-electric-blue text-white border border-electric-blue'
+                          : 'bg-smoke-gray border border-gray-700 text-gray-300 hover:border-gray-500'
+                      }`}
+                    >
+                      {project.title}
+                    </button>
+                  ))}
+                  {/* Other Option */}
+                  <button
+                    type="button"
+                    onClick={() => setFormData(prev => ({ ...prev, other_project_selected: !prev.other_project_selected }))}
+                    className={`px-4 py-3 rounded-lg text-sm text-left transition-all ${
+                      formData.other_project_selected
+                        ? 'bg-electric-blue text-white border border-electric-blue'
+                        : 'bg-smoke-gray border border-gray-700 text-gray-300 hover:border-gray-500'
+                    }`}
+                  >
+                    Other
+                  </button>
                 </div>
-              )}
+                
+                {/* Other Project Text Input */}
+                {formData.other_project_selected && (
+                  <div className="mt-3">
+                    <input
+                      type="text"
+                      name="other_project_description"
+                      value={formData.other_project_description}
+                      onChange={handleChange}
+                      className="w-full bg-smoke-gray border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
+                      placeholder="Specify project name or describe your interest..."
+                      data-testid="other-project-input"
+                    />
+                  </div>
+                )}
+              </div>
 
               {/* Message */}
               <div>
