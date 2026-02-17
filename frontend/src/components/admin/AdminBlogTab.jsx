@@ -290,16 +290,12 @@ const BlogPostModal = ({ post, onClose, onSave }) => {
     editorProps: { attributes: { class: 'prose prose-invert max-w-none min-h-[400px] p-4 focus:outline-none' } },
   });
 
-  // Set editor content when post is loaded or editor is ready
+  // Set editor content when formData.content is loaded or editor is ready
   useEffect(() => {
-    if (editor && post) {
-      // Set content even if it's empty string - this ensures editor is cleared for new posts
-      const content = post.content || '';
-      if (content) {
-        editor.commands.setContent(content);
-      }
+    if (editor && formData.content) {
+      editor.commands.setContent(formData.content);
     }
-  }, [editor, post]);
+  }, [editor, formData.content]);
 
   // Auto-generate slug from title
   useEffect(() => {
