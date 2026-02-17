@@ -855,6 +855,9 @@ const WorkWithUs = () => {
         </div>
       </section>
 
+      {/* FAQ Section */}
+      <FAQSection />
+
       {/* Newsletter Section */}
       <NewsletterSection />
     </div>
