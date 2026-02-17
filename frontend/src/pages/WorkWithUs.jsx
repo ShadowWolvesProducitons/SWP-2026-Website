@@ -768,6 +768,10 @@ const WorkWithUs = () => {
       <Helmet>
         <title>Work With Us | Shadow Wolves Productions</title>
         <meta name="description" content="Submit your project or get in touch with Shadow Wolves Productions. We're selectively open to original genre scripts, proof-of-concepts, and strategic collaborations." />
+        <link rel="canonical" href="https://shadowwolvesproductions.com/work-with-us" />
+        <script type="application/ld+json">
+          {JSON.stringify(generateFAQSchema())}
+        </script>
       </Helmet>
 
       {/* Hero Section */}
