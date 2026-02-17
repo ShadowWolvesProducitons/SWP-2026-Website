@@ -463,16 +463,16 @@ const BlogPostModal = ({ post, onClose, onSave }) => {
                 {aiGenerating ? 'Generating...' : 'Generate Blog Post Metadata'}
               </button>
 
-              {/* Rich Text Editor with Sticky Toolbar */}
+              {/* Rich Text Editor - Fixed Sticky Toolbar */}
               <Fl label="Content" helper="The main body of your blog post">
-                <div className="bg-black border border-gray-700 rounded-lg overflow-hidden relative">
-                  {/* Sticky MenuBar */}
-                  <div className="sticky top-0 z-20">
+                <div className="bg-black border border-gray-700 rounded-lg overflow-hidden flex flex-col" style={{ height: '500px' }}>
+                  {/* Sticky MenuBar - Fixed position within container */}
+                  <div className="flex-shrink-0 border-b border-gray-700">
                     <MenuBar editor={editor} onImageInsert={() => setImageInsertOpen(true)} />
                   </div>
                   {/* Editor Content - Scrollable */}
-                  <div className="tiptap-editor-container max-h-[500px] overflow-y-auto">
-                    <EditorContent editor={editor} className="min-h-[400px]" />
+                  <div className="flex-1 overflow-y-auto">
+                    <EditorContent editor={editor} className="min-h-full" />
                   </div>
                 </div>
               </Fl>
