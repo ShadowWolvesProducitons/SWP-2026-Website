@@ -239,6 +239,9 @@ const BlogPostModal = ({ post, onClose, onSave }) => {
   const [aiGenerating, setAiGenerating] = useState(false);
   const [seoGenerating, setSeoGenerating] = useState(false);
   const [seoResult, setSeoResult] = useState(null);
+  const [imageInsertOpen, setImageInsertOpen] = useState(false);
+  const [imageUrl, setImageUrl] = useState('');
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   const set = (key, val) => setFormData(s => ({ ...s, [key]: val }));
 
