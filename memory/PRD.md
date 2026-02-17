@@ -106,6 +106,14 @@ Build a comprehensive "Studio Access Portal" and modernize the public-facing web
 
 ## API Endpoints
 
+### Image Upload
+- `POST /api/upload/image` - Upload image with auto compression & WebP conversion
+  - `convert_webp` (bool, default: true) - Convert to WebP format
+  - Returns: filename, url, original_size, compressed_size, savings_percent, format
+- `POST /api/assets` - Upload asset with auto compression & WebP conversion
+  - Same `convert_webp` parameter available
+  - Returns compression stats in response
+
 ### SEO
 - `GET /api/seo/robots.txt` - Dynamic robots.txt from settings
 - `GET /api/seo/sitemap.xml` - Dynamic sitemap from settings
