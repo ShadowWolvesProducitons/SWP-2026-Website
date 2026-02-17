@@ -76,34 +76,21 @@ const Home = () => {
     }
   };
 
-  // Organization JSON-LD Schema
-  const organizationSchema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "Shadow Wolves Productions",
-    "url": "https://shadowwolvesproductions.com",
-    "logo": "https://shadowwolvesproductions.com/logo.png",
-    "description": "Shadow Wolves Productions exists to create bold, genre-driven stories with teeth — stories that entertain first, but leave a mark long after the screen goes black.",
-    "foundingDate": "2024",
-    "address": {
-      "@type": "PostalAddress",
-      "addressCountry": "AU"
-    }
-  };
-
   return (
     <div className="home-page">
       <Helmet>
-        <title>About | Shadow Wolves Productions</title>
-        <meta name="description" content="Shadow Wolves Productions exists to create bold, genre-driven stories with teeth — stories that entertain first, but leave a mark long after the screen goes black." />
-        <link rel="canonical" href="https://shadowwolvesproductions.com/" />
+        <title>{seoSettings.global_seo?.site_name || 'Shadow Wolves Productions'}</title>
+        <meta name="description" content={seoSettings.global_seo?.default_meta_description || "Shadow Wolves Productions exists to create bold, genre-driven stories with teeth."} />
+        <link rel="canonical" href={getCanonicalUrl('/', seoSettings)} />
       </Helmet>
       
       {/* Organization JSON-LD Schema for SEO */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
-      />
+      {organizationSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+      )}
 
       {/* Hero Section */}
       <section className="hero-section relative flex items-center justify-center overflow-hidden min-h-screen">
