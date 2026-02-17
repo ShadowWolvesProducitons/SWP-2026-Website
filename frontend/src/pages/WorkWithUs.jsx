@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Send, CheckCircle, ChevronDown, Mail, Plus, Minus } from 'lucide-react';
 import { toast } from 'sonner';
 import PageHeader from '../components/PageHeader';
+import { useSeoSettings, getCanonicalUrl } from '../contexts/SeoContext';
 
 // ============ CONSTANTS ============
 const ROLES = ['Writer', 'Director', 'Producer', 'Actor', 'Cinematographer', 'Editor', 'Composer', 'Other'];
