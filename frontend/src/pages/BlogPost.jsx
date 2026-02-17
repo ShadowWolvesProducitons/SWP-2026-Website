@@ -155,7 +155,7 @@ const BlogPost = () => {
         <title>{getMetaTitle()}</title>
         <meta name="description" content={getMetaDescription()} />
         {post.seo_keywords && <meta name="keywords" content={post.seo_keywords} />}
-        {post.canonical_url && <link rel="canonical" href={post.canonical_url} />}
+        <link rel="canonical" href={post.canonical_url || `https://shadowwolvesproductions.com/blog/${post.slug}`} />
         {post.no_index && <meta name="robots" content="noindex, nofollow" />}
         {getOgImage() && <meta property="og:image" content={getOgImage()} />}
         <meta property="og:title" content={getMetaTitle()} />
