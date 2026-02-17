@@ -659,6 +659,65 @@ const NewsletterSection = () => {
   );
 };
 
+// ============ FAQ ACCORDION SECTION ============
+const FAQSection = () => {
+  const [openItems, setOpenItems] = useState({});
+
+  const toggleItem = (index) => {
+    setOpenItems(prev => ({ ...prev, [index]: !prev[index] }));
+  };
+
+  return (
+    <section className="py-12 bg-black" data-testid="faq-section">
+      <div className="container mx-auto px-4 max-w-4xl">
+        <h2 className="text-2xl font-bold text-white mb-8 font-cinzel">FAQ</h2>
+        <div className="space-y-2">
+          {FAQ_ITEMS.map((item, index) => (
+            <div 
+              key={index} 
+              className="border border-gray-800 rounded-lg overflow-hidden"
+              data-testid={`faq-item-${index}`}
+            >
+              <button
+                onClick={() => toggleItem(index)}
+                className="w-full flex items-center justify-between px-5 py-4 text-left bg-smoke-gray/50 hover:bg-smoke-gray/70 transition-colors"
+                aria-expanded={openItems[index]}
+              >
+                <span className="text-white text-sm font-medium pr-4">{item.question}</span>
+                {openItems[index] ? (
+                  <Minus size={18} className="text-electric-blue flex-shrink-0" />
+                ) : (
+                  <Plus size={18} className="text-gray-500 flex-shrink-0" />
+                )}
+              </button>
+              {openItems[index] && (
+                <div className="px-5 py-4 bg-black border-t border-gray-800">
+                  <p className="text-gray-400 text-sm leading-relaxed">
+                    {item.answer}
+                    {item.link && (
+                      <>
+                        {' '}
+                        <a 
+                          href={item.link.url} 
+                          target={item.link.url.startsWith('http') ? '_blank' : undefined}
+                          rel={item.link.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+                          className="text-electric-blue hover:underline"
+                        >
+                          {item.link.text}
+                        </a>
+                      </>
+                    )}
+                  </p>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 // ============ SUCCESS STATE ============
 const SuccessState = ({ type, onReset }) => (
   <div className="text-center py-12" data-testid={`${type}-success`}>
