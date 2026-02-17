@@ -261,8 +261,12 @@ const BlogPostModal = ({ post, onClose, onSave }) => {
 
   // Set editor content when post is loaded or editor is ready
   useEffect(() => {
-    if (editor && post?.content) {
-      editor.commands.setContent(post.content);
+    if (editor && post) {
+      // Set content even if it's empty string - this ensures editor is cleared for new posts
+      const content = post.content || '';
+      if (content) {
+        editor.commands.setContent(content);
+      }
     }
   }, [editor, post]);
 
