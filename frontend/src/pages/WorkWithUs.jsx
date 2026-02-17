@@ -675,7 +675,43 @@ const generateFAQSchema = () => ({
     }
   }))
 });
-      
+
+// ============ NEWSLETTER SECTION ============
+const NewsletterSection = () => {
+  const [email, setEmail] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [subscribed, setSubscribed] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!email) return;
+    setSubmitting(true);
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/newsletter`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, source: 'work_with_us_page' })
+      });
+      if (response.ok) {
+        setSubscribed(true);
+        toast.success('Welcome to the pack!');
+      } else {
+        const error = await response.json();
+        toast.error(error.detail || 'Failed to subscribe');
+      }
+    } catch {
+      toast.error('Connection error. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <section className="py-16 bg-gradient-to-br from-navy-dark via-black to-navy-dark relative overflow-hidden">
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl"></div>
+      </div>
       <div className="container mx-auto px-4 text-center relative z-10">
         <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white font-cinzel">Join the Pack</h2>
         <p className="max-w-2xl text-lg mb-8 mx-auto text-gray-300">
