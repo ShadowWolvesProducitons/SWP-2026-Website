@@ -86,6 +86,10 @@ const AdminStudioTab = () => {
       {activeSubTab === 'settings' && (
         <StudioSettingsSection />
       )}
+
+      {activeSubTab === 'seo' && (
+        <StudioSeoSection />
+      )}
     </div>
   );
 };
