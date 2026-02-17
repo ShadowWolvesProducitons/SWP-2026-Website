@@ -45,6 +45,8 @@ const VISIBILITY = [
 const AdminAssetsTab = () => {
   const [assets, setAssets] = useState([]);
   const [films, setFilms] = useState([]);
+  const [armoryItems, setArmoryItems] = useState([]);
+  const [blogPosts, setBlogPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   
   // Navigation state
@@ -91,10 +93,34 @@ const AdminAssetsTab = () => {
     } catch { console.error('Failed to load films'); }
   }, []);
 
+  // Fetch armory items for folder options
+  const fetchArmoryItems = useCallback(async () => {
+    try {
+      const res = await fetch(`${API}/api/armory`);
+      if (res.ok) {
+        const data = await res.json();
+        setArmoryItems(data);
+      }
+    } catch { console.error('Failed to load armory items'); }
+  }, []);
+
+  // Fetch blog posts for folder options
+  const fetchBlogPosts = useCallback(async () => {
+    try {
+      const res = await fetch(`${API}/api/blog`);
+      if (res.ok) {
+        const data = await res.json();
+        setBlogPosts(data);
+      }
+    } catch { console.error('Failed to load blog posts'); }
+  }, []);
+
   useEffect(() => { 
     fetchAssets(); 
     fetchFilms();
-  }, [fetchAssets, fetchFilms]);
+    fetchArmoryItems();
+    fetchBlogPosts();
+  }, [fetchAssets, fetchFilms, fetchArmoryItems, fetchBlogPosts]);
 
   // Get file type from mime type
   const getFileType = (asset) => {
