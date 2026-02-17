@@ -642,6 +642,8 @@ const BlogPostModal = ({ post, onClose, onSave }) => {
               </div>
             </div>
           )}
+            </>
+          )}
         </div>
 
         {/* Footer */}
