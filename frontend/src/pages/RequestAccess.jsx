@@ -157,7 +157,7 @@ const RequestAccess = () => {
         <meta name="description" content="Request access to the Shadow Wolves Productions Studio Portal" />
       </Helmet>
 
-      <div className="min-h-screen bg-black pt-20 pb-16 px-4" data-testid="request-access-page">
+      <div className="min-h-screen bg-black pt-20 pb-16 px-4 overflow-y-auto" data-testid="request-access-page">
         <div className="container mx-auto max-w-2xl">
           {/* Back to Website Button */}
           <Link 
