@@ -208,7 +208,7 @@ async def request_access(data: RequestAccessInput, request: Request):
     # Send verification email via Resend
     try:
         from services.email_service import send_verification_email
-        verification_url = f"{os.environ.get('FRONTEND_URL', 'https://studio-refactor.preview.emergentagent.com')}/verify-access?token={verification_token}"
+        verification_url = f"{os.environ.get('FRONTEND_URL', 'https://admin-overhaul-2024.preview.emergentagent.com')}/verify-access?token={verification_token}"
         await send_verification_email(data.email, data.full_name, verification_url)
     except Exception as e:
         print(f"Failed to send verification email: {e}")
@@ -246,7 +246,7 @@ async def resend_verification(email: str):
     # Send email
     try:
         from services.email_service import send_verification_email
-        verification_url = f"{os.environ.get('FRONTEND_URL', 'https://studio-refactor.preview.emergentagent.com')}/verify-access?token={verification_token}"
+        verification_url = f"{os.environ.get('FRONTEND_URL', 'https://admin-overhaul-2024.preview.emergentagent.com')}/verify-access?token={verification_token}"
         await send_verification_email(email, user.get("full_name", ""), verification_url)
     except Exception as e:
         print(f"Failed to send verification email: {e}")
@@ -487,7 +487,7 @@ async def forgot_password(data: ForgotPasswordInput):
     # Send reset email
     try:
         from services.email_service import send_password_reset_email
-        reset_url = f"{os.environ.get('FRONTEND_URL', 'https://studio-refactor.preview.emergentagent.com')}/reset-password?token={reset_token}"
+        reset_url = f"{os.environ.get('FRONTEND_URL', 'https://admin-overhaul-2024.preview.emergentagent.com')}/reset-password?token={reset_token}"
         await send_password_reset_email(data.email, user.get("full_name", ""), reset_url)
     except Exception as e:
         print(f"Failed to send reset email: {e}")
