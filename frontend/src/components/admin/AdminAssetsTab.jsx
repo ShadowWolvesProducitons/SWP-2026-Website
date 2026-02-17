@@ -435,10 +435,15 @@ const AdminAssetsTab = () => {
         </div>
       )}
 
-      {/* Folder View (when in Films collection and no folder selected) */}
-      {activeCollection === 'films' && !activeFolder && (
+      {/* Folder View (when in a collection with folders and no folder selected) */}
+      {activeCollection !== 'all' && !activeFolder && folders.length > 0 && (
         <div className="mb-6">
-          <h3 className="text-gray-400 text-sm font-mono uppercase tracking-widest mb-3">Film Folders</h3>
+          <h3 className="text-gray-400 text-sm font-mono uppercase tracking-widest mb-3">
+            {activeCollection === 'films' ? 'Film Folders' : 
+             activeCollection === 'armory' ? 'Armory Product Folders' :
+             activeCollection === 'den' ? 'Blog Post Folders' :
+             activeCollection === 'website' ? 'Website Folders' : 'Folders'}
+          </h3>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
             {folders.map(folder => (
               <button
@@ -461,7 +466,7 @@ const AdminAssetsTab = () => {
             ))}
             {folders.length === 0 && (
               <div className="col-span-full text-center py-8 text-gray-500">
-                No films found. Assets uploaded to Films will appear here.
+                No folders found.
               </div>
             )}
           </div>
