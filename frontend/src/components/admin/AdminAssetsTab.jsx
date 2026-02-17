@@ -655,6 +655,8 @@ const AdminAssetsTab = () => {
         <EditAssetModal
           asset={editingAsset}
           films={films}
+          armoryItems={armoryItems}
+          blogPosts={blogPosts}
           onClose={() => setEditingAsset(null)}
           onSave={(updates) => handleUpdateAsset(editingAsset, updates)}
         />
