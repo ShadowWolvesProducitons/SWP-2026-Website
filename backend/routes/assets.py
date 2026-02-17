@@ -80,7 +80,7 @@ async def upload_asset(
     # Parse categories JSON
     try:
         category_list = json.loads(categories) if categories else []
-    except:
+    except json.JSONDecodeError:
         category_list = []
 
     asset = {
