@@ -14,6 +14,7 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import LeadMagnetPopup from "./components/LeadMagnetPopup";
 import { Toaster } from "./components/ui/sonner";
+import { SeoProvider } from "./contexts/SeoContext";
 
 // Studio Portal Pages
 import RequestAccess from "./pages/RequestAccess";
