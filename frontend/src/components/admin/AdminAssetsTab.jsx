@@ -96,7 +96,7 @@ const AdminAssetsTab = () => {
   // Fetch armory items for folder options
   const fetchArmoryItems = useCallback(async () => {
     try {
-      const res = await fetch(`${API}/api/armory`);
+      const res = await fetch(`${API}/api/den-items`);
       if (res.ok) {
         const data = await res.json();
         setArmoryItems(data);
