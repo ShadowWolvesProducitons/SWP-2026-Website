@@ -156,16 +156,20 @@ const Films = () => {
     <div className="films-page pt-20">
       {/* SEO Meta for film detail route */}
       {selectedFilm ? (
-        <Helmet encodeSpecialCharacters={false}>
-          <title>{selectedFilm.title} | Shadow Wolves Productions</title>
-          {selectedFilm.logline && (
-            <meta name="description" content={selectedFilm.logline.substring(0, 160)} />
-          )}
-          <link rel="canonical" href={`https://shadowwolvesproductions.com/films/${selectedFilm.slug || selectedFilm.id}`} />
-          <script type="application/ld+json">
-            {JSON.stringify(generateMovieSchema(selectedFilm))}
-          </script>
-        </Helmet>
+        <>
+          <Helmet>
+            <title>{selectedFilm.title} | Shadow Wolves Productions</title>
+            {selectedFilm.logline && (
+              <meta name="description" content={selectedFilm.logline.substring(0, 160)} />
+            )}
+            <link rel="canonical" href={`https://shadowwolvesproductions.com/films/${selectedFilm.slug || selectedFilm.id}`} />
+          </Helmet>
+          {/* Movie JSON-LD Schema for SEO */}
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(generateMovieSchema(selectedFilm)) }}
+          />
+        </>
       ) : (
         <Helmet>
           <title>Films | Shadow Wolves Productions</title>
