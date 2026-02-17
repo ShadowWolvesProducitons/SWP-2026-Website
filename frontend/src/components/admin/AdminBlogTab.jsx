@@ -274,8 +274,20 @@ const BlogPostModal = ({ post, onClose, onSave }) => {
     }
   }, [formData.title, slugManuallyEdited]);
 
-  const openAssetPicker = () => setAssetPickerOpen(true);
-  const handleAssetSelect = (url) => { set('cover_image_url', url); toast.success('Image selected'); };
+  const [assetPickerFor, setAssetPickerFor] = useState('cover'); // 'cover' or 'inline'
+  
+  const openAssetPicker = () => { setAssetPickerFor('cover'); setAssetPickerOpen(true); };
+  const handleAssetSelect = (url) => {
+    if (assetPickerFor === 'inline') {
+      // Insert into editor
+      editor?.chain().focus().setImage({ src: url.startsWith('http') ? url : `${API}${url}` }).run();
+      toast.success('Image inserted');
+    } else {
+      // Cover image
+      set('cover_image_url', url);
+      toast.success('Cover image selected');
+    }
+  };
 
   const uploadFile = (e) => {
     const file = e.target.files[0]; if (!file) return;
