@@ -346,7 +346,10 @@ const AdminStudioPortalTab = () => {
 
       if (projectsRes.ok) {
         const data = await projectsRes.json();
-        setProjects(data.films || []);
+        // Filter to only show films/apps with studio_access_enabled
+        const allProjects = data.films || data || [];
+        const studioProjects = allProjects.filter(p => p.studio_access_enabled === true);
+        setProjects(studioProjects);
       }
 
       if (logsRes.ok) {
