@@ -41,7 +41,8 @@ const Blog = () => {
     <div className="blog-page pt-20 min-h-screen bg-black">
       <Helmet>
         <title>The Den | Shadow Wolves Productions</title>
-        <meta name="description" content="Industry notes, studio updates, and what we're building next." />
+        <meta name="description" content="Industry notes, studio updates, and what we're building next. Casting calls, crew needs, production lessons, and tools we actually use." />
+        <link rel="canonical" href="https://shadowwolvesproductions.com/blog" />
       </Helmet>
 
       {/* Page Header */}
