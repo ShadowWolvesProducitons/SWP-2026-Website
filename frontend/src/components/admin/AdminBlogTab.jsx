@@ -605,6 +605,97 @@ const BlogPostModal = ({ post, onClose, onSave }) => {
       {/* Asset Picker */}
       <AssetPicker isOpen={assetPickerOpen} onClose={() => setAssetPickerOpen(false)} onSelect={handleAssetSelect} assetType="image" title="Select Cover Image" />
 
+      {/* Image Insert Modal */}
+      {imageInsertOpen && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/80" onClick={() => setImageInsertOpen(false)}>
+          <div className="bg-smoke-gray border border-gray-800 rounded-lg w-full max-w-md" onClick={e => e.stopPropagation()} data-testid="image-insert-modal">
+            <div className="flex items-center justify-between p-4 border-b border-gray-800">
+              <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                <Image size={18} className="text-electric-blue" />
+                Insert Image
+              </h3>
+              <button onClick={() => setImageInsertOpen(false)} className="p-1 text-gray-400 hover:text-white">
+                <X size={20} />
+              </button>
+            </div>
+            <div className="p-4 space-y-4">
+              {/* Upload Option */}
+              <div>
+                <p className="text-gray-400 text-sm mb-2">Upload from device</p>
+                <label className="flex items-center justify-center gap-2 px-4 py-6 bg-black border-2 border-dashed border-gray-700 rounded-lg cursor-pointer hover:border-electric-blue/50 transition-colors">
+                  <Upload size={20} className="text-gray-500" />
+                  <span className="text-gray-400">{uploadingImage ? 'Uploading...' : 'Click to upload'}</span>
+                  <input type="file" accept="image/*" className="hidden" disabled={uploadingImage} onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    setUploadingImage(true);
+                    const fd = new FormData();
+                    fd.append('file', file);
+                    fd.append('source', 'blog');
+                    try {
+                      const r = await fetch(`${API}/api/upload/image`, { method: 'POST', body: fd });
+                      if (r.ok) {
+                        const data = await r.json();
+                        editor?.chain().focus().setImage({ src: data.url }).run();
+                        setImageInsertOpen(false);
+                        toast.success('Image inserted');
+                      } else {
+                        toast.error('Upload failed');
+                      }
+                    } catch { toast.error('Upload error'); }
+                    finally { setUploadingImage(false); }
+                  }} />
+                </label>
+              </div>
+
+              {/* Asset Library */}
+              <div>
+                <p className="text-gray-400 text-sm mb-2">Or browse from Asset Library</p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setImageInsertOpen(false);
+                    setAssetPickerOpen(true);
+                  }}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-electric-blue/10 border border-electric-blue/30 rounded-lg text-electric-blue hover:bg-electric-blue/20 transition-all"
+                >
+                  <FolderOpen size={16} />
+                  Browse Asset Library
+                </button>
+              </div>
+
+              {/* URL Input */}
+              <div>
+                <p className="text-gray-400 text-sm mb-2">Or enter image URL</p>
+                <div className="flex gap-2">
+                  <input
+                    type="url"
+                    value={imageUrl}
+                    onChange={e => setImageUrl(e.target.value)}
+                    placeholder="https://example.com/image.jpg"
+                    className="flex-1 bg-black border border-gray-700 rounded-lg px-3 py-2 text-white text-sm focus:border-electric-blue focus:outline-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (imageUrl.trim()) {
+                        editor?.chain().focus().setImage({ src: imageUrl }).run();
+                        setImageUrl('');
+                        setImageInsertOpen(false);
+                        toast.success('Image inserted');
+                      }
+                    }}
+                    className="px-4 py-2 bg-electric-blue text-white rounded-lg text-sm"
+                  >
+                    Insert
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* AI Generate All Overlay */}
       {aiOverlayOpen && aiResult && (
         <AIResultOverlay
