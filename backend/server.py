@@ -32,6 +32,7 @@ from routes.studio_access import router as studio_access_router, set_db as set_s
 from routes.studio_portal_auth import router as studio_portal_auth_router, set_db as set_studio_portal_auth_db
 from routes.studio_portal_data import router as studio_portal_data_router, set_db as set_studio_portal_data_db
 from routes.studio_portal_admin import router as studio_portal_admin_router, set_db as set_studio_portal_admin_db
+from routes.seo import router as seo_router, set_db as set_seo_db
 
 
 ROOT_DIR = Path(__file__).parent
