@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Send, CheckCircle, ChevronDown, Mail, Plus, Minus } from 'lucide-react';
+import { Send, CheckCircle, ChevronDown, Mail } from 'lucide-react';
 import { toast } from 'sonner';
 import PageHeader from '../components/PageHeader';
 
@@ -548,170 +548,7 @@ const NewsletterSection = () => {
         <div className="absolute top-0 right-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl"></div>
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl"></div>
       </div>
-
-// ============ FAQ DATA ============
-const FAQ_ITEMS = [
-  {
-    question: "What kind of projects are you looking for?",
-    answer: "We develop and produce bold, genre-driven stories with teeth. Horror, thriller, psychological, slasher, supernatural, crime, true-crime and war-leaning drama are in our wheelhouse. If it's safe, predictable, or trying to please everyone, it's probably not us."
-  },
-  {
-    question: "Do you accept unsolicited scripts or attachments?",
-    answer: "Not upfront. We don't accept unsolicited attachments for legal and confidentiality reasons. If there's alignment, we'll request materials securely."
-  },
-  {
-    question: "What should I submit first?",
-    answer: "Start with a strong logline and a link to your pitch materials (deck, lookbook, or teaser). Keep it lean. If it hooks us, we'll ask for the next layer."
-  },
-  {
-    question: "What formats do you work with?",
-    answer: "Short films, feature films, series, and documentaries (selectively). Choose the format that best serves the story, not the one that feels easiest to \"get made.\""
-  },
-  {
-    question: "I'm cast/crew. How do I get into your database?",
-    answer: "CineConnect is our upcoming cast & crew network. Register your interest and we'll notify you when it opens.",
-    link: { text: "CineConnect", url: "https://www.cognitoforms.com/ShadowWolvesProductions/CastCrewHub" }
-  },
-  {
-    question: "Do you work with investors and partners?",
-    answer: "Yes, through our Studio Access Portal. Public info is designed to intrigue. If there's alignment, we open the vault on everything. If you're interested in investment, you can",
-    link: { text: "REQUEST ACCESS", url: "/request-access" }
-  },
-  {
-    question: "How long does it take to hear back?",
-    answer: "If it's a fit, you'll hear from us. If it's not, you probably won't. We keep our focus tight so we can actually build."
-  },
-  {
-    question: "Can I submit multiple projects?",
-    answer: "Submit your best one first. If it connects, we'll open the door to more."
-  },
-  {
-    question: "Aside from films, what else do you do?",
-    answer: "We build more than projects. We're developing a studio ecosystem — tools, resources, and platforms designed to support independent creators. That includes production infrastructure, development systems, and creator-focused software under The Armory."
-  },
-  {
-    question: "What is The Den?",
-    answer: "The Den is our working studio journal. It includes casting calls, crew intel, production lessons, industry news, and tools we actually use. Think of it like a blog with teeth."
-  },
-  {
-    question: "What is The Armory?",
-    answer: "The Armory is our creative arsenal — premium apps, templates, and resources built from real-world production experience. These are tools we use ourselves, now available to other filmmakers."
-  },
-  {
-    question: "Is Shadow Wolves just horror?",
-    answer: "No. Genre is our backbone, but not our limit. We prioritise bold, commercially viable stories across film and series. If it's taboo then it's probably worth telling."
-  }
-];
-
-// ============ FAQ ACCORDION SECTION ============
-const FAQSection = () => {
-  const [openItems, setOpenItems] = useState({});
-
-  const toggleItem = (index) => {
-    setOpenItems(prev => ({ ...prev, [index]: !prev[index] }));
-  };
-
-  return (
-    <section className="py-12 bg-black" data-testid="faq-section">
-      <div className="container mx-auto px-4 max-w-4xl">
-        <h2 className="text-2xl font-bold text-white mb-8 font-cinzel">FAQ</h2>
-        <div className="space-y-2">
-          {FAQ_ITEMS.map((item, index) => (
-            <div 
-              key={index} 
-              className="border border-gray-800 rounded-lg overflow-hidden"
-              data-testid={`faq-item-${index}`}
-            >
-              <button
-                onClick={() => toggleItem(index)}
-                className="w-full flex items-center justify-between px-5 py-4 text-left bg-smoke-gray/50 hover:bg-smoke-gray/70 transition-colors"
-                aria-expanded={openItems[index]}
-              >
-                <span className="text-white text-sm font-medium pr-4">{item.question}</span>
-                {openItems[index] ? (
-                  <Minus size={18} className="text-electric-blue flex-shrink-0" />
-                ) : (
-                  <Plus size={18} className="text-gray-500 flex-shrink-0" />
-                )}
-              </button>
-              {openItems[index] && (
-                <div className="px-5 py-4 bg-black border-t border-gray-800">
-                  <p className="text-gray-400 text-sm leading-relaxed">
-                    {item.answer}
-                    {item.link && (
-                      <>
-                        {' '}
-                        <a 
-                          href={item.link.url} 
-                          target={item.link.url.startsWith('http') ? '_blank' : undefined}
-                          rel={item.link.url.startsWith('http') ? 'noopener noreferrer' : undefined}
-                          className="text-electric-blue hover:underline"
-                        >
-                          {item.link.text}
-                        </a>
-                      </>
-                    )}
-                  </p>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-// Generate FAQ JSON-LD Schema
-const generateFAQSchema = () => ({
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": FAQ_ITEMS.map(item => ({
-    "@type": "Question",
-    "name": item.question,
-    "acceptedAnswer": {
-      "@type": "Answer",
-      "text": item.answer + (item.link ? ` ${item.link.text}: ${item.link.url}` : '')
-    }
-  }))
-});
-
-// ============ NEWSLETTER SECTION ============
-const NewsletterSection = () => {
-  const [email, setEmail] = useState('');
-  const [submitting, setSubmitting] = useState(false);
-  const [subscribed, setSubscribed] = useState(false);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!email) return;
-    setSubmitting(true);
-    try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/newsletter`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, source: 'work_with_us_page' })
-      });
-      if (response.ok) {
-        setSubscribed(true);
-        toast.success('Welcome to the pack!');
-      } else {
-        const error = await response.json();
-        toast.error(error.detail || 'Failed to subscribe');
-      }
-    } catch {
-      toast.error('Connection error. Please try again.');
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  return (
-    <section className="py-16 bg-gradient-to-br from-navy-dark via-black to-navy-dark relative overflow-hidden">
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl"></div>
-      </div>
+      
       <div className="container mx-auto px-4 text-center relative z-10">
         <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white font-cinzel">Join the Pack</h2>
         <p className="max-w-2xl text-lg mb-8 mx-auto text-gray-300">
@@ -804,10 +641,6 @@ const WorkWithUs = () => {
       <Helmet>
         <title>Work With Us | Shadow Wolves Productions</title>
         <meta name="description" content="Submit your project or get in touch with Shadow Wolves Productions. We're selectively open to original genre scripts, proof-of-concepts, and strategic collaborations." />
-        <link rel="canonical" href="https://shadowwolvesproductions.com/work-with-us" />
-        <script type="application/ld+json">
-          {JSON.stringify(generateFAQSchema())}
-        </script>
       </Helmet>
 
       {/* Hero Section */}
@@ -890,9 +723,6 @@ const WorkWithUs = () => {
           </div>
         </div>
       </section>
-
-      {/* FAQ Section */}
-      <FAQSection />
 
       {/* Newsletter Section */}
       <NewsletterSection />
