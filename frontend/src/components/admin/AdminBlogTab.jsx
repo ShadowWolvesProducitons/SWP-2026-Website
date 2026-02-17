@@ -232,6 +232,7 @@ const BlogPostModal = ({ post, onClose, onSave }) => {
   const [assetPickerOpen, setAssetPickerOpen] = useState(false);
   const [slugManuallyEdited, setSlugManuallyEdited] = useState(!!post?.slug);
   const [generatingCover, setGeneratingCover] = useState(false);
+  const [loadingPost, setLoadingPost] = useState(false);
 
   // AI state
   const [aiOverlayOpen, setAiOverlayOpen] = useState(false);
@@ -244,6 +245,36 @@ const BlogPostModal = ({ post, onClose, onSave }) => {
   const [uploadingImage, setUploadingImage] = useState(false);
 
   const set = (key, val) => setFormData(s => ({ ...s, [key]: val }));
+
+  // Fetch complete post data when editing (list view excludes content for optimization)
+  useEffect(() => {
+    if (post?.id) {
+      setLoadingPost(true);
+      fetch(`${API}/api/blog/${post.id}`)
+        .then(r => r.ok ? r.json() : null)
+        .then(fullPost => {
+          if (fullPost) {
+            setFormData({
+              title: fullPost.title || '',
+              slug: fullPost.slug || '',
+              status: fullPost.status || 'Draft',
+              featured: fullPost.featured || false,
+              content: fullPost.content || '',
+              excerpt: fullPost.excerpt || '',
+              cta_text: fullPost.cta_text || '',
+              cta_microcopy: fullPost.cta_microcopy || '',
+              tags: fullPost.tags || [],
+              cover_image_url: fullPost.cover_image_url || '',
+              seo_title: fullPost.seo_title || '',
+              seo_description: fullPost.seo_description || '',
+              seo_keywords: fullPost.seo_keywords || '',
+            });
+          }
+        })
+        .catch(console.error)
+        .finally(() => setLoadingPost(false));
+    }
+  }, [post?.id]);
 
   const editor = useEditor({
     extensions: [
