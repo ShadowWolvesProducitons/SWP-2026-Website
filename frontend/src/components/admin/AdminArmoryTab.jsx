@@ -188,6 +188,16 @@ const ProductModal = ({ item, onClose, onSave }) => {
       .then(r => r.ok ? r.json() : Promise.reject()).then(d => { set('screenshots', [...formData.screenshots, d.url]); toast.success('Added'); })
       .catch(() => toast.error('Upload failed')).finally(() => setUploading(false));
   };
+  
+  const uploadDownloadFile = (e) => {
+    const file = e.target.files[0]; if (!file) return;
+    const fd = new FormData(); fd.append('file', file);
+    fd.append('source', 'armory'); fd.append('tags', `armory,${formData.item_type},download`);
+    setUploading(true);
+    fetch(`${API}/api/upload/file`, { method: 'POST', body: fd })
+      .then(r => r.ok ? r.json() : Promise.reject()).then(d => { set('file_url', d.url); toast.success('File uploaded'); })
+      .catch(() => toast.error('Upload failed')).finally(() => setUploading(false));
+  };
 
   const save = async () => {
     if (!formData.title.trim()) { toast.error('Title is required'); return; }
