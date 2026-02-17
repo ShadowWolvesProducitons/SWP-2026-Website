@@ -57,7 +57,7 @@ async def get_sitemap_xml():
     
     # Dynamic film pages
     film_urls = []
-    if db:
+    if db is not None:
         try:
             films = await db.films.find(
                 {"is_archived": {"$ne": True}},
@@ -76,7 +76,7 @@ async def get_sitemap_xml():
     
     # Dynamic blog post pages (published only)
     blog_urls = []
-    if db:
+    if db is not None:
         try:
             posts = await db.blog_posts.find(
                 {"status": "Published", "is_archived": {"$ne": True}},
@@ -95,7 +95,7 @@ async def get_sitemap_xml():
     
     # Dynamic armory product pages (published only)
     armory_urls = []
-    if db:
+    if db is not None:
         try:
             items = await db.den_items.find(
                 {"is_archived": {"$ne": True}},
