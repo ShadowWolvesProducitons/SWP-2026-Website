@@ -180,3 +180,10 @@ Build a comprehensive "Studio Access Portal" and modernize the public-facing web
 2. Configure production site URL in SEO settings
 3. Add social profile links in Organization Schema
 4. Test sitemap submission to Google Search Console
+
+## Image Compression Stats
+Typical compression results observed:
+- **JPG → WebP**: 80-95% file size reduction
+- **PNG → WebP**: 70-90% file size reduction
+- **JPG (no WebP)**: 50-80% file size reduction
+- **PNG (no WebP)**: 20-50% file size reduction
