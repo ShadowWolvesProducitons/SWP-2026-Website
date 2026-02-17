@@ -190,7 +190,12 @@ const ProductPage = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {product.screenshots.map((s, i) => (
                     <div key={i} className="aspect-video rounded-lg overflow-hidden bg-smoke-gray border border-gray-800">
-                      <img src={imgSrc(s)} alt={`${product.title} screenshot ${i + 1}`} className="w-full h-full object-cover" />
+                      <img 
+                        src={imgSrc(s)} 
+                        alt={`${product.title} screenshot ${i + 1}`} 
+                        className="w-full h-full object-cover" 
+                        loading="lazy"
+                      />
                     </div>
                   ))}
                 </div>
