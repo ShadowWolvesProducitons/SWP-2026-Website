@@ -127,9 +127,11 @@ const AppContent = () => {
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
-        <AppContent />
-      </BrowserRouter>
+      <SeoProvider>
+        <BrowserRouter>
+          <AppContent />
+        </BrowserRouter>
+      </SeoProvider>
     </div>
   );
 }
