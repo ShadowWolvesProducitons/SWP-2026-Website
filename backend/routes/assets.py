@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from datetime import datetime, timezone
 import uuid
 import os
+import json
 from pathlib import Path
 
 router = APIRouter(prefix="/assets", tags=["assets"])
@@ -18,8 +19,11 @@ def set_db(database):
 
 class AssetCreate(BaseModel):
     filename: str
-    asset_type: str = "other"  # image, pdf, script, deck, ebook, other
+    asset_type: str = "other"  # image, pdf, script, deck, ebook, other (legacy field)
+    categories: List[str] = []  # deck, script, poster, still, ebook, other (new multi-select)
     tags: List[str] = []
+    collection: str = "website"  # films, website, armory, den
+    folder: Optional[str] = None  # film/app id for folder organization
     related_project_id: Optional[str] = None
     visibility: str = "admin_only"  # public, investor_only, admin_only
     notes: Optional[str] = None
@@ -27,7 +31,10 @@ class AssetCreate(BaseModel):
 
 class AssetUpdate(BaseModel):
     asset_type: Optional[str] = None
+    categories: Optional[List[str]] = None
     tags: Optional[List[str]] = None
+    collection: Optional[str] = None
+    folder: Optional[str] = None
     related_project_id: Optional[str] = None
     visibility: Optional[str] = None
     notes: Optional[str] = None
