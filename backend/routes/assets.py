@@ -44,8 +44,11 @@ class AssetUpdate(BaseModel):
 async def upload_asset(
     file: UploadFile = File(...),
     asset_type: str = Form("other"),
+    categories: str = Form("[]"),  # JSON array string
     tags: str = Form(""),
     visibility: str = Form("admin_only"),
+    collection: str = Form("website"),
+    folder: str = Form(""),
     related_project_id: str = Form(""),
     notes: str = Form("")
 ):
@@ -73,14 +76,23 @@ async def upload_asset(
     file_url = f"/api/upload/images/{unique_filename}" if is_image else f"/api/upload/files/{unique_filename}"
 
     tag_list = [t.strip() for t in tags.split(",") if t.strip()] if tags else []
+    
+    # Parse categories JSON
+    try:
+        category_list = json.loads(categories) if categories else []
+    except:
+        category_list = []
 
     asset = {
         "id": str(uuid.uuid4()),
         "filename": unique_filename,
         "original_name": file.filename,
         "asset_type": asset_type,
+        "categories": category_list,
         "tags": tag_list,
         "visibility": visibility,
+        "collection": collection or "website",
+        "folder": folder or None,
         "related_project_id": related_project_id or None,
         "notes": notes or None,
         "file_url": file_url,
