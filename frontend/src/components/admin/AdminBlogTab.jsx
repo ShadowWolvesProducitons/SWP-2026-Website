@@ -105,8 +105,8 @@ const AdminBlogTab = () => {
                 {post.status === 'Published' && (
                   <button onClick={() => setNewsletterPost(post)} className="p-2 text-gray-400 hover:text-green-400" title="Send as Newsletter" data-testid={`newsletter-btn-${post.id}`}><Send size={18} /></button>
                 )}
-                <button onClick={() => { setEditingPost(post); setIsModalOpen(true); }} className="p-2 text-gray-400 hover:text-electric-blue" title="Edit"><Edit2 size={18} /></button>
-                <button onClick={() => handleDelete(post)} className="p-2 text-gray-400 hover:text-red-400" title="Archive"><Trash2 size={18} /></button>
+                <button onClick={() => { setEditingPost(post); setIsModalOpen(true); }} className="p-2 text-gray-400 hover:text-electric-blue" title="Edit" data-testid={`edit-btn-${post.id}`}><Edit2 size={18} /></button>
+                <button onClick={() => handleDelete(post)} className="p-2 text-gray-400 hover:text-red-400" title="Archive" data-testid={`delete-btn-${post.id}`}><Trash2 size={18} /></button>
               </div>
             </div>
           ))}
