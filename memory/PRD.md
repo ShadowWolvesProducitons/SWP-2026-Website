@@ -18,12 +18,14 @@ Build a comprehensive "Studio Access Portal" and modernize the public-facing web
 - Blog editor with rich text (Tiptap)
 - Product management for The Armory
 - User management for Studio Portal access
+- **NEW: SEO & Indexing Settings** under Studio > SEO
 
 ### 3. Public Website
 - Films page with route-driven modal (`/films/:slug`)
 - The Den (Blog) with SEO optimization
 - Work With Us page with FAQ accordion
 - SEO foundations (robots.txt, sitemap.xml, JSON-LD schemas)
+- Image lazy-loading for performance
 
 ## What's Been Implemented
 
@@ -45,24 +47,28 @@ Build a comprehensive "Studio Access Portal" and modernize the public-facing web
 #### FAQ Accordion Section
 - [x] 12 FAQ items with accordion functionality
 - [x] Positioned after CineConnect, before Newsletter
-- [x] JSON-LD FAQPage schema for SEO
+- [x] JSON-LD FAQPage schema for SEO (admin controllable)
 
-#### SEO Foundations
-- [x] robots.txt (static in public/ + API endpoint)
-- [x] sitemap.xml (static + dynamic API at `/api/seo/sitemap.xml`)
-- [x] Organization JSON-LD schema on Home page
-- [x] Movie JSON-LD schema on Films detail pages
-- [x] FAQPage JSON-LD schema on Work With Us page
-- [x] Canonical URLs on all major pages
-- [x] Meta titles and descriptions
+#### SEO Admin Controls (NEW)
+- [x] **Global SEO Settings**: Site name, URL, meta title template, description, OG image
+- [x] **Organization Schema**: Org name, logo, sameAs links, enable/disable Movie & FAQ schemas
+- [x] **Robots.txt Settings**: Allow all toggle, disallow paths, custom override
+- [x] **Sitemap Settings**: Enable toggle, include films/blog/armory, exclude drafts/archived
+- [x] **Test Rich Results**: Button opens Google Rich Results Test
+- [x] **Preview links**: Direct links to preview robots.txt and sitemap.xml
 
-### In Progress
-- [ ] Image lazy-loading optimization
-- [ ] Internal linking audit
+#### Image Optimization
+- [x] Lazy loading on blog images
+- [x] Lazy loading on product page images
+- [x] Lazy loading on TheDen product cards
+
+#### Dynamic SEO Endpoints
+- [x] `/api/seo/robots.txt` - Reads from admin settings
+- [x] `/api/seo/sitemap.xml` - Dynamic generation based on settings
+- [x] `/api/site-settings/seo` - GET/PUT for SEO configuration
 
 ### Backlog (P2/P3)
-- [ ] User Management multi-project access UI (redesign to dropdown with checkboxes)
-- [ ] Build Updates Feed for user-facing Studio Portal
+- [ ] Studio Portal User Updates Feed (deferred)
 - [ ] E-commerce Integration (Stripe for The Armory)
 - [ ] CineConnect Database build-out
 
@@ -74,6 +80,7 @@ Build a comprehensive "Studio Access Portal" and modernize the public-facing web
 - react-helmet-async for SEO
 - Tiptap rich text editor
 - Framer Motion for animations
+- **SeoContext** for centralized SEO settings
 
 ### Backend
 - FastAPI (Python)
@@ -82,16 +89,20 @@ Build a comprehensive "Studio Access Portal" and modernize the public-facing web
 - File upload with watermarking (PyPDF, ReportLab)
 
 ### Key Files
+- `/app/frontend/src/contexts/SeoContext.jsx` - SEO settings context and helpers
+- `/app/frontend/src/components/admin/AdminSeoSettingsTab.jsx` - SEO admin UI
 - `/app/frontend/src/pages/WorkWithUs.jsx` - FAQ section
 - `/app/frontend/src/components/admin/AdminAssetsTab.jsx` - Asset library
-- `/app/frontend/src/components/admin/AdminBlogTab.jsx` - Blog editor
-- `/app/backend/routes/seo.py` - SEO API endpoints
+- `/app/backend/routes/seo.py` - Dynamic SEO endpoints
+- `/app/backend/routes/site_settings.py` - SEO settings storage
 
 ## API Endpoints
 
 ### SEO
-- `GET /api/seo/robots.txt` - Robots.txt content
-- `GET /api/seo/sitemap.xml` - Dynamic sitemap XML
+- `GET /api/seo/robots.txt` - Dynamic robots.txt from settings
+- `GET /api/seo/sitemap.xml` - Dynamic sitemap from settings
+- `GET /api/site-settings/seo` - Get SEO settings
+- `PUT /api/site-settings/seo` - Update SEO settings
 
 ### Blog
 - `GET /api/blog` - List posts (content excluded)
@@ -108,13 +119,48 @@ Build a comprehensive "Studio Access Portal" and modernize the public-facing web
 - `den_items` - Armory products
 - `assets` - File assets with collection/folder metadata
 - `studio_users` - Portal user accounts
+- `site_settings` - SEO and site configuration (type: "global")
+
+## SEO Settings Schema
+```json
+{
+  "global_seo": {
+    "site_name": "string",
+    "site_url": "string",
+    "default_meta_title_template": "string",
+    "default_meta_description": "string",
+    "default_og_image_url": "string",
+    "focus_keyword_default": "string"
+  },
+  "organization_schema": {
+    "org_name": "string",
+    "org_logo_url": "string",
+    "org_sameas_links": "string (newline-separated)",
+    "enable_movie_schema": "boolean",
+    "enable_faq_schema": "boolean"
+  },
+  "robots": {
+    "robots_allow_all": "boolean",
+    "robots_disallow_paths": "string (newline-separated)",
+    "robots_custom_override": "string"
+  },
+  "sitemap": {
+    "sitemap_enabled": "boolean",
+    "include_films": "boolean",
+    "include_blog": "boolean",
+    "include_armory": "boolean",
+    "exclude_drafts": "boolean",
+    "exclude_archived": "boolean"
+  }
+}
+```
 
 ## Credentials
 - Admin URL: `/admin`
 - Admin Password: `shadowwolves2024`
 
 ## Next Steps
-1. Test all JSON-LD schemas with Google Rich Results Test
-2. Implement image lazy-loading
-3. Review internal linking structure
-4. Consider multi-project access UI redesign
+1. Validate JSON-LD with Google Rich Results Test (button available in admin)
+2. Configure production site URL in SEO settings
+3. Add social profile links in Organization Schema
+4. Test sitemap submission to Google Search Console
