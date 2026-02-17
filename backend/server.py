@@ -131,8 +131,8 @@ api_router.include_router(studio_portal_auth_router)
 api_router.include_router(studio_portal_data_router)
 api_router.include_router(studio_portal_admin_router)
 
-# SEO routes (served directly without /api prefix for crawlers)
-app.include_router(seo_router)
+# SEO routes
+api_router.include_router(seo_router)
 
 # Include the main API router
 app.include_router(api_router)
