@@ -5,8 +5,10 @@ import { ArrowRight, Award, Users, Film, Play, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import ServicesModal from '../components/ServicesModal';
 import SupportModal from '../components/SupportModal';
+import { useSeoSettings, generateOrganizationSchema, getCanonicalUrl } from '../contexts/SeoContext';
 
 const Home = () => {
+  const seoSettings = useSeoSettings();
   const [servicesModalOpen, setServicesModalOpen] = useState(false);
   const [activeServiceKey, setActiveServiceKey] = useState(null);
   const [supportModalOpen, setSupportModalOpen] = useState(false);
@@ -27,6 +29,9 @@ const Home = () => {
     setServicesModalOpen(false);
     setTimeout(() => setActiveServiceKey(null), 200);
   };
+
+  // Generate Organization schema from settings
+  const organizationSchema = generateOrganizationSchema(seoSettings);
 
   const openSupportModal = (key) => {
     setActiveSupportKey(key);
