@@ -667,6 +667,7 @@ const BlogPostModal = ({ post, onClose, onSave }) => {
                   type="button"
                   onClick={() => {
                     setImageInsertOpen(false);
+                    setAssetPickerFor('inline');
                     setAssetPickerOpen(true);
                   }}
                   className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-electric-blue/10 border border-electric-blue/30 rounded-lg text-electric-blue hover:bg-electric-blue/20 transition-all"
