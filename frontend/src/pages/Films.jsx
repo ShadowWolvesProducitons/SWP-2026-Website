@@ -4,11 +4,13 @@ import { ChevronDown, X, RefreshCw } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import FilmModal from '../components/FilmModal';
 import PageHeader from '../components/PageHeader';
+import { useSeoSettings, generateMovieSchema, getCanonicalUrl } from '../contexts/SeoContext';
 
 // Status options for filter chips
 const STATUS_OPTIONS = ['All', 'Development', 'Packaging', 'Pre-Production', 'Filming', 'Post-Production', 'Marketing', 'Released'];
 
 const Films = () => {
+  const seoSettings = useSeoSettings();
   const { slug } = useParams();
   const navigate = useNavigate();
   const [films, setFilms] = useState([]);
