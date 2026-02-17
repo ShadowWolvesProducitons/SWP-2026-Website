@@ -63,9 +63,15 @@ async def upload_image(
     file: UploadFile = File(...),
     auto_library: bool = Form(True),
     source: str = Form("upload"),
-    tags: str = Form("")
+    tags: str = Form(""),
+    convert_webp: bool = Form(True)
 ):
-    """Upload an image file. Auto-adds to asset library by default."""
+    """
+    Upload an image file with automatic compression and WebP conversion.
+    Auto-adds to asset library by default.
+    
+    - convert_webp: If True, converts JPG/PNG/GIF to WebP format (default: True)
+    """
     # Validate file extension
     ext = Path(file.filename).suffix.lower()
     if ext not in ALLOWED_EXTENSIONS:
@@ -74,24 +80,37 @@ async def upload_image(
             detail=f"File type not allowed. Allowed types: {', '.join(ALLOWED_EXTENSIONS)}"
         )
     
-    # Generate unique filename
-    unique_filename = f"{uuid.uuid4()}{ext}"
-    file_path = UPLOAD_DIR / unique_filename
-    
-    # Save file
+    # Read and validate file size
     try:
         content = await file.read()
-        if len(content) > MAX_FILE_SIZE:
+        original_size = len(content)
+        
+        if original_size > MAX_FILE_SIZE:
             raise HTTPException(
                 status_code=400,
                 detail=f"File too large. Maximum size is {MAX_FILE_SIZE // (1024*1024)}MB"
             )
+        
+        # Compress and optionally convert to WebP
+        processed_content, new_ext, mime_type = compress_image(
+            content, ext, convert_to_webp=convert_webp
+        )
+        
+        # Generate unique filename with processed extension
+        unique_filename = f"{uuid.uuid4()}{new_ext}"
+        file_path = UPLOAD_DIR / unique_filename
+        
+        # Save processed file
         with open(file_path, "wb") as buffer:
-            buffer.write(content)
+            buffer.write(processed_content)
+        
+        compressed_size = len(processed_content)
+        compression_stats = get_compression_stats(original_size, compressed_size)
+        
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to save file: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to process image: {str(e)}")
     
     file_url = f"/api/upload/images/{unique_filename}"
     
@@ -104,8 +123,8 @@ async def upload_image(
             filename=unique_filename,
             original_name=file.filename,
             file_url=file_url,
-            file_size=len(content),
-            mime_type=file.content_type or "image/jpeg",
+            file_size=compressed_size,
+            mime_type=mime_type,
             asset_type="image",
             tags=tag_list,
             source=source
@@ -114,7 +133,11 @@ async def upload_image(
     return {
         "filename": unique_filename,
         "url": file_url,
-        "asset_id": asset["id"] if asset else None
+        "asset_id": asset["id"] if asset else None,
+        "original_size": original_size,
+        "compressed_size": compressed_size,
+        "savings_percent": compression_stats["savings_percent"],
+        "format": new_ext.replace('.', '').upper()
     }
 
 
