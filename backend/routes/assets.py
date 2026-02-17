@@ -30,6 +30,7 @@ class AssetCreate(BaseModel):
 
 
 class AssetUpdate(BaseModel):
+    original_name: Optional[str] = None
     asset_type: Optional[str] = None
     categories: Optional[List[str]] = None
     tags: Optional[List[str]] = None
