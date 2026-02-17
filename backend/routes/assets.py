@@ -7,6 +7,8 @@ import os
 import json
 from pathlib import Path
 
+from services.image_processor import compress_image, get_compression_stats
+
 router = APIRouter(prefix="/assets", tags=["assets"])
 UPLOAD_DIR = Path(__file__).parent.parent / "uploads"
 
