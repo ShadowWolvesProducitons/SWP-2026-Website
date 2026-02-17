@@ -4,7 +4,7 @@
 **Date:** January 8, 2025  
 **Tester:** Testing Agent  
 **Application:** Shadow Wolves Productions Admin CMS  
-**Test Environment:** https://admin-overhaul-2024.preview.emergentagent.com
+**Test Environment:** https://image-optimize-hub-1.preview.emergentagent.com
 
 ## Test Areas Covered
 
