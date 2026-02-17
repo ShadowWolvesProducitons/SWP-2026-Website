@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { services } from '../mock';
 import { Check } from 'lucide-react';
 
@@ -9,6 +10,12 @@ const Services = () => {
 
   return (
     <div className="services-page pt-20">
+      <Helmet>
+        <title>The Armory | Shadow Wolves Productions</title>
+        <meta name="description" content="The Armory is our creative arsenal — premium apps, templates, and resources built from real-world production experience. Tools we use ourselves, now available to other filmmakers." />
+        <link rel="canonical" href="https://shadowwolvesproductions.com/armory" />
+      </Helmet>
+
       {/* Page Header */}
       <section className="page-header py-24 bg-gradient-to-br from-black via-smoke-gray to-black relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">
