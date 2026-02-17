@@ -162,9 +162,7 @@ const Films = () => {
             <meta name="description" content={selectedFilm.logline.substring(0, 160)} />
           )}
           <link rel="canonical" href={`https://shadowwolvesproductions.com/films/${selectedFilm.slug || selectedFilm.id}`} />
-          <script type="application/ld+json">
-            {JSON.stringify(generateMovieSchema(selectedFilm))}
-          </script>
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateMovieSchema(selectedFilm)) }} />
         </Helmet>
       ) : (
         <Helmet>
