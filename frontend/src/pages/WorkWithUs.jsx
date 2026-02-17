@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Send, CheckCircle, ChevronDown, Mail } from 'lucide-react';
+import { Send, CheckCircle, ChevronDown, Mail, Plus, Minus } from 'lucide-react';
 import { toast } from 'sonner';
 import PageHeader from '../components/PageHeader';
 
@@ -11,6 +11,74 @@ const FORMATS = ['Short', 'Feature', 'Series', 'Documentary', 'Other'];
 const GENRES = ['Horror', 'Thriller', 'Psychological', 'Supernatural', 'Slasher', 'Drama', 'Action', 'Sci-Fi', 'Dark Comedy'];
 const PROJECT_STAGES = ['Idea', 'First Draft', 'Polished Draft', 'Proof-of-Concept', 'In Development'];
 const ENQUIRY_TOPICS = ['General Question', 'Investment Opportunities', 'Distribution', 'Press/Media', 'Partnership', 'Other'];
+
+// ============ FAQ DATA ============
+const FAQ_ITEMS = [
+  {
+    question: "What kind of projects are you looking for?",
+    answer: "We develop and produce bold, genre-driven stories with teeth. Horror, thriller, psychological, slasher, supernatural, crime, true-crime and war-leaning drama are in our wheelhouse. If it's safe, predictable, or trying to please everyone, it's probably not us."
+  },
+  {
+    question: "Do you accept unsolicited scripts or attachments?",
+    answer: "Not upfront. We don't accept unsolicited attachments for legal and confidentiality reasons. If there's alignment, we'll request materials securely."
+  },
+  {
+    question: "What should I submit first?",
+    answer: "Start with a strong logline and a link to your pitch materials (deck, lookbook, or teaser). Keep it lean. If it hooks us, we'll ask for the next layer."
+  },
+  {
+    question: "What formats do you work with?",
+    answer: "Short films, feature films, series, and documentaries (selectively). Choose the format that best serves the story, not the one that feels easiest to \"get made.\""
+  },
+  {
+    question: "I'm cast/crew. How do I get into your database?",
+    answer: "CineConnect is our upcoming cast & crew network. Register your interest and we'll notify you when it opens.",
+    link: { text: "CineConnect", url: "https://www.cognitoforms.com/ShadowWolvesProductions/CastCrewHub" }
+  },
+  {
+    question: "Do you work with investors and partners?",
+    answer: "Yes, through our Studio Access Portal. Public info is designed to intrigue. If there's alignment, we open the vault on everything. If you're interested in investment, you can",
+    link: { text: "REQUEST ACCESS", url: "/request-access" }
+  },
+  {
+    question: "How long does it take to hear back?",
+    answer: "If it's a fit, you'll hear from us. If it's not, you probably won't. We keep our focus tight so we can actually build."
+  },
+  {
+    question: "Can I submit multiple projects?",
+    answer: "Submit your best one first. If it connects, we'll open the door to more."
+  },
+  {
+    question: "Aside from films, what else do you do?",
+    answer: "We build more than projects. We're developing a studio ecosystem — tools, resources, and platforms designed to support independent creators. That includes production infrastructure, development systems, and creator-focused software under The Armory."
+  },
+  {
+    question: "What is The Den?",
+    answer: "The Den is our working studio journal. It includes casting calls, crew intel, production lessons, industry news, and tools we actually use. Think of it like a blog with teeth."
+  },
+  {
+    question: "What is The Armory?",
+    answer: "The Armory is our creative arsenal — premium apps, templates, and resources built from real-world production experience. These are tools we use ourselves, now available to other filmmakers."
+  },
+  {
+    question: "Is Shadow Wolves just horror?",
+    answer: "No. Genre is our backbone, but not our limit. We prioritise bold, commercially viable stories across film and series. If it's taboo then it's probably worth telling."
+  }
+];
+
+// Generate FAQ JSON-LD Schema
+const generateFAQSchema = () => ({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": FAQ_ITEMS.map(item => ({
+    "@type": "Question",
+    "name": item.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": item.answer + (item.link ? ` ${item.link.text}: ${item.link.url}` : '')
+    }
+  }))
+});
 
 // ============ CINECONNECT CARD ============
 const CineConnectCard = () => {
