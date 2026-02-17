@@ -134,15 +134,43 @@ const Films = () => {
     navigate('/films');
   };
 
+  // Generate Movie schema for selected film
+  const generateMovieSchema = (film) => {
+    if (!film) return null;
+    return {
+      "@context": "https://schema.org",
+      "@type": "Movie",
+      "name": film.title,
+      "description": film.logline || film.synopsis || '',
+      "image": film.posterUrl ? `${process.env.REACT_APP_BACKEND_URL}${film.posterUrl}` : '',
+      "genre": film.genres || [],
+      "productionCompany": {
+        "@type": "Organization",
+        "name": "Shadow Wolves Productions"
+      },
+      "url": `https://shadowwolvesproductions.com/films/${film.slug || film.id}`
+    };
+  };
+
   return (
     <div className="films-page pt-20">
       {/* SEO Meta for film detail route */}
-      {selectedFilm && (
+      {selectedFilm ? (
         <Helmet>
-          <title>{selectedFilm.title} | Shadow Wolves</title>
+          <title>{selectedFilm.title} | Shadow Wolves Productions</title>
           {selectedFilm.logline && (
             <meta name="description" content={selectedFilm.logline.substring(0, 160)} />
           )}
+          <link rel="canonical" href={`https://shadowwolvesproductions.com/films/${selectedFilm.slug || selectedFilm.id}`} />
+          <script type="application/ld+json">
+            {JSON.stringify(generateMovieSchema(selectedFilm))}
+          </script>
+        </Helmet>
+      ) : (
+        <Helmet>
+          <title>Films | Shadow Wolves Productions</title>
+          <meta name="description" content="Explore original screen stories from Shadow Wolves Productions — past, present, and in development." />
+          <link rel="canonical" href="https://shadowwolvesproductions.com/films" />
         </Helmet>
       )}
 
