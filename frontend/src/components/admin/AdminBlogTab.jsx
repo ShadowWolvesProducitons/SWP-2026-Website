@@ -249,9 +249,16 @@ const BlogPostModal = ({ post, onClose, onSave }) => {
       Highlight.configure({ HTMLAttributes: { class: 'bg-yellow-500/30 px-1 rounded' } }),
       TiptapYoutube.configure({ width: 640, height: 360, HTMLAttributes: { class: 'my-4 rounded-lg overflow-hidden' } }),
     ],
-    content: post?.content || '',
+    content: '',
     editorProps: { attributes: { class: 'prose prose-invert max-w-none min-h-[400px] p-4 focus:outline-none' } },
   });
+
+  // Set editor content when post is loaded or editor is ready
+  useEffect(() => {
+    if (editor && post?.content) {
+      editor.commands.setContent(post.content);
+    }
+  }, [editor, post]);
 
   // Auto-generate slug from title
   useEffect(() => {
