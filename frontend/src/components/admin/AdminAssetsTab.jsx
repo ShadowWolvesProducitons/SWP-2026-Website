@@ -638,8 +638,9 @@ const AdminAssetsTab = () => {
 };
 
 // Edit Asset Modal Component
-const EditAssetModal = ({ asset, films, onClose, onSave }) => {
+const EditAssetModal = ({ asset, films, armoryItems, blogPosts, onClose, onSave }) => {
   const [formData, setFormData] = useState({
+    original_name: asset.original_name || '',
     collection: asset.collection || 'website',
     folder: asset.folder || '',
     categories: asset.categories || [],
@@ -647,6 +648,34 @@ const EditAssetModal = ({ asset, films, onClose, onSave }) => {
     tags: asset.tags?.join(', ') || ''
   });
   const [saving, setSaving] = useState(false);
+
+  // Get folder options based on selected collection
+  const getFolderOptions = () => {
+    switch (formData.collection) {
+      case 'films':
+        return films.map(f => ({ id: f.id, name: f.title }));
+      case 'armory':
+        return armoryItems.map(a => ({ id: a.id, name: a.title }));
+      case 'den':
+        return blogPosts.map(b => ({ id: b.id, name: b.title }));
+      case 'website':
+        return [
+          { id: 'about', name: 'About' },
+          { id: 'films', name: 'Films' },
+          { id: 'armory', name: 'The Armory' },
+          { id: 'den', name: 'The Den' },
+          { id: 'studio-portal', name: 'Studio Portal' },
+          { id: 'work-with-us', name: 'Work With Us' },
+        ];
+      default:
+        return [];
+    }
+  };
+
+  // Reset folder when collection changes
+  const handleCollectionChange = (newCollection) => {
+    setFormData(s => ({ ...s, collection: newCollection, folder: '' }));
+  };
 
   const handleSave = async () => {
     setSaving(true);
@@ -657,18 +686,26 @@ const EditAssetModal = ({ asset, films, onClose, onSave }) => {
     setSaving(false);
   };
 
+  const folderOptions = getFolderOptions();
+  const folderLabel = {
+    'films': 'Film',
+    'armory': 'Armory Item',
+    'den': 'Blog Post',
+    'website': 'Page'
+  }[formData.collection] || 'Folder';
+
   return (
     <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4" onClick={onClose}>
       <div 
-        className="bg-smoke-gray border border-gray-800 rounded-lg w-full max-w-lg" 
+        className="bg-smoke-gray border border-gray-800 rounded-lg w-full max-w-lg max-h-[90vh] overflow-y-auto" 
         onClick={e => e.stopPropagation()}
         data-testid="edit-asset-modal"
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-800">
+        <div className="flex items-center justify-between p-4 border-b border-gray-800 sticky top-0 bg-smoke-gray z-10">
           <div>
             <h3 className="text-lg font-bold text-white">Edit Asset</h3>
-            <p className="text-gray-500 text-sm truncate max-w-[300px]">{asset.original_name}</p>
+            <p className="text-gray-500 text-sm truncate max-w-[300px]">{asset.filename}</p>
           </div>
           <button onClick={onClose} className="p-2 text-gray-400 hover:text-white">
             <X size={20} />
@@ -677,29 +714,48 @@ const EditAssetModal = ({ asset, films, onClose, onSave }) => {
 
         {/* Form */}
         <div className="p-4 space-y-4">
+          {/* File Name */}
+          <div>
+            <label className="block text-gray-400 text-xs uppercase mb-2">Display Name</label>
+            <input 
+              type="text"
+              value={formData.original_name} 
+              onChange={e => setFormData(s => ({ ...s, original_name: e.target.value }))}
+              className="w-full bg-black border border-gray-700 rounded-lg px-3 py-2 text-white text-sm focus:border-electric-blue focus:outline-none"
+              placeholder="Enter display name for this file"
+            />
+            <p className="text-gray-600 text-xs mt-1">This name is shown in the asset library</p>
+          </div>
+
           {/* Collection */}
           <div>
             <label className="block text-gray-400 text-xs uppercase mb-2">Collection</label>
             <select 
               value={formData.collection} 
-              onChange={e => setFormData(s => ({ ...s, collection: e.target.value }))}
+              onChange={e => handleCollectionChange(e.target.value)}
               className="w-full bg-black border border-gray-700 rounded-lg px-3 py-2 text-white text-sm"
             >
               {COLLECTIONS.slice(1).map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
             </select>
           </div>
 
-          {/* Folder */}
+          {/* Folder - Dynamic based on Collection */}
           <div>
-            <label className="block text-gray-400 text-xs uppercase mb-2">Folder (Film/App)</label>
+            <label className="block text-gray-400 text-xs uppercase mb-2">{folderLabel}</label>
             <select 
               value={formData.folder} 
               onChange={e => setFormData(s => ({ ...s, folder: e.target.value }))}
               className="w-full bg-black border border-gray-700 rounded-lg px-3 py-2 text-white text-sm"
             >
-              <option value="">No folder</option>
-              {films.map(f => <option key={f.id} value={f.id}>{f.title}</option>)}
+              <option value="">No {folderLabel.toLowerCase()} selected</option>
+              {folderOptions.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
             </select>
+            <p className="text-gray-600 text-xs mt-1">
+              {formData.collection === 'films' && 'Select which film this asset belongs to'}
+              {formData.collection === 'armory' && 'Select which Armory item this asset belongs to'}
+              {formData.collection === 'den' && 'Select which blog post this asset belongs to'}
+              {formData.collection === 'website' && 'Select which page this asset belongs to'}
+            </p>
           </div>
 
           {/* Categories */}
@@ -756,7 +812,7 @@ const EditAssetModal = ({ asset, films, onClose, onSave }) => {
         </div>
 
         {/* Footer */}
-        <div className="flex justify-end gap-2 p-4 border-t border-gray-800">
+        <div className="flex justify-end gap-2 p-4 border-t border-gray-800 sticky bottom-0 bg-smoke-gray">
           <button 
             onClick={onClose}
             className="px-4 py-2 border border-gray-700 text-gray-400 rounded-lg text-sm hover:text-white"
