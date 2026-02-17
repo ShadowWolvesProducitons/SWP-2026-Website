@@ -88,11 +88,13 @@ const Home = () => {
 
   return (
     <div className="home-page">
-      <Helmet>
+      <Helmet encodeSpecialCharacters={false}>
         <title>About | Shadow Wolves Productions</title>
         <meta name="description" content="Shadow Wolves Productions exists to create bold, genre-driven stories with teeth — stories that entertain first, but leave a mark long after the screen goes black." />
         <link rel="canonical" href="https://shadowwolvesproductions.com/" />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
+        <script type="application/ld+json">
+          {JSON.stringify(organizationSchema)}
+        </script>
       </Helmet>
 
       {/* Hero Section */}
