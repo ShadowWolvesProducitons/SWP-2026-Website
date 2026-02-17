@@ -136,23 +136,8 @@ const Films = () => {
     navigate('/films');
   };
 
-  // Generate Movie schema for selected film
-  const generateMovieSchema = (film) => {
-    if (!film) return null;
-    return {
-      "@context": "https://schema.org",
-      "@type": "Movie",
-      "name": film.title,
-      "description": film.logline || film.synopsis || '',
-      "image": film.posterUrl ? `${process.env.REACT_APP_BACKEND_URL}${film.posterUrl}` : '',
-      "genre": film.genres || [],
-      "productionCompany": {
-        "@type": "Organization",
-        "name": "Shadow Wolves Productions"
-      },
-      "url": `https://shadowwolvesproductions.com/films/${film.slug || film.id}`
-    };
-  };
+  // Generate Movie schema using settings
+  const movieSchema = selectedFilm ? generateMovieSchema(selectedFilm, seoSettings) : null;
 
   return (
     <div className="films-page pt-20">
@@ -160,23 +145,25 @@ const Films = () => {
       {selectedFilm ? (
         <>
           <Helmet>
-            <title>{selectedFilm.title} | Shadow Wolves Productions</title>
+            <title>{selectedFilm.title} | {seoSettings.global_seo?.site_name || 'Shadow Wolves Productions'}</title>
             {selectedFilm.logline && (
               <meta name="description" content={selectedFilm.logline.substring(0, 160)} />
             )}
-            <link rel="canonical" href={`https://shadowwolvesproductions.com/films/${selectedFilm.slug || selectedFilm.id}`} />
+            <link rel="canonical" href={getCanonicalUrl(`/films/${selectedFilm.slug || selectedFilm.id}`, seoSettings)} />
           </Helmet>
           {/* Movie JSON-LD Schema for SEO */}
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(generateMovieSchema(selectedFilm)) }}
-          />
+          {movieSchema && (
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{ __html: JSON.stringify(movieSchema) }}
+            />
+          )}
         </>
       ) : (
         <Helmet>
-          <title>Films | Shadow Wolves Productions</title>
+          <title>Films | {seoSettings.global_seo?.site_name || 'Shadow Wolves Productions'}</title>
           <meta name="description" content="Explore original screen stories from Shadow Wolves Productions — past, present, and in development." />
-          <link rel="canonical" href="https://shadowwolvesproductions.com/films" />
+          <link rel="canonical" href={getCanonicalUrl('/films', seoSettings)} />
         </Helmet>
       )}
 
