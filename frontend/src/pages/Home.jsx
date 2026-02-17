@@ -71,11 +71,30 @@ const Home = () => {
     }
   };
 
+  // Organization JSON-LD Schema
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Shadow Wolves Productions",
+    "url": "https://shadowwolvesproductions.com",
+    "logo": "https://shadowwolvesproductions.com/logo.png",
+    "description": "Shadow Wolves Productions exists to create bold, genre-driven stories with teeth — stories that entertain first, but leave a mark long after the screen goes black.",
+    "foundingDate": "2024",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "AU"
+    }
+  };
+
   return (
     <div className="home-page">
       <Helmet>
         <title>About | Shadow Wolves Productions</title>
         <meta name="description" content="Shadow Wolves Productions exists to create bold, genre-driven stories with teeth — stories that entertain first, but leave a mark long after the screen goes black." />
+        <link rel="canonical" href="https://shadowwolvesproductions.com/" />
+        <script type="application/ld+json">
+          {JSON.stringify(organizationSchema)}
+        </script>
       </Helmet>
 
       {/* Hero Section */}
