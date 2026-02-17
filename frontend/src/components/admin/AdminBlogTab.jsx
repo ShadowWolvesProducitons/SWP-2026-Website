@@ -438,7 +438,15 @@ const BlogPostModal = ({ post, onClose, onSave }) => {
 
         {/* Tab Content */}
         <div className="flex-1 overflow-y-auto p-6">
+          {loadingPost && (
+            <div className="flex items-center justify-center py-10">
+              <Loader2 size={32} className="animate-spin text-electric-blue" />
+              <span className="ml-3 text-gray-400">Loading post data...</span>
+            </div>
+          )}
 
+          {!loadingPost && (
+            <>
           {/* ─── BASICS ─── */}
           {activeTab === 'basics' && (
             <div className="space-y-4">
