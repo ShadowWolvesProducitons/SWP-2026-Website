@@ -100,6 +100,9 @@ Build a comprehensive "Studio Access Portal" and modernize the public-facing web
 - `/app/frontend/src/components/admin/AdminAssetsTab.jsx` - Asset library
 - `/app/backend/routes/seo.py` - Dynamic SEO endpoints
 - `/app/backend/routes/site_settings.py` - SEO settings storage
+- `/app/backend/services/image_processor.py` - Image compression and WebP conversion
+- `/app/backend/routes/upload.py` - Image upload with compression
+- `/app/backend/routes/assets.py` - Asset upload with compression
 
 ## API Endpoints
 
