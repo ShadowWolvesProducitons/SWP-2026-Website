@@ -367,10 +367,38 @@ const ProductModal = ({ item, onClose, onSave }) => {
               <Fl label="Demo / Preview URL" helper="Optional. Let users try before buying.">
                 <TI type="url" value={formData.demo_url} onChange={e => set('demo_url', e.target.value)} placeholder="https://demo.example.com" />
               </Fl>
-              {formData.item_type === 'Downloads' && (
-                <Fl label="Direct File Download URL" helper="Direct link to the downloadable file">
-                  <TI value={formData.file_url} onChange={e => set('file_url', e.target.value)} placeholder="/api/upload/files/template.zip" />
-                </Fl>
+              {(formData.item_type === 'Downloads' || formData.item_type === 'eBooks' || formData.item_type === 'Courses') && (
+                <div className="bg-black/30 rounded-lg p-4 border border-gray-800/50 space-y-4">
+                  <p className="text-gray-500 text-[10px] font-mono uppercase tracking-widest">Downloadable File</p>
+                  <Fl label="Upload File" helper="Upload a file for users to download (PDF, ZIP, etc.)">
+                    <div className="space-y-3">
+                      {formData.file_url && (
+                        <div className="flex items-center gap-3 bg-green-500/10 border border-green-500/30 rounded-lg p-3">
+                          <Check size={16} className="text-green-400" />
+                          <span className="text-green-400 text-sm flex-1 truncate">{formData.file_url.split('/').pop()}</span>
+                          <button type="button" onClick={() => set('file_url', '')} className="text-gray-400 hover:text-red-400">
+                            <X size={16} />
+                          </button>
+                        </div>
+                      )}
+                      <div className="flex gap-2">
+                        <label className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-smoke-gray border border-gray-700 rounded-lg text-gray-400 hover:text-white hover:border-gray-600 cursor-pointer transition-all">
+                          <Upload size={16} />
+                          <span className="text-sm">{uploading ? 'Uploading...' : 'Upload File'}</span>
+                          <input type="file" className="hidden" onChange={e => uploadDownloadFile(e)} disabled={uploading} data-testid="upload-download-file" />
+                        </label>
+                        <button type="button" onClick={() => openAssetPicker('file_url')} className="flex items-center gap-2 px-4 py-3 bg-smoke-gray border border-gray-700 rounded-lg text-gray-400 hover:text-white hover:border-gray-600 transition-all">
+                          <FolderOpen size={16} />
+                          <span className="text-sm">Asset Library</span>
+                        </button>
+                      </div>
+                      <div className="relative">
+                        <span className="text-gray-500 text-xs absolute left-0 -top-5">Or enter URL manually:</span>
+                        <TI value={formData.file_url} onChange={e => set('file_url', e.target.value)} placeholder="/api/upload/files/document.pdf" />
+                      </div>
+                    </div>
+                  </Fl>
+                </div>
               )}
             </div>
           )}
