@@ -473,8 +473,8 @@ const AdminAssetsTab = () => {
         </div>
       )}
 
-      {/* Search + Filters (show when not viewing folder list) */}
-      {(activeCollection !== 'films' || activeFolder) && (
+      {/* Search + Filters (show when viewing assets, not folder list) */}
+      {(activeCollection === 'all' || activeFolder || folders.length === 0) && (
         <>
           {/* Search */}
           <div className="flex flex-wrap gap-3 mb-4">
