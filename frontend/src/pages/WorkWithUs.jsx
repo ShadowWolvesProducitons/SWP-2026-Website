@@ -743,6 +743,7 @@ const SuccessState = ({ type, onReset }) => (
 
 // ============ MAIN COMPONENT ============
 const WorkWithUs = () => {
+  const seoSettings = useSeoSettings();
   const [activeLane, setActiveLane] = useState(null); // null, 'project', or 'enquiry'
   const [projectSubmitted, setProjectSubmitted] = useState(false);
   const [enquirySubmitted, setEnquirySubmitted] = useState(false);
@@ -764,19 +765,24 @@ const WorkWithUs = () => {
     setActiveLane('enquiry');
   };
 
+  // Check if FAQ schema should be rendered
+  const shouldRenderFaqSchema = seoSettings.organization_schema?.enable_faq_schema !== false;
+
   return (
     <div className="work-with-us-page pt-20 min-h-screen bg-black">
       <Helmet>
-        <title>Work With Us | Shadow Wolves Productions</title>
+        <title>Work With Us | {seoSettings.global_seo?.site_name || 'Shadow Wolves Productions'}</title>
         <meta name="description" content="Submit your project or get in touch with Shadow Wolves Productions. We're selectively open to original genre scripts, proof-of-concepts, and strategic collaborations." />
-        <link rel="canonical" href="https://shadowwolvesproductions.com/work-with-us" />
+        <link rel="canonical" href={getCanonicalUrl('/work-with-us', seoSettings)} />
       </Helmet>
       
-      {/* FAQ JSON-LD Schema for SEO */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateFAQSchema()) }}
-      />
+      {/* FAQ JSON-LD Schema for SEO - only if enabled in settings */}
+      {shouldRenderFaqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(generateFAQSchema()) }}
+        />
+      )}
 
       {/* Hero Section */}
       <PageHeader 
