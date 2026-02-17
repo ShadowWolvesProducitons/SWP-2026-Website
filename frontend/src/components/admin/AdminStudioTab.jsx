@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Building2, Users, Shield, MessageSquare, Settings, RefreshCw } from 'lucide-react';
+import { Building2, Users, Shield, MessageSquare, Settings, RefreshCw, Search } from 'lucide-react';
 import { toast } from 'sonner';
 
 // Import existing components that we'll reuse
@@ -8,12 +8,14 @@ import AdminStudioPortalTab from './AdminStudioPortalTab';
 import AdminNewsletterTab from './AdminNewsletterTab';
 import AdminEmailTemplatesTab from './AdminEmailTemplatesTab';
 import AdminSiteSettingsTab from './AdminSiteSettingsTab';
+import AdminSeoSettingsTab from './AdminSeoSettingsTab';
 
 // Sub-navigation for Studio section
 const STUDIO_SUBTABS = [
   { id: 'portal', label: 'Portal', icon: Shield, description: 'Manage studio access users and permissions' },
   { id: 'comms', label: 'Comms', icon: MessageSquare, description: 'Newsletter subscribers and email templates' },
   { id: 'settings', label: 'Settings', icon: Settings, description: 'Page headers and site configuration' },
+  { id: 'seo', label: 'SEO', icon: Search, description: 'Search engine optimization and indexing' },
 ];
 
 const AdminStudioTab = () => {
