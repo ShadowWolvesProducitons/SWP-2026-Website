@@ -81,7 +81,12 @@ const ProductPage = () => {
             {/* Hero Image */}
             {(product.hero_image_url || product.thumbnail_url) && (
               <div className="aspect-video rounded-xl overflow-hidden bg-smoke-gray border border-gray-800 mb-10">
-                <img src={imgSrc(product.hero_image_url || product.thumbnail_url)} alt={product.title} className="w-full h-full object-cover" />
+                <img 
+                  src={imgSrc(product.hero_image_url || product.thumbnail_url)} 
+                  alt={product.title} 
+                  className="w-full h-full object-cover" 
+                  loading="lazy"
+                />
               </div>
             )}
 
