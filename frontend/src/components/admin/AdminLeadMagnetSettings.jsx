@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Gift, Upload, Save, RefreshCw, Link as LinkIcon, FileText, Trash2 } from 'lucide-react';
+import { Gift, Upload, Save, RefreshCw, Link as LinkIcon, FileText, Trash2, Image } from 'lucide-react';
 import { toast } from 'sonner';
 
 const API = process.env.REACT_APP_BACKEND_URL;
@@ -10,6 +10,7 @@ const AdminLeadMagnetSettings = () => {
     title: "Producer's Playbook",
     description: "Download our comprehensive guide to independent film production.",
     button_text: "Get Your Free Copy",
+    image_url: '',
     file_url: '',
     file_type: 'pdf', // 'pdf', 'link'
     external_link: '',
@@ -19,7 +20,9 @@ const AdminLeadMagnetSettings = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
   const fileInputRef = useRef(null);
+  const imageInputRef = useRef(null);
 
   useEffect(() => {
     fetchSettings();
