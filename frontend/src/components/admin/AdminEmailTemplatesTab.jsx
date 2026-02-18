@@ -48,7 +48,7 @@ const AdminEmailTemplatesTab = () => {
     if (!window.confirm('Reset this template to default? Your customizations will be lost.')) return;
     
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/email-templates/reset/${templateName}`, {
+      const response = await fetch(`${API}/api/email-templates/reset/${templateName}`, {
         method: 'POST'
       });
       if (response.ok) {
@@ -57,6 +57,27 @@ const AdminEmailTemplatesTab = () => {
       }
     } catch (err) {
       toast.error('Failed to reset template');
+    }
+  };
+
+  const handleCreateTemplate = async (templateData) => {
+    try {
+      const response = await fetch(`${API}/api/email-templates`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(templateData)
+      });
+      
+      if (response.ok) {
+        toast.success('Template created');
+        setShowCreateModal(false);
+        fetchTemplates();
+      } else {
+        const error = await response.json();
+        toast.error(error.detail || 'Failed to create template');
+      }
+    } catch (err) {
+      toast.error('Error creating template');
     }
   };
 
