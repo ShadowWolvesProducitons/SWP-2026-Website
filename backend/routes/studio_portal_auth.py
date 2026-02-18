@@ -251,7 +251,8 @@ async def resend_verification(email: str):
     # Send email
     try:
         from services.email_service import send_verification_email
-        verification_url = f"{os.environ.get('FRONTEND_URL', 'https://image-optimize-hub-1.preview.emergentagent.com')}/verify-access?token={verification_token}"
+        frontend_url = os.environ.get('FRONTEND_URL', '').rstrip('/')
+        verification_url = f"{frontend_url}/verify-access?token={verification_token}"
         await send_verification_email(email, user.get("full_name", ""), verification_url)
     except Exception as e:
         print(f"Failed to send verification email: {e}")
