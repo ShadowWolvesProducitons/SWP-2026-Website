@@ -93,6 +93,34 @@ const AdminLeadMagnetSettings = () => {
     }
   };
 
+  const handleImageUpload = async (file) => {
+    if (!file) return;
+
+    setUploadingImage(true);
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('convert_webp', 'true');
+
+    try {
+      const response = await fetch(`${API}/api/assets`, {
+        method: 'POST',
+        body: formData
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setSettings(prev => ({ ...prev, image_url: data.file_url }));
+        toast.success('Image uploaded successfully!');
+      } else {
+        toast.error('Failed to upload image');
+      }
+    } catch (error) {
+      toast.error('Failed to upload image');
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
