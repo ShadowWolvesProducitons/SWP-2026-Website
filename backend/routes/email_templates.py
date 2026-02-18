@@ -208,6 +208,39 @@ async def reset_template(template_name: str):
     return {"message": f"Template '{template_name}' reset to default"}
 
 
+@router.post("", response_model=EmailTemplate)
+async def create_template(template_data: EmailTemplateCreate):
+    """Create a new email template"""
+    # Check if template with same name already exists
+    existing = await db.email_templates.find_one({"name": template_data.name})
+    if existing:
+        raise HTTPException(status_code=400, detail=f"Template with name '{template_data.name}' already exists")
+    
+    # Create the template
+    template = EmailTemplate(
+        name=template_data.name,
+        display_name=template_data.display_name,
+        description=template_data.description or "",
+        subject=template_data.subject,
+        html_content=template_data.html_content or "<p>Email content here...</p>"
+    )
+    
+    doc = template.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    doc['updated_at'] = doc['updated_at'].isoformat()
+    
+    await db.email_templates.insert_one(doc)
+    
+    # Return without _id
+    created = await db.email_templates.find_one({"id": template.id}, {"_id": 0})
+    if isinstance(created.get('created_at'), str):
+        created['created_at'] = datetime.fromisoformat(created['created_at'])
+    if isinstance(created.get('updated_at'), str):
+        created['updated_at'] = datetime.fromisoformat(created['updated_at'])
+    
+    return created
+
+
 @router.post("/preview")
 async def preview_template(template_name: str, variables: dict = {}):
     """Preview a template with sample variables"""
