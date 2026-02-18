@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useOutletContext } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Film, Bell, FolderOpen, ChevronRight, RefreshCw, Calendar, FileText } from 'lucide-react';
+import { Bell, FolderOpen, ChevronRight, RefreshCw, FileText } from 'lucide-react';
 
 const StudioDashboard = () => {
   const { user } = useOutletContext();
@@ -76,83 +76,13 @@ const StudioDashboard = () => {
         </p>
       </motion.div>
 
-      {/* Projects Section */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-        className="mb-8"
-      >
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xs font-mono uppercase tracking-widest text-electric-blue flex items-center gap-2">
-            <Film size={16} />
-            Your Projects
-          </h2>
-          {data?.projects?.length > 0 && (
-            <Link 
-              to="/studio-access/projects" 
-              className="text-gray-500 hover:text-white text-sm flex items-center gap-1 transition-colors"
-            >
-              View All <ChevronRight size={16} />
-            </Link>
-          )}
-        </div>
-
-        {data?.projects?.length > 0 ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {data.projects.slice(0, 6).map((project) => (
-              <Link
-                key={project.id}
-                to={`/studio-access/projects/${project.slug}`}
-                className="bg-smoke-gray border border-gray-800 rounded-lg overflow-hidden hover:border-gray-600 transition-colors group"
-              >
-                {/* Poster */}
-                <div className="aspect-video bg-gray-900 relative overflow-hidden">
-                  {project.poster_url ? (
-                    <img
-                      src={`${process.env.REACT_APP_BACKEND_URL}${project.poster_url}`}
-                      alt={project.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <Film size={32} className="text-gray-700" />
-                    </div>
-                  )}
-                  <div className="absolute top-2 right-2">
-                    <span className="px-2 py-1 bg-black/70 text-electric-blue text-xs font-mono rounded">
-                      {project.status}
-                    </span>
-                  </div>
-                </div>
-                {/* Info */}
-                <div className="p-4">
-                  <h3 className="text-white font-semibold mb-1">{project.title}</h3>
-                  {project.genres?.length > 0 && (
-                    <p className="text-gray-500 text-sm">{project.genres.join(' • ')}</p>
-                  )}
-                </div>
-              </Link>
-            ))}
-          </div>
-        ) : (
-          <div className="bg-smoke-gray border border-gray-800 rounded-lg p-8 text-center">
-            <Film size={32} className="text-gray-600 mx-auto mb-3" />
-            <p className="text-gray-400">No projects assigned yet.</p>
-            <p className="text-gray-600 text-sm mt-1">
-              Contact admin to request project access.
-            </p>
-          </div>
-        )}
-      </motion.section>
-
       {/* Updates & Assets Grid */}
       <div className="grid lg:grid-cols-2 gap-8">
         {/* Recent Updates */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
+          transition={{ delay: 0.1 }}
         >
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xs font-mono uppercase tracking-widest text-electric-blue flex items-center gap-2">
@@ -211,21 +141,13 @@ const StudioDashboard = () => {
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
+          transition={{ delay: 0.2 }}
         >
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xs font-mono uppercase tracking-widest text-electric-blue flex items-center gap-2">
               <FolderOpen size={16} />
               Recent Assets
             </h2>
-            {data?.recent_assets?.length > 0 && (
-              <Link 
-                to="/studio-access/assets" 
-                className="text-gray-500 hover:text-white text-sm flex items-center gap-1 transition-colors"
-              >
-                View All <ChevronRight size={16} />
-              </Link>
-            )}
           </div>
 
           {data?.recent_assets?.length > 0 ? (
