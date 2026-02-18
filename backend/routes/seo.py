@@ -2,6 +2,8 @@ from fastapi import APIRouter, Response, HTTPException
 from fastapi.responses import PlainTextResponse
 from datetime import datetime
 import os
+import re
+import unicodedata
 
 router = APIRouter(prefix="/seo", tags=["seo"])
 
@@ -11,11 +13,32 @@ def set_db(database):
     global db
     db = database
 
+
+def slugify(text: str) -> str:
+    """Convert text to URL-safe slug."""
+    if not text:
+        return ""
+    # Normalize unicode characters
+    text = unicodedata.normalize('NFKD', text)
+    text = text.encode('ascii', 'ignore').decode('ascii')
+    # Convert to lowercase
+    text = text.lower()
+    # Replace spaces and underscores with hyphens
+    text = re.sub(r'[\s_]+', '-', text)
+    # Remove non-alphanumeric characters (except hyphens)
+    text = re.sub(r'[^a-z0-9\-]', '', text)
+    # Remove consecutive hyphens
+    text = re.sub(r'-+', '-', text)
+    # Strip leading/trailing hyphens
+    text = text.strip('-')
+    return text
+
+
 # Default SEO settings (fallback)
 DEFAULT_SEO = {
     "global_seo": {
         "site_name": "Shadow Wolves Productions",
-        "site_url": "https://shadowwolvesproductions.com",
+        "site_url": "https://www.shadowwolvesproductions.com.au",
     },
     "robots": {
         "robots_allow_all": True,
