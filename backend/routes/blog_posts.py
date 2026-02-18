@@ -42,7 +42,18 @@ async def get_blog_posts(status: Optional[str] = None, include_archived: bool = 
 @router.get("/slug/{slug}", response_model=BlogPost)
 async def get_blog_post_by_slug(slug: str):
     """Get a blog post by slug (for public pages)"""
+    # First try exact slug match
     post = await db.blog_posts.find_one({"slug": slug, "status": "Published", "is_archived": {"$ne": True}}, {"_id": 0})
+    
+    # If not found, try to find by slugified title match
+    if not post:
+        # Try to find post where the slugified title matches the requested slug
+        posts = await db.blog_posts.find({"status": "Published", "is_archived": {"$ne": True}}, {"_id": 0}).to_list(500)
+        for p in posts:
+            if generate_slug(p.get("title", "")) == slug:
+                post = p
+                break
+    
     if not post:
         raise HTTPException(status_code=404, detail="Post not found")
     
