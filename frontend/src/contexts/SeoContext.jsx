@@ -6,7 +6,7 @@ const API = process.env.REACT_APP_BACKEND_URL;
 const defaultSeoSettings = {
   global_seo: {
     site_name: 'Shadow Wolves Productions',
-    site_url: 'https://shadowwolvesproductions.com',
+    site_url: 'https://www.shadowwolvesproductions.com.au',
     default_meta_title_template: '{pageTitle} | Shadow Wolves Productions',
     default_meta_description: 'Bold, genre-driven stories with teeth.',
     default_og_image_url: null,
