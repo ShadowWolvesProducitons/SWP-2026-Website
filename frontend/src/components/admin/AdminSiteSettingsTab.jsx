@@ -341,6 +341,9 @@ const AdminSiteSettingsTab = () => {
           Lower vertical position values show more of the top of the image. Changes are saved per page.
         </p>
       </div>
+
+      {/* Lead Magnet Settings */}
+      <AdminLeadMagnetSettings />
     </div>
   );
 };
