@@ -493,7 +493,8 @@ async def forgot_password(data: ForgotPasswordInput):
     # Send reset email
     try:
         from services.email_service import send_password_reset_email
-        reset_url = f"{os.environ.get('FRONTEND_URL', 'https://image-optimize-hub-1.preview.emergentagent.com')}/reset-password?token={reset_token}"
+        frontend_url = os.environ.get('FRONTEND_URL', '').rstrip('/')
+        reset_url = f"{frontend_url}/reset-password?token={reset_token}"
         await send_password_reset_email(data.email, user.get("full_name", ""), reset_url)
     except Exception as e:
         print(f"Failed to send reset email: {e}")
