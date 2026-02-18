@@ -8,6 +8,22 @@ const IMDB_LOGO = "https://customer-assets.emergentagent.com/job_68938027-079c-4
 const FilmModal = ({ film, isOpen, onClose }) => {
   const navigate = useNavigate();
   
+  // Manage body scroll when modal opens/closes
+  useEffect(() => {
+    if (isOpen) {
+      // Prevent body scroll when modal is open
+      document.body.style.overflow = 'hidden';
+    } else {
+      // Re-enable body scroll when modal closes
+      document.body.style.overflow = '';
+    }
+    
+    return () => {
+      // Cleanup: always re-enable scroll on unmount
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+  
   // Close on ESC key
   useEffect(() => {
     const handleEscape = (e) => {
@@ -29,6 +45,13 @@ const FilmModal = ({ film, isOpen, onClose }) => {
       window.removeEventListener('popstate', handlePopState);
     };
   }, [isOpen, onClose]);
+
+  // Handle navigation with scroll reset
+  const handleNavigate = (path) => {
+    // Reset body scroll before navigation
+    document.body.style.overflow = '';
+    onClose();
+  };
 
   if (!isOpen || !film) return null;
 
