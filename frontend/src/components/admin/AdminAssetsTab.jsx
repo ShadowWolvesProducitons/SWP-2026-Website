@@ -256,10 +256,44 @@ const AdminAssetsTab = () => {
     } catch { toast.error('Update failed'); }
   };
 
-  const copyUrl = (asset) => {
+  const copyUrl = async (asset) => {
     const url = asset.file_url.startsWith('http') ? asset.file_url : `${API}${asset.file_url}`;
-    navigator.clipboard.writeText(url);
-    toast.success('URL copied');
+    
+    try {
+      // Try the modern clipboard API first
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(url);
+        toast.success('URL copied');
+        return;
+      }
+    } catch (err) {
+      // Clipboard API failed, try fallback
+      console.log('Clipboard API failed, using fallback');
+    }
+    
+    // Fallback: Create a temporary textarea
+    try {
+      const textArea = document.createElement('textarea');
+      textArea.value = url;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-9999px';
+      textArea.style.top = '-9999px';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      
+      const successful = document.execCommand('copy');
+      document.body.removeChild(textArea);
+      
+      if (successful) {
+        toast.success('URL copied');
+      } else {
+        // Show the URL in a toast so user can manually copy
+        toast.info(`Copy this URL: ${url}`, { duration: 10000 });
+      }
+    } catch (fallbackErr) {
+      toast.info(`Copy this URL: ${url}`, { duration: 10000 });
+    }
   };
 
   const formatSize = (bytes) => {
