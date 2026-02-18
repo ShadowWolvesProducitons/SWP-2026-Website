@@ -93,7 +93,7 @@ const AdminEmailTemplatesTab = () => {
 
   const handleSave = async (templateId, subject, htmlContent) => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/email-templates/${templateId}`, {
+      const response = await fetch(`${API}/api/email-templates/${templateId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ subject, html_content: htmlContent })
@@ -124,13 +124,22 @@ const AdminEmailTemplatesTab = () => {
             Customize email notifications sent by the system
           </p>
         </div>
-        <button 
-          onClick={fetchTemplates} 
-          className="p-2 text-gray-400 hover:text-white transition-colors" 
-          title="Refresh"
-        >
-          <RefreshCw size={20} />
-        </button>
+        <div className="flex items-center gap-2">
+          <button 
+            onClick={() => setShowCreateModal(true)}
+            className="px-4 py-2 bg-electric-blue hover:bg-electric-blue/90 text-white rounded-lg flex items-center gap-2 transition-colors"
+          >
+            <Plus size={18} />
+            Create Template
+          </button>
+          <button 
+            onClick={fetchTemplates} 
+            className="p-2 text-gray-400 hover:text-white transition-colors" 
+            title="Refresh"
+          >
+            <RefreshCw size={20} />
+          </button>
+        </div>
       </div>
 
       {/* Templates List */}
