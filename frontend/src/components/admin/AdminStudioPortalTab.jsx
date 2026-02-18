@@ -557,8 +557,17 @@ const AdminStudioPortalTab = () => {
                       <td className="px-4 py-3 text-white text-sm">
                         {log.user_email || '-'}
                       </td>
-                      <td className="px-4 py-3 text-gray-400 text-sm max-w-xs truncate">
-                        {log.details ? JSON.stringify(log.details).substring(0, 100) : '-'}
+                      <td className="px-4 py-3 text-gray-400 text-sm max-w-xs">
+                        {log.details ? (
+                          <span className="block truncate">
+                            {typeof log.details === 'object' 
+                              ? Object.entries(log.details)
+                                  .filter(([k, v]) => v && k !== '_id')
+                                  .map(([k, v]) => `${k.replace(/_/g, ' ')}: ${v}`)
+                                  .join(', ')
+                              : log.details}
+                          </span>
+                        ) : '-'}
                       </td>
                     </tr>
                   ))
