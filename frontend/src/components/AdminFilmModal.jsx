@@ -936,7 +936,7 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
         isOpen={assetPickerOpen}
         onClose={() => setAssetPickerOpen(false)}
         onSelect={handleAssetSelect}
-        assetType={assetPickerTarget === 'pitch_deck_url' || assetPickerTarget === 'script_url' ? 'document' : 'image'}
+        assetType={assetPickerTarget === 'pitch_deck_url' || assetPickerTarget === 'script_url' ? 'all' : 'image'}
         title={assetPickerTarget === 'poster' ? 'Select Film Poster' : assetPickerTarget === 'mood' ? 'Select Mood Image' : 'Select Document'}
       />
     </div>
