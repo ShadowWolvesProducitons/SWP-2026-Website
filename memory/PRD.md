@@ -56,6 +56,8 @@ Build a comprehensive "Studio Access Portal" and modernize the public-facing web
 - [x] **Sitemap Settings**: Enable toggle, include films/blog/armory, exclude drafts/archived
 - [x] **Test Rich Results**: Button opens Google Rich Results Test
 - [x] **Preview links**: Direct links to preview robots.txt and sitemap.xml
+- [x] **Production URL Consistency**: All SEO outputs (robots.txt, sitemap.xml, canonicals) use admin-configured production URL
+- [x] **Proper URL Slugification**: Blog URLs in sitemap use properly slugified URLs (no spaces)
 
 #### Image Optimization (February 2025)
 - [x] Server-side image compression + automatic WebP conversion
