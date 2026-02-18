@@ -406,11 +406,6 @@ const RequestAccess = () => {
                 {!loading && <ArrowRight size={18} />}
               </button>
             </form>
-                >
-                  Sign In
-                </button>
-              </p>
-            </form>
           </motion.div>
         </div>
       </div>
