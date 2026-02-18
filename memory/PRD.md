@@ -43,6 +43,7 @@ Build a comprehensive "Studio Access Portal" and modernize the public-facing web
 - [x] Scrollable form layout
 - [x] Projects filtered by `studio_access_enabled`
 - [x] "Other" option with text input
+- [x] Fixed scroll issue when accessed from Film Modal (body overflow reset)
 
 #### FAQ Accordion Section
 - [x] 12 FAQ items with accordion functionality
