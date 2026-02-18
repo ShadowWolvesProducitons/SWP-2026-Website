@@ -290,3 +290,75 @@ async def set_header_image(page: str, image_url: str):
         })
     
     return {"success": True, "page": page, "image_url": image_url}
+
+
+# Lead Magnet Settings
+class LeadMagnetSettings(BaseModel):
+    enabled: bool = True
+    title: str = "Producer's Playbook"
+    description: str = "Download our comprehensive guide to independent film production."
+    button_text: str = "Get Your Free Copy"
+    file_url: Optional[str] = None
+    file_type: str = "pdf"  # 'pdf' or 'link'
+    external_link: Optional[str] = None
+    popup_delay_seconds: int = 15
+    show_on_exit_intent: bool = True
+
+
+DEFAULT_LEAD_MAGNET = {
+    "enabled": True,
+    "title": "Producer's Playbook",
+    "description": "Download our comprehensive guide to independent film production.",
+    "button_text": "Get Your Free Copy",
+    "file_url": None,
+    "file_type": "pdf",
+    "external_link": None,
+    "popup_delay_seconds": 15,
+    "show_on_exit_intent": True
+}
+
+
+@router.get("/lead-magnet")
+async def get_lead_magnet_settings():
+    """Get lead magnet settings"""
+    if db is None:
+        raise HTTPException(status_code=500, detail="Database not initialized")
+    
+    settings = await db.site_settings.find_one({"type": "global"}, {"_id": 0})
+    if settings and "lead_magnet" in settings:
+        return settings["lead_magnet"]
+    
+    return DEFAULT_LEAD_MAGNET
+
+
+@router.put("/lead-magnet")
+async def update_lead_magnet_settings(settings: LeadMagnetSettings):
+    """Update lead magnet settings"""
+    if db is None:
+        raise HTTPException(status_code=500, detail="Database not initialized")
+    
+    lead_magnet_data = settings.model_dump()
+    
+    current = await db.site_settings.find_one({"type": "global"})
+    
+    if current:
+        await db.site_settings.update_one(
+            {"type": "global"},
+            {
+                "$set": {
+                    "lead_magnet": lead_magnet_data,
+                    "updated_at": datetime.now(timezone.utc).isoformat()
+                }
+            }
+        )
+    else:
+        await db.site_settings.insert_one({
+            "id": str(uuid.uuid4()),
+            "type": "global",
+            "headers": DEFAULT_HEADERS,
+            "lead_magnet": lead_magnet_data,
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        })
+    
+    return {"success": True, "settings": lead_magnet_data}
+
