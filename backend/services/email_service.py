@@ -190,7 +190,7 @@ async def send_access_granted_email(to_email: str, full_name: str, role: str, pr
     {projects_html}
     
     <div style="text-align: center; margin: 30px 0;">
-        <a href="https://shadowwolvesproductions.com.au/studio-access" 
+        <a href="{FRONTEND_URL.rstrip('/')}/studio-access" 
            style="display: inline-block; background-color: #233dff; color: #ffffff; 
                   text-decoration: none; padding: 14px 30px; border-radius: 50px; 
                   font-weight: bold; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">
