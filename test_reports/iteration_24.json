@@ -1,0 +1,93 @@
+{
+  "summary": "Comprehensive testing of SEO domain consistency fixes. All backend tests passed (12/12). All frontend features verified working correctly.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_results": {
+    "backend_api_tests": {
+      "passed": [
+        "GET /api/seo/robots.txt - Returns 200",
+        "GET /api/seo/robots.txt - Uses correct production URL (https://www.shadowwolvesproductions.com.au)",
+        "GET /api/seo/robots.txt - Disallows admin, api, and studio-access paths",
+        "GET /api/seo/sitemap.xml - Returns 200",
+        "GET /api/seo/sitemap.xml - Valid XML format",
+        "GET /api/seo/sitemap.xml - All URLs use production domain",
+        "GET /api/seo/sitemap.xml - Includes /armory route (not /services)",
+        "GET /api/seo/sitemap.xml - Blog URLs properly slugified (no spaces)",
+        "GET /api/seo/sitemap.xml - All static pages present",
+        "GET /api/seo/sitemap.xml - Dynamic film pages included",
+        "GET /api/seo/sitemap.xml - Dynamic armory item pages included",
+        "GET /api/site-settings/seo - Returns correct URL settings"
+      ],
+      "failed": []
+    },
+    "frontend_tests": {
+      "passed": [
+        "Blog post page loads correctly",
+        "Blog post uses full container width (max-w-none class present)",
+        "Blog post tags styled as rounded chips (border-radius: 9999px)",
+        "Tags have electric-blue border and text styling",
+        "Film Modal opens and displays Request Studio Access button",
+        "Navigation from Film Modal to Request Access works",
+        "Request Access page scrolls correctly (body overflow: auto)",
+        "Back to Website button visible and functional on Request Access page"
+      ],
+      "failed": []
+    }
+  },
+  "seo_fixes_verified": {
+    "robots_txt": {
+      "sitemap_line": "Sitemap: https://www.shadowwolvesproductions.com.au/sitemap.xml",
+      "correct_url": true
+    },
+    "sitemap_xml": {
+      "production_url_used": "https://www.shadowwolvesproductions.com.au",
+      "armory_route_included": true,
+      "services_route_removed": true,
+      "blog_urls_slugified": true,
+      "example_blog_url": "/blog/know-your-crew-essential-crew-roles-every-filmmaker-should-know"
+    }
+  },
+  "ui_fixes_verified": {
+    "blog_post_full_width": {
+      "class_applied": "max-w-none",
+      "actual_width": "1472px"
+    },
+    "blog_post_tags": {
+      "styling": "rounded-full with electric-blue border",
+      "border_radius": "9999px"
+    },
+    "request_access_scroll": {
+      "body_overflow": "auto",
+      "page_scrollable": true,
+      "back_button_visible": true
+    }
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_seo_domain_fixes.py",
+    "/app/test_reports/pytest/seo_domain_fixes_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [
+    "/app/backend/tests/test_seo_domain_fixes.py"
+  ],
+  "success_rate": {
+    "backend": "100% (12/12 tests passed)",
+    "frontend": "100% (8/8 tests passed)"
+  },
+  "test_credentials": {
+    "admin_url": "/admin",
+    "admin_password": "shadowwolves2024"
+  },
+  "seed_data_creation": "None required - used existing blog post and films",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "SEO domain consistency fixes fully verified. robots.txt and sitemap.xml use https://www.shadowwolvesproductions.com.au. Blog URLs in sitemap are properly slugified. Blog post page uses full width with rounded tag chips. Request Access page scroll works correctly when accessed from Film Modal."
+}
