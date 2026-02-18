@@ -462,9 +462,116 @@ const EmailEditorMenuBar = ({ editor }) => {
       <button type="button" onClick={addLink} className={btnClass(editor.isActive('link'))} title="Add Link">
         <LinkIcon size={16} />
       </button>
-      <button type="button" onClick={() => editor.chain().focus().toggleCodeBlock().run()} className={btnClass(editor.isActive('codeBlock'))} title="Code">
-        <Code size={16} />
-      </button>
+    </div>
+  );
+};
+
+
+// Create Template Modal
+const CreateTemplateModal = ({ onClose, onCreate }) => {
+  const [formData, setFormData] = useState({
+    name: '',
+    display_name: '',
+    description: '',
+    subject: '',
+    html_content: '<p>Your email content here...</p>'
+  });
+  const [creating, setCreating] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.name || !formData.display_name || !formData.subject) {
+      toast.error('Please fill in all required fields');
+      return;
+    }
+    
+    setCreating(true);
+    await onCreate(formData);
+    setCreating(false);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md">
+      <div className="relative bg-smoke-gray border border-gray-800 rounded-lg max-w-lg w-full">
+        {/* Header */}
+        <div className="px-6 py-4 border-b border-gray-800 flex items-center justify-between">
+          <div>
+            <h2 className="text-xl font-bold text-white">Create New Template</h2>
+            <p className="text-gray-500 text-sm mt-1">Add a custom email template</p>
+          </div>
+          <button onClick={onClose} className="p-2 text-gray-400 hover:text-white transition-colors">
+            <X size={20} />
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          <div>
+            <label className="block text-gray-400 text-sm mb-1">Template ID *</label>
+            <input
+              type="text"
+              value={formData.name}
+              onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value.toLowerCase().replace(/\s+/g, '_') }))}
+              className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:border-electric-blue focus:outline-none font-mono"
+              placeholder="my_custom_template"
+              required
+            />
+            <p className="text-gray-600 text-xs mt-1">Unique identifier (lowercase, no spaces)</p>
+          </div>
+
+          <div>
+            <label className="block text-gray-400 text-sm mb-1">Display Name *</label>
+            <input
+              type="text"
+              value={formData.display_name}
+              onChange={(e) => setFormData(prev => ({ ...prev, display_name: e.target.value }))}
+              className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:border-electric-blue focus:outline-none"
+              placeholder="My Custom Template"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-400 text-sm mb-1">Description</label>
+            <input
+              type="text"
+              value={formData.description}
+              onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+              className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:border-electric-blue focus:outline-none"
+              placeholder="What this template is used for"
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-400 text-sm mb-1">Subject Line *</label>
+            <input
+              type="text"
+              value={formData.subject}
+              onChange={(e) => setFormData(prev => ({ ...prev, subject: e.target.value }))}
+              className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:border-electric-blue focus:outline-none"
+              placeholder="Email subject..."
+              required
+            />
+          </div>
+
+          <div className="flex gap-4 pt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 px-4 py-2.5 border border-gray-700 text-gray-400 rounded-lg hover:bg-gray-800 transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={creating}
+              className="flex-1 px-4 py-2.5 bg-electric-blue hover:bg-electric-blue/90 disabled:bg-gray-700 text-white rounded-lg transition-colors flex items-center justify-center gap-2"
+            >
+              {creating ? <RefreshCw size={16} className="animate-spin" /> : <Plus size={16} />}
+              {creating ? 'Creating...' : 'Create Template'}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
