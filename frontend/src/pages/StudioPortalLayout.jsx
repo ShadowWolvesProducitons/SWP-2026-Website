@@ -3,7 +3,7 @@ import { useNavigate, Link, Outlet, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
 import { 
-  LayoutDashboard, Film, Bell, FolderOpen, User, LogOut, 
+  LayoutDashboard, Film, Bell, User, LogOut, 
   Menu, X, ChevronRight, RefreshCw 
 } from 'lucide-react';
 import { toast } from 'sonner';
