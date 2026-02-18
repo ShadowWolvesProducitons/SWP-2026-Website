@@ -190,6 +190,62 @@ const AdminLeadMagnetSettings = () => {
           />
         </div>
 
+        {/* Cover Image */}
+        <div>
+          <label className="text-sm text-gray-400 mb-2 block">Cover Image (optional)</label>
+          <input
+            type="file"
+            accept="image/*"
+            className="hidden"
+            ref={imageInputRef}
+            onChange={(e) => handleImageUpload(e.target.files?.[0])}
+          />
+          
+          {settings.image_url ? (
+            <div className="relative rounded-lg overflow-hidden border border-gray-700">
+              <img 
+                src={settings.image_url.startsWith('http') ? settings.image_url : `${API}${settings.image_url}`}
+                alt="Lead magnet cover"
+                className="w-full h-40 object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+              <div className="absolute bottom-3 right-3 flex gap-2">
+                <button
+                  onClick={() => imageInputRef.current?.click()}
+                  disabled={uploadingImage}
+                  className="p-2 bg-gray-800/90 hover:bg-gray-700 rounded-lg text-white transition-colors"
+                >
+                  <Image size={16} />
+                </button>
+                <button
+                  onClick={() => setSettings(prev => ({ ...prev, image_url: '' }))}
+                  className="p-2 bg-red-500/20 hover:bg-red-500/30 rounded-lg text-red-400 transition-colors"
+                >
+                  <Trash2 size={16} />
+                </button>
+              </div>
+            </div>
+          ) : (
+            <button
+              onClick={() => imageInputRef.current?.click()}
+              disabled={uploadingImage}
+              className="w-full h-32 border-2 border-dashed border-gray-700 rounded-lg flex flex-col items-center justify-center gap-2 text-gray-500 hover:text-white hover:border-gray-600 transition-colors disabled:opacity-50"
+            >
+              {uploadingImage ? (
+                <>
+                  <RefreshCw size={24} className="animate-spin" />
+                  <span className="text-sm">Uploading...</span>
+                </>
+              ) : (
+                <>
+                  <Image size={24} />
+                  <span className="text-sm">Upload Cover Image</span>
+                </>
+              )}
+            </button>
+          )}
+        </div>
+
         {/* Delivery Type */}
         <div>
           <label className="text-sm text-gray-400 mb-2 block">Delivery Type</label>
