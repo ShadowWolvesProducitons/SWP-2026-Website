@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Image, Upload, Save, Eye, RefreshCw, ChevronDown, ChevronUp, Move } from 'lucide-react';
 import { toast } from 'sonner';
+import AdminLeadMagnetSettings from './AdminLeadMagnetSettings';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
