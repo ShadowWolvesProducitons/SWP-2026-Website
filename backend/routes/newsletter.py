@@ -40,7 +40,7 @@ async def send_welcome_email(email: str, lead_magnet: str = None):
         resend.api_key = resend_api_key
         
         # Different content based on lead magnet
-        logo_url = os.environ.get('SITE_URL', 'https://shadowwolvesproductions.com.au')
+        logo_url = os.environ.get('SITE_URL', 'https://www.shadowwolvesproductions.com.au')
         header_img = f"{logo_url}/api/upload/images/header-banner.png"
         unsub_url = f"{logo_url}/api/newsletter/{email}"
         email_header = f'<div style="text-align: center; padding: 24px 40px 16px; border-bottom: 1px solid #1a1a1a;"><img src="{header_img}" alt="Shadow Wolves Productions" style="max-width: 280px; height: auto;" /></div>'
