@@ -39,7 +39,21 @@ const RequestAccess = () => {
   const [roleDropdownOpen, setRoleDropdownOpen] = useState(false);
 
   useEffect(() => {
+    // Ensure page can scroll - reset any body overflow restrictions from modals
+    document.body.style.overflow = 'auto';
+    document.body.style.position = '';
+    document.documentElement.style.overflow = 'auto';
+    
+    // Scroll to top on mount
+    window.scrollTo(0, 0);
+    
     fetchProjects();
+    
+    return () => {
+      // Cleanup on unmount
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+    };
   }, []);
 
   const fetchProjects = async () => {
