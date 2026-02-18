@@ -160,13 +160,13 @@ const BlogPost = () => {
         <title>{getMetaTitle()}</title>
         <meta name="description" content={getMetaDescription()} />
         {post.seo_keywords && <meta name="keywords" content={post.seo_keywords} />}
-        <link rel="canonical" href={post.canonical_url || `https://shadowwolvesproductions.com/blog/${post.slug}`} />
+        <link rel="canonical" href={post.canonical_url || `${siteUrl}/blog/${post.slug}`} />
         {post.no_index && <meta name="robots" content="noindex, nofollow" />}
         {getOgImage() && <meta property="og:image" content={getOgImage()} />}
         <meta property="og:title" content={getMetaTitle()} />
         <meta property="og:description" content={getMetaDescription()} />
         <meta property="og:type" content="article" />
-        <meta property="og:url" content={`${window.location.origin}/blog/${post.slug}`} />
+        <meta property="og:url" content={`${siteUrl}/blog/${post.slug}`} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={getMetaTitle()} />
         <meta name="twitter:description" content={getMetaDescription()} />
@@ -174,7 +174,7 @@ const BlogPost = () => {
       </Helmet>
 
       <article className="py-16">
-        <div className="container mx-auto px-4 max-w-3xl">
+        <div className="container mx-auto px-4 lg:px-8">
           {/* Back Link */}
           <Link 
             to="/blog" 
@@ -189,15 +189,15 @@ const BlogPost = () => {
             {post.title}
           </h1>
 
-          {/* Meta */}
-          <div className="flex items-center gap-4 mb-8 text-sm">
+          {/* Meta - Date and Tags */}
+          <div className="flex flex-wrap items-center gap-4 mb-8 text-sm">
             <span className="text-gray-500">{formatDate(post.published_at)}</span>
             {post.tags?.length > 0 && (
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 {post.tags.map((tag, idx) => (
                   <span 
                     key={idx}
-                    className="px-2 py-0.5 bg-white/5 text-gray-400 rounded text-xs"
+                    className="px-3 py-1 bg-electric-blue/10 text-electric-blue border border-electric-blue/30 rounded-full text-xs font-mono uppercase tracking-wide"
                   >
                     {tag}
                   </span>
@@ -213,12 +213,13 @@ const BlogPost = () => {
                 src={`${process.env.REACT_APP_BACKEND_URL}${post.cover_image_url}`}
                 alt={post.title}
                 className="w-full h-auto"
+                loading="lazy"
               />
             </div>
           )}
 
-          {/* Content */}
-          <div className="prose prose-invert max-w-none">
+          {/* Content - Full Width */}
+          <div className="prose prose-invert prose-lg max-w-none">
             {renderContent(post.content)}
           </div>
 
