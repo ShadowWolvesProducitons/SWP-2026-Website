@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { 
-  RefreshCw, Edit2, RotateCcw, Mail, Eye, X, Save,
+  RefreshCw, Edit2, RotateCcw, Mail, Eye, X, Save, Plus,
   Bold, Italic, Underline, List, ListOrdered, Quote, 
   Link as LinkIcon, AlignLeft, AlignCenter, AlignRight,
   Heading1, Heading2, Heading3, Undo, Redo, Code
@@ -11,6 +11,8 @@ import StarterKit from '@tiptap/starter-kit';
 import TiptapLink from '@tiptap/extension-link';
 import TextAlign from '@tiptap/extension-text-align';
 import TiptapUnderline from '@tiptap/extension-underline';
+
+const API = process.env.REACT_APP_BACKEND_URL;
 
 const AdminEmailTemplatesTab = () => {
   const [templates, setTemplates] = useState([]);
