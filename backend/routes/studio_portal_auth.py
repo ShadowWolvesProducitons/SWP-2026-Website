@@ -18,13 +18,18 @@ from models.studio_user import (
 
 router = APIRouter(prefix="/studio-portal", tags=["studio-portal"])
 
-# JWT Configuration
-JWT_SECRET = os.environ.get("JWT_SECRET", "shadowwolves-studio-secret-2024")
+# JWT Configuration - No fallbacks, require from environment
+JWT_SECRET = os.environ.get("JWT_SECRET")
+if not JWT_SECRET:
+    raise ValueError("JWT_SECRET environment variable is required")
 JWT_ALGORITHM = "HS256"
 JWT_EXPIRY_DAYS = 30
 
-# Master password for admin demos
-MASTER_ACCESS_PASSWORD = os.environ.get("MASTER_ACCESS_PASSWORD", "ShadowWolvesStudio2024!")
+# Master password for admin demos - No fallback, require from environment
+MASTER_ACCESS_PASSWORD = os.environ.get("MASTER_ACCESS_PASSWORD")
+
+# Password salt from environment
+PASSWORD_SALT = os.environ.get("PASSWORD_SALT", "shadowwolves_salt_2024")
 
 # Security
 security = HTTPBearer(auto_error=False)
