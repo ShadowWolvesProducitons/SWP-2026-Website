@@ -12,7 +12,6 @@ const NAV_ITEMS = [
   { path: '/studio-access', icon: LayoutDashboard, label: 'Dashboard', exact: true },
   { path: '/studio-access/projects', icon: Film, label: 'Projects' },
   { path: '/studio-access/updates', icon: Bell, label: 'Updates' },
-  { path: '/studio-access/assets', icon: FolderOpen, label: 'Assets' },
   { path: '/studio-access/account', icon: User, label: 'Account' }
 ];
 
