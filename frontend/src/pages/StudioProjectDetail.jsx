@@ -195,43 +195,45 @@ const StudioProjectDetail = () => {
               </div>
             )}
           </div>
+
+          {/* Logline */}
+          {p?.logline && (
+            <div className="mt-6 pt-6 border-t border-gray-800">
+              <span className="text-gray-500 text-xs uppercase block mb-2">Logline</span>
+              <p className="text-gray-300 leading-relaxed text-lg italic">"{p.logline}"</p>
+            </div>
+          )}
         </div>
       </motion.div>
 
       {/* Content Sections */}
       <div className="space-y-8">
-        {/* Logline & Synopsis */}
-        {(p?.logline || p?.extended_synopsis) && (
+        {/* Synopsis */}
+        {p?.extended_synopsis && (
           <motion.section
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
             className="bg-smoke-gray border border-gray-800 rounded-lg p-6"
           >
-            <h2 className="text-xs font-mono uppercase tracking-widest text-electric-blue mb-4">Overview</h2>
+            <h2 className="text-xs font-mono uppercase tracking-widest text-electric-blue mb-4">Synopsis</h2>
             
-            {p?.logline && (
-              <p className="text-gray-300 leading-relaxed mb-4">{p.logline}</p>
-            )}
-            
-            {p?.extended_synopsis && (
-              <div>
-                <button
-                  onClick={() => setSynopsisExpanded(!synopsisExpanded)}
-                  className="flex items-center gap-1 text-gray-500 hover:text-white text-sm mb-2 transition-colors"
-                >
-                  {synopsisExpanded ? 'Hide' : 'Show'} Extended Synopsis
-                  {synopsisExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                </button>
-                {synopsisExpanded && (
-                  <div className="text-gray-400 leading-relaxed space-y-4 pt-2 border-t border-gray-700">
-                    {p.extended_synopsis.split('\n\n').map((para, idx) => (
-                      <p key={idx}>{para}</p>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
+            <div>
+              <button
+                onClick={() => setSynopsisExpanded(!synopsisExpanded)}
+                className="flex items-center gap-1 text-gray-500 hover:text-white text-sm mb-2 transition-colors"
+              >
+                {synopsisExpanded ? 'Hide' : 'Show'} Extended Synopsis
+                {synopsisExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+              </button>
+              {synopsisExpanded && (
+                <div className="text-gray-400 leading-relaxed space-y-4 pt-2 border-t border-gray-700">
+                  {p.extended_synopsis.split('\n\n').map((para, idx) => (
+                    <p key={idx}>{para}</p>
+                  ))}
+                </div>
+              )}
+            </div>
           </motion.section>
         )}
 
