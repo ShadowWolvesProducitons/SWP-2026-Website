@@ -318,17 +318,45 @@ const TemplateEditorModal = ({ template, onClose, onSave }) => {
 
           {/* HTML Content Editor */}
           <div>
-            <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
-              Email Content (HTML)
-            </label>
+            <div className="flex items-center justify-between mb-2">
+              <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest">
+                Email Content (HTML)
+              </label>
+              <button
+                type="button"
+                onClick={toggleSourceView}
+                className={`px-3 py-1.5 rounded-lg text-sm flex items-center gap-2 transition-colors ${
+                  showSourceCode 
+                    ? 'bg-electric-blue text-white' 
+                    : 'bg-gray-800 text-gray-400 hover:text-white'
+                }`}
+              >
+                <Code size={14} />
+                {showSourceCode ? 'Visual Editor' : 'Source Code'}
+              </button>
+            </div>
             <div className="bg-black border border-gray-700 rounded-lg overflow-hidden">
-              <EmailEditorMenuBar editor={editor} />
-              <div className="email-editor-container" style={{ background: '#0a0a0a' }}>
-                <EditorContent editor={editor} />
-              </div>
+              {showSourceCode ? (
+                <textarea
+                  value={htmlSource}
+                  onChange={(e) => setHtmlSource(e.target.value)}
+                  className="w-full min-h-[400px] p-4 bg-black text-green-400 font-mono text-sm resize-y focus:outline-none focus:ring-2 focus:ring-electric-blue/50"
+                  placeholder="Enter HTML code here..."
+                  spellCheck={false}
+                />
+              ) : (
+                <>
+                  <EmailEditorMenuBar editor={editor} />
+                  <div className="email-editor-container" style={{ background: '#0a0a0a' }}>
+                    <EditorContent editor={editor} />
+                  </div>
+                </>
+              )}
             </div>
             <p className="text-gray-600 text-xs mt-2">
-              Content is wrapped in a styled email container. Use inline styles for best email client compatibility.
+              {showSourceCode 
+                ? 'Edit raw HTML directly. Click "Visual Editor" to see rendered preview.'
+                : 'Content is wrapped in a styled email container. Use inline styles for best email client compatibility.'}
             </p>
           </div>
         </div>
