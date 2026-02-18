@@ -45,10 +45,17 @@ async def get_blog_post_by_slug(slug: str):
     # First try exact slug match
     post = await db.blog_posts.find_one({"slug": slug, "status": "Published", "is_archived": {"$ne": True}}, {"_id": 0})
     
-    # If not found, try to find by slugified title match
+    # If not found, try to find by slugified title match (limited query for efficiency)
     if not post:
-        # Try to find post where the slugified title matches the requested slug
-        posts = await db.blog_posts.find({"status": "Published", "is_archived": {"$ne": True}}, {"_id": 0}).to_list(500)
+        # Limit to 100 posts to prevent memory issues - this is a fallback for legacy posts without proper slugs
+        posts = await db.blog_posts.find(
+            {"status": "Published", "is_archived": {"$ne": True}}, 
+            {"_id": 0, "title": 1, "id": 1, "slug": 1, "content": 1, "excerpt": 1, "cover_image_url": 1, 
+             "tags": 1, "status": 1, "featured": 1, "published_at": 1, "created_at": 1, "updated_at": 1,
+             "cta_text": 1, "cta_microcopy": 1, "seo_title": 1, "seo_description": 1, "seo_keywords": 1,
+             "canonical_url": 1, "og_image_url": 1, "no_index": 1, "is_archived": 1}
+        ).limit(100).to_list(100)
+        
         for p in posts:
             if generate_slug(p.get("title", "")) == slug:
                 post = p
