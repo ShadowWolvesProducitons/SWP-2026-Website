@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Settings } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -47,14 +47,6 @@ const Header = () => {
                 {link.name}
               </Link>
             ))}
-            {/* TODO: Remove this admin button before production */}
-            <Link
-              to="/admin"
-              className="ml-4 p-2 text-gray-500 hover:text-electric-blue transition-colors"
-              title="Admin Panel"
-            >
-              <Settings size={18} />
-            </Link>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -84,14 +76,6 @@ const Header = () => {
                 {link.name}
               </Link>
             ))}
-            {/* TODO: Remove this admin link before production */}
-            <Link
-              to="/admin"
-              onClick={() => setIsMenuOpen(false)}
-              className="block py-3 text-sm uppercase tracking-widest font-mono text-gray-500 hover:text-electric-blue transition-colors"
-            >
-              Admin
-            </Link>
           </nav>
         )}
       </div>
