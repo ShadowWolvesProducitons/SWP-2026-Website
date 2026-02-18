@@ -10,6 +10,7 @@ import resend
 RESEND_API_KEY = os.environ.get('RESEND_API_KEY')
 FROM_EMAIL = os.environ.get('FROM_EMAIL', 'onboarding@resend.dev')
 ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL', 'admin@shadowwolvesproductions.com.au')
+FRONTEND_URL = os.environ.get('FRONTEND_URL', 'https://www.shadowwolvesproductions.com.au')
 
 
 def get_email_wrapper(content: str) -> str:
