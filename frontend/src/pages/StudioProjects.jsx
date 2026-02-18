@@ -98,18 +98,18 @@ const StudioProjects = () => {
                         <Film size={48} className="text-gray-700" />
                       </div>
                     )}
-                    <div className="absolute top-3 right-3">
-                      <span className="px-3 py-1 bg-electric-blue/90 text-white text-xs font-mono uppercase rounded-full">
-                        {project.status}
-                      </span>
-                    </div>
                   </div>
                   
                   {/* Info */}
                   <div className="p-4">
-                    <h3 className="text-white font-semibold text-lg mb-1 group-hover:text-electric-blue transition-colors">
-                      {project.title}
-                    </h3>
+                    <div className="flex items-start justify-between gap-2 mb-1">
+                      <h3 className="text-white font-semibold text-lg group-hover:text-electric-blue transition-colors">
+                        {project.title}
+                      </h3>
+                      <span className="px-2 py-1 bg-electric-blue text-white text-xs font-bold uppercase rounded shrink-0">
+                        {project.status}
+                      </span>
+                    </div>
                     {project.genres?.length > 0 && (
                       <div className="flex flex-wrap gap-1">
                         {project.genres.map((genre, gIdx) => (
