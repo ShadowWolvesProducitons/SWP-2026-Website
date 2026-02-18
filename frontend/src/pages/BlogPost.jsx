@@ -2,12 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, RefreshCw } from 'lucide-react';
 import { Helmet } from 'react-helmet';
+import { useSeoSettings } from '../contexts/SeoContext';
 
 const BlogPost = () => {
   const { slug } = useParams();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { seoSettings } = useSeoSettings();
+  
+  // Get production site URL from SEO settings
+  const siteUrl = seoSettings?.global_seo?.site_url || 'https://www.shadowwolvesproductions.com.au';
 
   useEffect(() => {
     window.scrollTo(0, 0);
