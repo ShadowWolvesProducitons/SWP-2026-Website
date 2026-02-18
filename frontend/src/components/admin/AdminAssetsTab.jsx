@@ -832,18 +832,6 @@ const EditAssetModal = ({ asset, films, armoryItems, blogPosts, onClose, onSave 
             </div>
           </div>
 
-          {/* Visibility */}
-          <div>
-            <label className="block text-gray-400 text-xs uppercase mb-2">Visibility</label>
-            <select 
-              value={formData.visibility} 
-              onChange={e => setFormData(s => ({ ...s, visibility: e.target.value }))}
-              className="w-full bg-black border border-gray-700 rounded-lg px-3 py-2 text-white text-sm"
-            >
-              {VISIBILITY.map(v => <option key={v.id} value={v.id}>{v.label}</option>)}
-            </select>
-          </div>
-
           {/* Tags */}
           <div>
             <label className="block text-gray-400 text-xs uppercase mb-2">Tags (comma-separated)</label>
