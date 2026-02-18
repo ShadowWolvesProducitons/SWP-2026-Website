@@ -189,7 +189,7 @@ const RequestAccess = () => {
             transition={{ duration: 0.6 }}
           >
             {/* Header */}
-            <div className="text-center mb-12">
+            <div className="text-center mb-8">
               <div className="w-16 h-16 bg-electric-blue/20 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Shield size={32} className="text-electric-blue" />
               </div>
@@ -197,9 +197,21 @@ const RequestAccess = () => {
                 Request Access
               </h1>
               <p className="text-gray-400 max-w-lg mx-auto">
-                Get access to the Shadow Wolves Productions Studio Portal — your gateway to exclusive project materials, updates, and investment opportunities.
+                Gain inside access to our Studio Portal — your gateway to exclusive project materials, updates, and investment opportunities.
               </p>
             </div>
+
+            {/* Login Link - Moved to top */}
+            <p className="text-center text-gray-500 text-sm mb-8">
+              Already have an account?{' '}
+              <button
+                type="button"
+                onClick={() => navigate('/studio-access/login')}
+                className="text-electric-blue hover:underline"
+              >
+                Sign In
+              </button>
+            </p>
 
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-6">
