@@ -47,8 +47,7 @@ def set_db(database):
 
 def hash_password(password: str) -> str:
     """Hash password using SHA256 with salt"""
-    salt = "shadowwolves_salt_2024"
-    return hashlib.sha256(f"{password}{salt}".encode()).hexdigest()
+    return hashlib.sha256(f"{password}{PASSWORD_SALT}".encode()).hexdigest()
 
 
 def verify_password(password: str, hashed: str) -> bool:
