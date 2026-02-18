@@ -173,14 +173,21 @@ async def get_sitemap_xml():
             if sitemap_settings.get("exclude_archived", True):
                 query["is_archived"] = {"$ne": True}
             
-            posts = await db.blog_posts.find(query, {"slug": 1, "updated_at": 1, "_id": 0}).to_list(1000)
+            posts = await db.blog_posts.find(query, {"slug": 1, "title": 1, "updated_at": 1, "_id": 0}).to_list(1000)
             for post in posts:
-                if post.get("slug"):
+                # Use slug if properly slugified, otherwise slugify the title
+                post_slug = post.get("slug", "")
+                # Check if slug contains spaces or special chars (not properly slugified)
+                if not post_slug or " " in post_slug or not re.match(r'^[a-z0-9\-]+$', post_slug):
+                    # Slugify from title
+                    post_slug = slugify(post.get("title", ""))
+                
+                if post_slug:
                     lastmod = datetime.now().strftime("%Y-%m-%d")
                     if isinstance(post.get("updated_at"), datetime):
                         lastmod = post["updated_at"].strftime("%Y-%m-%d")
                     blog_urls.append({
-                        "loc": f"/blog/{post['slug']}",
+                        "loc": f"/blog/{post_slug}",
                         "lastmod": lastmod,
                         "priority": "0.7",
                         "changefreq": "weekly"
