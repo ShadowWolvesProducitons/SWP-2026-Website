@@ -19,11 +19,12 @@ const AdminEmailTemplatesTab = () => {
   const [loading, setLoading] = useState(true);
   const [editingTemplate, setEditingTemplate] = useState(null);
   const [previewHtml, setPreviewHtml] = useState(null);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   const fetchTemplates = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/email-templates`);
+      const response = await fetch(`${API}/api/email-templates`);
       if (response.ok) {
         const data = await response.json();
         setTemplates(data);
