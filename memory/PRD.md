@@ -71,9 +71,14 @@ Build a comprehensive "Studio Access Portal" and modernize the public-facing web
 - [x] Native lazy loading on TheDen product cards
 
 #### Dynamic SEO Endpoints
-- [x] `/api/seo/robots.txt` - Reads from admin settings
-- [x] `/api/seo/sitemap.xml` - Dynamic generation based on settings
+- [x] `/api/seo/robots.txt` - Reads from admin settings, uses production URL
+- [x] `/api/seo/sitemap.xml` - Dynamic generation with proper slug URLs
 - [x] `/api/site-settings/seo` - GET/PUT for SEO configuration
+
+#### Blog Post Page UI Improvements (February 2025)
+- [x] Full-width content layout (removed max-w-3xl restriction)
+- [x] Tags styled as rounded chips with electric-blue border
+- [x] Canonical URLs use production site URL from settings
 
 ### Backlog (P2/P3)
 - [ ] Studio Portal User Updates Feed (deferred)
