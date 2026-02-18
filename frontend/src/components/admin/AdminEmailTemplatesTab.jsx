@@ -235,6 +235,8 @@ const AdminEmailTemplatesTab = () => {
 const TemplateEditorModal = ({ template, onClose, onSave }) => {
   const [subject, setSubject] = useState(template.subject);
   const [saving, setSaving] = useState(false);
+  const [showSourceCode, setShowSourceCode] = useState(false);
+  const [htmlSource, setHtmlSource] = useState(template.html_content);
 
   const editor = useEditor({
     extensions: [
@@ -256,13 +258,25 @@ const TemplateEditorModal = ({ template, onClose, onSave }) => {
         class: 'prose prose-invert max-w-none min-h-[300px] p-4 focus:outline-none',
         style: 'font-family: Arial, sans-serif; background: #0a0a0a; color: #ffffff;'
       }
+    },
+    onUpdate: ({ editor }) => {
+      setHtmlSource(editor.getHTML());
     }
   });
 
+  // When switching from source to visual, update editor content
+  const toggleSourceView = () => {
+    if (showSourceCode && editor) {
+      // Switching from source to visual - apply the HTML
+      editor.commands.setContent(htmlSource, false);
+    }
+    setShowSourceCode(!showSourceCode);
+  };
+
   const handleSave = async () => {
-    if (!editor) return;
     setSaving(true);
-    await onSave(template.id, subject, editor.getHTML());
+    const content = showSourceCode ? htmlSource : (editor?.getHTML() || htmlSource);
+    await onSave(template.id, subject, content);
     setSaving(false);
   };
 
