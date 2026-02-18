@@ -405,14 +405,7 @@ const RequestAccess = () => {
                 {loading ? 'Submitting...' : 'Request Access'}
                 {!loading && <ArrowRight size={18} />}
               </button>
-
-              {/* Login Link */}
-              <p className="text-center text-gray-500 text-sm">
-                Already have an account?{' '}
-                <button
-                  type="button"
-                  onClick={() => navigate('/studio-access/login')}
-                  className="text-electric-blue hover:underline"
+            </form>
                 >
                   Sign In
                 </button>
