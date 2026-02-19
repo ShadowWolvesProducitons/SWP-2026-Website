@@ -514,13 +514,31 @@ async def create_admin_user(data: CreateAdminInput):
 # These endpoints use the main admin console password for authentication
 
 from fastapi import Header
+import bcrypt
 
-ADMIN_PASSWORD = "shadowwolves2024"
+
+def get_admin_password_hash():
+    """Get admin password hash from environment"""
+    return os.environ.get('ADMIN_PASSWORD_HASH', '')
+
+
+def verify_console_password(plain_password: str) -> bool:
+    """Verify console password against hash"""
+    stored_hash = get_admin_password_hash()
+    if not stored_hash:
+        return False
+    try:
+        return bcrypt.checkpw(
+            plain_password.encode('utf-8'),
+            stored_hash.encode('utf-8')
+        )
+    except Exception:
+        return False
 
 
 async def verify_admin_password(x_admin_password: str = Header(None)):
     """Verify admin password from header"""
-    if x_admin_password != ADMIN_PASSWORD:
+    if not x_admin_password or not verify_console_password(x_admin_password):
         raise HTTPException(status_code=401, detail="Invalid admin password")
     return True
 
