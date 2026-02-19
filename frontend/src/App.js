@@ -115,6 +115,7 @@ const AppContent = () => {
             <Navigate to="/admin/dashboard" replace /> :
             <AdminLogin onLogin={() => setIsAdminAuthenticated(true)} />
         } />
+        <Route path="/admin/setup-password" element={<AdminSetupPassword />} />
         <Route path="/admin/dashboard" element={
           <ProtectedRoute isAuthenticated={isAdminAuthenticated}>
             <AdminDashboard onLogout={() => setIsAdminAuthenticated(false)} />
