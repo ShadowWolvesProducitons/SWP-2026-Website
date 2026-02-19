@@ -33,6 +33,7 @@ from routes.studio_portal_auth import router as studio_portal_auth_router, set_d
 from routes.studio_portal_data import router as studio_portal_data_router, set_db as set_studio_portal_data_db
 from routes.studio_portal_admin import router as studio_portal_admin_router, set_db as set_studio_portal_admin_db
 from routes.seo import router as seo_router, set_db as set_seo_db
+from routes.newsletter_builder import router as newsletter_builder_router, set_db as set_newsletter_builder_db
 
 
 ROOT_DIR = Path(__file__).parent
@@ -63,6 +64,7 @@ set_studio_portal_auth_db(db)
 set_studio_portal_data_db(db)
 set_studio_portal_admin_db(db)
 set_seo_db(db)
+set_newsletter_builder_db(db)
 
 # Create the main app
 app = FastAPI(title="Shadow Wolves Productions API")
@@ -133,6 +135,9 @@ api_router.include_router(studio_portal_admin_router)
 
 # SEO routes
 api_router.include_router(seo_router)
+
+# Newsletter Builder routes
+api_router.include_router(newsletter_builder_router)
 
 # Include the main API router
 app.include_router(api_router)
