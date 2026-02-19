@@ -141,6 +141,9 @@ api_router.include_router(seo_router)
 # Newsletter Builder routes
 api_router.include_router(newsletter_builder_router)
 
+# Admin Auth routes (email-based)
+api_router.include_router(admin_auth_router)
+
 # Include the main API router
 app.include_router(api_router)
 
