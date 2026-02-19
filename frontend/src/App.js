@@ -53,14 +53,15 @@ const AppContent = () => {
   );
   
   const isAdminRoute = location.pathname.startsWith('/admin');
+  const isAdminSetupRoute = location.pathname === '/admin/setup-password';
   const isStudioAccessRoute = location.pathname.startsWith('/studio-access');
   const isRequestAccessRoute = location.pathname === '/request-access';
   const isVerifyAccessRoute = location.pathname === '/verify-access';
   const isResetPasswordRoute = location.pathname === '/reset-password';
   
   // Show header/footer for public pages
-  const showLayout = !isAdminRoute && !isStudioAccessRoute && !isRequestAccessRoute && !isVerifyAccessRoute && !isResetPasswordRoute;
-  const showPopup = !isAdminRoute && !isStudioAccessRoute && !isRequestAccessRoute && !isVerifyAccessRoute && !isResetPasswordRoute;
+  const showLayout = !isAdminRoute && !isAdminSetupRoute && !isStudioAccessRoute && !isRequestAccessRoute && !isVerifyAccessRoute && !isResetPasswordRoute;
+  const showPopup = !isAdminRoute && !isAdminSetupRoute && !isStudioAccessRoute && !isRequestAccessRoute && !isVerifyAccessRoute && !isResetPasswordRoute;
 
   return (
     <Layout showLayout={showLayout} showPopup={showPopup}>
