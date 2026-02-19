@@ -30,6 +30,7 @@ const AdminStudioTab = () => {
     if (subtabFromUrl && subtabFromUrl !== activeSubTab) {
       setActiveSubTab(subtabFromUrl);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subtabFromUrl]);
 
   const handleSubTabChange = (tabId) => {
