@@ -181,7 +181,74 @@ Build a comprehensive "Studio Access Portal" and modernize the public-facing web
 
 ## Credentials
 - Admin URL: `/admin`
-- Admin Password: `shadowwolves2024`
+- Admin Password: `Shadow_Wolves01!`
+
+## Newsletter Builder (February 2026)
+
+### Overview
+A complete block-based newsletter building system integrated into the admin console at **Admin > Studio > Comms > Newsletters**.
+
+### Features Implemented
+- [x] Newsletter issue list view with status badges (Draft/Sent)
+- [x] Create/Edit newsletter modal with three tabs: Basics, Content, Settings
+- [x] Three content block types:
+  - **Main Story**: Image, Eyebrow, Headline, Body, CTA Button (with URL and microcopy)
+  - **Image + Text Card**: Image, Title, Body, Link (designed for two-up layout)
+  - **Simple Text Block**: Optional Headline, Body text
+- [x] Block reordering with Move Up/Down controls
+- [x] Asset picker integration for images
+- [x] HTML preview in modal (renders full email template)
+- [x] Save Draft functionality
+- [x] Send Test Email functionality
+- [x] Send Campaign functionality (to all subscribers or portal users)
+- [x] Audience segment selector with live subscriber counts
+- [x] Master HTML template matching user-provided design (SWP-Newsletter_Master.html)
+
+### API Endpoints
+- `GET /api/newsletter-builder/issues` - List all newsletter issues
+- `GET /api/newsletter-builder/issues?status=draft` - Filter by status
+- `POST /api/newsletter-builder/issues` - Create new newsletter
+- `GET /api/newsletter-builder/issues/{id}` - Get single issue
+- `PUT /api/newsletter-builder/issues/{id}` - Update issue
+- `DELETE /api/newsletter-builder/issues/{id}` - Delete issue
+- `POST /api/newsletter-builder/issues/{id}/preview` - Generate HTML preview
+- `POST /api/newsletter-builder/issues/{id}/send` - Send campaign
+- `POST /api/newsletter-builder/issues/{id}/send?test_email=x@y.com` - Send test email
+- `GET /api/newsletter-builder/segments` - Get audience segments with counts
+
+### Database Model (newsletter_issues collection)
+```json
+{
+  "id": "uuid",
+  "title": "Internal title",
+  "subject": "Email subject line",
+  "preheader": "Preview text",
+  "header_image_url": "URL or null for default",
+  "issue_label": "INSIDE THE DEN // Issue 01",
+  "date_label": "19 Feb 2026",
+  "hero_title": "Newsletter hero title",
+  "hero_intro": "Introduction text",
+  "hero_chips": "Tags separated by bullets",
+  "blocks": [
+    {"type": "main_story", "headline": "...", "body": "...", ...},
+    {"type": "image_text", "title": "...", "body": "...", ...},
+    {"type": "simple_text", "headline": "...", "body": "..."}
+  ],
+  "segment": "all|portal_users",
+  "status": "draft|sent",
+  "show_studio_cta": true,
+  "sent_at": "datetime",
+  "sent_count": 15,
+  "created_at": "datetime",
+  "updated_at": "datetime"
+}
+```
+
+### Key Files
+- `/app/backend/routes/newsletter_builder.py` - All newsletter builder APIs
+- `/app/backend/models/newsletter_issue.py` - Pydantic models
+- `/app/frontend/src/components/admin/AdminNewsletterBuilder.jsx` - List view component
+- `/app/frontend/src/components/admin/NewsletterBuilderModal.jsx` - Editor modal
 
 ## Next Steps
 1. Validate JSON-LD with Google Rich Results Test (button available in admin)
