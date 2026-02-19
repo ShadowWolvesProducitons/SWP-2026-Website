@@ -11,6 +11,7 @@ import BlogPost from "./pages/BlogPost";
 import ProductPage from "./pages/ProductPage";
 import WorkWithUs from "./pages/WorkWithUs";
 import AdminLogin from "./pages/AdminLogin";
+import AdminSetupPassword from "./pages/AdminSetupPassword";
 import AdminDashboard from "./pages/AdminDashboard";
 import LeadMagnetPopup from "./components/LeadMagnetPopup";
 import { Toaster } from "./components/ui/sonner";
