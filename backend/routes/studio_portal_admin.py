@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from typing import List, Optional
 from datetime import datetime, timezone
 import uuid
+import os
 
 from models.studio_user import (
     UserRole, UserStatus, StudioUserUpdate, AuditEventType,
