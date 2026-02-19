@@ -181,7 +181,57 @@ Build a comprehensive "Studio Access Portal" and modernize the public-facing web
 
 ## Credentials
 - Admin URL: `/admin`
-- Admin Password: `Shadow_Wolves01!`
+- Admin Auth: **Email-based authentication** (no more environment variable passwords!)
+
+## Admin Authentication System (February 2026)
+
+### Overview
+Replaced the problematic environment-variable-based password system with a secure email-based authentication flow.
+
+### How It Works
+1. Admin visits `/admin` and clicks **"Request Access"**
+2. Enters their name and email
+3. Receives an email with a secure setup link (expires in 24 hours)
+4. Clicks link, goes to `/admin/setup-password?token=...`
+5. Sets their password
+6. Can now log in with email + password
+
+### Features
+- [x] Email + password login form
+- [x] "Request Access" form for new admins
+- [x] Secure email with setup link via Resend
+- [x] Password setup page with token verification
+- [x] Token expiration (24 hours)
+- [x] Session management with tokens
+- [x] Support for multiple admin users
+
+### API Endpoints
+- `POST /api/admin-auth/request-access` - Request admin access
+- `GET /api/admin-auth/verify-token/{token}` - Verify setup token
+- `POST /api/admin-auth/set-password` - Set password after email verification
+- `POST /api/admin-auth/login` - Login with email + password
+- `GET /api/admin-auth/check` - Check if any admins exist
+
+### Database Model (admin_users collection)
+```json
+{
+  "id": "uuid",
+  "name": "Admin Name",
+  "email": "admin@example.com",
+  "password_hash": "sha256 hash",
+  "status": "pending|active|revoked",
+  "access_token": "secure token for setup",
+  "token_expires": "datetime",
+  "created_at": "datetime",
+  "updated_at": "datetime",
+  "last_login": "datetime"
+}
+```
+
+### Key Files
+- `/app/backend/routes/admin_auth.py` - All auth endpoints
+- `/app/frontend/src/pages/AdminLogin.jsx` - Login + Request Access forms
+- `/app/frontend/src/pages/AdminSetupPassword.jsx` - Password setup page
 
 ## Newsletter Builder (February 2026)
 
