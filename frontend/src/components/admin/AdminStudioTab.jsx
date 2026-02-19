@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 // Import existing components that we'll reuse
 import AdminStudioPortalTab from './AdminStudioPortalTab';
 import AdminNewsletterTab from './AdminNewsletterTab';
+import AdminNewsletterBuilder from './AdminNewsletterBuilder';
 import AdminEmailTemplatesTab from './AdminEmailTemplatesTab';
 import AdminSiteSettingsTab from './AdminSiteSettingsTab';
 import AdminSeoSettingsTab from './AdminSeoSettingsTab';
@@ -22,7 +23,7 @@ const AdminStudioTab = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const subtabFromUrl = searchParams.get('subtab') || 'portal';
   const [activeSubTab, setActiveSubTab] = useState(subtabFromUrl);
-  const [commsSection, setCommsSection] = useState('subscribers'); // For Comms internal tabs
+  const [commsSection, setCommsSection] = useState('newsletters'); // For Comms internal tabs
 
   // Keep subtab in sync with URL
   useEffect(() => {
@@ -125,12 +126,23 @@ const StudioCommsSection = ({ activeSection, setActiveSection }) => {
           Communications
         </h3>
         <p className="text-gray-500 text-sm mt-1">
-          Manage newsletter subscribers and email templates
+          Manage newsletters, subscribers, and email templates
         </p>
       </div>
 
       {/* Internal Tabs for Comms */}
       <div className="flex gap-2 mb-6">
+        <button
+          onClick={() => setActiveSection('newsletters')}
+          data-testid="comms-tab-newsletters"
+          className={`px-4 py-2 rounded-lg text-sm transition-all ${
+            activeSection === 'newsletters'
+              ? 'bg-white text-black'
+              : 'bg-smoke-gray text-gray-400 hover:text-white border border-gray-700'
+          }`}
+        >
+          Newsletters
+        </button>
         <button
           onClick={() => setActiveSection('subscribers')}
           data-testid="comms-tab-subscribers"
@@ -156,6 +168,7 @@ const StudioCommsSection = ({ activeSection, setActiveSection }) => {
       </div>
 
       {/* Content */}
+      {activeSection === 'newsletters' && <AdminNewsletterBuilder />}
       {activeSection === 'subscribers' && <AdminNewsletterTab />}
       {activeSection === 'templates' && <AdminEmailTemplatesTab />}
     </div>
