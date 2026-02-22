@@ -541,8 +541,15 @@ const AdminDashboardTab = () => {
                       >
                         <Mail size={16} />
                       </a>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); handleDelete(item, true); }}
+                        className="p-1.5 text-gray-500 hover:text-red-400 hover:bg-red-500/10 rounded transition-colors"
+                        title="Delete"
+                      >
+                        <Trash2 size={16} />
+                      </button>
                       <span className="hidden lg:block text-gray-500 text-sm ml-2">{formatDate(item.created_at)}</span>
-                      {expandedId === `${item._type}-${item.id}` ? (
+                      {expandedId === itemKey ? (
                         <ChevronUp size={20} className="text-gray-400 ml-2" />
                       ) : (
                         <ChevronDown size={20} className="text-gray-400 ml-2" />
