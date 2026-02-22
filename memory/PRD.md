@@ -300,6 +300,37 @@ A complete block-based newsletter building system integrated into the admin cons
 - `/app/frontend/src/components/admin/AdminNewsletterBuilder.jsx` - List view component
 - `/app/frontend/src/components/admin/NewsletterBuilderModal.jsx` - Editor modal
 
+## Admin Enhancements (February 22, 2026)
+
+### Activity Feed Improvements
+- [x] Inline action icons for each item: Mark as Read (check), Reply via Email (envelope), Delete (trash)
+- [x] Checkbox selection for each item
+- [x] "Select all" checkbox at top
+- [x] Bulk actions dropdown: Mark as Read, Archive All, Delete All
+- [x] Apply button for bulk actions
+
+### Site Settings Reorganization
+- [x] Three tabs: Page Headers, Lead Magnet, Redirects
+- [x] Page Headers: Accordion list of pages with image upload and position controls
+- [x] Lead Magnet: Existing modal/section preserved
+- [x] Redirects: Full CRUD for URL redirect rules (NEW)
+
+### Redirect System
+- [x] Database model: `redirect_rules` collection
+- [x] Fields: from_path, to_url, status_code (301/302), match_type (EXACT/PREFIX), preserve_query, priority, is_enabled, note
+- [x] API endpoints: CRUD at `/api/redirects/rules/*`
+- [x] Toggle enable/disable for each rule
+- [x] Info panel explaining redirect types
+
+### SEO Fixes
+- [x] robots.txt now points to production URL: `https://www.shadowwolvesproductions.com.au/sitemap.xml`
+- [x] sitemap.xml all URLs use production domain `www.shadowwolvesproductions.com.au`
+- [x] Webhook URL instruction shows production URL
+
+### Header Image Flash Fix
+- [x] PageHeader component now waits for settings to load before displaying image
+- [x] Shows gradient fallback while loading, then final image only
+
 ## Next Steps
 1. Validate JSON-LD with Google Rich Results Test (button available in admin)
 2. Configure production site URL in SEO settings
