@@ -14,6 +14,7 @@ const PAGE_HEADERS = {
 
 const PageHeader = ({ page, title, subtitle, children }) => {
   const [settings, setSettings] = useState(null);
+  const [loaded, setLoaded] = useState(false);
   const defaultImage = PAGE_HEADERS[page];
 
   useEffect(() => {
@@ -26,20 +27,23 @@ const PageHeader = ({ page, title, subtitle, children }) => {
         }
       } catch (error) {
         console.error('Failed to fetch header settings:', error);
+      } finally {
+        setLoaded(true);
       }
     };
     fetchSettings();
   }, [page]);
 
-  const imageUrl = settings?.image_url || defaultImage;
+  // Only show the final image URL (from settings or default if no custom set)
+  const imageUrl = loaded ? (settings?.image_url || defaultImage) : null;
   const positionX = settings?.position_x ?? 50;
   const positionY = settings?.position_y ?? 30;
   const overlayOpacity = settings?.overlay_opacity ?? 85;
 
   return (
     <section className="page-header relative py-12 overflow-hidden" data-testid={`page-header-${page}`}>
-      {/* Background Image */}
-      {imageUrl && (
+      {/* Background Image - only show after settings are loaded */}
+      {loaded && imageUrl && (
         <div className="absolute inset-0">
           <img 
             src={`${API}${imageUrl}`} 
@@ -54,7 +58,8 @@ const PageHeader = ({ page, title, subtitle, children }) => {
           <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40" />
         </div>
       )}
-      {!imageUrl && (
+      {/* Fallback gradient while loading or if no image */}
+      {(!loaded || !imageUrl) && (
         <div className="absolute inset-0 bg-gradient-to-br from-black via-smoke-gray to-black">
           <div className="absolute inset-0 opacity-20">
             <div className="absolute top-0 right-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl" />
