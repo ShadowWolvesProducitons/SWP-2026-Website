@@ -37,6 +37,8 @@ const AdminDashboardTab = () => {
   const [activityFilter, setActivityFilter] = useState('all');
   const [expandedId, setExpandedId] = useState(null);
   const [noteModal, setNoteModal] = useState({ open: false, item: null, text: '' });
+  const [selectedItems, setSelectedItems] = useState(new Set());
+  const [bulkAction, setBulkAction] = useState('');
 
   const fetchData = async () => {
     setLoading(true);
