@@ -241,13 +241,21 @@ async def admin_login(data: LoginInput):
     user = await db.admin_users.find_one({"email": email}, {"_id": 0})
     
     if not user:
+        print(f"Login failed: User {email} not found")
         raise HTTPException(status_code=401, detail="Invalid email or password")
     
     if user.get("status") != "active":
+        print(f"Login failed: User {email} status is {user.get('status')}")
         raise HTTPException(status_code=401, detail="Account is not active. Please complete the setup process.")
     
     if not user.get("password_hash"):
+        print(f"Login failed: User {email} has no password_hash")
         raise HTTPException(status_code=401, detail="Password not set. Please complete the setup process.")
+    
+    # Debug: Log the password verification
+    computed_hash = hash_password(data.password)
+    stored_hash = user["password_hash"]
+    print(f"Login attempt for {email}: computed={computed_hash[:20]}..., stored={stored_hash[:20]}..., match={computed_hash == stored_hash}")
     
     if not verify_password(data.password, user["password_hash"]):
         raise HTTPException(status_code=401, detail="Invalid email or password")
