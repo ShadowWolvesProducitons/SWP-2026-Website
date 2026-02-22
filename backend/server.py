@@ -68,6 +68,7 @@ set_studio_portal_admin_db(db)
 set_seo_db(db)
 set_newsletter_builder_db(db)
 set_admin_auth_db(db)
+set_redirects_db(db)
 
 # Create the main app
 app = FastAPI(title="Shadow Wolves Productions API")
