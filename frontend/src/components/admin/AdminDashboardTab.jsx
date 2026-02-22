@@ -425,6 +425,46 @@ const AdminDashboardTab = () => {
             )}
           </div>
 
+          {/* Bulk Actions Bar */}
+          {filteredActivity.length > 0 && (
+            <div className="flex items-center gap-4 mb-4 p-3 bg-smoke-gray border border-gray-800 rounded-lg">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={selectedItems.size === filteredActivity.length && filteredActivity.length > 0}
+                  onChange={handleSelectAll}
+                  className="w-4 h-4 rounded border-gray-600 bg-black text-electric-blue focus:ring-electric-blue"
+                />
+                <span className="text-gray-400 text-sm">
+                  {selectedItems.size > 0 ? `${selectedItems.size} selected` : 'Select all'}
+                </span>
+              </label>
+              
+              {selectedItems.size > 0 && (
+                <>
+                  <div className="h-4 w-px bg-gray-700" />
+                  <select
+                    value={bulkAction}
+                    onChange={(e) => setBulkAction(e.target.value)}
+                    className="bg-black border border-gray-700 rounded px-3 py-1.5 text-sm text-gray-300 focus:border-electric-blue focus:outline-none"
+                  >
+                    <option value="">Bulk Actions...</option>
+                    <option value="read">Mark as Read</option>
+                    <option value="archive">Archive All</option>
+                    <option value="delete">Delete All</option>
+                  </select>
+                  <button
+                    onClick={handleBulkAction}
+                    disabled={!bulkAction}
+                    className="px-3 py-1.5 bg-electric-blue hover:bg-electric-blue/90 disabled:bg-gray-700 disabled:cursor-not-allowed text-white text-sm rounded transition-colors"
+                  >
+                    Apply
+                  </button>
+                </>
+              )}
+            </div>
+          )}
+
           {/* Activity Items */}
           {filteredActivity.length === 0 ? (
             <div className="text-center py-12 bg-smoke-gray border border-gray-800 rounded-lg">
@@ -433,19 +473,31 @@ const AdminDashboardTab = () => {
             </div>
           ) : (
             <div className="space-y-3">
-              {filteredActivity.map((item) => (
+              {filteredActivity.map((item) => {
+                const itemKey = `${item._type}-${item.id}`;
+                const isSelected = selectedItems.has(itemKey);
+                return (
                 <div
-                  key={`${item._type}-${item.id}`}
+                  key={itemKey}
                   className={`bg-smoke-gray border rounded-lg overflow-hidden transition-colors ${
-                    item.status === 'New' ? 'border-electric-blue/50' : 'border-gray-800 hover:border-gray-700'
+                    isSelected ? 'border-electric-blue' : item.status === 'New' ? 'border-electric-blue/50' : 'border-gray-800 hover:border-gray-700'
                   }`}
                   data-testid={`activity-item-${item.id}`}
                 >
                   {/* Header Row */}
                   <div
-                    className="px-6 py-4 flex items-center justify-between cursor-pointer"
-                    onClick={() => setExpandedId(expandedId === `${item._type}-${item.id}` ? null : `${item._type}-${item.id}`)}
+                    className="px-4 py-3 flex items-center gap-3 cursor-pointer"
+                    onClick={() => setExpandedId(expandedId === itemKey ? null : itemKey)}
                   >
+                    {/* Checkbox */}
+                    <input
+                      type="checkbox"
+                      checked={isSelected}
+                      onChange={(e) => handleSelectItem(itemKey, e)}
+                      onClick={(e) => e.stopPropagation()}
+                      className="w-4 h-4 rounded border-gray-600 bg-black text-electric-blue focus:ring-electric-blue flex-shrink-0"
+                    />
+                    
                     <div className="flex items-center gap-3 flex-1 min-w-0">
                       <span className={`px-2.5 py-1 rounded-full text-[10px] font-mono uppercase border ${TYPE_BADGE[item._type]}`}>
                         {item._type === 'cineconnect' ? 'CineConnect' : item._type}
