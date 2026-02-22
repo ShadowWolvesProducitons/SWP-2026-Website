@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://shadowwolvesproductions.com/</loc>
+    <loc>https://www.shadowwolvesproductions.com.au/</loc>
     <priority>1.0</priority>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://shadowwolvesproductions.com/films</loc>
+    <loc>https://www.shadowwolvesproductions.com.au/films</loc>
     <priority>0.9</priority>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://shadowwolvesproductions.com/armory</loc>
+    <loc>https://www.shadowwolvesproductions.com.au/armory</loc>
     <priority>0.8</priority>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://shadowwolvesproductions.com/blog</loc>
+    <loc>https://www.shadowwolvesproductions.com.au/blog</loc>
     <priority>0.8</priority>
     <changefreq>daily</changefreq>
   </url>
   <url>
-    <loc>https://shadowwolvesproductions.com/work-with-us</loc>
+    <loc>https://www.shadowwolvesproductions.com.au/work-with-us</loc>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
