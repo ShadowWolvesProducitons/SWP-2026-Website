@@ -284,7 +284,7 @@ const AdminAnalyticsTab = () => {
                   To track opens and clicks, set up a webhook in your Resend dashboard pointing to:
                 </p>
                 <code className="block mt-2 text-xs bg-black px-3 py-2 rounded text-electric-blue">
-                  {process.env.REACT_APP_BACKEND_URL}/api/webhooks/resend
+                  https://www.shadowwolvesproductions.com.au/api/webhooks/resend
                 </code>
                 <p className="text-gray-500 text-xs mt-2">
                   Select events: email.delivered, email.opened, email.clicked, email.bounced
