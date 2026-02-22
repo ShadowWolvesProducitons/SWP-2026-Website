@@ -641,7 +641,8 @@ const AdminDashboardTab = () => {
                     </div>
                   )}
                 </div>
-              ))}
+              );
+              })}
             </div>
           )}
         </div>
