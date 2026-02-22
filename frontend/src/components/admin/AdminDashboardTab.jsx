@@ -188,6 +188,72 @@ const AdminDashboardTab = () => {
     return [];
   };
 
+  // Bulk selection handlers
+  const handleSelectItem = (itemKey, e) => {
+    e.stopPropagation();
+    setSelectedItems(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(itemKey)) {
+        newSet.delete(itemKey);
+      } else {
+        newSet.add(itemKey);
+      }
+      return newSet;
+    });
+  };
+
+  const handleSelectAll = () => {
+    if (selectedItems.size === filteredActivity.length) {
+      setSelectedItems(new Set());
+    } else {
+      setSelectedItems(new Set(filteredActivity.map(i => `${i._type}-${i.id}`)));
+    }
+  };
+
+  const handleBulkAction = async () => {
+    if (!bulkAction || selectedItems.size === 0) return;
+    
+    const selectedList = filteredActivity.filter(i => selectedItems.has(`${i._type}-${i.id}`));
+    
+    if (bulkAction === 'delete') {
+      if (!window.confirm(`Delete ${selectedList.length} items? This cannot be undone.`)) return;
+    }
+
+    let successCount = 0;
+    for (const item of selectedList) {
+      if (item._type === 'cineconnect' && bulkAction !== 'delete') continue;
+      
+      const endpoint = item._type === 'message' ? 'contact' : item._type === 'submission' ? 'submissions' : 'contact/cineconnect-interest';
+      
+      try {
+        if (bulkAction === 'delete') {
+          const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/${endpoint}/${item.id}?permanent=true`, { 
+            method: 'DELETE' 
+          });
+          if (response.ok) successCount++;
+        } else if (bulkAction === 'read') {
+          const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/${endpoint}/${item.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: 'Read' })
+          });
+          if (response.ok) successCount++;
+        } else if (bulkAction === 'archive') {
+          const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/${endpoint}/${item.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: 'Archived' })
+          });
+          if (response.ok) successCount++;
+        }
+      } catch {}
+    }
+
+    toast.success(`${bulkAction === 'delete' ? 'Deleted' : 'Updated'} ${successCount} items`);
+    setBulkAction('');
+    fetchData();
+  };
+
   const newCount = activityItems.filter(i => i.status === 'New').length;
   const counts = {
     all: activityItems.length,
