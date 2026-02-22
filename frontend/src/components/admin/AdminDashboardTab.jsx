@@ -77,6 +77,7 @@ const AdminDashboardTab = () => {
       });
 
       setActivityItems(allItems);
+      setSelectedItems(new Set());
     } catch (err) {
       toast.error('Failed to load dashboard data');
     } finally {
