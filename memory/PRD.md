@@ -104,7 +104,7 @@ Build a comprehensive "Studio Access Portal" and modernize the public-facing web
 - [ ] P0: Dynamic Pages System with drag-and-drop reordering
 - [ ] P3: HTML Code Editor in Blog Posts
 - [ ] P1: E-commerce Integration (Stripe for The Armory)
-- [ ] P2: CineConnect Database build-out
+- [ ] P2: Spot'd Integration (www.getspotd.app - cast & crew database for indie filmmakers)
 - [ ] P2: Verify Resend Webhook on production
 - [ ] P2: Asset Library Delete Button Bug (paused by user)
 - [ ] P3: AdminDashboardTab refactor (split Activity Feed)
