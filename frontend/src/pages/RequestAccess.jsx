@@ -259,7 +259,7 @@ const RequestAccess = () => {
               <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'1px', background:'rgba(255,255,255,0.06)', borderTop:'0.5px solid rgba(255,255,255,0.07)' }}>
                 {[
                   { icon:'NDA', text:'All portal access is subject to confidentiality. Materials are not for distribution.' },
-                  { icon:'VET', text:'Applications are reviewed manually. We don't automate access to sensitive project materials.' },
+                  { icon:'VET', text:"Applications are reviewed manually. We don\'t automate access to sensitive project materials." },
                   { icon:'SEC', text:'Secure, time-limited access links. No shared passwords. No bulk downloads.' },
                 ].map(item => (
                   <div key={item.icon} style={{ background:'rgba(13,15,20,0.8)', padding:'18px 20px', display:'flex', gap:'12px', alignItems:'flex-start' }}>
