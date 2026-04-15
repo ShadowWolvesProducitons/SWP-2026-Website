@@ -7,7 +7,7 @@ import requests
 import os
 import uuid
 
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://newsletter-forge-4.preview.emergentagent.com')
+BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://pages-dragdrop.preview.emergentagent.com')
 
 class TestNewsletterBuilderIssues:
     """Tests for Newsletter Builder Issues CRUD"""
