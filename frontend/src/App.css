@@ -1,0 +1,59 @@
+/* ── SWP Global App Styles ── */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+.App {
+  background-color: var(--swp-black);
+  color: var(--swp-white);
+  font-family: var(--font-body);
+}
+
+/* ── Page transitions ── */
+@keyframes swpFadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.swp-page-enter { animation: swpFadeIn 0.5s ease forwards; }
+
+/* ── Fog / atmosphere ── */
+@keyframes fog-drift {
+  0%   { transform: translateX(-8%) translateY(0); opacity: 0.25; }
+  50%  { transform: translateX(8%) translateY(-4%); opacity: 0.45; }
+  100% { transform: translateX(-8%) translateY(0); opacity: 0.25; }
+}
+@keyframes fog-drift-reverse {
+  0%   { transform: translateX(8%) translateY(0); opacity: 0.18; }
+  50%  { transform: translateX(-8%) translateY(4%); opacity: 0.35; }
+  100% { transform: translateX(8%) translateY(0); opacity: 0.18; }
+}
+.animate-fog-drift         { animation: fog-drift 22s ease-in-out infinite; }
+.animate-fog-drift-reverse { animation: fog-drift-reverse 28s ease-in-out infinite; }
+
+/* ── Scroll indicator ── */
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50%       { transform: translateY(6px); opacity: 1; }
+}
+.scroll-indicator { animation: scrollBounce 2.2s ease-in-out infinite; }
+
+/* ── Pulse dot ── */
+@keyframes swpPulse {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 1; }
+}
+.swp-pulse { animation: swpPulse 2.5s ease-in-out infinite; }
+
+/* ── Images ── */
+img { max-width: 100%; height: auto; display: block; }
+
+/* ── Links ── */
+a { text-decoration: none; transition: color 0.2s ease; }
+
+/* ── Radial vignette ── */
+.bg-gradient-radial {
+  background: radial-gradient(circle at center, transparent 0%, transparent 45%, rgba(0,0,0,0.65) 100%);
+}
+
+/* ── Responsive utility ── */
+.swp-container { max-width: 1280px; margin: 0 auto; padding: 0 52px; }
+@media (max-width: 768px) { .swp-container { padding: 0 24px; } }
