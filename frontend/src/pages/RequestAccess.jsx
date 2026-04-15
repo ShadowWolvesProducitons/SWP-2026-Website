@@ -116,7 +116,7 @@ const RequestAccess = () => {
 
       <div data-testid="request-access-page" style={{ minHeight:'100vh', background:'var(--swp-black)', padding:'80px 24px', overflowY:'auto',
         backgroundImage:'radial-gradient(ellipse 70% 70% at 50% 30%, rgba(106,157,190,0.04) 0%, transparent 60%)' }}>
-        <div style={{ maxWidth:'640px', margin:'0 auto' }}>
+        <div style={{ maxWidth:'960px', margin:'0 auto' }}>
 
           {/* Back link */}
           <Link to="/" data-testid="back-to-website-btn"
