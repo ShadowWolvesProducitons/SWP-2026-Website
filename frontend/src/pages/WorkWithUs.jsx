@@ -46,7 +46,7 @@ const T = {
 const SpotdCard = () => (
   <div style={{ ...T.glass, padding:'28px 30px' }} data-testid="spotd-section">
     <div style={{ ...T.mono, color:'rgba(106,157,190,0.6)', marginBottom:'10px' }}>Coming soon</div>
-    <h4 style={{ fontFamily:'var(--font-display)', fontSize:'22px', color:'var(--swp-white)', letterSpacing:'0.03em', marginBottom:'10px' }}>Spot'd</h4>
+    <h4 style={{ marginBottom:'10px' }}><img src="https://customer-assets.emergentagent.com/job_d237abdd-72c8-4f34-8f42-33e3f6f9671f/artifacts/bnawb8vc_Spot%27d%20Logo%20-%20Black-Electric%20%283%29.png" alt="Spot'd" style={{ height:'32px', width:'auto' }} /></h4>
     <p style={{ fontFamily:'var(--font-body)', fontSize:'13px', fontWeight:300, color:'rgba(238,240,242,0.42)', lineHeight:1.65, marginBottom:'20px' }}>
       Cast &amp; Crew database for indie filmmakers launching soon at <a href="https://www.getspotd.app" target="_blank" rel="noopener noreferrer" style={{ color:'rgba(106,157,190,0.7)', textDecoration:'none' }}>getspotd.app</a>. Fill out the form to join our talent database and you'll already be in the system when we go live.
     </p>
