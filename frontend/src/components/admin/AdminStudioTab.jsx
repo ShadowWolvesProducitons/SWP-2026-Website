@@ -43,16 +43,16 @@ const AdminStudioTab = () => {
       {/* Header */}
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-white flex items-center gap-3">
-          <Building2 className="text-electric-blue" />
+          <Building2 className="text-swp-ice" />
           Studio
         </h2>
-        <p className="text-gray-500 text-sm mt-1">
+        <p className="text-swp-white-ghost/70 text-sm mt-1">
           Manage the Studio Access Portal, communications, and site settings
         </p>
       </div>
 
       {/* Sub-Navigation */}
-      <div className="flex gap-3 mb-8 border-b border-gray-800 pb-4">
+      <div className="flex gap-3 mb-8 border-b border-swp-border pb-4">
         {STUDIO_SUBTABS.map((tab) => {
           const Icon = tab.icon;
           return (
@@ -60,10 +60,10 @@ const AdminStudioTab = () => {
               key={tab.id}
               onClick={() => handleSubTabChange(tab.id)}
               data-testid={`studio-subtab-${tab.id}`}
-              className={`flex items-center gap-2 px-5 py-3 rounded-lg font-mono text-sm uppercase tracking-widest transition-all ${
+              className={`flex items-center gap-2 px-5 py-3 rounded-swp font-mono text-sm uppercase tracking-widest transition-all ${
                 activeSubTab === tab.id
-                  ? 'bg-electric-blue text-white'
-                  : 'bg-smoke-gray text-gray-400 hover:text-white hover:bg-smoke-gray/80 border border-gray-800'
+                  ? 'bg-swp-ice text-white'
+                  : 'bg-swp-surface text-swp-white-ghost hover:text-swp-white hover:bg-swp-surface/80 border border-swp-border'
               }`}
             >
               <Icon size={16} />
@@ -103,10 +103,10 @@ const StudioPortalSection = () => {
     <div data-testid="studio-portal-section">
       <div className="mb-6">
         <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-          <Shield size={18} className="text-electric-blue" />
+          <Shield size={18} className="text-swp-ice" />
           Studio Access Portal Management
         </h3>
-        <p className="text-gray-500 text-sm mt-1">
+        <p className="text-swp-white-ghost/70 text-sm mt-1">
           Manage user access, roles, and project permissions for the Studio Portal
         </p>
       </div>
@@ -123,10 +123,10 @@ const StudioCommsSection = ({ activeSection, setActiveSection }) => {
     <div data-testid="studio-comms-section">
       <div className="mb-6">
         <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-          <MessageSquare size={18} className="text-electric-blue" />
+          <MessageSquare size={18} className="text-swp-ice" />
           Communications
         </h3>
-        <p className="text-gray-500 text-sm mt-1">
+        <p className="text-swp-white-ghost/70 text-sm mt-1">
           Manage newsletters, subscribers, and email templates
         </p>
       </div>
@@ -136,10 +136,10 @@ const StudioCommsSection = ({ activeSection, setActiveSection }) => {
         <button
           onClick={() => setActiveSection('newsletters')}
           data-testid="comms-tab-newsletters"
-          className={`px-4 py-2 rounded-lg text-sm transition-all ${
+          className={`px-4 py-2 rounded-swp text-sm transition-all ${
             activeSection === 'newsletters'
               ? 'bg-white text-black'
-              : 'bg-smoke-gray text-gray-400 hover:text-white border border-gray-700'
+              : 'bg-swp-surface text-swp-white-ghost hover:text-swp-white border border-swp-border'
           }`}
         >
           Newsletters
@@ -147,10 +147,10 @@ const StudioCommsSection = ({ activeSection, setActiveSection }) => {
         <button
           onClick={() => setActiveSection('subscribers')}
           data-testid="comms-tab-subscribers"
-          className={`px-4 py-2 rounded-lg text-sm transition-all ${
+          className={`px-4 py-2 rounded-swp text-sm transition-all ${
             activeSection === 'subscribers'
               ? 'bg-white text-black'
-              : 'bg-smoke-gray text-gray-400 hover:text-white border border-gray-700'
+              : 'bg-swp-surface text-swp-white-ghost hover:text-swp-white border border-swp-border'
           }`}
         >
           Subscribers
@@ -158,10 +158,10 @@ const StudioCommsSection = ({ activeSection, setActiveSection }) => {
         <button
           onClick={() => setActiveSection('templates')}
           data-testid="comms-tab-templates"
-          className={`px-4 py-2 rounded-lg text-sm transition-all ${
+          className={`px-4 py-2 rounded-swp text-sm transition-all ${
             activeSection === 'templates'
               ? 'bg-white text-black'
-              : 'bg-smoke-gray text-gray-400 hover:text-white border border-gray-700'
+              : 'bg-swp-surface text-swp-white-ghost hover:text-swp-white border border-swp-border'
           }`}
         >
           Templates
@@ -183,10 +183,10 @@ const StudioSettingsSection = () => {
     <div data-testid="studio-settings-section">
       <div className="mb-6">
         <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-          <Settings size={18} className="text-electric-blue" />
+          <Settings size={18} className="text-swp-ice" />
           Site Settings
         </h3>
-        <p className="text-gray-500 text-sm mt-1">
+        <p className="text-swp-white-ghost/70 text-sm mt-1">
           Configure page headers and site appearance
         </p>
       </div>

@@ -1,6 +1,22 @@
 import React, { useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Facebook, Instagram, Youtube, Mail, Phone, MapPin } from 'lucide-react';
+import { Youtube, Instagram, Facebook } from 'lucide-react';
+
+const LOGO_URL = "https://customer-assets.emergentagent.com/job_wolfmedia/artifacts/bifyh7bv_Black%20Logo%20Only.png";
+
+const LINKS = [
+  { name: 'About',         path: '/' },
+  { name: 'Films',         path: '/films' },
+  { name: 'Resources',     path: '/armory' },
+  { name: 'Work With Us',  path: '/work-with-us' },
+  { name: 'Studio Portal', path: '/request-access' },
+];
+
+const SOCIALS = [
+  { href: 'https://www.youtube.com/c/ShadowWolvesProductions',      Icon: Youtube   },
+  { href: 'https://www.instagram.com/Shadow.Wolves.Productions',     Icon: Instagram },
+  { href: 'https://www.facebook.com/ShadowWolvesProductions1',       Icon: Facebook  },
+];
 
 const Footer = () => {
   const navigate = useNavigate();
@@ -18,74 +34,101 @@ const Footer = () => {
     clickTimerRef.current = setTimeout(() => { clickCountRef.current = 0; }, 1000);
   };
 
+  const mono = (extra = {}) => ({
+    fontFamily: 'var(--font-mono)',
+    fontSize: '9px',
+    fontWeight: 300,
+    letterSpacing: '0.14em',
+    textTransform: 'uppercase',
+    color: 'rgba(238,240,242,0.28)',
+    textDecoration: 'none',
+    transition: 'color 0.2s',
+    ...extra,
+  });
+
   return (
-    <footer className="footer bg-black border-t border-gray-800 text-gray-300">
-      <div className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          {/* Company Info & Contact */}
-          <div className="md:col-span-2">
-            <div className="flex items-center gap-3 mb-6">
-              <img
-                src="https://customer-assets.emergentagent.com/job_wolfmedia/artifacts/bifyh7bv_Black%20Logo%20Only.png"
-                alt="Shadow Wolves Productions"
-                className="h-14 w-auto" />
+    <footer style={{
+      borderTop: '0.5px solid rgba(255,255,255,0.07)',
+      background: 'rgba(8,9,11,0.9)',
+      backdropFilter: 'blur(16px)',
+      padding: '48px 52px 40px',
+      position: 'relative',
+      zIndex: 10,
+    }}>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        gap: '40px',
+        flexWrap: 'wrap',
+        marginBottom: '40px',
+      }}>
 
-            </div>
-            
-            {/* Contact Info */}
-            <div className="space-y-4 mt-6">
-              <div className="flex items-start gap-3">
-                <MapPin size={18} className="text-electric-blue mt-1 flex-shrink-0" />
-                <span className="text-sm">Sydney, Australia</span>
-              </div>
-              <div className="flex items-start gap-3">
-                <Mail size={18} className="text-electric-blue mt-1 flex-shrink-0" />
-                <a href="mailto:info@shadowwolvesproductions.com.au" className="hover:text-white transition-colors !text-sm">admin@shadowwolvesproductions.com.au
-
-                </a>
-              </div>
-              <div className="flex items-start gap-3">
-                <Phone size={18} className="text-electric-blue mt-1 flex-shrink-0" />
-                <span className="!text-sm">+61 0420 984 558</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Quick Links - 2 columns */}
-          <div>
-            <h3 className="text-white font-bold text-lg mb-6 uppercase tracking-wide">Quick Links</h3>
-            <div className="grid grid-cols-2 gap-x-8 gap-y-3">
-              <Link to="/" className="text-sm hover:text-white transition-colors">About</Link>
-              <Link to="/services" className="text-sm hover:text-white transition-colors">The Armory</Link>
-              <Link to="/films" className="text-sm hover:text-white transition-colors">Films</Link>
-              <Link to="/blog" className="text-sm hover:text-white transition-colors">The Den</Link>
-              <Link to="/work-with-us" className="text-sm hover:text-white transition-colors">Work With Us</Link>
-              <Link to="/request-access" className="text-sm hover:text-white transition-colors">Studio Portal</Link>
-            </div>
+        {/* Logo + contact */}
+        <div>
+          <img
+            src={LOGO_URL}
+            alt="Shadow Wolves Productions"
+            style={{ height: '44px', width: 'auto', marginBottom: '20px', opacity: 0.85 }}
+          />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            {['Sydney, NSW, Australia', 'admin@shadowwolvesproductions.com.au', '+61 0420 984 558'].map(line => (
+              <span key={line} style={mono({ color: 'rgba(238,240,242,0.22)' })}>{line}</span>
+            ))}
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-sm text-gray-500 mb-4 md:mb-0">
-            © 2026 <span onClick={handleSecretClick} className="cursor-default select-none" data-testid="hidden-admin-link">Shadow Wolves Productions</span> Pty Ltd. All rights reserved.
-          </p>
-          
-          {/* Social Links - Right Side */}
-          <div className="flex gap-4">
-            <a href="https://www.youtube.com/c/ShadowWolvesProductions" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-electric-blue transition-colors">
-              <Youtube size={20} />
-            </a>
-            <a href="https://www.instagram.com/Shadow.Wolves.Productions" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-electric-blue transition-colors">
-              <Instagram size={20} />
-            </a>
-            <a href="https://www.facebook.com/ShadowWolvesProductions1" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-electric-blue transition-colors">
-              <Facebook size={20} />
-            </a>
-          </div>
+        {/* Nav links */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          {LINKS.map(link => (
+            <Link
+              key={link.path}
+              to={link.path}
+              style={mono()}
+              onMouseEnter={e => e.target.style.color = 'var(--swp-ice)'}
+              onMouseLeave={e => e.target.style.color = 'rgba(238,240,242,0.28)'}
+            >
+              {link.name}
+            </Link>
+          ))}
         </div>
+
+        {/* Social + tagline */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'flex-end' }}>
+          <div style={{ display: 'flex', gap: '16px' }}>
+            {SOCIALS.map(({ href, Icon }) => (
+              <a
+                key={href}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: 'rgba(238,240,242,0.25)', transition: 'color 0.2s' }}
+                onMouseEnter={e => e.currentTarget.style.color = 'var(--swp-ice)'}
+                onMouseLeave={e => e.currentTarget.style.color = 'rgba(238,240,242,0.25)'}
+              >
+                <Icon size={18} />
+              </a>
+            ))}
+          </div>
+          <span style={mono({ fontStyle: 'italic', color: 'rgba(238,240,242,0.15)', textTransform: 'none', letterSpacing: '0.04em', fontSize: '10px' })}>
+            "We don't follow. We hunt."
+          </span>
+        </div>
+
       </div>
-    </footer>);
 
+      {/* Bottom bar */}
+      <div style={{ borderTop: '0.5px solid rgba(255,255,255,0.06)', paddingTop: '20px' }}>
+        <span
+          style={mono({ color: 'rgba(238,240,242,0.18)', cursor: 'default', userSelect: 'none' })}
+          onClick={handleSecretClick}
+          data-testid="hidden-admin-link"
+        >
+          © 2026 Shadow Wolves Productions Pty Ltd. All rights reserved.
+        </span>
+      </div>
+    </footer>
+  );
 };
 
 export default Footer;

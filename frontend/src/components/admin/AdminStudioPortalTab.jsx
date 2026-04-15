@@ -31,12 +31,12 @@ const STATUSES = [
 // Helper to get role/status styling
 const getRoleStyle = (role) => {
   const r = ROLES.find(r => r.value === role);
-  return r ? `bg-${r.color}-500/20 text-${r.color}-400 border-${r.color}-500/30` : 'bg-gray-500/20 text-gray-400';
+  return r ? `bg-${r.color}-500/20 text-${r.color}-400 border-${r.color}-500/30` : 'bg-gray-500/20 text-swp-white-ghost';
 };
 
 const getStatusStyle = (status) => {
   const s = STATUSES.find(s => s.value === status);
-  return s ? `bg-${s.color}-500/20 text-${s.color}-400` : 'bg-gray-500/20 text-gray-400';
+  return s ? `bg-${s.color}-500/20 text-${s.color}-400` : 'bg-gray-500/20 text-swp-white-ghost';
 };
 
 // ============ USER CARD ============
@@ -105,19 +105,19 @@ const UserCard = ({ user, projects, onUpdate, onViewDetails }) => {
   };
 
   return (
-    <div className="bg-smoke-gray border border-gray-800 rounded-lg overflow-hidden" data-testid={`user-card-${user.id}`}>
+    <div className="bg-swp-surface border border-swp-border rounded-swp overflow-hidden" data-testid={`user-card-${user.id}`}>
       {/* Header Row */}
       <div 
-        className="p-4 flex items-center justify-between cursor-pointer hover:bg-black/20"
+        className="p-4 flex items-center justify-between cursor-pointer hover:bg-swp-black/20"
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className="flex items-center gap-4">
-          <div className="w-10 h-10 rounded-full bg-electric-blue/20 flex items-center justify-center text-electric-blue font-bold">
+          <div className="w-10 h-10 rounded-sm bg-swp-ice/15 flex items-center justify-center text-swp-ice font-bold">
             {user.full_name?.charAt(0)?.toUpperCase() || '?'}
           </div>
           <div>
             <h4 className="text-white font-medium">{user.full_name}</h4>
-            <p className="text-gray-500 text-sm">{user.email}</p>
+            <p className="text-swp-white-ghost/70 text-sm">{user.email}</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
@@ -126,7 +126,7 @@ const UserCard = ({ user, projects, onUpdate, onViewDetails }) => {
             user.role === 'investor' ? 'bg-green-500/20 text-green-400' :
             user.role === 'director' ? 'bg-blue-500/20 text-blue-400' :
             user.role === 'producer' ? 'bg-purple-500/20 text-purple-400' :
-            'bg-gray-500/20 text-gray-400'
+            'bg-gray-500/20 text-swp-white-ghost'
           }`}>
             {user.role}
           </span>
@@ -137,29 +137,29 @@ const UserCard = ({ user, projects, onUpdate, onViewDetails }) => {
           }`}>
             {user.status === 'pending_verification' ? 'Pending' : user.status}
           </span>
-          <ChevronDown size={18} className={`text-gray-500 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+          <ChevronDown size={18} className={`text-swp-white-ghost/70 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
         </div>
       </div>
 
       {/* Expanded Details */}
       {isExpanded && (
-        <div className="border-t border-gray-800 p-4 space-y-4">
+        <div className="border-t border-swp-border p-4 space-y-4">
           {/* Info Row */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
             <div>
-              <span className="text-gray-500 block">Company</span>
+              <span className="text-swp-white-ghost/70 block">Company</span>
               <span className="text-white">{user.company || '-'}</span>
             </div>
             <div>
-              <span className="text-gray-500 block">Joined</span>
+              <span className="text-swp-white-ghost/70 block">Joined</span>
               <span className="text-white">{user.created_at ? new Date(user.created_at).toLocaleDateString() : '-'}</span>
             </div>
             <div>
-              <span className="text-gray-500 block">Last Login</span>
+              <span className="text-swp-white-ghost/70 block">Last Login</span>
               <span className="text-white">{user.last_login ? new Date(user.last_login).toLocaleDateString() : 'Never'}</span>
             </div>
             <div>
-              <span className="text-gray-500 block">Project Access</span>
+              <span className="text-swp-white-ghost/70 block">Project Access</span>
               <span className="text-white">
                 {user.has_all_projects_access ? 'All Projects' : `${user.project_permissions?.length || 0} projects`}
               </span>
@@ -168,15 +168,15 @@ const UserCard = ({ user, projects, onUpdate, onViewDetails }) => {
 
           {/* Edit Mode */}
           {editMode ? (
-            <div className="space-y-4 pt-4 border-t border-gray-800">
+            <div className="space-y-4 pt-4 border-t border-swp-border">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Role Select */}
                 <div>
-                  <label className="block text-gray-400 text-xs uppercase mb-2">Role</label>
+                  <label className="block text-swp-white-ghost text-xs uppercase mb-2">Role</label>
                   <select
                     value={editData.role}
                     onChange={(e) => setEditData(prev => ({ ...prev, role: e.target.value }))}
-                    className="w-full bg-black border border-gray-700 rounded-lg px-3 py-2 text-white text-sm focus:border-electric-blue focus:outline-none"
+                    className="w-full bg-swp-black border border-swp-border rounded-swp px-3 py-2 text-white text-sm focus:border-swp-ice focus:outline-none"
                   >
                     {ROLES.map(role => (
                       <option key={role.value} value={role.value}>{role.label}</option>
@@ -186,11 +186,11 @@ const UserCard = ({ user, projects, onUpdate, onViewDetails }) => {
 
                 {/* Status Select */}
                 <div>
-                  <label className="block text-gray-400 text-xs uppercase mb-2">Status</label>
+                  <label className="block text-swp-white-ghost text-xs uppercase mb-2">Status</label>
                   <select
                     value={editData.status}
                     onChange={(e) => setEditData(prev => ({ ...prev, status: e.target.value }))}
-                    className="w-full bg-black border border-gray-700 rounded-lg px-3 py-2 text-white text-sm focus:border-electric-blue focus:outline-none"
+                    className="w-full bg-swp-black border border-swp-border rounded-swp px-3 py-2 text-white text-sm focus:border-swp-ice focus:outline-none"
                   >
                     {STATUSES.map(status => (
                       <option key={status.value} value={status.value}>{status.label}</option>
@@ -206,26 +206,26 @@ const UserCard = ({ user, projects, onUpdate, onViewDetails }) => {
                     type="checkbox"
                     checked={editData.has_all_projects_access}
                     onChange={(e) => setEditData(prev => ({ ...prev, has_all_projects_access: e.target.checked }))}
-                    className="rounded border-gray-600 bg-black text-electric-blue focus:ring-electric-blue"
+                    className="rounded border-gray-600 bg-swp-black text-swp-ice focus:ring-swp-ice"
                   />
-                  <span className="text-gray-300 text-sm">Grant access to all projects</span>
+                  <span className="text-swp-white-dim text-sm">Grant access to all projects</span>
                 </label>
               </div>
 
               {/* Project Permissions (if not all access) */}
               {!editData.has_all_projects_access && projects.length > 0 && (
                 <div>
-                  <label className="block text-gray-400 text-xs uppercase mb-2">Project Access</label>
+                  <label className="block text-swp-white-ghost text-xs uppercase mb-2">Project Access</label>
                   <div className="flex flex-wrap gap-2">
                     {projects.map(project => (
                       <button
                         key={project.id}
                         type="button"
                         onClick={() => toggleProject(project.id)}
-                        className={`px-3 py-1.5 rounded-full text-xs transition-all ${
+                        className={`px-3 py-1.5 rounded-sm text-xs transition-all ${
                           editData.project_permissions.includes(project.id)
-                            ? 'bg-electric-blue text-white'
-                            : 'bg-black border border-gray-700 text-gray-400 hover:border-gray-500'
+                            ? 'bg-swp-ice text-white'
+                            : 'bg-swp-black border border-swp-border text-swp-white-ghost hover:border-gray-500'
                         }`}
                       >
                         {project.title}
@@ -240,7 +240,7 @@ const UserCard = ({ user, projects, onUpdate, onViewDetails }) => {
                 <button
                   onClick={handleSave}
                   disabled={saving}
-                  className="flex items-center gap-2 px-4 py-2 bg-electric-blue hover:bg-electric-blue/90 disabled:bg-gray-700 text-white rounded-lg text-sm transition-all"
+                  className="flex items-center gap-2 px-4 py-2 bg-swp-ice hover:bg-swp-ice disabled:bg-swp-muted text-white rounded-swp text-sm transition-all"
                 >
                   {saving ? <RefreshCw size={14} className="animate-spin" /> : <Check size={14} />}
                   Save Changes
@@ -255,7 +255,7 @@ const UserCard = ({ user, projects, onUpdate, onViewDetails }) => {
                       project_permissions: user.project_permissions || []
                     });
                   }}
-                  className="px-4 py-2 border border-gray-700 text-gray-400 hover:text-white rounded-lg text-sm transition-all"
+                  className="px-4 py-2 border border-swp-border text-swp-white-ghost hover:text-swp-white rounded-swp text-sm transition-all"
                 >
                   Cancel
                 </button>
@@ -266,7 +266,7 @@ const UserCard = ({ user, projects, onUpdate, onViewDetails }) => {
             <div className="flex gap-2 pt-2">
               <button
                 onClick={() => setEditMode(true)}
-                className="flex items-center gap-2 px-4 py-2 bg-electric-blue/10 hover:bg-electric-blue/20 text-electric-blue rounded-lg text-sm transition-all"
+                className="flex items-center gap-2 px-4 py-2 bg-swp-ice/10 hover:bg-swp-ice/15 text-swp-ice rounded-swp text-sm transition-all"
               >
                 <Shield size={14} />
                 Edit Access
@@ -274,7 +274,7 @@ const UserCard = ({ user, projects, onUpdate, onViewDetails }) => {
               {user.status !== 'revoked' && user.role !== 'admin' && (
                 <button
                   onClick={handleRevoke}
-                  className="flex items-center gap-2 px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-lg text-sm transition-all"
+                  className="flex items-center gap-2 px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-swp text-sm transition-all"
                 >
                   <UserX size={14} />
                   Revoke Access
@@ -290,14 +290,14 @@ const UserCard = ({ user, projects, onUpdate, onViewDetails }) => {
 
 // ============ STATS CARD ============
 const StatsCard = ({ title, value, subtitle, icon: Icon, color = 'blue' }) => (
-  <div className="bg-smoke-gray border border-gray-800 rounded-lg p-4">
+  <div className="bg-swp-surface border border-swp-border rounded-swp p-4">
     <div className="flex items-start justify-between">
       <div>
-        <p className="text-gray-500 text-sm">{title}</p>
+        <p className="text-swp-white-ghost/70 text-sm">{title}</p>
         <p className="text-3xl font-bold text-white mt-1">{value}</p>
-        {subtitle && <p className="text-gray-500 text-xs mt-1">{subtitle}</p>}
+        {subtitle && <p className="text-swp-white-ghost/70 text-xs mt-1">{subtitle}</p>}
       </div>
-      <div className={`p-2 rounded-lg bg-${color}-500/10`}>
+      <div className={`p-2 rounded-swp bg-${color}-500/10`}>
         <Icon size={20} className={`text-${color}-400`} />
       </div>
     </div>
@@ -381,7 +381,7 @@ const AdminStudioPortalTab = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <RefreshCw size={32} className="text-electric-blue animate-spin" />
+        <RefreshCw size={32} className="text-swp-ice animate-spin" />
       </div>
     );
   }
@@ -422,15 +422,15 @@ const AdminStudioPortalTab = () => {
       )}
 
       {/* Sub-tabs */}
-      <div className="flex gap-2 border-b border-gray-800">
+      <div className="flex gap-2 border-b border-swp-border">
         {['users', 'audit'].map(tab => (
           <button
             key={tab}
             onClick={() => setActiveSubTab(tab)}
             className={`px-4 py-2 font-mono text-sm uppercase tracking-widest border-b-2 transition-all ${
               activeSubTab === tab
-                ? 'text-electric-blue border-electric-blue'
-                : 'text-gray-500 border-transparent hover:text-gray-300'
+                ? 'text-swp-ice border-swp-ice'
+                : 'text-swp-white-ghost/70 border-transparent hover:text-swp-white-dim'
             }`}
           >
             {tab === 'users' ? 'User Management' : 'Audit Log'}
@@ -445,13 +445,13 @@ const AdminStudioPortalTab = () => {
           <div className="flex flex-wrap gap-3">
             {/* Search */}
             <div className="relative flex-1 min-w-[200px]">
-              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-swp-white-ghost/70" />
               <input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search users..."
-                className="w-full pl-10 pr-4 py-2 bg-smoke-gray border border-gray-700 rounded-lg text-white text-sm focus:border-electric-blue focus:outline-none"
+                className="w-full pl-10 pr-4 py-2 bg-swp-surface border border-swp-border rounded-swp text-white text-sm focus:border-swp-ice focus:outline-none"
                 data-testid="user-search-input"
               />
             </div>
@@ -460,7 +460,7 @@ const AdminStudioPortalTab = () => {
             <select
               value={filterRole}
               onChange={(e) => setFilterRole(e.target.value)}
-              className="px-4 py-2 bg-smoke-gray border border-gray-700 rounded-lg text-gray-300 text-sm focus:border-electric-blue focus:outline-none"
+              className="px-4 py-2 bg-swp-surface border border-swp-border rounded-swp text-swp-white-dim text-sm focus:border-swp-ice focus:outline-none"
             >
               <option value="">All Roles</option>
               {ROLES.map(role => (
@@ -472,7 +472,7 @@ const AdminStudioPortalTab = () => {
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="px-4 py-2 bg-smoke-gray border border-gray-700 rounded-lg text-gray-300 text-sm focus:border-electric-blue focus:outline-none"
+              className="px-4 py-2 bg-swp-surface border border-swp-border rounded-swp text-swp-white-dim text-sm focus:border-swp-ice focus:outline-none"
             >
               <option value="">All Statuses</option>
               {STATUSES.map(status => (
@@ -484,7 +484,7 @@ const AdminStudioPortalTab = () => {
             {(searchTerm || filterRole || filterStatus) && (
               <button
                 onClick={() => { setSearchTerm(''); setFilterRole(''); setFilterStatus(''); }}
-                className="flex items-center gap-1 px-3 py-2 text-gray-400 hover:text-white text-sm"
+                className="flex items-center gap-1 px-3 py-2 text-swp-white-ghost hover:text-swp-white text-sm"
               >
                 <X size={14} />
                 Clear
@@ -493,14 +493,14 @@ const AdminStudioPortalTab = () => {
           </div>
 
           {/* User Count */}
-          <p className="text-gray-500 text-sm">
+          <p className="text-swp-white-ghost/70 text-sm">
             Showing {filteredUsers.length} of {users.length} users
           </p>
 
           {/* User List */}
           <div className="space-y-3">
             {filteredUsers.length === 0 ? (
-              <div className="text-center py-12 text-gray-500">
+              <div className="text-center py-12 text-swp-white-ghost/70">
                 <Users size={48} className="mx-auto mb-4 opacity-50" />
                 <p>No users found</p>
               </div>
@@ -521,27 +521,27 @@ const AdminStudioPortalTab = () => {
       {/* Audit Log Tab */}
       {activeSubTab === 'audit' && (
         <div className="space-y-4">
-          <div className="bg-smoke-gray border border-gray-800 rounded-lg overflow-hidden">
+          <div className="bg-swp-surface border border-swp-border rounded-swp overflow-hidden">
             <table className="w-full">
-              <thead className="bg-black/30">
+              <thead className="bg-swp-deep/50">
                 <tr>
-                  <th className="text-left px-4 py-3 text-gray-400 text-xs uppercase">Time</th>
-                  <th className="text-left px-4 py-3 text-gray-400 text-xs uppercase">Event</th>
-                  <th className="text-left px-4 py-3 text-gray-400 text-xs uppercase">User</th>
-                  <th className="text-left px-4 py-3 text-gray-400 text-xs uppercase">Details</th>
+                  <th className="text-left px-4 py-3 text-swp-white-ghost text-xs uppercase">Time</th>
+                  <th className="text-left px-4 py-3 text-swp-white-ghost text-xs uppercase">Event</th>
+                  <th className="text-left px-4 py-3 text-swp-white-ghost text-xs uppercase">User</th>
+                  <th className="text-left px-4 py-3 text-swp-white-ghost text-xs uppercase">Details</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-800">
                 {auditLogs.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="px-4 py-8 text-center text-gray-500">
+                    <td colSpan={4} className="px-4 py-8 text-center text-swp-white-ghost/70">
                       No audit logs found
                     </td>
                   </tr>
                 ) : (
                   auditLogs.map((log, idx) => (
-                    <tr key={idx} className="hover:bg-black/20">
-                      <td className="px-4 py-3 text-gray-500 text-sm">
+                    <tr key={idx} className="hover:bg-swp-black/20">
+                      <td className="px-4 py-3 text-swp-white-ghost/70 text-sm">
                         {log.timestamp ? new Date(log.timestamp).toLocaleString() : '-'}
                       </td>
                       <td className="px-4 py-3">
@@ -549,7 +549,7 @@ const AdminStudioPortalTab = () => {
                           log.event_type?.includes('download') ? 'bg-purple-500/20 text-purple-400' :
                           log.event_type?.includes('login') ? 'bg-green-500/20 text-green-400' :
                           log.event_type?.includes('revoked') ? 'bg-red-500/20 text-red-400' :
-                          'bg-gray-500/20 text-gray-400'
+                          'bg-gray-500/20 text-swp-white-ghost'
                         }`}>
                           {log.event_type?.replace(/_/g, ' ') || 'unknown'}
                         </span>
@@ -557,7 +557,7 @@ const AdminStudioPortalTab = () => {
                       <td className="px-4 py-3 text-white text-sm">
                         {log.user_email || '-'}
                       </td>
-                      <td className="px-4 py-3 text-gray-400 text-sm max-w-xs">
+                      <td className="px-4 py-3 text-swp-white-ghost text-sm max-w-xs">
                         {log.details ? (
                           <span className="block truncate">
                             {typeof log.details === 'object' 

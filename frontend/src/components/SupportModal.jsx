@@ -111,7 +111,7 @@ const SupportModal = ({ open, onClose, supportKey }) => {
           {/* Modal Container */}
           <motion.div
             tabIndex={-1}
-            className="relative w-full max-w-[550px] max-h-[90vh] overflow-y-auto rounded-[22px] bg-[#0f0f0f] border border-gray-800 shadow-2xl focus:outline-none"
+            className="relative w-full max-w-[550px] max-h-[90vh] overflow-y-auto rounded-[22px] bg-[#0f0f0f] border border-swp-border shadow-2xl focus:outline-none"
             initial={{ opacity: 0, y: 12, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 12, scale: 0.98 }}
@@ -123,21 +123,21 @@ const SupportModal = ({ open, onClose, supportKey }) => {
             aria-modal="true"
           >
             {/* Header */}
-            <div className="sticky top-0 bg-[#0f0f0f] border-b border-gray-800 px-6 py-5 flex items-start justify-between z-10">
+            <div className="sticky top-0 bg-[#0f0f0f] border-b border-swp-border px-6 py-5 flex items-start justify-between z-10">
               <div>
                 <h2 
-                  className="text-xl md:text-2xl font-bold text-white flex items-center gap-3 font-cinzel"
+                  className="text-xl md:text-2xl font-bold text-white flex items-center gap-3 font-display"
                 >
                   <span className="text-2xl">{content.emoji}</span>
                   {content.title}
                 </h2>
-                <p className="text-gray-400 text-sm mt-1 italic">
+                <p className="text-swp-white-ghost text-sm mt-1 italic">
                   {content.tagline}
                 </p>
               </div>
               <button
                 onClick={onClose}
-                className="p-2 text-gray-400 hover:text-white transition-colors rounded-lg hover:bg-white/5"
+                className="p-2 text-swp-white-ghost hover:text-swp-white transition-colors rounded-swp hover:bg-white/5"
                 aria-label="Close modal"
               >
                 <X size={24} />
@@ -147,18 +147,18 @@ const SupportModal = ({ open, onClose, supportKey }) => {
             {/* Body */}
             <div className="p-6">
               {/* Body Text */}
-              <p className="text-gray-300 text-base leading-relaxed mb-6">
+              <p className="text-swp-white-dim text-base leading-relaxed mb-6">
                 {content.body}
               </p>
 
               {/* You'll receive / This includes */}
               {content.includes && content.includes.length > 0 && (
                 <div className="mb-6">
-                  <p className="text-gray-400 text-sm mb-3">You'll receive:</p>
+                  <p className="text-swp-white-ghost text-sm mb-3">You'll receive:</p>
                   <ul className="space-y-2">
                     {content.includes.map((item, idx) => (
-                      <li key={idx} className="text-gray-300 flex items-start gap-3 text-sm">
-                        <span className="w-1.5 h-1.5 rounded-full bg-electric-blue mt-1.5 flex-shrink-0"></span>
+                      <li key={idx} className="text-swp-white-dim flex items-start gap-3 text-sm">
+                        <span className="w-1.5 h-1.5 rounded-sm bg-swp-ice mt-1.5 flex-shrink-0"></span>
                         <span>{item}</span>
                       </li>
                     ))}
@@ -168,13 +168,13 @@ const SupportModal = ({ open, onClose, supportKey }) => {
 
               {/* CTA Statement */}
               {content.cta && (
-                <p className="text-gray-500 text-sm italic mb-8">{content.cta}</p>
+                <p className="text-swp-white-ghost/70 text-sm italic mb-8">{content.cta}</p>
               )}
 
               {/* Enquire Button */}
               <button
                 onClick={handleEnquire}
-                className="w-full px-6 py-4 bg-electric-blue hover:bg-electric-blue/90 text-white rounded-full font-mono text-sm uppercase tracking-widest transition-all flex items-center justify-center gap-2"
+                className="w-full px-6 py-4 bg-swp-ice hover:bg-swp-ice text-white rounded-sm font-mono text-sm uppercase tracking-widest transition-all flex items-center justify-center gap-2"
               >
                 Enquire about {content.title}
                 <ArrowRight size={16} />

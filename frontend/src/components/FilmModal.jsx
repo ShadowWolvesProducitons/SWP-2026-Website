@@ -60,13 +60,13 @@ const FilmModal = ({ film, isOpen, onClose }) => {
 
   return (
     <div
-      className="film-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md"
+      className="film-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4 bg-swp-black/90 backdrop-blur-md"
       onClick={onClose}
       style={{ animation: 'fadeIn 0.3s ease-out' }}
       data-testid="film-modal-overlay"
     >
       <div
-        className="film-modal-content relative bg-black border border-gray-800 rounded-lg max-w-5xl w-full max-h-[90vh] overflow-y-auto"
+        className="film-modal-content relative bg-swp-black border border-swp-border rounded-swp max-w-5xl w-full max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
         style={{ animation: 'scaleIn 0.3s ease-out' }}
         data-testid="film-modal-content"
@@ -74,7 +74,7 @@ const FilmModal = ({ film, isOpen, onClose }) => {
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 w-10 h-10 bg-black/80 hover:bg-electric-blue rounded-full flex items-center justify-center transition-colors border border-gray-700 hover:border-electric-blue"
+          className="absolute top-4 right-4 z-10 w-10 h-10 bg-swp-deep/90 hover:bg-swp-ice rounded-sm flex items-center justify-center transition-colors border border-swp-border hover:border-swp-ice"
           data-testid="film-modal-close-btn"
         >
           <X size={20} className="text-white" />
@@ -87,7 +87,7 @@ const FilmModal = ({ film, isOpen, onClose }) => {
             <div className="relative">
               {/* Poster Frame with shadow and fade */}
               <div 
-                className="relative rounded-lg overflow-hidden shadow-2xl shadow-black/50"
+                className="relative rounded-swp overflow-hidden shadow-2xl shadow-black/50"
                 style={{
                   boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255,255,255,0.1), inset 0 0 80px rgba(0,0,0,0.3)'
                 }}
@@ -115,17 +115,17 @@ const FilmModal = ({ film, isOpen, onClose }) => {
                     /* Intentional placeholder for missing poster */
                     <div className="absolute inset-0 flex flex-col items-center justify-center p-4 bg-gradient-to-br from-gray-900 via-black to-gray-900">
                       <div className="w-16 h-16 mb-4 opacity-30">
-                        <svg viewBox="0 0 100 100" fill="currentColor" className="text-electric-blue">
+                        <svg viewBox="0 0 100 100" fill="currentColor" className="text-swp-ice">
                           <path d="M50 10L20 40L10 90L50 70L90 90L80 40L50 10Z" stroke="currentColor" strokeWidth="2" fill="none"/>
                           <circle cx="35" cy="45" r="4" fill="currentColor"/>
                           <circle cx="65" cy="45" r="4" fill="currentColor"/>
                         </svg>
                       </div>
-                      <h4 className="text-white text-lg font-bold text-center mb-3 px-2 font-cinzel">
+                      <h4 className="text-white text-lg font-bold text-center mb-3 px-2 font-display">
                         {film.title}
                       </h4>
                       {film.status && (
-                        <span className="px-3 py-1 bg-electric-blue/20 border border-electric-blue/40 text-electric-blue text-xs font-mono uppercase tracking-widest rounded-full">
+                        <span className="px-3 py-1 bg-swp-ice/15 border border-swp-ice/25 text-swp-ice text-xs font-mono uppercase tracking-widest rounded-sm">
                           {film.status}
                         </span>
                       )}
@@ -141,7 +141,7 @@ const FilmModal = ({ film, isOpen, onClose }) => {
             {/* Status Badge - Only if status exists */}
             {film.status && (
               <div className="mb-3">
-                <span className="px-4 py-2 rounded-full bg-electric-blue/20 text-electric-blue border border-electric-blue/40 text-xs font-mono uppercase tracking-widest">
+                <span className="px-4 py-2 rounded-sm bg-swp-ice/15 text-swp-ice border border-swp-ice/25 text-xs font-mono uppercase tracking-widest">
                   {film.status}
                 </span>
               </div>
@@ -149,7 +149,7 @@ const FilmModal = ({ film, isOpen, onClose }) => {
             
             {/* Title Row with IMDB */}
             <div className="flex items-start justify-between gap-4 mb-3">
-              <h2 className="text-3xl md:text-4xl font-bold text-white font-cinzel" data-testid="film-modal-title">
+              <h2 className="text-3xl md:text-4xl font-bold text-white font-display" data-testid="film-modal-title">
                 {film.title}
               </h2>
               {/* IMDB Link - Only if exists */}
@@ -172,7 +172,7 @@ const FilmModal = ({ film, isOpen, onClose }) => {
                 {film.genres.slice(0, 3).map((genre, idx) => (
                   <span
                     key={idx}
-                    className="px-3 py-1 rounded-full bg-white/10 text-white/80 text-xs"
+                    className="px-3 py-1 rounded-sm bg-white/10 text-white/80 text-xs"
                   >
                     {genre}
                   </span>
@@ -182,14 +182,14 @@ const FilmModal = ({ film, isOpen, onClose }) => {
 
             {/* Tagline - Only if exists */}
             {film.tagline && (
-              <p className="text-xl text-gray-300 italic leading-relaxed mb-4">
+              <p className="text-xl text-swp-white-dim italic leading-relaxed mb-4">
                 "{film.tagline}"
               </p>
             )}
 
             {/* Logline - Only if exists */}
             {film.logline && (
-              <div className="text-gray-400 leading-relaxed mb-6">
+              <div className="text-swp-white-ghost leading-relaxed mb-6">
                 {film.logline}
               </div>
             )}
@@ -206,7 +206,7 @@ const FilmModal = ({ film, isOpen, onClose }) => {
                     href={film.watchUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full bg-electric-blue hover:bg-electric-blue/90 text-white px-8 py-4 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
+                    className="w-full bg-swp-ice hover:bg-swp-ice text-white px-8 py-4 rounded-sm font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
                     data-testid="film-modal-watch-btn"
                   >
                     <Play size={18} />
@@ -216,7 +216,7 @@ const FilmModal = ({ film, isOpen, onClose }) => {
                 <Link
                   to="/contact"
                   onClick={onClose}
-                  className="w-full border border-gray-600 hover:border-gray-400 text-white px-8 py-4 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
+                  className="w-full border border-gray-600 hover:border-gray-400 text-white px-8 py-4 rounded-sm font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
                   data-testid="film-modal-contact-btn"
                 >
                   <Mail size={18} />
@@ -226,11 +226,11 @@ const FilmModal = ({ film, isOpen, onClose }) => {
             ) : (
               /* Development/Pre-Production/etc: Studio Portal CTA */
               <div className="space-y-4">
-                <div className="bg-smoke-gray border border-gray-700 rounded-lg p-4">
+                <div className="bg-swp-surface border border-swp-border rounded-swp p-4">
                   <div className="flex items-start gap-3">
-                    <Lock size={20} className="text-electric-blue flex-shrink-0 mt-0.5" />
+                    <Lock size={20} className="text-swp-ice flex-shrink-0 mt-0.5" />
                     <div>
-                      <p className="text-gray-300 text-sm leading-relaxed">
+                      <p className="text-swp-white-dim text-sm leading-relaxed">
                         This film is currently in <span className="text-white font-medium">{film.status?.toLowerCase()}</span>. 
                         To access confidential materials, financials, and project updates, request access to our Studio Portal.
                       </p>
@@ -240,7 +240,7 @@ const FilmModal = ({ film, isOpen, onClose }) => {
                 <Link
                   to="/request-access"
                   onClick={onClose}
-                  className="w-full bg-electric-blue hover:bg-electric-blue/90 text-white px-8 py-4 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
+                  className="w-full bg-swp-ice hover:bg-swp-ice text-white px-8 py-4 rounded-sm font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
                   data-testid="film-modal-request-access-btn"
                 >
                   Request Studio Access
@@ -249,7 +249,7 @@ const FilmModal = ({ film, isOpen, onClose }) => {
                 <Link
                   to="/contact"
                   onClick={onClose}
-                  className="w-full border border-gray-600 hover:border-gray-400 text-white px-8 py-4 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
+                  className="w-full border border-gray-600 hover:border-gray-400 text-white px-8 py-4 rounded-sm font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
                   data-testid="film-modal-contact-btn"
                 >
                   <Mail size={18} />

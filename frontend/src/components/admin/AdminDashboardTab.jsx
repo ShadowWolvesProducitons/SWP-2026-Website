@@ -15,11 +15,11 @@ const TYPE_FILTERS = [
 ];
 
 const STATUS_COLORS = {
-  'New': 'bg-electric-blue/20 text-electric-blue border-electric-blue/40',
+  'New': 'bg-swp-ice/15 text-swp-ice border-swp-ice/25',
   'Read': 'bg-yellow-500/20 text-yellow-400 border-yellow-500/40',
   'Replied': 'bg-green-500/20 text-green-400 border-green-500/40',
   'Reviewed': 'bg-yellow-500/20 text-yellow-400 border-yellow-500/40',
-  'Archived': 'bg-gray-500/20 text-gray-400 border-gray-500/40',
+  'Archived': 'bg-gray-500/20 text-swp-white-ghost border-gray-500/40',
 };
 
 const TYPE_BADGE = {
@@ -121,7 +121,7 @@ const AdminDashboardTab = () => {
       case 'submission': return <Inbox size={16} className="text-blue-400" />;
       case 'message': return <MessageSquare size={16} className="text-purple-400" />;
       case 'investor': return <Briefcase size={16} className="text-yellow-400" />;
-      default: return <Activity size={16} className="text-gray-400" />;
+      default: return <Activity size={16} className="text-swp-white-ghost" />;
     }
   };
 
@@ -265,8 +265,8 @@ const AdminDashboardTab = () => {
   if (loading) {
     return (
       <div className="text-center py-12">
-        <RefreshCw className="w-8 h-8 text-electric-blue animate-spin mx-auto mb-4" />
-        <p className="text-gray-500">Loading dashboard...</p>
+        <RefreshCw className="w-8 h-8 text-swp-ice animate-spin mx-auto mb-4" />
+        <p className="text-swp-white-ghost/70">Loading dashboard...</p>
       </div>
     );
   }
@@ -277,16 +277,16 @@ const AdminDashboardTab = () => {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h2 className="text-2xl font-bold text-white flex items-center gap-3">
-            <BarChart3 className="text-electric-blue" />
+            <BarChart3 className="text-swp-ice" />
             Dashboard
           </h2>
-          <p className="text-gray-500 text-sm mt-1">
+          <p className="text-swp-white-ghost/70 text-sm mt-1">
             Overview of site performance and activity
           </p>
         </div>
         <button 
           onClick={fetchData} 
-          className="p-2 text-gray-400 hover:text-white transition-colors" 
+          className="p-2 text-swp-white-ghost hover:text-swp-white transition-colors" 
           title="Refresh"
           data-testid="refresh-dashboard"
         >
@@ -295,16 +295,16 @@ const AdminDashboardTab = () => {
       </div>
 
       {/* Section Tabs */}
-      <div className="flex gap-2 mb-6 border-b border-gray-800 pb-4">
+      <div className="flex gap-2 mb-6 border-b border-swp-border pb-4">
         {['overview', 'activity', 'campaigns'].map((section) => (
           <button
             key={section}
             onClick={() => setActiveSection(section)}
             data-testid={`section-${section}`}
-            className={`px-4 py-2 rounded-lg font-mono text-sm uppercase tracking-widest transition-colors ${
+            className={`px-4 py-2 rounded-swp font-mono text-sm uppercase tracking-widest transition-colors ${
               activeSection === section
-                ? 'bg-electric-blue text-white'
-                : 'text-gray-400 hover:text-white hover:bg-white/5'
+                ? 'bg-swp-ice text-white'
+                : 'text-swp-white-ghost hover:text-swp-white hover:bg-white/5'
             }`}
           >
             {section === 'overview' ? 'Overview' : section === 'activity' ? 'Activity Feed' : 'Email Campaigns'}
@@ -362,32 +362,32 @@ const AdminDashboardTab = () => {
           </div>
 
           {/* Quick Activity Preview */}
-          <div className="bg-smoke-gray border border-gray-800 rounded-lg p-6">
+          <div className="bg-swp-surface border border-swp-border rounded-swp p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-                <Clock size={18} className="text-electric-blue" />
+                <Clock size={18} className="text-swp-ice" />
                 Recent Activity
               </h3>
               <button
                 onClick={() => setActiveSection('activity')}
-                className="text-electric-blue text-sm hover:underline"
+                className="text-swp-ice text-sm hover:underline"
               >
                 View All
               </button>
             </div>
             {activityItems.length === 0 ? (
-              <p className="text-gray-500 text-center py-8">No recent activity</p>
+              <p className="text-swp-white-ghost/70 text-center py-8">No recent activity</p>
             ) : (
               <div className="space-y-3">
                 {activityItems.slice(0, 5).map((activity, idx) => (
-                  <div key={idx} className="flex items-center gap-3 py-2 border-b border-gray-800/50 last:border-0">
-                    <div className="w-8 h-8 rounded-full bg-black/50 flex items-center justify-center">
+                  <div key={idx} className="flex items-center gap-3 py-2 border-b border-swp-border/50 last:border-0">
+                    <div className="w-8 h-8 rounded-sm bg-swp-deep/70 flex items-center justify-center">
                       {getActivityIcon(activity._type)}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-white text-sm truncate">{activity.name} - {activity._type}</p>
                     </div>
-                    <span className="text-gray-500 text-xs whitespace-nowrap">
+                    <span className="text-swp-white-ghost/70 text-xs whitespace-nowrap">
                       {formatTimeAgo(activity.created_at)}
                     </span>
                   </div>
@@ -407,35 +407,35 @@ const AdminDashboardTab = () => {
               <button
                 key={f.id}
                 onClick={() => setActivityFilter(f.id)}
-                className={`px-4 py-2 rounded-full text-sm font-mono uppercase tracking-widest transition-all flex items-center gap-2 ${
+                className={`px-4 py-2 rounded-sm text-sm font-mono uppercase tracking-widest transition-all flex items-center gap-2 ${
                   activityFilter === f.id
                     ? 'bg-white text-black'
-                    : 'bg-smoke-gray text-gray-400 border border-gray-700 hover:text-white hover:border-gray-500'
+                    : 'bg-swp-surface text-swp-white-ghost border border-swp-border hover:text-swp-white hover:border-gray-500'
                 }`}
                 data-testid={`filter-${f.id}`}
               >
                 {f.label}
-                <span className={`text-xs px-1.5 py-0.5 rounded ${activityFilter === f.id ? 'bg-black/10' : 'bg-white/10'}`}>
+                <span className={`text-xs px-1.5 py-0.5 rounded ${activityFilter === f.id ? 'bg-swp-black/10' : 'bg-white/10'}`}>
                   {counts[f.id]}
                 </span>
               </button>
             ))}
             {newCount > 0 && (
-              <span className="px-3 py-2 bg-electric-blue text-white text-sm rounded-full">{newCount} new</span>
+              <span className="px-3 py-2 bg-swp-ice text-white text-sm rounded-sm">{newCount} new</span>
             )}
           </div>
 
           {/* Bulk Actions Bar */}
           {filteredActivity.length > 0 && (
-            <div className="flex items-center gap-4 mb-4 p-3 bg-smoke-gray border border-gray-800 rounded-lg">
+            <div className="flex items-center gap-4 mb-4 p-3 bg-swp-surface border border-swp-border rounded-swp">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={selectedItems.size === filteredActivity.length && filteredActivity.length > 0}
                   onChange={handleSelectAll}
-                  className="w-4 h-4 rounded border-gray-600 bg-black text-electric-blue focus:ring-electric-blue"
+                  className="w-4 h-4 rounded border-gray-600 bg-swp-black text-swp-ice focus:ring-swp-ice"
                 />
-                <span className="text-gray-400 text-sm">
+                <span className="text-swp-white-ghost text-sm">
                   {selectedItems.size > 0 ? `${selectedItems.size} selected` : 'Select all'}
                 </span>
               </label>
@@ -446,7 +446,7 @@ const AdminDashboardTab = () => {
                   <select
                     value={bulkAction}
                     onChange={(e) => setBulkAction(e.target.value)}
-                    className="bg-black border border-gray-700 rounded px-3 py-1.5 text-sm text-gray-300 focus:border-electric-blue focus:outline-none"
+                    className="bg-swp-black border border-swp-border rounded px-3 py-1.5 text-sm text-swp-white-dim focus:border-swp-ice focus:outline-none"
                   >
                     <option value="">Bulk Actions...</option>
                     <option value="read">Mark as Read</option>
@@ -456,7 +456,7 @@ const AdminDashboardTab = () => {
                   <button
                     onClick={handleBulkAction}
                     disabled={!bulkAction}
-                    className="px-3 py-1.5 bg-electric-blue hover:bg-electric-blue/90 disabled:bg-gray-700 disabled:cursor-not-allowed text-white text-sm rounded transition-colors"
+                    className="px-3 py-1.5 bg-swp-ice hover:bg-swp-ice disabled:bg-swp-muted disabled:cursor-not-allowed text-white text-sm rounded transition-colors"
                   >
                     Apply
                   </button>
@@ -467,9 +467,9 @@ const AdminDashboardTab = () => {
 
           {/* Activity Items */}
           {filteredActivity.length === 0 ? (
-            <div className="text-center py-12 bg-smoke-gray border border-gray-800 rounded-lg">
+            <div className="text-center py-12 bg-swp-surface border border-swp-border rounded-swp">
               <MessageSquare className="w-12 h-12 text-gray-700 mx-auto mb-4" />
-              <p className="text-gray-400">No activity found</p>
+              <p className="text-swp-white-ghost">No activity found</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -479,8 +479,8 @@ const AdminDashboardTab = () => {
                 return (
                 <div
                   key={itemKey}
-                  className={`bg-smoke-gray border rounded-lg overflow-hidden transition-colors ${
-                    isSelected ? 'border-electric-blue' : item.status === 'New' ? 'border-electric-blue/50' : 'border-gray-800 hover:border-gray-700'
+                  className={`bg-swp-surface border rounded-swp overflow-hidden transition-colors ${
+                    isSelected ? 'border-swp-ice' : item.status === 'New' ? 'border-swp-ice/30' : 'border-swp-border hover:border-swp-border'
                   }`}
                   data-testid={`activity-item-${item.id}`}
                 >
@@ -495,22 +495,22 @@ const AdminDashboardTab = () => {
                       checked={isSelected}
                       onChange={(e) => handleSelectItem(itemKey, e)}
                       onClick={(e) => e.stopPropagation()}
-                      className="w-4 h-4 rounded border-gray-600 bg-black text-electric-blue focus:ring-electric-blue flex-shrink-0"
+                      className="w-4 h-4 rounded border-gray-600 bg-swp-black text-swp-ice focus:ring-swp-ice flex-shrink-0"
                     />
                     
                     <div className="flex items-center gap-3 flex-1 min-w-0">
-                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-mono uppercase border ${TYPE_BADGE[item._type]}`}>
+                      <span className={`px-2.5 py-1 rounded-sm text-[10px] font-mono uppercase border ${TYPE_BADGE[item._type]}`}>
                         {item._type === 'cineconnect' ? 'CineConnect' : item._type}
                       </span>
-                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-mono uppercase border ${STATUS_COLORS[item.status] || STATUS_COLORS['New']}`}>
+                      <span className={`px-2.5 py-1 rounded-sm text-[10px] font-mono uppercase border ${STATUS_COLORS[item.status] || STATUS_COLORS['New']}`}>
                         {item.status}
                       </span>
                       <div className="min-w-0">
                         <h3 className="text-white font-semibold truncate">{item.name}</h3>
-                        <p className="text-gray-500 text-sm truncate">{item.email}</p>
+                        <p className="text-swp-white-ghost/70 text-sm truncate">{item.email}</p>
                       </div>
                       {item.admin_notes && (
-                        <span className="px-2 py-0.5 bg-amber-500/20 text-amber-400 text-[10px] rounded-full" title={item.admin_notes}>Note</span>
+                        <span className="px-2 py-0.5 bg-amber-500/20 text-amber-400 text-[10px] rounded-sm" title={item.admin_notes}>Note</span>
                       )}
                     </div>
 
@@ -518,7 +518,7 @@ const AdminDashboardTab = () => {
                       {item._type !== 'cineconnect' && item.status === 'New' && (
                         <button
                           onClick={(e) => handleStatusChange(item, 'Read', e)}
-                          className="p-1.5 text-gray-500 hover:text-green-400 hover:bg-green-500/10 rounded transition-colors"
+                          className="p-1.5 text-swp-white-ghost/70 hover:text-green-400 hover:bg-green-500/10 rounded transition-colors"
                           title="Mark as Read"
                         >
                           <Check size={16} />
@@ -527,7 +527,7 @@ const AdminDashboardTab = () => {
                       {item._type !== 'cineconnect' && (
                         <button
                           onClick={(e) => { e.stopPropagation(); setNoteModal({ open: true, item, text: item.admin_notes || '' }); }}
-                          className={`p-1.5 hover:bg-amber-500/10 rounded transition-colors ${item.admin_notes ? 'text-amber-400' : 'text-gray-500 hover:text-amber-400'}`}
+                          className={`p-1.5 hover:bg-amber-500/10 rounded transition-colors ${item.admin_notes ? 'text-amber-400' : 'text-swp-white-ghost/70 hover:text-amber-400'}`}
                           title="Add/Edit Note"
                         >
                           <StickyNote size={16} />
@@ -536,43 +536,43 @@ const AdminDashboardTab = () => {
                       <a
                         href={`mailto:${item.email}`}
                         onClick={(e) => e.stopPropagation()}
-                        className="p-1.5 text-gray-500 hover:text-electric-blue hover:bg-electric-blue/10 rounded transition-colors"
+                        className="p-1.5 text-swp-white-ghost/70 hover:text-swp-ice hover:bg-swp-ice/10 rounded transition-colors"
                         title="Reply via Email"
                       >
                         <Mail size={16} />
                       </a>
                       <button
                         onClick={(e) => { e.stopPropagation(); handleDelete(item, true); }}
-                        className="p-1.5 text-gray-500 hover:text-red-400 hover:bg-red-500/10 rounded transition-colors"
+                        className="p-1.5 text-swp-white-ghost/70 hover:text-red-400 hover:bg-red-500/10 rounded transition-colors"
                         title="Delete"
                       >
                         <Trash2 size={16} />
                       </button>
-                      <span className="hidden lg:block text-gray-500 text-sm ml-2">{formatDate(item.created_at)}</span>
+                      <span className="hidden lg:block text-swp-white-ghost/70 text-sm ml-2">{formatDate(item.created_at)}</span>
                       {expandedId === itemKey ? (
-                        <ChevronUp size={20} className="text-gray-400 ml-2" />
+                        <ChevronUp size={20} className="text-swp-white-ghost ml-2" />
                       ) : (
-                        <ChevronDown size={20} className="text-gray-400 ml-2" />
+                        <ChevronDown size={20} className="text-swp-white-ghost ml-2" />
                       )}
                     </div>
                   </div>
 
                   {/* Expanded Content */}
                   {expandedId === `${item._type}-${item.id}` && (
-                    <div className="px-6 py-6 border-t border-gray-800 bg-black/30">
+                    <div className="px-6 py-6 border-t border-swp-border bg-swp-deep/50">
                       {item._type === 'message' && (
                         <div className="space-y-4">
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div>
-                              <label className="text-gray-500 text-xs font-mono uppercase tracking-widest">Email</label>
-                              <p className="text-white mt-1"><a href={`mailto:${item.email}`} className="text-electric-blue hover:underline">{item.email}</a></p>
+                              <label className="text-swp-white-ghost/70 text-xs font-mono uppercase tracking-widest">Email</label>
+                              <p className="text-white mt-1"><a href={`mailto:${item.email}`} className="text-swp-ice hover:underline">{item.email}</a></p>
                             </div>
-                            {item.phone && <div><label className="text-gray-500 text-xs font-mono uppercase tracking-widest">Phone</label><p className="text-white mt-1">{item.phone}</p></div>}
-                            {item.service && <div><label className="text-gray-500 text-xs font-mono uppercase tracking-widest">Project Type</label><p className="text-white mt-1 capitalize">{item.service.replace('-', ' ')}</p></div>}
+                            {item.phone && <div><label className="text-swp-white-ghost/70 text-xs font-mono uppercase tracking-widest">Phone</label><p className="text-white mt-1">{item.phone}</p></div>}
+                            {item.service && <div><label className="text-swp-white-ghost/70 text-xs font-mono uppercase tracking-widest">Project Type</label><p className="text-white mt-1 capitalize">{item.service.replace('-', ' ')}</p></div>}
                           </div>
                           <div>
-                            <label className="text-gray-500 text-xs font-mono uppercase tracking-widest">Message</label>
-                            <p className="text-gray-300 mt-2 whitespace-pre-wrap leading-relaxed">{item.message}</p>
+                            <label className="text-swp-white-ghost/70 text-xs font-mono uppercase tracking-widest">Message</label>
+                            <p className="text-swp-white-dim mt-2 whitespace-pre-wrap leading-relaxed">{item.message}</p>
                           </div>
                         </div>
                       )}
@@ -580,17 +580,17 @@ const AdminDashboardTab = () => {
                       {item._type === 'submission' && (
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                           <div className="space-y-4">
-                            <div><label className="text-gray-500 text-xs font-mono uppercase tracking-widest">Role</label><p className="text-white mt-1">{item.role}</p></div>
-                            <div><label className="text-gray-500 text-xs font-mono uppercase tracking-widest">Type</label><p className="text-white mt-1">{item.submission_type}</p></div>
-                            <div><label className="text-gray-500 text-xs font-mono uppercase tracking-widest">Stage</label><p className="text-white mt-1">{item.project_stage}</p></div>
-                            <div><label className="text-gray-500 text-xs font-mono uppercase tracking-widest">Genres</label>
-                              <div className="flex flex-wrap gap-2 mt-1">{item.genres?.map((g, i) => <span key={i} className="px-2 py-1 bg-gray-800 text-gray-300 rounded text-sm">{g}</span>)}</div>
+                            <div><label className="text-swp-white-ghost/70 text-xs font-mono uppercase tracking-widest">Role</label><p className="text-white mt-1">{item.role}</p></div>
+                            <div><label className="text-swp-white-ghost/70 text-xs font-mono uppercase tracking-widest">Type</label><p className="text-white mt-1">{item.submission_type}</p></div>
+                            <div><label className="text-swp-white-ghost/70 text-xs font-mono uppercase tracking-widest">Stage</label><p className="text-white mt-1">{item.project_stage}</p></div>
+                            <div><label className="text-swp-white-ghost/70 text-xs font-mono uppercase tracking-widest">Genres</label>
+                              <div className="flex flex-wrap gap-2 mt-1">{item.genres?.map((g, i) => <span key={i} className="px-2 py-1 bg-gray-800 text-swp-white-dim rounded text-sm">{g}</span>)}</div>
                             </div>
                           </div>
                           <div className="space-y-4">
-                            <div><label className="text-gray-500 text-xs font-mono uppercase tracking-widest">Logline</label><p className="text-white mt-1 leading-relaxed">{item.logline}</p></div>
-                            {item.external_link && <div><label className="text-gray-500 text-xs font-mono uppercase tracking-widest">Link</label><a href={item.external_link} target="_blank" rel="noopener noreferrer" className="text-electric-blue hover:underline mt-1 flex items-center gap-2">View <ExternalLink size={14} /></a></div>}
-                            {item.message && <div><label className="text-gray-500 text-xs font-mono uppercase tracking-widest">Message</label><p className="text-gray-300 mt-1">{item.message}</p></div>}
+                            <div><label className="text-swp-white-ghost/70 text-xs font-mono uppercase tracking-widest">Logline</label><p className="text-white mt-1 leading-relaxed">{item.logline}</p></div>
+                            {item.external_link && <div><label className="text-swp-white-ghost/70 text-xs font-mono uppercase tracking-widest">Link</label><a href={item.external_link} target="_blank" rel="noopener noreferrer" className="text-swp-ice hover:underline mt-1 flex items-center gap-2">View <ExternalLink size={14} /></a></div>}
+                            {item.message && <div><label className="text-swp-white-ghost/70 text-xs font-mono uppercase tracking-widest">Message</label><p className="text-swp-white-dim mt-1">{item.message}</p></div>}
                           </div>
                         </div>
                       )}
@@ -599,22 +599,22 @@ const AdminDashboardTab = () => {
                         <div className="space-y-2">
                           <div className="flex items-center gap-2">
                             <Users size={16} className="text-cyan-400" />
-                            <span className="text-gray-300">{item.name} wants to be notified when CineConnect launches.</span>
+                            <span className="text-swp-white-dim">{item.name} wants to be notified when CineConnect launches.</span>
                           </div>
-                          <p className="text-gray-500 text-sm">Email: <a href={`mailto:${item.email}`} className="text-electric-blue hover:underline">{item.email}</a></p>
+                          <p className="text-swp-white-ghost/70 text-sm">Email: <a href={`mailto:${item.email}`} className="text-swp-ice hover:underline">{item.email}</a></p>
                         </div>
                       )}
 
                       {/* Actions */}
                       {item._type !== 'cineconnect' && (
-                        <div className="flex items-center justify-between mt-6 pt-6 border-t border-gray-800">
+                        <div className="flex items-center justify-between mt-6 pt-6 border-t border-swp-border">
                           <div className="flex items-center gap-2 flex-wrap">
-                            <span className="text-gray-500 text-sm mr-2">Set Status:</span>
+                            <span className="text-swp-white-ghost/70 text-sm mr-2">Set Status:</span>
                             {getStatusOptions(item._type).filter(s => s !== item.status).map(status => (
                               <button
                                 key={status}
                                 onClick={() => handleStatusChange(item, status)}
-                                className={`px-3 py-1 rounded-full text-xs font-mono uppercase border transition-colors hover:opacity-80 ${STATUS_COLORS[status]}`}
+                                className={`px-3 py-1 rounded-sm text-xs font-mono uppercase border transition-colors hover:opacity-80 ${STATUS_COLORS[status]}`}
                               >
                                 {status}
                               </button>
@@ -623,14 +623,14 @@ const AdminDashboardTab = () => {
                           <div className="flex items-center gap-2">
                             <a
                               href={`mailto:${item.email}`}
-                              className="p-2 text-gray-400 hover:text-electric-blue transition-colors"
+                              className="p-2 text-swp-white-ghost hover:text-swp-ice transition-colors"
                               title="Reply"
                             >
                               <Mail size={18} />
                             </a>
                             <button
                               onClick={() => handleDelete(item, true)}
-                              className="p-2 text-gray-400 hover:text-red-400 transition-colors"
+                              className="p-2 text-swp-white-ghost hover:text-red-400 transition-colors"
                               title="Delete Permanently"
                             >
                               <Trash2 size={18} />
@@ -653,55 +653,55 @@ const AdminDashboardTab = () => {
         <div className="space-y-6">
           {/* Campaign Stats Summary */}
           <div className="grid grid-cols-3 gap-4">
-            <div className="bg-smoke-gray border border-gray-800 rounded-lg p-4 text-center">
-              <Mail size={24} className="text-electric-blue mx-auto mb-2" />
+            <div className="bg-swp-surface border border-swp-border rounded-swp p-4 text-center">
+              <Mail size={24} className="text-swp-ice mx-auto mb-2" />
               <p className="text-2xl font-bold text-white">{campaigns.length}</p>
-              <p className="text-gray-500 text-sm">Total Campaigns</p>
+              <p className="text-swp-white-ghost/70 text-sm">Total Campaigns</p>
             </div>
-            <div className="bg-smoke-gray border border-gray-800 rounded-lg p-4 text-center">
+            <div className="bg-swp-surface border border-swp-border rounded-swp p-4 text-center">
               <Eye size={24} className="text-green-400 mx-auto mb-2" />
               <p className="text-2xl font-bold text-white">
                 {campaigns.reduce((acc, c) => acc + c.opened, 0)}
               </p>
-              <p className="text-gray-500 text-sm">Total Opens</p>
+              <p className="text-swp-white-ghost/70 text-sm">Total Opens</p>
             </div>
-            <div className="bg-smoke-gray border border-gray-800 rounded-lg p-4 text-center">
+            <div className="bg-swp-surface border border-swp-border rounded-swp p-4 text-center">
               <MousePointer size={24} className="text-purple-400 mx-auto mb-2" />
               <p className="text-2xl font-bold text-white">
                 {campaigns.reduce((acc, c) => acc + c.clicked, 0)}
               </p>
-              <p className="text-gray-500 text-sm">Total Clicks</p>
+              <p className="text-swp-white-ghost/70 text-sm">Total Clicks</p>
             </div>
           </div>
 
           {/* Campaigns List */}
           {campaigns.length === 0 ? (
-            <div className="text-center py-12 bg-smoke-gray border border-gray-800 rounded-lg">
+            <div className="text-center py-12 bg-swp-surface border border-swp-border rounded-swp">
               <Mail className="w-12 h-12 text-gray-700 mx-auto mb-4" />
-              <p className="text-gray-400">No email campaigns sent yet</p>
-              <p className="text-gray-600 text-sm mt-2">Send your first newsletter from Studio &gt; Comms</p>
+              <p className="text-swp-white-ghost">No email campaigns sent yet</p>
+              <p className="text-swp-white-ghost/50 text-sm mt-2">Send your first newsletter from Studio &gt; Comms</p>
             </div>
           ) : (
-            <div className="bg-smoke-gray border border-gray-800 rounded-lg overflow-hidden">
+            <div className="bg-swp-surface border border-swp-border rounded-swp overflow-hidden">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-gray-800">
-                    <th className="text-left px-6 py-4 text-gray-400 font-mono text-xs uppercase tracking-widest">Campaign</th>
-                    <th className="text-center px-4 py-4 text-gray-400 font-mono text-xs uppercase tracking-widest">Sent</th>
-                    <th className="text-center px-4 py-4 text-gray-400 font-mono text-xs uppercase tracking-widest">Delivered</th>
-                    <th className="text-center px-4 py-4 text-gray-400 font-mono text-xs uppercase tracking-widest">Opened</th>
-                    <th className="text-center px-4 py-4 text-gray-400 font-mono text-xs uppercase tracking-widest">Clicked</th>
-                    <th className="text-center px-4 py-4 text-gray-400 font-mono text-xs uppercase tracking-widest">Open Rate</th>
-                    <th className="text-center px-4 py-4 text-gray-400 font-mono text-xs uppercase tracking-widest">Click Rate</th>
+                  <tr className="border-b border-swp-border">
+                    <th className="text-left px-6 py-4 text-swp-white-ghost font-mono text-xs uppercase tracking-widest">Campaign</th>
+                    <th className="text-center px-4 py-4 text-swp-white-ghost font-mono text-xs uppercase tracking-widest">Sent</th>
+                    <th className="text-center px-4 py-4 text-swp-white-ghost font-mono text-xs uppercase tracking-widest">Delivered</th>
+                    <th className="text-center px-4 py-4 text-swp-white-ghost font-mono text-xs uppercase tracking-widest">Opened</th>
+                    <th className="text-center px-4 py-4 text-swp-white-ghost font-mono text-xs uppercase tracking-widest">Clicked</th>
+                    <th className="text-center px-4 py-4 text-swp-white-ghost font-mono text-xs uppercase tracking-widest">Open Rate</th>
+                    <th className="text-center px-4 py-4 text-swp-white-ghost font-mono text-xs uppercase tracking-widest">Click Rate</th>
                   </tr>
                 </thead>
                 <tbody>
                   {campaigns.map((campaign) => (
-                    <tr key={campaign.id} className="border-b border-gray-800/50 hover:bg-black/30 transition-colors">
+                    <tr key={campaign.id} className="border-b border-swp-border/50 hover:bg-swp-deep/50 transition-colors">
                       <td className="px-6 py-4">
                         <div>
                           <p className="text-white font-medium truncate max-w-[200px]">{campaign.subject}</p>
-                          <p className="text-gray-500 text-xs mt-1">{formatDate(campaign.sent_at)}</p>
+                          <p className="text-swp-white-ghost/70 text-xs mt-1">{formatDate(campaign.sent_at)}</p>
                         </div>
                       </td>
                       <td className="px-4 py-4 text-center">
@@ -727,18 +727,18 @@ const AdminDashboardTab = () => {
           )}
 
           {/* Webhook Setup Info */}
-          <div className="bg-black/50 border border-gray-800 rounded-lg p-4">
+          <div className="bg-swp-deep/70 border border-swp-border rounded-swp p-4">
             <div className="flex items-start gap-3">
               <AlertCircle size={20} className="text-yellow-500 flex-shrink-0 mt-0.5" />
               <div>
                 <p className="text-yellow-200 text-sm font-medium">Enable Email Tracking</p>
-                <p className="text-gray-400 text-xs mt-1">
+                <p className="text-swp-white-ghost text-xs mt-1">
                   To track opens and clicks, set up a webhook in your Resend dashboard pointing to:
                 </p>
-                <code className="block mt-2 text-xs bg-black px-3 py-2 rounded text-electric-blue">
+                <code className="block mt-2 text-xs bg-swp-black px-3 py-2 rounded text-swp-ice">
                   https://www.shadowwolvesproductions.com.au/api/webhooks/resend
                 </code>
-                <p className="text-gray-500 text-xs mt-2">
+                <p className="text-swp-white-ghost/70 text-xs mt-2">
                   Select events: email.delivered, email.opened, email.clicked, email.bounced
                 </p>
               </div>
@@ -749,33 +749,33 @@ const AdminDashboardTab = () => {
 
       {/* Note Modal */}
       {noteModal.open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80">
-          <div className="bg-smoke-gray border border-gray-800 rounded-xl w-full max-w-md">
-            <div className="flex items-center justify-between p-4 border-b border-gray-800">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-swp-deep/90">
+          <div className="bg-swp-surface border border-swp-border rounded-swp w-full max-w-md">
+            <div className="flex items-center justify-between p-4 border-b border-swp-border">
               <h3 className="text-lg font-bold text-white flex items-center gap-2">
                 <StickyNote size={18} className="text-amber-400" />
                 Admin Note
               </h3>
-              <button onClick={() => setNoteModal({ open: false, item: null, text: '' })} className="p-1 text-gray-400 hover:text-white">
+              <button onClick={() => setNoteModal({ open: false, item: null, text: '' })} className="p-1 text-swp-white-ghost hover:text-swp-white">
                 <X size={20} />
               </button>
             </div>
             <div className="p-4">
-              <p className="text-gray-400 text-sm mb-2">For: {noteModal.item?.name}</p>
+              <p className="text-swp-white-ghost text-sm mb-2">For: {noteModal.item?.name}</p>
               <textarea
                 value={noteModal.text}
                 onChange={(e) => setNoteModal(prev => ({ ...prev, text: e.target.value }))}
                 rows={4}
-                className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none resize-none"
+                className="w-full bg-swp-black border border-swp-border rounded-swp px-4 py-3 text-white focus:border-swp-ice focus:outline-none resize-none"
                 placeholder="Add internal notes about this contact..."
                 data-testid="note-textarea"
               />
             </div>
-            <div className="flex justify-end gap-3 p-4 border-t border-gray-800">
-              <button onClick={() => setNoteModal({ open: false, item: null, text: '' })} className="px-4 py-2 border border-gray-700 text-gray-400 rounded-lg hover:text-white text-sm">
+            <div className="flex justify-end gap-3 p-4 border-t border-swp-border">
+              <button onClick={() => setNoteModal({ open: false, item: null, text: '' })} className="px-4 py-2 border border-swp-border text-swp-white-ghost rounded-swp hover:text-swp-white text-sm">
                 Cancel
               </button>
-              <button onClick={handleSaveNote} className="px-4 py-2 bg-electric-blue text-white rounded-lg text-sm" data-testid="save-note-btn">
+              <button onClick={handleSaveNote} className="px-4 py-2 bg-swp-ice text-white rounded-swp text-sm" data-testid="save-note-btn">
                 Save Note
               </button>
             </div>
@@ -788,13 +788,13 @@ const AdminDashboardTab = () => {
 
 // Stat Card Component
 const StatCard = ({ icon, label, value, subValue, alert }) => (
-  <div className="bg-smoke-gray border border-gray-800 rounded-lg p-4">
+  <div className="bg-swp-surface border border-swp-border rounded-swp p-4">
     <div className="flex items-center gap-3 mb-2">
       {icon}
-      <span className="text-gray-400 text-sm">{label}</span>
+      <span className="text-swp-white-ghost text-sm">{label}</span>
     </div>
     <p className="text-3xl font-bold text-white">{value}</p>
-    <p className={`text-xs mt-1 ${alert ? 'text-yellow-400' : 'text-gray-500'}`}>
+    <p className={`text-xs mt-1 ${alert ? 'text-yellow-400' : 'text-swp-white-ghost/70'}`}>
       {alert && <AlertCircle size={12} className="inline mr-1" />}
       {subValue}
     </p>
@@ -807,11 +807,11 @@ const RateIndicator = ({ rate, type = 'open' }) => {
     if (type === 'click') {
       if (rate >= 5) return 'text-green-400';
       if (rate >= 2) return 'text-yellow-400';
-      return 'text-gray-400';
+      return 'text-swp-white-ghost';
     }
     if (rate >= 30) return 'text-green-400';
     if (rate >= 15) return 'text-yellow-400';
-    return 'text-gray-400';
+    return 'text-swp-white-ghost';
   };
 
   return (

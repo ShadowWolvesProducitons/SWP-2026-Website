@@ -62,16 +62,16 @@ const PageHeader = ({ page, title, subtitle, children }) => {
       {(!loaded || !imageUrl) && (
         <div className="absolute inset-0 bg-gradient-to-br from-black via-smoke-gray to-black">
           <div className="absolute inset-0 opacity-20">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl" />
+            <div className="absolute top-0 right-0 w-96 h-96 bg-swp-ice rounded-sm filter blur-3xl" />
           </div>
         </div>
       )}
       <div className="container mx-auto px-4 relative z-10">
-        <h1 className="md:text-7xl text-6xl font-bold text-white mb-4 font-cinzel">
+        <h1 className="md:text-7xl text-6xl font-bold text-white mb-4 font-display">
           {settings?.title || title}
         </h1>
         {(settings?.subtitle || subtitle) && (
-          <p className="max-w-2xl text-lg text-gray-300">{settings?.subtitle || subtitle}</p>
+          <p className="max-w-2xl text-lg text-swp-white-dim">{settings?.subtitle || subtitle}</p>
         )}
         {children}
       </div>

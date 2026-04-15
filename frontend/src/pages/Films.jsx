@@ -6,8 +6,23 @@ import FilmModal from '../components/FilmModal';
 import PageHeader from '../components/PageHeader';
 import { useSeoSettings, generateMovieSchema, getCanonicalUrl } from '../contexts/SeoContext';
 
-// Status options for filter chips
 const STATUS_OPTIONS = ['All', 'Development', 'Packaging', 'Pre-Production', 'Filming', 'Post-Production', 'Marketing', 'Released'];
+
+const T = {
+  glass: { background:'rgba(17,19,24,0.68)', backdropFilter:'blur(20px)', border:'0.5px solid rgba(255,255,255,0.07)', borderRadius:'3px' },
+  mono: { fontFamily:'var(--font-mono)', fontSize:'9px', fontWeight:300, letterSpacing:'0.14em', textTransform:'uppercase' },
+  ice: '#6a9dbe',
+};
+
+// Status → badge colour
+const statusColour = (s) => {
+  const map = {
+    'Development':    { bg:'rgba(200,175,120,0.12)', color:'rgba(200,175,120,0.9)',  border:'rgba(200,175,120,0.25)' },
+    'Post-Production':{ bg:'rgba(120,200,140,0.10)', color:'rgba(120,200,140,0.9)', border:'rgba(120,200,140,0.25)' },
+    'Released':       { bg:'rgba(106,157,190,0.10)', color:'rgba(106,157,190,0.9)', border:'rgba(106,157,190,0.2)'  },
+  };
+  return map[s] || { bg:'rgba(238,240,242,0.05)', color:'rgba(238,240,242,0.4)', border:'rgba(255,255,255,0.08)' };
+};
 
 const Films = () => {
   const seoSettings = useSeoSettings();
@@ -25,139 +40,92 @@ const Films = () => {
   const statusDropdownRef = useRef(null);
   const scrollPositionRef = useRef(null);
 
-  useEffect(() => {
-    if (!slug) {
-      window.scrollTo(0, 0);
-    }
-    fetchFilms();
-  }, []);
+  useEffect(() => { if (!slug) window.scrollTo(0, 0); fetchFilms(); }, []);
 
-  // Handle slug changes - open/close modal based on URL
+  // ── URL-driven modal — preserved exactly ──
   useEffect(() => {
     if (slug && films.length > 0) {
       const film = films.find(f => f.slug === slug || f.id === slug);
       if (film) {
-        // Save scroll position before opening modal
         scrollPositionRef.current = window.scrollY;
         document.body.style.overflow = 'hidden';
-        
-        const modalFilm = {
-          ...film,
-          posterColor: film.poster_color,
-          imdbUrl: film.imdb_url,
-          watchUrl: film.watch_url,
-          watchUrlTitle: film.watch_url_title,
-          posterUrl: film.poster_url,
-          slug: film.slug || film.id
-        };
-        setSelectedFilm(modalFilm);
+        setSelectedFilm({ ...film, posterColor:film.poster_color, imdbUrl:film.imdb_url, watchUrl:film.watch_url, watchUrlTitle:film.watch_url_title, posterUrl:film.poster_url, slug:film.slug||film.id });
       }
     } else if (!slug) {
-      // Restore scroll position when modal closes
       document.body.style.overflow = 'unset';
       setSelectedFilm(null);
-      if (scrollPositionRef.current > 0) {
-        window.scrollTo(0, scrollPositionRef.current);
-      }
+      if (scrollPositionRef.current > 0) window.scrollTo(0, scrollPositionRef.current);
     }
   }, [slug, films]);
 
+  // ── API call preserved exactly ──
   const fetchFilms = async () => {
     try {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/films`);
-      if (response.ok) {
-        const data = await response.json();
-        setFilms(data);
-        setFilteredFilms(data);
-      }
-    } catch (err) {
-      console.error('Failed to load films:', err);
-    } finally {
-      setLoading(false);
-    }
+      if (response.ok) { const data = await response.json(); setFilms(data); setFilteredFilms(data); }
+    } catch (err) { console.error('Failed to load films:', err); }
+    finally { setLoading(false); }
   };
 
-  // Extract unique genres from all films
   const genreOptions = useMemo(() => {
-    const allGenres = films.flatMap(film => film.genres || []);
-    const uniqueGenres = [...new Set(allGenres)].sort();
-    return ['All', ...uniqueGenres];
+    const all = films.flatMap(f => f.genres || []);
+    return ['All', ...[...new Set(all)].sort()];
   }, [films]);
 
-  // Filter films by genre AND status (independently)
   useEffect(() => {
     let result = films;
-    
-    if (selectedGenre !== 'All') {
-      result = result.filter((film) => 
-        film.genres && film.genres.includes(selectedGenre)
-      );
-    }
-    
-    if (selectedStatus !== 'All') {
-      result = result.filter((film) => film.status === selectedStatus);
-    }
-    
+    if (selectedGenre !== 'All') result = result.filter(f => f.genres?.includes(selectedGenre));
+    if (selectedStatus !== 'All') result = result.filter(f => f.status === selectedStatus);
     setFilteredFilms(result);
   }, [selectedGenre, selectedStatus, films]);
 
-  // Close dropdowns when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (genreDropdownRef.current && !genreDropdownRef.current.contains(event.target)) {
-        setIsGenreDropdownOpen(false);
-      }
-      if (statusDropdownRef.current && !statusDropdownRef.current.contains(event.target)) {
-        setIsStatusDropdownOpen(false);
-      }
+    const handle = (e) => {
+      if (genreDropdownRef.current && !genreDropdownRef.current.contains(e.target)) setIsGenreDropdownOpen(false);
+      if (statusDropdownRef.current && !statusDropdownRef.current.contains(e.target)) setIsStatusDropdownOpen(false);
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mousedown', handle);
+    return () => document.removeEventListener('mousedown', handle);
   }, []);
 
-  const handleGenreSelect = (genre) => {
-    setSelectedGenre(genre);
-    setIsGenreDropdownOpen(false);
-  };
-
-  const handleStatusSelect = (status) => {
-    setSelectedStatus(status);
-    setIsStatusDropdownOpen(false);
-  };
-
-  const handleFilmClick = (film) => {
-    // Navigate to film route - this will trigger the useEffect to open modal
-    const filmSlug = film.slug || film.id;
-    navigate(`/films/${filmSlug}`);
-  };
-
-  const closeModal = () => {
-    // Navigate back to /films - this will trigger the useEffect to close modal
-    navigate('/films');
-  };
-
-  // Generate Movie schema using settings
+  const handleFilmClick = (film) => navigate(`/films/${film.slug || film.id}`);
+  const closeModal = () => navigate('/films');
   const movieSchema = selectedFilm ? generateMovieSchema(selectedFilm, seoSettings) : null;
 
+  const FilterBtn = ({ label, isOpen, hasActive, onClick }) => (
+    <button
+      onClick={onClick}
+      data-testid={`${label.toLowerCase().replace(/\s+/g,'-')}-filter-btn`}
+      style={{ display:'flex', alignItems:'center', gap:'8px', padding:'9px 16px', background:'rgba(17,19,24,0.8)', border:'0.5px solid rgba(255,255,255,0.1)', borderRadius:'2px', color:'rgba(238,240,242,0.6)', cursor:'pointer', fontFamily:'var(--font-mono)', fontSize:'9px', letterSpacing:'0.14em', textTransform:'uppercase', transition:'all 0.2s' }}
+    >
+      {label}
+      <ChevronDown size={13} style={{ transition:'transform 0.2s', transform:isOpen?'rotate(180deg)':'none', opacity:0.5 }} />
+      {hasActive && <span style={{ marginLeft:'4px', width:'6px', height:'6px', borderRadius:'50%', background:T.ice, display:'inline-block' }} />}
+    </button>
+  );
+
+  const ChipGroup = ({ options, selected, onSelect, accentClass }) => (
+    <div style={{ display:'flex', flexWrap:'wrap', gap:'8px', padding:'16px' }}>
+      {options.map(opt => (
+        <button key={opt} onClick={() => onSelect(opt)}
+          data-testid={`${accentClass}-chip-${opt.toLowerCase().replace(/\s+/g,'-')}`}
+          style={{ fontFamily:'var(--font-mono)', fontSize:'9px', letterSpacing:'0.12em', textTransform:'uppercase', padding:'6px 14px', borderRadius:'2px', border:`0.5px solid ${selected===opt ? T.ice : 'rgba(255,255,255,0.08)'}`, background:selected===opt ? 'rgba(106,157,190,0.12)' : 'transparent', color:selected===opt ? T.ice : 'rgba(238,240,242,0.4)', cursor:'pointer', transition:'all 0.2s' }}>
+          {opt}
+        </button>
+      ))}
+    </div>
+  );
+
   return (
-    <div className="films-page pt-20">
-      {/* SEO Meta for film detail route */}
+    <div className="films-page" style={{ paddingTop:'64px', minHeight:'100vh' }}>
       {selectedFilm ? (
         <>
           <Helmet>
             <title>{selectedFilm.title} | {seoSettings.global_seo?.site_name || 'Shadow Wolves Productions'}</title>
-            {selectedFilm.logline && (
-              <meta name="description" content={selectedFilm.logline.substring(0, 160)} />
-            )}
-            <link rel="canonical" href={getCanonicalUrl(`/films/${selectedFilm.slug || selectedFilm.id}`, seoSettings)} />
+            {selectedFilm.logline && <meta name="description" content={selectedFilm.logline.substring(0,160)} />}
+            <link rel="canonical" href={getCanonicalUrl(`/films/${selectedFilm.slug||selectedFilm.id}`, seoSettings)} />
           </Helmet>
-          {/* Movie JSON-LD Schema for SEO */}
-          {movieSchema && (
-            <script
-              type="application/ld+json"
-              dangerouslySetInnerHTML={{ __html: JSON.stringify(movieSchema) }}
-            />
-          )}
+          {movieSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(movieSchema) }} />}
         </>
       ) : (
         <Helmet>
@@ -167,328 +135,134 @@ const Films = () => {
         </Helmet>
       )}
 
-      {/* Page Header */}
       <PageHeader page="films" title="Films" subtitle="Original screen stories — past, present, and in development." />
 
-      {/* Filter Section - Genre & Status Dropdowns */}
-      <section className="filter-section py-6 bg-smoke-gray border-b border-gray-800">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-wrap items-center gap-4">
-              {/* Genre Dropdown */}
-              <div className="relative" ref={genreDropdownRef}>
-                <button
-                  onClick={() => { setIsGenreDropdownOpen(!isGenreDropdownOpen); setIsStatusDropdownOpen(false); }}
-                  className="flex items-center gap-2 px-4 py-2 bg-black border border-gray-700 rounded-lg text-white hover:border-gray-500 transition-colors"
-                  data-testid="genre-filter-btn"
-                >
-                  <span className="font-mono text-sm uppercase tracking-widest">Browse by Genre</span>
-                  <ChevronDown size={16} className={`transition-transform ${isGenreDropdownOpen ? 'rotate-180' : ''}`} />
-                  {selectedGenre !== 'All' && (
-                    <span className="ml-2 px-2 py-0.5 bg-electric-blue text-white text-xs rounded-full">
-                      {selectedGenre}
-                    </span>
-                  )}
-                </button>
+      {/* ── FILTER BAR ── */}
+      <div style={{ padding:'20px 52px', background:'rgba(13,15,20,0.85)', backdropFilter:'blur(16px)', borderBottom:'0.5px solid rgba(255,255,255,0.07)', display:'flex', alignItems:'center', gap:'10px', flexWrap:'wrap', position:'sticky', top:'64px', zIndex:40 }}>
 
-                {/* Genre Desktop Popover */}
-                {isGenreDropdownOpen && (
-                  <>
-                    {/* Desktop view */}
-                    <div className="hidden md:block absolute top-full left-0 mt-2 bg-smoke-gray border border-gray-700 rounded-lg p-4 shadow-xl z-50 min-w-[300px]">
-                      <div className="flex flex-wrap gap-2">
-                        {genreOptions.map((genre) => (
-                          <button
-                            key={genre}
-                            onClick={() => handleGenreSelect(genre)}
-                            className={`px-3 py-1.5 rounded-full text-xs font-mono uppercase tracking-widest transition-all ${
-                              selectedGenre === genre
-                                ? 'bg-electric-blue text-white'
-                                : 'bg-black text-gray-400 hover:bg-gray-800 hover:text-white border border-gray-700'
-                            }`}
-                            data-testid={`genre-chip-${genre.toLowerCase().replace(/\s+/g, '-')}`}
-                          >
-                            {genre}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Genre Mobile Bottom Sheet */}
-                    <div className="md:hidden fixed inset-0 z-50">
-                      <div className="absolute inset-0 bg-black/80" onClick={() => setIsGenreDropdownOpen(false)} />
-                      <div className="absolute bottom-0 left-0 right-0 bg-smoke-gray border-t border-gray-700 rounded-t-2xl p-6 max-h-[70vh] overflow-y-auto">
-                        <div className="flex items-center justify-between mb-4">
-                          <h3 className="text-white font-bold">Select Genre</h3>
-                          <button onClick={() => setIsGenreDropdownOpen(false)} className="p-2 text-gray-400">
-                            <X size={20} />
-                          </button>
-                        </div>
-                        <div className="flex flex-wrap gap-2 mb-4">
-                          {genreOptions.map((genre) => (
-                            <button
-                              key={genre}
-                              onClick={() => handleGenreSelect(genre)}
-                              className={`px-4 py-2 rounded-full text-sm font-mono uppercase tracking-widest transition-all ${
-                                selectedGenre === genre
-                                  ? 'bg-electric-blue text-white'
-                                  : 'bg-black text-gray-400 border border-gray-700'
-                              }`}
-                            >
-                              {genre}
-                            </button>
-                          ))}
-                        </div>
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() => { setSelectedGenre('All'); setIsGenreDropdownOpen(false); }}
-                            className="flex-1 py-3 border border-gray-700 text-gray-400 rounded-lg font-mono text-sm uppercase"
-                          >
-                            Reset
-                          </button>
-                          <button
-                            onClick={() => setIsGenreDropdownOpen(false)}
-                            className="flex-1 py-3 bg-electric-blue text-white rounded-lg font-mono text-sm uppercase"
-                          >
-                            Apply
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </>
-                )}
-              </div>
-
-              {/* Status Dropdown */}
-              <div className="relative" ref={statusDropdownRef}>
-                <button
-                  onClick={() => { setIsStatusDropdownOpen(!isStatusDropdownOpen); setIsGenreDropdownOpen(false); }}
-                  className="flex items-center gap-2 px-4 py-2 bg-black border border-gray-700 rounded-lg text-white hover:border-gray-500 transition-colors"
-                  data-testid="status-filter-btn"
-                >
-                  <span className="font-mono text-sm uppercase tracking-widest">Browse by Stage</span>
-                  <ChevronDown size={16} className={`transition-transform ${isStatusDropdownOpen ? 'rotate-180' : ''}`} />
-                  {selectedStatus !== 'All' && (
-                    <span className="ml-2 px-2 py-0.5 bg-amber-500 text-black text-xs rounded-full">
-                      {selectedStatus}
-                    </span>
-                  )}
-                </button>
-
-                {/* Status Desktop Popover */}
-                {isStatusDropdownOpen && (
-                  <>
-                    {/* Desktop view */}
-                    <div className="hidden md:block absolute top-full left-0 mt-2 bg-smoke-gray border border-gray-700 rounded-lg p-4 shadow-xl z-50 min-w-[340px]">
-                      <div className="flex flex-wrap gap-2">
-                        {STATUS_OPTIONS.map((status) => (
-                          <button
-                            key={status}
-                            onClick={() => handleStatusSelect(status)}
-                            className={`px-3 py-1.5 rounded-full text-xs font-mono uppercase tracking-widest transition-all ${
-                              selectedStatus === status
-                                ? 'bg-amber-500 text-black'
-                                : 'bg-black text-gray-400 hover:bg-gray-800 hover:text-white border border-gray-700'
-                            }`}
-                            data-testid={`status-chip-${status.toLowerCase().replace(/\s+/g, '-')}`}
-                          >
-                            {status}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Status Mobile Bottom Sheet */}
-                    <div className="md:hidden fixed inset-0 z-50">
-                      <div className="absolute inset-0 bg-black/80" onClick={() => setIsStatusDropdownOpen(false)} />
-                      <div className="absolute bottom-0 left-0 right-0 bg-smoke-gray border-t border-gray-700 rounded-t-2xl p-6 max-h-[70vh] overflow-y-auto">
-                        <div className="flex items-center justify-between mb-4">
-                          <h3 className="text-white font-bold">Select Project Stage</h3>
-                          <button onClick={() => setIsStatusDropdownOpen(false)} className="p-2 text-gray-400">
-                            <X size={20} />
-                          </button>
-                        </div>
-                        <div className="flex flex-wrap gap-2 mb-4">
-                          {STATUS_OPTIONS.map((status) => (
-                            <button
-                              key={status}
-                              onClick={() => handleStatusSelect(status)}
-                              className={`px-4 py-2 rounded-full text-sm font-mono uppercase tracking-widest transition-all ${
-                                selectedStatus === status
-                                  ? 'bg-amber-500 text-black'
-                                  : 'bg-black text-gray-400 border border-gray-700'
-                              }`}
-                            >
-                              {status}
-                            </button>
-                          ))}
-                        </div>
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() => { setSelectedStatus('All'); setIsStatusDropdownOpen(false); }}
-                            className="flex-1 py-3 border border-gray-700 text-gray-400 rounded-lg font-mono text-sm uppercase"
-                          >
-                            Reset
-                          </button>
-                          <button
-                            onClick={() => setIsStatusDropdownOpen(false)}
-                            className="flex-1 py-3 bg-amber-500 text-black rounded-lg font-mono text-sm uppercase"
-                          >
-                            Apply
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </>
-                )}
-              </div>
-
-              {/* Clear All Filters */}
-              {(selectedGenre !== 'All' || selectedStatus !== 'All') && (
-                <button
-                  onClick={() => { setSelectedGenre('All'); setSelectedStatus('All'); }}
-                  className="flex items-center gap-1 px-3 py-2 text-gray-400 hover:text-white text-sm transition-colors"
-                  data-testid="clear-filters-btn"
-                >
-                  <X size={14} />
-                  Clear filters
-                </button>
-              )}
+        {/* Genre dropdown */}
+        <div ref={genreDropdownRef} style={{ position:'relative' }}>
+          <FilterBtn label="Browse by Genre" isOpen={isGenreDropdownOpen} hasActive={selectedGenre!=='All'}
+            onClick={() => { setIsGenreDropdownOpen(!isGenreDropdownOpen); setIsStatusDropdownOpen(false); }} />
+          {isGenreDropdownOpen && (
+            <div style={{ position:'absolute', top:'calc(100% + 8px)', left:0, ...T.glass, minWidth:'280px', zIndex:50 }}>
+              <ChipGroup options={genreOptions} selected={selectedGenre} onSelect={(g) => { setSelectedGenre(g); setIsGenreDropdownOpen(false); }} accentClass="genre" />
             </div>
-            <p className="text-gray-600 text-sm">Select a genre or stage to explore projects across our slate.</p>
-          </div>
+          )}
         </div>
-      </section>
 
-      {/* Films Grid */}
-      <section className="films-grid-section py-16 bg-black">
-        <div className="container mx-auto px-4">
-          {loading ? (
-            <div className="text-center py-16">
-              <RefreshCw className="w-8 h-8 text-electric-blue animate-spin mx-auto mb-4" />
-              <p className="text-gray-400">Loading films...</p>
+        {/* Status dropdown */}
+        <div ref={statusDropdownRef} style={{ position:'relative' }}>
+          <FilterBtn label="Browse by Stage" isOpen={isStatusDropdownOpen} hasActive={selectedStatus!=='All'}
+            onClick={() => { setIsStatusDropdownOpen(!isStatusDropdownOpen); setIsGenreDropdownOpen(false); }} />
+          {isStatusDropdownOpen && (
+            <div style={{ position:'absolute', top:'calc(100% + 8px)', left:0, ...T.glass, minWidth:'320px', zIndex:50 }}>
+              <ChipGroup options={STATUS_OPTIONS} selected={selectedStatus} onSelect={(s) => { setSelectedStatus(s); setIsStatusDropdownOpen(false); }} accentClass="status" />
             </div>
-          ) : (
-            <>
-              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                {filteredFilms.map((film) => (
+          )}
+        </div>
+
+        {/* Clear filters */}
+        {(selectedGenre!=='All'||selectedStatus!=='All') && (
+          <button onClick={() => { setSelectedGenre('All'); setSelectedStatus('All'); }} data-testid="clear-filters-btn"
+            style={{ display:'flex', alignItems:'center', gap:'6px', background:'none', border:'none', color:'rgba(238,240,242,0.35)', cursor:'pointer', fontFamily:'var(--font-mono)', fontSize:'9px', letterSpacing:'0.12em', textTransform:'uppercase', padding:'8px' }}>
+            <X size={12} /> Clear
+          </button>
+        )}
+
+        <span style={{ fontFamily:'var(--font-mono)', fontSize:'9px', color:'rgba(238,240,242,0.2)', letterSpacing:'0.1em', marginLeft:'auto' }}>
+          {filteredFilms.length} film{filteredFilms.length!==1?'s':''}
+        </span>
+      </div>
+
+      {/* ── FILMS GRID ── */}
+      <section style={{ padding:'48px 52px 100px' }}>
+        {loading ? (
+          <div style={{ textAlign:'center', padding:'80px 0' }}>
+            <RefreshCw style={{ width:'24px', height:'24px', color:T.ice, animation:'spin 1s linear infinite', margin:'0 auto 16px' }} />
+            <p style={{ fontFamily:'var(--font-mono)', fontSize:'10px', color:'rgba(238,240,242,0.3)', letterSpacing:'0.14em', textTransform:'uppercase' }}>Loading films…</p>
+          </div>
+        ) : (
+          <>
+            <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(160px, 1fr))', gap:'10px' }}>
+              {filteredFilms.map(film => {
+                const sc = statusColour(film.status);
+                return (
                   <button
                     key={film.id}
                     onClick={() => handleFilmClick(film)}
-                    className="film-card group relative overflow-hidden rounded-lg aspect-[2/3] cursor-pointer border-2 border-transparent hover:border-white/30 transition-all duration-300"
                     data-testid="film-card"
+                    style={{ position:'relative', overflow:'hidden', borderRadius:'3px', aspectRatio:'2/3', cursor:'pointer', border:'0.5px solid rgba(255,255,255,0.07)', background:'var(--swp-surface)', transition:'border-color 0.3s, transform 0.3s' }}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.16)'; e.currentTarget.style.transform='translateY(-3px)'; }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.07)'; e.currentTarget.style.transform='translateY(0)'; }}
                   >
-                    {/* Poster / Placeholder */}
-                    <div
-                      className="absolute inset-0"
-                      style={{ backgroundColor: film.poster_color || '#1a1a2e' }}
-                    >
+                    {/* Poster */}
+                    <div style={{ position:'absolute', inset:0, backgroundColor:film.poster_color||'#111318' }}>
                       {film.poster_url ? (
-                        <img
-                          src={`${process.env.REACT_APP_BACKEND_URL}${film.poster_url}`}
-                          alt={film.title}
-                          className="absolute inset-0 w-full h-full object-cover"
-                        />
+                        <img src={`${process.env.REACT_APP_BACKEND_URL}${film.poster_url}`} alt={film.title} style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover' }} />
                       ) : (
-                        /* Designed placeholder - intentional, not error */
-                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-black to-gray-900 p-4">
-                          {/* Wolf Mark */}
-                          <div className="w-12 h-12 mb-4 opacity-30">
-                            <svg viewBox="0 0 100 100" fill="currentColor" className="text-electric-blue">
-                              <path d="M50 10L20 40L10 90L50 70L90 90L80 40L50 10Z" stroke="currentColor" strokeWidth="2" fill="none"/>
-                              <circle cx="35" cy="45" r="4" fill="currentColor"/>
-                              <circle cx="65" cy="45" r="4" fill="currentColor"/>
-                            </svg>
-                          </div>
-                          {/* Film Title */}
-                          <h4 className="text-white text-sm font-bold text-center mb-3 px-2 font-cinzel">
-                            {film.title}
-                          </h4>
-                          {/* Status Badge */}
-                          <span className="px-3 py-1 bg-electric-blue/20 border border-electric-blue/40 text-electric-blue text-[9px] font-mono uppercase tracking-widest rounded-full">
-                            {film.status === 'Development' || film.status === 'Script' ? 'In Development' : 'Poster In Production'}
+                        <div style={{ position:'absolute', inset:0, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', padding:'16px', background:'linear-gradient(135deg, rgba(17,19,24,1) 0%, rgba(28,32,40,1) 100%)' }}>
+                          <h4 style={{ fontFamily:'var(--font-display)', fontSize:'16px', color:'rgba(238,240,242,0.55)', textAlign:'center', letterSpacing:'0.04em', marginBottom:'10px' }}>{film.title}</h4>
+                          <span style={{ ...sc, ...T.mono, padding:'3px 9px', borderRadius:'1px', border:`0.5px solid ${sc.border}` }}>
+                            {film.status==='Development'?'In Dev':'Poster TBC'}
                           </span>
                         </div>
                       )}
                     </div>
-                    
-                    {/* Default State - Simple gradient with title */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-300 group-hover:opacity-0">
-                      {film.featured && (
-                        <div className="absolute top-2 right-2 px-2 py-1 bg-electric-blue text-white text-[10px] font-mono uppercase tracking-widest rounded">
-                          Featured
-                        </div>
-                      )}
-                      <div className="absolute bottom-0 left-0 right-0 p-3">
-                        <h3 className="text-white font-bold text-sm line-clamp-2">{film.title}</h3>
+
+                    {/* Featured badge */}
+                    {film.featured && (
+                      <div style={{ position:'absolute', top:'10px', right:'10px', zIndex:3, ...T.mono, background:'rgba(106,157,190,0.12)', color:T.ice, border:`0.5px solid rgba(106,157,190,0.3)`, padding:'3px 8px', borderRadius:'1px' }}>
+                        Featured
+                      </div>
+                    )}
+
+                    {/* Default overlay — title */}
+                    <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(8,9,11,0.9) 0%, rgba(8,9,11,0.15) 50%, transparent 100%)', zIndex:1 }}>
+                      <div style={{ position:'absolute', bottom:0, left:0, right:0, padding:'14px 12px' }}>
+                        <h3 style={{ fontFamily:'var(--font-display)', fontSize:'16px', color:'var(--swp-white)', letterSpacing:'0.03em', lineHeight:1.1 }}>{film.title}</h3>
                       </div>
                     </div>
 
-                    {/* Hover State - Cinematic Lower-Third */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-3">
-                      {/* Status Pill - Top Left */}
+                    {/* Hover overlay */}
+                    <div className="film-hover-overlay" style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(8,9,11,0.97) 0%, rgba(8,9,11,0.75) 45%, rgba(8,9,11,0.2) 100%)', zIndex:2, opacity:0, transition:'opacity 0.3s', display:'flex', flexDirection:'column', justifyContent:'space-between', padding:'12px' }}
+                      onMouseEnter={e=>e.currentTarget.style.opacity='1'} onMouseLeave={e=>e.currentTarget.style.opacity='0'}>
                       <div>
-                        <span className="inline-block px-2 py-1 text-[10px] font-mono uppercase tracking-wider bg-white/10 text-white/80 rounded">
-                          {film.status}
-                        </span>
+                        <span style={{ ...T.mono, ...sc, padding:'3px 9px', borderRadius:'1px', border:`0.5px solid ${sc.border}`, display:'inline-block' }}>{film.status}</span>
                       </div>
-                      
-                      {/* Lower Third Content */}
                       <div>
-                        <h3 className="text-white font-bold text-sm mb-1">{film.title}</h3>
-                        {film.tagline && (
-                          <p className="text-gray-300 text-xs line-clamp-1 mb-2">{film.tagline}</p>
-                        )}
-                        <div className="flex items-end justify-between">
-                          {/* Genre Tags */}
-                          <div className="flex flex-wrap gap-1">
-                            {film.genres?.slice(0, 3).map((genre, idx) => (
-                              <span
-                                key={idx}
-                                className="px-2 py-0.5 text-[10px] rounded bg-white/10 text-white/70"
-                              >
-                                {genre}
-                              </span>
+                        <h3 style={{ fontFamily:'var(--font-display)', fontSize:'17px', color:'var(--swp-white)', letterSpacing:'0.03em', marginBottom:'6px' }}>{film.title}</h3>
+                        {film.tagline && <p style={{ fontFamily:'var(--font-body)', fontSize:'11px', color:'rgba(238,240,242,0.45)', lineHeight:1.5, marginBottom:'8px' }}>{film.tagline}</p>}
+                        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:'8px' }}>
+                          <div style={{ display:'flex', flexWrap:'wrap', gap:'4px' }}>
+                            {film.genres?.slice(0,2).map((g,i) => (
+                              <span key={i} style={{ ...T.mono, fontSize:'8px', padding:'2px 7px', background:'rgba(255,255,255,0.06)', borderRadius:'1px', color:'rgba(238,240,242,0.5)' }}>{g}</span>
                             ))}
                           </div>
-                          {/* View Cue */}
-                          <span className="text-white/60 text-xs shrink-0 ml-2">
-                            View →
-                          </span>
+                          <span style={{ ...T.mono, color:'rgba(106,157,190,0.7)' }}>View →</span>
                         </div>
                       </div>
                     </div>
                   </button>
-                ))}
-              </div>
+                );
+              })}
+            </div>
 
-              {filteredFilms.length === 0 && (
-                <div className="text-center py-16">
-                  <p className="text-gray-400 text-xl">
-                    {selectedGenre !== 'All' && selectedStatus !== 'All' 
-                      ? `No ${selectedStatus} films found in ${selectedGenre}.`
-                      : selectedGenre !== 'All'
-                        ? `No films found in ${selectedGenre}.`
-                        : selectedStatus !== 'All'
-                          ? `No ${selectedStatus} films found.`
-                          : 'No films found.'}
-                  </p>
-                  {(selectedGenre !== 'All' || selectedStatus !== 'All') && (
-                    <button 
-                      onClick={() => { setSelectedGenre('All'); setSelectedStatus('All'); }}
-                      className="mt-4 text-electric-blue hover:underline"
-                    >
-                      Clear filters
-                    </button>
-                  )}
-                </div>
-              )}
-            </>
-          )}
-        </div>
+            {filteredFilms.length === 0 && (
+              <div style={{ textAlign:'center', padding:'80px 0' }}>
+                <p style={{ fontFamily:'var(--font-mono)', fontSize:'11px', color:'rgba(238,240,242,0.3)', letterSpacing:'0.14em', textTransform:'uppercase', marginBottom:'16px' }}>
+                  {selectedGenre!=='All'&&selectedStatus!=='All' ? `No ${selectedStatus} films in ${selectedGenre}` : selectedGenre!=='All' ? `No films in ${selectedGenre}` : `No ${selectedStatus} films`}
+                </p>
+                <button onClick={() => { setSelectedGenre('All'); setSelectedStatus('All'); }}
+                  style={{ fontFamily:'var(--font-mono)', fontSize:'9px', letterSpacing:'0.14em', textTransform:'uppercase', color:T.ice, background:'none', border:'none', cursor:'pointer' }}>
+                  Clear filters
+                </button>
+              </div>
+            )}
+          </>
+        )}
       </section>
 
-      {/* Film Modal - opens via URL route */}
       <FilmModal film={selectedFilm} isOpen={!!selectedFilm} onClose={closeModal} />
     </div>
   );

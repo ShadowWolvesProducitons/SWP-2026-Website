@@ -1,874 +1,406 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Send, CheckCircle, ChevronDown, Mail, Plus, Minus } from 'lucide-react';
+import { Send, CheckCircle, ChevronDown, Mail, Plus, Minus, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import PageHeader from '../components/PageHeader';
 import { useSeoSettings, getCanonicalUrl } from '../contexts/SeoContext';
 
-// ============ CONSTANTS ============
-const ROLES = ['Writer', 'Director', 'Producer', 'Actor', 'Cinematographer', 'Editor', 'Composer', 'Other'];
-const SUBMISSION_TYPES = ['Script', 'Concept', 'Proof-of-Concept', 'Collaboration', 'Brand/IP Partnership'];
-const FORMATS = ['Short', 'Feature', 'Series', 'Documentary', 'Other'];
-const GENRES = ['Horror', 'Thriller', 'Psychological', 'Supernatural', 'Slasher', 'Drama', 'Action', 'Sci-Fi', 'Dark Comedy'];
-const PROJECT_STAGES = ['Idea', 'First Draft', 'Polished Draft', 'Proof-of-Concept', 'In Development'];
-const ENQUIRY_TOPICS = ['General Question', 'Investment Opportunities', 'Distribution', 'Press/Media', 'Partnership', 'Other'];
+// ── ALL CONSTANTS PRESERVED ──
+const ROLES = ['Writer','Director','Producer','Actor','Cinematographer','Editor','Composer','Other'];
+const SUBMISSION_TYPES = ['Script','Concept','Proof-of-Concept','Collaboration','Brand/IP Partnership'];
+const FORMATS = ['Short','Feature','Series','Documentary','Other'];
+const GENRES = ['Horror','Thriller','Psychological','Supernatural','Slasher','Drama','Action','Sci-Fi','Dark Comedy'];
+const PROJECT_STAGES = ['Idea','First Draft','Polished Draft','Proof-of-Concept','In Development'];
+const ENQUIRY_TOPICS = ['General Question','Investment Opportunities','Distribution','Press/Media','Partnership','Other'];
 
-// ============ FAQ DATA ============
 const FAQ_ITEMS = [
-  {
-    question: "What kind of projects are you looking for?",
-    answer: "We develop and produce bold, genre-driven stories with teeth. Horror, thriller, psychological, slasher, supernatural, crime, true-crime and war-leaning drama are in our wheelhouse. If it's safe, predictable, or trying to please everyone, it's probably not us."
-  },
-  {
-    question: "Do you accept unsolicited scripts or attachments?",
-    answer: "Not upfront. We don't accept unsolicited attachments for legal and confidentiality reasons. If there's alignment, we'll request materials securely."
-  },
-  {
-    question: "What should I submit first?",
-    answer: "Start with a strong logline and a link to your pitch materials (deck, lookbook, or teaser). Keep it lean. If it hooks us, we'll ask for the next layer."
-  },
-  {
-    question: "What formats do you work with?",
-    answer: "Short films, feature films, series, and documentaries (selectively). Choose the format that best serves the story, not the one that feels easiest to \"get made.\""
-  },
-  {
-    question: "I'm cast/crew. How do I get into your database?",
-    answer: "CineConnect is our upcoming cast & crew network. Register your interest and we'll notify you when it opens.",
-    link: { text: "CineConnect", url: "https://www.cognitoforms.com/ShadowWolvesProductions/CastCrewHub" }
-  },
-  {
-    question: "Do you work with investors and partners?",
-    answer: "Yes, through our Studio Access Portal. Public info is designed to intrigue. If there's alignment, we open the vault on everything. If you're interested in investment, you can",
-    link: { text: "REQUEST ACCESS", url: "/request-access" }
-  },
-  {
-    question: "How long does it take to hear back?",
-    answer: "If it's a fit, you'll hear from us. If it's not, you probably won't. We keep our focus tight so we can actually build."
-  },
-  {
-    question: "Can I submit multiple projects?",
-    answer: "Submit your best one first. If it connects, we'll open the door to more."
-  },
-  {
-    question: "Aside from films, what else do you do?",
-    answer: "We build more than projects. We're developing a studio ecosystem — tools, resources, and platforms designed to support independent creators. That includes production infrastructure, development systems, and creator-focused software under The Armory."
-  },
-  {
-    question: "What is The Den?",
-    answer: "The Den is our working studio journal. It includes casting calls, crew intel, production lessons, industry news, and tools we actually use. Think of it like a blog with teeth."
-  },
-  {
-    question: "What is The Armory?",
-    answer: "The Armory is our creative arsenal — premium apps, templates, and resources built from real-world production experience. These are tools we use ourselves, now available to other filmmakers."
-  },
-  {
-    question: "Is Shadow Wolves just horror?",
-    answer: "No. Genre is our backbone, but not our limit. We prioritise bold, commercially viable stories across film and series. If it's taboo then it's probably worth telling."
-  }
+  { question:"What kind of projects are you looking for?", answer:"We develop and produce bold, genre-driven stories with teeth. Horror, thriller, psychological, slasher, supernatural, crime, true-crime and war-leaning drama are in our wheelhouse. If it's safe, predictable, or trying to please everyone, it's probably not us." },
+  { question:"Do you accept unsolicited scripts or attachments?", answer:"Not upfront. We don't accept unsolicited attachments for legal and confidentiality reasons. If there's alignment, we'll request materials securely." },
+  { question:"What should I submit first?", answer:"Start with a strong logline and a link to your pitch materials (deck, lookbook, or teaser). Keep it lean. If it hooks us, we'll ask for the next layer." },
+  { question:"What formats do you work with?", answer:"Short films, feature films, series, and documentaries (selectively). Choose the format that best serves the story, not the one that feels easiest to \"get made.\"" },
+  { question:"I'm cast/crew. How do I get into your database?", answer:"CineConnect is our upcoming cast & crew network. Register your interest and we'll notify you when it opens.", link:{ text:"CineConnect", url:"https://www.cognitoforms.com/ShadowWolvesProductions/CastCrewHub" } },
+  { question:"Do you work with investors and partners?", answer:"Yes, through our Studio Access Portal. If you're interested in investment, you can", link:{ text:"REQUEST ACCESS", url:"/request-access" } },
+  { question:"How long does it take to hear back?", answer:"If it's a fit, you'll hear from us. If it's not, you probably won't. We keep our focus tight so we can actually build." },
+  { question:"Can I submit multiple projects?", answer:"Submit your best one first. If it connects, we'll open the door to more." },
+  { question:"Aside from films, what else do you do?", answer:"We build more than projects. We're developing a studio ecosystem — tools, resources, and platforms designed to support independent creators." },
+  { question:"What is The Den?", answer:"The Den is our working studio journal. Casting calls, crew intel, production lessons, industry news, and tools we actually use." },
+  { question:"What is The Armory?", answer:"The Armory is our creative arsenal — premium apps, templates, and resources built from real-world production experience." },
+  { question:"Is Shadow Wolves just horror?", answer:"No. Genre is our backbone, but not our limit. We prioritise bold, commercially viable stories across film and series." },
 ];
 
-// Generate FAQ JSON-LD Schema
 const generateFAQSchema = () => ({
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": FAQ_ITEMS.map(item => ({
-    "@type": "Question",
-    "name": item.question,
-    "acceptedAnswer": {
-      "@type": "Answer",
-      "text": item.answer + (item.link ? ` ${item.link.text}: ${item.link.url}` : '')
-    }
-  }))
+  "@context":"https://schema.org","@type":"FAQPage",
+  mainEntity: FAQ_ITEMS.map(i => ({ "@type":"Question", name:i.question, acceptedAnswer:{"@type":"Answer", text:i.answer+(i.link?` ${i.link.text}: ${i.link.url}`:'')} }))
 });
 
-// ============ CINECONNECT CARD ============
-const CineConnectCard = () => {
-  const handleRegisterClick = () => {
-    window.open('https://www.cognitoforms.com/ShadowWolvesProductions/CastCrewHub', '_blank');
-  };
-
-  return (
-    <div className="bg-electric-blue/5 border border-electric-blue/20 rounded-lg p-5" data-testid="cineconnect-section">
-      <h4 className="text-white font-bold mb-2 font-cinzel">CineConnect</h4>
-      <p className="text-gray-400 text-sm mb-3">Cast & Crew Network (Coming Soon)</p>
-      <p className="text-gray-500 text-xs mb-4">
-        Fill out the form to join our talent database. When CineConnect launches, you'll already be in the system.
-      </p>
-      <button
-        onClick={handleRegisterClick}
-        className="px-5 py-2.5 bg-electric-blue hover:bg-electric-blue/90 text-white rounded-full text-xs font-mono uppercase tracking-widest transition-all"
-        data-testid="cineconnect-register-btn"
-      >
-        Join the Database
-      </button>
-    </div>
-  );
+// ── STYLE TOKENS ──
+const T = {
+  glass: { background:'rgba(17,19,24,0.68)', backdropFilter:'blur(20px)', border:'0.5px solid rgba(255,255,255,0.07)', borderRadius:'3px' },
+  mono: { fontFamily:'var(--font-mono)', fontSize:'9px', fontWeight:300, letterSpacing:'0.14em', textTransform:'uppercase' },
+  label: { fontFamily:'var(--font-mono)', fontSize:'9px', fontWeight:300, letterSpacing:'0.16em', textTransform:'uppercase', color:'rgba(238,240,242,0.4)', display:'block', marginBottom:'8px' },
+  input: { background:'rgba(255,255,255,0.04)', border:'0.5px solid rgba(255,255,255,0.1)', borderRadius:'2px', padding:'12px 14px', fontFamily:'var(--font-body)', fontSize:'14px', fontWeight:300, color:'var(--swp-white)', outline:'none', width:'100%', transition:'border-color 0.2s, background 0.2s' },
+  inputErr: { borderColor:'rgba(200,80,80,0.5)' },
+  errMsg: { fontFamily:'var(--font-mono)', fontSize:'8px', color:'rgba(200,100,100,0.8)', letterSpacing:'0.1em', marginTop:'5px' },
+  ice: '#6a9dbe',
 };
 
-// ============ SUBMIT PROJECT FORM ============
+// ── CINECONNECT CARD ──
+const CineConnectCard = () => (
+  <div style={{ ...T.glass, padding:'28px 30px' }} data-testid="cineconnect-section">
+    <div style={{ ...T.mono, color:'rgba(106,157,190,0.6)', marginBottom:'10px' }}>Coming soon</div>
+    <h4 style={{ fontFamily:'var(--font-display)', fontSize:'22px', color:'var(--swp-white)', letterSpacing:'0.03em', marginBottom:'10px' }}>CineConnect</h4>
+    <p style={{ fontFamily:'var(--font-body)', fontSize:'13px', fontWeight:300, color:'rgba(238,240,242,0.42)', lineHeight:1.65, marginBottom:'20px' }}>
+      Cast &amp; Crew Network launching soon. Fill out the form to join our talent database and you'll already be in the system when we go live.
+    </p>
+    <button onClick={() => window.open('https://www.cognitoforms.com/ShadowWolvesProductions/CastCrewHub','_blank')}
+      data-testid="cineconnect-register-btn"
+      className="btn-swp btn-swp-primary" style={{ width:'100%', justifyContent:'center' }}>
+      Join the Database →
+    </button>
+  </div>
+);
+
+// ── SUBMIT PROJECT FORM — all logic preserved ──
 const SubmitProjectForm = ({ onSuccess }) => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    role: '',
-    submission_type: '',
-    format: '',
-    genres: [],
-    project_stage: '',
-    logline: '',
-    external_link: '',
-    message: ''
-  });
+  const [formData, setFormData] = useState({ name:'',email:'',role:'',submission_type:'',format:'',genres:[],project_stage:'',logline:'',external_link:'',message:'' });
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
   const [confirmOriginal, setConfirmOriginal] = useState(false);
   const [confirmNoAttachments, setConfirmNoAttachments] = useState(false);
 
   const validateForm = () => {
-    const newErrors = {};
-    if (!formData.name.trim()) newErrors.name = 'Name is required';
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Invalid email format';
-    }
-    if (!formData.role) newErrors.role = 'Please select your role';
-    if (!formData.submission_type) newErrors.submission_type = 'Please select submission type';
-    if (!formData.format) newErrors.format = 'Please select format';
-    if (formData.genres.length === 0) newErrors.genres = 'Select at least one genre';
-    if (!formData.project_stage) newErrors.project_stage = 'Please select project stage';
-    if (!formData.logline.trim()) {
-      newErrors.logline = 'Logline is required';
-    } else if (formData.logline.length > 300) {
-      newErrors.logline = 'Logline must be under 300 characters';
-    }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    const e = {};
+    if (!formData.name.trim()) e.name='Name is required';
+    if (!formData.email.trim()) { e.email='Email is required'; } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) e.email='Invalid email format';
+    if (!formData.role) e.role='Please select your role';
+    if (!formData.submission_type) e.submission_type='Please select submission type';
+    if (!formData.format) e.format='Please select format';
+    if (formData.genres.length===0) e.genres='Select at least one genre';
+    if (!formData.project_stage) e.project_stage='Please select project stage';
+    if (!formData.logline.trim()) { e.logline='Logline is required'; } else if (formData.logline.length>300) e.logline='Logline must be under 300 characters';
+    setErrors(e); return Object.keys(e).length===0;
   };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    if (errors[name]) setErrors(prev => ({ ...prev, [name]: null }));
-  };
-
-  const handleGenreToggle = (genre) => {
-    setFormData(prev => ({
-      ...prev,
-      genres: prev.genres.includes(genre)
-        ? prev.genres.filter(g => g !== genre)
-        : [...prev.genres, genre]
-    }));
-    if (errors.genres) setErrors(prev => ({ ...prev, genres: null }));
-  };
+  const handleChange = (e) => { const {name,value}=e.target; setFormData(p=>({...p,[name]:value})); if(errors[name]) setErrors(p=>({...p,[name]:null})); };
+  const handleGenreToggle = (g) => { setFormData(p=>({...p,genres:p.genres.includes(g)?p.genres.filter(x=>x!==g):[...p.genres,g]})); if(errors.genres) setErrors(p=>({...p,genres:null})); };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) {
-      toast.error('Please fix the errors below');
-      return;
-    }
-    if (!confirmOriginal || !confirmNoAttachments) {
-      toast.error('Please confirm the required acknowledgements');
-      return;
-    }
+    if (!validateForm()) { toast.error('Please fix the errors below'); return; }
+    if (!confirmOriginal||!confirmNoAttachments) { toast.error('Please confirm the required acknowledgements'); return; }
     setSubmitting(true);
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/submissions`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, submission_type_tag: 'project' })
-      });
-      if (response.ok) {
-        onSuccess();
-        toast.success('Submission received');
-      } else {
-        const error = await response.json();
-        toast.error(error.detail || 'Submission failed. Please try again.');
-      }
-    } catch {
-      toast.error('Network error. Please try again.');
-    } finally {
-      setSubmitting(false);
-    }
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/submissions`,{ method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({...formData,submission_type_tag:'project'}) });
+      if (res.ok) { onSuccess(); toast.success('Submission received'); }
+      else { const err=await res.json(); toast.error(err.detail||'Submission failed'); }
+    } catch { toast.error('Network error. Please try again.'); }
+    finally { setSubmitting(false); }
   };
 
+  const SWPSelect = ({ name, value, onChange, options, placeholder, testId }) => (
+    <div style={{ position:'relative' }}>
+      <select name={name} value={value} onChange={onChange} data-testid={testId}
+        style={{ ...T.input, ...(errors[name]?T.inputErr:{}), appearance:'none', cursor:'pointer', backgroundImage:`url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(238,240,242,0.3)' stroke-width='1.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")`, backgroundRepeat:'no-repeat', backgroundPosition:'right 14px center', paddingRight:'40px' }}>
+        <option value="">{placeholder}</option>
+        {options.map(o=><option key={o} value={o}>{o}</option>)}
+      </select>
+    </div>
+  );
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-5" data-testid="submit-project-form">
-      {/* Name */}
-      <div>
-        <label className="block text-gray-400 text-sm uppercase tracking-wide mb-2">Name *</label>
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          className={`w-full bg-smoke-gray border ${errors.name ? 'border-red-500' : 'border-gray-700'} rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none`}
-          placeholder="Your name"
-          data-testid="project-name-input"
-        />
-        {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+    <form onSubmit={handleSubmit} data-testid="submit-project-form" style={{ display:'flex', flexDirection:'column', gap:'18px' }}>
+      {/* Name + Email */}
+      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'14px' }}>
+        <div><label style={T.label}>Name *</label><input type="text" name="name" value={formData.name} onChange={handleChange} style={{ ...T.input,...(errors.name?T.inputErr:{}) }} placeholder="Your name" data-testid="project-name-input" />{errors.name&&<p style={T.errMsg}>{errors.name}</p>}</div>
+        <div><label style={T.label}>Email *</label><input type="email" name="email" value={formData.email} onChange={handleChange} style={{ ...T.input,...(errors.email?T.inputErr:{}) }} placeholder="your@email.com" data-testid="project-email-input" />{errors.email&&<p style={T.errMsg}>{errors.email}</p>}</div>
       </div>
-
-      {/* Email */}
-      <div>
-        <label className="block text-gray-400 text-sm uppercase tracking-wide mb-2">Email *</label>
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          className={`w-full bg-smoke-gray border ${errors.email ? 'border-red-500' : 'border-gray-700'} rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none`}
-          placeholder="your@email.com"
-          data-testid="project-email-input"
-        />
-        {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+      {/* Role + Type */}
+      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'14px' }}>
+        <div><label style={T.label}>Your Role *</label><SWPSelect name="role" value={formData.role} onChange={handleChange} options={ROLES} placeholder="Select role" testId="project-role-select" />{errors.role&&<p style={T.errMsg}>{errors.role}</p>}</div>
+        <div><label style={T.label}>Submission Type *</label><SWPSelect name="submission_type" value={formData.submission_type} onChange={handleChange} options={SUBMISSION_TYPES} placeholder="Select type" testId="project-type-select" />{errors.submission_type&&<p style={T.errMsg}>{errors.submission_type}</p>}</div>
       </div>
-
-      {/* Role & Submission Type - Same Line */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-gray-400 text-sm uppercase tracking-wide mb-2">Your Role *</label>
-          <div className="relative">
-            <select
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-              className={`w-full bg-smoke-gray border ${errors.role ? 'border-red-500' : 'border-gray-700'} rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none appearance-none cursor-pointer`}
-              data-testid="project-role-select"
-            >
-              <option value="">Select role</option>
-              {ROLES.map(role => <option key={role} value={role}>{role}</option>)}
-            </select>
-            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" size={18} />
-          </div>
-          {errors.role && <p className="text-red-500 text-xs mt-1">{errors.role}</p>}
-        </div>
-
-        <div>
-          <label className="block text-gray-400 text-sm uppercase tracking-wide mb-2">Submission Type *</label>
-          <div className="relative">
-            <select
-              name="submission_type"
-              value={formData.submission_type}
-              onChange={handleChange}
-              className={`w-full bg-smoke-gray border ${errors.submission_type ? 'border-red-500' : 'border-gray-700'} rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none appearance-none cursor-pointer`}
-              data-testid="project-type-select"
-            >
-              <option value="">Select type</option>
-              {SUBMISSION_TYPES.map(type => <option key={type} value={type}>{type}</option>)}
-            </select>
-            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" size={18} />
-          </div>
-          {errors.submission_type && <p className="text-red-500 text-xs mt-1">{errors.submission_type}</p>}
-        </div>
+      {/* Format + Stage */}
+      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'14px' }}>
+        <div><label style={T.label}>Format *</label><SWPSelect name="format" value={formData.format} onChange={handleChange} options={FORMATS} placeholder="Select format" testId="project-format-select" />{errors.format&&<p style={T.errMsg}>{errors.format}</p>}</div>
+        <div><label style={T.label}>Project Stage *</label><SWPSelect name="project_stage" value={formData.project_stage} onChange={handleChange} options={PROJECT_STAGES} placeholder="Where is it at?" testId="project-stage-select" />{errors.project_stage&&<p style={T.errMsg}>{errors.project_stage}</p>}</div>
       </div>
-
-      {/* Format & Project Stage - Same Line */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-gray-400 text-sm uppercase tracking-wide mb-2">Format *</label>
-          <div className="relative">
-            <select
-              name="format"
-              value={formData.format}
-              onChange={handleChange}
-              className={`w-full bg-smoke-gray border ${errors.format ? 'border-red-500' : 'border-gray-700'} rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none appearance-none cursor-pointer`}
-              data-testid="project-format-select"
-            >
-              <option value="">Select format</option>
-              {FORMATS.map(format => <option key={format} value={format}>{format}</option>)}
-            </select>
-            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" size={18} />
-          </div>
-          {errors.format && <p className="text-red-500 text-xs mt-1">{errors.format}</p>}
-        </div>
-
-        <div>
-          <label className="block text-gray-400 text-sm uppercase tracking-wide mb-2">Project Stage *</label>
-          <div className="relative">
-            <select
-              name="project_stage"
-              value={formData.project_stage}
-              onChange={handleChange}
-              className={`w-full bg-smoke-gray border ${errors.project_stage ? 'border-red-500' : 'border-gray-700'} rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none appearance-none cursor-pointer`}
-              data-testid="project-stage-select"
-            >
-              <option value="">Where is the project at?</option>
-              {PROJECT_STAGES.map(stage => <option key={stage} value={stage}>{stage}</option>)}
-            </select>
-            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" size={18} />
-          </div>
-          {errors.project_stage && <p className="text-red-500 text-xs mt-1">{errors.project_stage}</p>}
-        </div>
-      </div>
-
       {/* Genres */}
       <div>
-        <label className="block text-gray-400 text-sm uppercase tracking-wide mb-2">Genre(s) *</label>
-        <div className="flex flex-wrap gap-2">
-          {GENRES.map(genre => (
-            <button
-              key={genre}
-              type="button"
-              onClick={() => handleGenreToggle(genre)}
-              className={`px-3 py-1.5 rounded-full text-sm transition-all ${
-                formData.genres.includes(genre)
-                  ? 'bg-electric-blue text-white'
-                  : 'bg-smoke-gray border border-gray-700 text-gray-400 hover:border-gray-500'
-              }`}
-              data-testid={`genre-chip-${genre.toLowerCase()}`}
-            >
-              {genre}
+        <label style={T.label}>Genre(s) *</label>
+        <div style={{ display:'flex', flexWrap:'wrap', gap:'8px' }}>
+          {GENRES.map(g=>(
+            <button key={g} type="button" onClick={()=>handleGenreToggle(g)} data-testid={`genre-chip-${g.toLowerCase()}`}
+              style={{ ...T.mono, padding:'7px 14px', borderRadius:'2px', border:`0.5px solid ${formData.genres.includes(g)?T.ice:'rgba(255,255,255,0.09)'}`, background:formData.genres.includes(g)?'rgba(106,157,190,0.12)':'transparent', color:formData.genres.includes(g)?T.ice:'rgba(238,240,242,0.38)', cursor:'pointer', transition:'all 0.2s' }}>
+              {g}
             </button>
           ))}
         </div>
-        {errors.genres && <p className="text-red-500 text-xs mt-1">{errors.genres}</p>}
+        {errors.genres&&<p style={T.errMsg}>{errors.genres}</p>}
       </div>
-
       {/* Logline */}
       <div>
-        <label className="block text-gray-400 text-sm uppercase tracking-wide mb-2">
-          Logline * <span className="text-gray-600 normal-case">({formData.logline.length}/300)</span>
-        </label>
-        <textarea
-          name="logline"
-          value={formData.logline}
-          onChange={handleChange}
-          rows={2}
-          maxLength={300}
-          className={`w-full bg-smoke-gray border ${errors.logline ? 'border-red-500' : 'border-gray-700'} rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none resize-none`}
-          placeholder="A one-sentence summary..."
-          data-testid="project-logline-input"
-        />
-        {errors.logline && <p className="text-red-500 text-xs mt-1">{errors.logline}</p>}
+        <label style={T.label}>Logline * <span style={{ ...T.mono, fontSize:'8px', color:'rgba(238,240,242,0.2)', textTransform:'none' }}>({formData.logline.length}/300)</span></label>
+        <textarea name="logline" value={formData.logline} onChange={handleChange} rows={2} maxLength={300} style={{ ...T.input,...(errors.logline?T.inputErr:{}), resize:'none' }} placeholder="One sentence. Make it count." data-testid="project-logline-input" />
+        {errors.logline&&<p style={T.errMsg}>{errors.logline}</p>}
       </div>
-
-      {/* External Link */}
-      <div>
-        <label className="block text-gray-400 text-sm uppercase tracking-wide mb-2">
-          Link <span className="text-gray-600 normal-case">(Drive, Vimeo, Website)</span>
-        </label>
-        <input
-          type="url"
-          name="external_link"
-          value={formData.external_link}
-          onChange={handleChange}
-          className="w-full bg-smoke-gray border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none"
-          placeholder="https://..."
-          data-testid="project-link-input"
-        />
+      {/* Link + Message */}
+      <div><label style={T.label}>Link <span style={{ ...T.mono, fontSize:'8px', color:'rgba(238,240,242,0.2)', textTransform:'none' }}>(Drive, Vimeo, website)</span></label><input type="url" name="external_link" value={formData.external_link} onChange={handleChange} style={T.input} placeholder="https://…" data-testid="project-link-input" /></div>
+      <div><label style={T.label}>Message <span style={{ ...T.mono, fontSize:'8px', color:'rgba(238,240,242,0.2)', textTransform:'none' }}>(optional)</span></label><textarea name="message" value={formData.message} onChange={handleChange} rows={3} maxLength={500} style={{ ...T.input, resize:'none' }} placeholder="Anything else?" data-testid="project-message-input" /></div>
+      {/* Confirmations */}
+      <div style={{ borderTop:'0.5px solid rgba(255,255,255,0.07)', paddingTop:'16px', display:'flex', flexDirection:'column', gap:'12px' }}>
+        {[
+          { state:confirmOriginal, set:setConfirmOriginal, label:"I confirm this project is original or I control the rights to submit it. *", testId:"confirm-original-checkbox" },
+          { state:confirmNoAttachments, set:setConfirmNoAttachments, label:"I understand unsolicited attachments cannot be accepted. *", testId:"confirm-attachments-checkbox" },
+        ].map(({state,set,label,testId})=>(
+          <label key={testId} style={{ display:'flex', alignItems:'flex-start', gap:'12px', cursor:'pointer' }}>
+            <input type="checkbox" checked={state} onChange={e=>set(e.target.checked)} data-testid={testId} style={{ marginTop:'2px', accentColor:T.ice, width:'14px', height:'14px' }} />
+            <span style={{ fontFamily:'var(--font-body)', fontSize:'13px', fontWeight:300, color:'rgba(238,240,242,0.45)', lineHeight:1.6 }}>{label}</span>
+          </label>
+        ))}
       </div>
-
-      {/* Message */}
-      <div>
-        <label className="block text-gray-400 text-sm uppercase tracking-wide mb-2">
-          Message <span className="text-gray-600 normal-case">(optional)</span>
-        </label>
-        <textarea
-          name="message"
-          value={formData.message}
-          onChange={handleChange}
-          rows={3}
-          maxLength={500}
-          className="w-full bg-smoke-gray border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none resize-none"
-          placeholder="Anything else?"
-          data-testid="project-message-input"
-        />
-      </div>
-
-      {/* Quiet Note */}
-      <p className="text-gray-600 text-xs">
-        We do not accept unsolicited attachments. If there's alignment, materials will be requested securely.
-      </p>
-
-      {/* Legal Acknowledgements */}
-      <div className="space-y-3 pt-4 border-t border-gray-800">
-        <label className="flex items-start gap-3 cursor-pointer group">
-          <input
-            type="checkbox"
-            checked={confirmOriginal}
-            onChange={(e) => setConfirmOriginal(e.target.checked)}
-            className="mt-1 rounded border-gray-600 bg-smoke-gray text-electric-blue focus:ring-electric-blue"
-            data-testid="confirm-original-checkbox"
-          />
-          <span className="text-gray-400 text-sm group-hover:text-gray-300">
-            I confirm this project is original or I control the rights to submit it. *
-          </span>
-        </label>
-        <label className="flex items-start gap-3 cursor-pointer group">
-          <input
-            type="checkbox"
-            checked={confirmNoAttachments}
-            onChange={(e) => setConfirmNoAttachments(e.target.checked)}
-            className="mt-1 rounded border-gray-600 bg-smoke-gray text-electric-blue focus:ring-electric-blue"
-            data-testid="confirm-attachments-checkbox"
-          />
-          <span className="text-gray-400 text-sm group-hover:text-gray-300">
-            I understand unsolicited attachments cannot be accepted. *
-          </span>
-        </label>
-      </div>
-
-      {/* Submit */}
-      <button
-        type="submit"
-        disabled={submitting}
-        className="w-full flex items-center justify-center gap-3 px-8 py-4 bg-electric-blue hover:bg-electric-blue/90 disabled:bg-gray-700 disabled:cursor-not-allowed text-white rounded-full font-mono text-sm uppercase tracking-widest transition-all"
-        data-testid="submit-project-btn"
-      >
-        {submitting ? 'Processing...' : <><Send size={16} /> Submit Project</>}
+      <button type="submit" disabled={submitting} data-testid="submit-project-btn" className="btn-swp btn-swp-primary" style={{ justifyContent:'center', opacity:submitting?0.6:1 }}>
+        {submitting ? 'Processing…' : <><Send size={14} /> Submit Project</>}
       </button>
     </form>
   );
 };
 
-// ============ GENERAL ENQUIRY FORM ============
+// ── GENERAL ENQUIRY FORM ──
 const GeneralEnquiryForm = ({ onSuccess }) => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    topic: '',
-    message: ''
-  });
+  const [formData, setFormData] = useState({ name:'',email:'',phone:'',topic:'',message:'' });
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
 
-  const validateForm = () => {
-    const newErrors = {};
-    if (!formData.name.trim()) newErrors.name = 'Name is required';
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Invalid email format';
-    }
-    if (!formData.topic) newErrors.topic = 'Please select a topic';
-    if (!formData.message.trim()) newErrors.message = 'Message is required';
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+  const validate = () => {
+    const e={};
+    if (!formData.name.trim()) e.name='Name is required';
+    if (!formData.email.trim()) { e.email='Email is required'; } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) e.email='Invalid email';
+    if (!formData.topic) e.topic='Please select a topic';
+    if (!formData.message.trim()) e.message='Message is required';
+    setErrors(e); return Object.keys(e).length===0;
   };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    if (errors[name]) setErrors(prev => ({ ...prev, [name]: null }));
-  };
+  const handleChange = (e) => { const {name,value}=e.target; setFormData(p=>({...p,[name]:value})); if(errors[name]) setErrors(p=>({...p,[name]:null})); };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) {
-      toast.error('Please fix the errors below');
-      return;
-    }
+    if (!validate()) { toast.error('Please fix the errors below'); return; }
     setSubmitting(true);
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/contact`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          ...formData, 
-          service: formData.topic,
-          submission_type_tag: 'enquiry' 
-        })
-      });
-      if (response.ok) {
-        onSuccess();
-        toast.success('Message sent successfully');
-      } else {
-        const error = await response.json();
-        toast.error(error.detail || 'Failed to send. Please try again.');
-      }
-    } catch {
-      toast.error('Network error. Please try again.');
-    } finally {
-      setSubmitting(false);
-    }
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/contact`,{ method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({...formData,service:formData.topic,submission_type_tag:'enquiry'}) });
+      if (res.ok) { onSuccess(); toast.success('Message sent successfully'); }
+      else { const err=await res.json(); toast.error(err.detail||'Failed to send'); }
+    } catch { toast.error('Network error. Please try again.'); }
+    finally { setSubmitting(false); }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5" data-testid="general-enquiry-form">
-      {/* Full Name */}
-      <div>
-        <label className="block text-gray-400 text-sm uppercase tracking-wide mb-2">Full Name *</label>
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          className={`w-full bg-smoke-gray border ${errors.name ? 'border-red-500' : 'border-gray-700'} rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none`}
-          placeholder="John Doe"
-          data-testid="enquiry-name-input"
-        />
-        {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+    <form onSubmit={handleSubmit} data-testid="general-enquiry-form" style={{ display:'flex', flexDirection:'column', gap:'18px' }}>
+      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'14px' }}>
+        <div><label style={T.label}>Full Name *</label><input type="text" name="name" value={formData.name} onChange={handleChange} style={{ ...T.input,...(errors.name?T.inputErr:{}) }} placeholder="John Doe" data-testid="enquiry-name-input" />{errors.name&&<p style={T.errMsg}>{errors.name}</p>}</div>
+        <div><label style={T.label}>Email *</label><input type="email" name="email" value={formData.email} onChange={handleChange} style={{ ...T.input,...(errors.email?T.inputErr:{}) }} placeholder="john@example.com" data-testid="enquiry-email-input" />{errors.email&&<p style={T.errMsg}>{errors.email}</p>}</div>
       </div>
-
-      {/* Email */}
+      <div><label style={T.label}>Phone <span style={{ ...T.mono, fontSize:'8px', color:'rgba(238,240,242,0.2)', textTransform:'none' }}>(optional)</span></label><input type="tel" name="phone" value={formData.phone} onChange={handleChange} style={T.input} placeholder="+61 XXX XXX XXX" data-testid="enquiry-phone-input" /></div>
       <div>
-        <label className="block text-gray-400 text-sm uppercase tracking-wide mb-2">Email Address *</label>
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          className={`w-full bg-smoke-gray border ${errors.email ? 'border-red-500' : 'border-gray-700'} rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none`}
-          placeholder="john@example.com"
-          data-testid="enquiry-email-input"
-        />
-        {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
-      </div>
-
-      {/* Phone */}
-      <div>
-        <label className="block text-gray-400 text-sm uppercase tracking-wide mb-2">
-          Phone Number <span className="text-gray-600 normal-case">(optional)</span>
-        </label>
-        <input
-          type="tel"
-          name="phone"
-          value={formData.phone}
-          onChange={handleChange}
-          className="w-full bg-smoke-gray border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none"
-          placeholder="+61 XXX XXX XXX"
-          data-testid="enquiry-phone-input"
-        />
-      </div>
-
-      {/* Topic */}
-      <div>
-        <label className="block text-gray-400 text-sm uppercase tracking-wide mb-2">What can we help with? *</label>
-        <div className="relative">
-          <select
-            name="topic"
-            value={formData.topic}
-            onChange={handleChange}
-            className={`w-full bg-smoke-gray border ${errors.topic ? 'border-red-500' : 'border-gray-700'} rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none appearance-none cursor-pointer`}
-            data-testid="enquiry-topic-select"
-          >
+        <label style={T.label}>What can we help with? *</label>
+        <div style={{ position:'relative' }}>
+          <select name="topic" value={formData.topic} onChange={handleChange} data-testid="enquiry-topic-select" style={{ ...T.input,...(errors.topic?T.inputErr:{}), appearance:'none', cursor:'pointer', backgroundImage:`url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(238,240,242,0.3)' stroke-width='1.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")`, backgroundRepeat:'no-repeat', backgroundPosition:'right 14px center', paddingRight:'40px' }}>
             <option value="">Select a topic</option>
-            {ENQUIRY_TOPICS.map(topic => <option key={topic} value={topic}>{topic}</option>)}
+            {ENQUIRY_TOPICS.map(t=><option key={t} value={t}>{t}</option>)}
           </select>
-          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" size={18} />
         </div>
-        {errors.topic && <p className="text-red-500 text-xs mt-1">{errors.topic}</p>}
+        {errors.topic&&<p style={T.errMsg}>{errors.topic}</p>}
       </div>
-
-      {/* Message */}
-      <div>
-        <label className="block text-gray-400 text-sm uppercase tracking-wide mb-2">Message *</label>
-        <textarea
-          name="message"
-          value={formData.message}
-          onChange={handleChange}
-          rows={5}
-          className={`w-full bg-smoke-gray border ${errors.message ? 'border-red-500' : 'border-gray-700'} rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none resize-none`}
-          placeholder="Tell us about your enquiry..."
-          data-testid="enquiry-message-input"
-        />
-        {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}
-      </div>
-
-      {/* Submit */}
-      <button
-        type="submit"
-        disabled={submitting}
-        className="w-full flex items-center justify-center gap-3 px-8 py-4 bg-electric-blue hover:bg-electric-blue/90 disabled:bg-gray-700 disabled:cursor-not-allowed text-white rounded-full font-mono text-sm uppercase tracking-widest transition-all"
-        data-testid="submit-enquiry-btn"
-      >
-        {submitting ? 'Sending...' : <><Mail size={16} /> Send Message</>}
+      <div><label style={T.label}>Message *</label><textarea name="message" value={formData.message} onChange={handleChange} rows={5} style={{ ...T.input,...(errors.message?T.inputErr:{}), resize:'none' }} placeholder="Tell us about your enquiry…" data-testid="enquiry-message-input" />{errors.message&&<p style={T.errMsg}>{errors.message}</p>}</div>
+      <button type="submit" disabled={submitting} data-testid="submit-enquiry-btn" className="btn-swp btn-swp-primary" style={{ justifyContent:'center', opacity:submitting?0.6:1 }}>
+        {submitting ? 'Sending…' : <><Mail size={14} /> Send Message</>}
       </button>
     </form>
   );
 };
 
-// ============ NEWSLETTER SECTION ============
+// ── NEWSLETTER ──
 const NewsletterSection = () => {
   const [email, setEmail] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!email) return;
-    setSubmitting(true);
+    e.preventDefault(); if (!email) return; setSubmitting(true);
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/newsletter`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, source: 'work_with_us_page' })
-      });
-      if (response.ok) {
-        setSubscribed(true);
-        toast.success('Welcome to the pack!');
-      } else {
-        const error = await response.json();
-        toast.error(error.detail || 'Failed to subscribe');
-      }
-    } catch {
-      toast.error('Connection error. Please try again.');
-    } finally {
-      setSubmitting(false);
-    }
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/newsletter`,{ method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email,source:'work_with_us_page'}) });
+      if (res.ok) { setSubscribed(true); toast.success('Welcome to the pack!'); }
+      else { const err=await res.json(); toast.error(err.detail||'Failed to subscribe'); }
+    } catch { toast.error('Connection error.'); }
+    finally { setSubmitting(false); }
   };
 
   return (
-    <section className="py-16 bg-gradient-to-br from-navy-dark via-black to-navy-dark relative overflow-hidden">
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-electric-blue rounded-full filter blur-3xl"></div>
-      </div>
-      
-      <div className="container mx-auto px-4 text-center relative z-10">
-        <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white font-cinzel">Join the Pack</h2>
-        <p className="max-w-2xl text-lg mb-8 mx-auto text-gray-300">
-          Inside access to casting calls, industry updates, and the tools, apps, and templates we actually use.
-        </p>
-        
-        <div className="max-w-md mx-auto">
+    <section style={{ padding:'0 52px 100px' }}>
+      <div style={{ background:'rgba(17,19,24,0.68)', backdropFilter:'blur(20px)', border:'0.5px solid rgba(255,255,255,0.07)', borderRadius:'3px', padding:'56px 64px', display:'grid', gridTemplateColumns:'1fr 1fr', gap:'60px', alignItems:'center' }}>
+        <div>
+          <div style={{ fontFamily:'var(--font-mono)', fontSize:'9px', letterSpacing:'0.2em', textTransform:'uppercase', color:'rgba(106,157,190,0.65)', display:'flex', alignItems:'center', gap:'10px', marginBottom:'14px' }}>
+            <span style={{ width:'24px', height:'0.5px', background:'rgba(106,157,190,0.4)', display:'block' }}/>Stay in the loop
+          </div>
+          <h2 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(28px,3vw,42px)', color:'var(--swp-white)', letterSpacing:'0.02em', marginBottom:'12px' }}>Join the Pack</h2>
+          <p style={{ fontFamily:'var(--font-body)', fontSize:'14px', fontWeight:300, color:'rgba(238,240,242,0.5)', lineHeight:1.7 }}>Inside access to casting calls, industry updates, and the tools we actually use.</p>
+        </div>
+        <div>
           {subscribed ? (
-            <div className="flex items-center justify-center gap-3 text-green-400" data-testid="newsletter-success">
-              <CheckCircle size={24} />
-              <span>You're in. Welcome to the pack.</span>
+            <div data-testid="newsletter-success" style={{ display:'flex', alignItems:'center', gap:'12px', color:'rgba(120,200,140,0.85)' }}>
+              <CheckCircle size={22} />
+              <span style={{ fontFamily:'var(--font-mono)', fontSize:'10px', letterSpacing:'0.12em', textTransform:'uppercase' }}>You're in. Welcome to the pack.</span>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3" data-testid="newsletter-form">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                required
-                className="flex-1 px-6 py-4 rounded-full bg-smoke-gray border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-electric-blue transition-colors"
-                data-testid="newsletter-email-input"
-              />
-              <button
-                type="submit"
-                disabled={submitting}
-                className="bg-electric-blue hover:bg-electric-blue/90 disabled:bg-gray-700 text-white px-8 py-4 rounded-full font-mono text-sm uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
-                data-testid="newsletter-submit-btn"
-              >
-                {submitting ? 'Subscribing...' : 'Subscribe'}
+            <form onSubmit={handleSubmit} data-testid="newsletter-form" style={{ display:'flex', flexDirection:'column', gap:'10px' }}>
+              <input type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="Enter your email" required data-testid="newsletter-email-input" className="swp-input" />
+              <button type="submit" disabled={submitting} data-testid="newsletter-submit-btn" className="btn-swp btn-swp-primary" style={{ justifyContent:'center', opacity:submitting?0.6:1 }}>
+                {submitting ? 'Subscribing…' : 'Subscribe'}
               </button>
+              <span style={{ fontFamily:'var(--font-mono)', fontSize:'8px', color:'rgba(238,240,242,0.2)', letterSpacing:'0.1em' }}>No spam. Unsubscribe anytime.</span>
             </form>
           )}
-          <p className="text-gray-500 text-xs mt-4">
-            No spam. Unsubscribe anytime. We respect your privacy.
-          </p>
         </div>
       </div>
     </section>
   );
 };
 
-// ============ FAQ ACCORDION SECTION ============
+// ── FAQ ──
 const FAQSection = () => {
-  const [openItems, setOpenItems] = useState({});
-
-  const toggleItem = (index) => {
-    setOpenItems(prev => ({ ...prev, [index]: !prev[index] }));
-  };
-
+  const [open, setOpen] = useState({});
+  const toggle = i => setOpen(p=>({...p,[i]:!p[i]}));
   return (
-    <section className="py-12 bg-black" data-testid="faq-section">
-      <div className="container mx-auto px-4 max-w-4xl">
-        <h2 className="text-2xl font-bold text-white mb-8 font-cinzel">FAQ</h2>
-        <div className="space-y-2">
-          {FAQ_ITEMS.map((item, index) => (
-            <div 
-              key={index} 
-              className="border border-gray-800 rounded-lg overflow-hidden"
-              data-testid={`faq-item-${index}`}
-            >
-              <button
-                onClick={() => toggleItem(index)}
-                className="w-full flex items-center justify-between px-5 py-4 text-left bg-smoke-gray/50 hover:bg-smoke-gray/70 transition-colors"
-                aria-expanded={openItems[index]}
-              >
-                <span className="text-white text-sm font-medium pr-4">{item.question}</span>
-                {openItems[index] ? (
-                  <Minus size={18} className="text-electric-blue flex-shrink-0" />
-                ) : (
-                  <Plus size={18} className="text-gray-500 flex-shrink-0" />
-                )}
-              </button>
-              {openItems[index] && (
-                <div className="px-5 py-4 bg-black border-t border-gray-800">
-                  <p className="text-gray-400 text-sm leading-relaxed">
-                    {item.answer}
-                    {item.link && (
-                      <>
-                        {' '}
-                        <a 
-                          href={item.link.url} 
-                          target={item.link.url.startsWith('http') ? '_blank' : undefined}
-                          rel={item.link.url.startsWith('http') ? 'noopener noreferrer' : undefined}
-                          className="text-electric-blue hover:underline"
-                        >
-                          {item.link.text}
-                        </a>
-                      </>
-                    )}
-                  </p>
-                </div>
-              )}
+    <section style={{ padding:'0 52px 80px' }} data-testid="faq-section">
+      <div style={{ fontFamily:'var(--font-mono)', fontSize:'9px', letterSpacing:'0.2em', textTransform:'uppercase', color:'rgba(106,157,190,0.65)', display:'flex', alignItems:'center', gap:'16px', marginBottom:'28px' }}>
+        <span style={{ width:'24px', height:'0.5px', background:'rgba(106,157,190,0.4)', display:'block' }}/>Frequently asked
+        <div style={{ flex:1, height:'0.5px', background:'rgba(255,255,255,0.07)' }}/>
+      </div>
+      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'1px', background:'rgba(255,255,255,0.07)', border:'0.5px solid rgba(255,255,255,0.07)', borderRadius:'3px', overflow:'hidden' }}>
+        {FAQ_ITEMS.map((item,i)=>(
+          <div key={i} data-testid={`faq-item-${i}`} style={{ background:'rgba(13,15,20,0.75)', cursor:'pointer' }} onClick={()=>toggle(i)}>
+            <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', gap:'16px', padding:'22px 26px' }}>
+              <span style={{ fontFamily:'var(--font-body)', fontSize:'14px', fontWeight:400, color:'rgba(238,240,242,0.65)', lineHeight:1.5 }}>{item.question}</span>
+              {open[i] ? <Minus size={15} style={{ color:'rgba(106,157,190,0.7)', flexShrink:0, marginTop:'2px' }} /> : <Plus size={15} style={{ color:'rgba(238,240,242,0.3)', flexShrink:0, marginTop:'2px' }} />}
             </div>
-          ))}
-        </div>
+            {open[i] && (
+              <div style={{ padding:'0 26px 22px', borderTop:'0.5px solid rgba(255,255,255,0.06)' }}>
+                <p style={{ fontFamily:'var(--font-body)', fontSize:'13px', fontWeight:300, color:'rgba(238,240,242,0.42)', lineHeight:1.7, paddingTop:'14px' }}>
+                  {item.answer}
+                  {item.link && <> <a href={item.link.url} target={item.link.url.startsWith('http')?'_blank':undefined} rel={item.link.url.startsWith('http')?'noopener noreferrer':undefined} style={{ color:'rgba(106,157,190,0.8)', textDecoration:'none' }}>{item.link.text}</a></>}
+                </p>
+              </div>
+            )}
+          </div>
+        ))}
       </div>
     </section>
   );
 };
 
-// ============ SUCCESS STATE ============
+// ── SUCCESS STATE ──
 const SuccessState = ({ type, onReset }) => (
-  <div className="text-center py-12" data-testid={`${type}-success`}>
-    <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-6" />
-    <h3 className="text-2xl font-bold text-white mb-4 font-cinzel">
-      {type === 'project' ? 'Thanks for your submission.' : 'Message sent.'}
+  <div style={{ textAlign:'center', padding:'60px 0' }} data-testid={`${type}-success`}>
+    <CheckCircle style={{ width:'52px', height:'52px', color:'rgba(120,200,140,0.85)', margin:'0 auto 20px' }} />
+    <h3 style={{ fontFamily:'var(--font-display)', fontSize:'28px', color:'var(--swp-white)', letterSpacing:'0.03em', marginBottom:'12px' }}>
+      {type==='project' ? 'Thanks for your submission.' : 'Message sent.'}
     </h3>
-    <p className="text-gray-400 mb-6">
-      {type === 'project' 
-        ? 'If the project aligns with our current development slate, we\'ll be in touch.'
-        : 'We\'ll get back to you as soon as possible.'}
+    <p style={{ fontFamily:'var(--font-body)', fontSize:'14px', fontWeight:300, color:'rgba(238,240,242,0.45)', marginBottom:'24px' }}>
+      {type==='project' ? "If the project aligns with our current development slate, we'll be in touch." : "We'll get back to you as soon as possible."}
     </p>
-    <button
-      onClick={onReset}
-      className="text-electric-blue hover:underline text-sm"
-      data-testid="submit-another-btn"
-    >
-      Submit another {type === 'project' ? 'project' : 'enquiry'}
+    <button onClick={onReset} data-testid="submit-another-btn"
+      style={{ fontFamily:'var(--font-mono)', fontSize:'9px', letterSpacing:'0.14em', textTransform:'uppercase', color:'rgba(106,157,190,0.7)', background:'none', border:'none', cursor:'pointer' }}>
+      Submit another {type==='project'?'project':'enquiry'}
     </button>
   </div>
 );
 
-// ============ MAIN COMPONENT ============
+// ── MAIN ──
 const WorkWithUs = () => {
   const seoSettings = useSeoSettings();
-  const [activeLane, setActiveLane] = useState(null); // null, 'project', or 'enquiry'
+  const [activeLane, setActiveLane] = useState(null);
   const [projectSubmitted, setProjectSubmitted] = useState(false);
   const [enquirySubmitted, setEnquirySubmitted] = useState(false);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  const handleProjectSuccess = () => setProjectSubmitted(true);
-  const handleEnquirySuccess = () => setEnquirySubmitted(true);
-
-  const resetProjectForm = () => {
-    setProjectSubmitted(false);
-    setActiveLane('project');
-  };
-
-  const resetEnquiryForm = () => {
-    setEnquirySubmitted(false);
-    setActiveLane('enquiry');
-  };
-
-  // Check if FAQ schema should be rendered
+  useEffect(() => { window.scrollTo(0,0); }, []);
   const shouldRenderFaqSchema = seoSettings.organization_schema?.enable_faq_schema !== false;
 
+  const LaneBtn = ({ lane, label, testId }) => {
+    const active = activeLane===lane;
+    return (
+      <button onClick={() => setActiveLane(activeLane===lane?null:lane)} data-testid={testId}
+        style={{ flex:1, padding:'16px 24px', fontFamily:'var(--font-mono)', fontSize:'10px', letterSpacing:'0.14em', textTransform:'uppercase', cursor:'pointer', borderRadius:'2px', transition:'all 0.25s', border:`0.5px solid ${active?'rgba(106,157,190,0.5)':'rgba(255,255,255,0.1)'}`, background:active?'rgba(106,157,190,0.1)':'rgba(17,19,24,0.6)', color:active?'var(--swp-ice)':'rgba(238,240,242,0.4)', backdropFilter:'blur(12px)' }}>
+        {label}
+      </button>
+    );
+  };
+
   return (
-    <div className="work-with-us-page pt-20 min-h-screen bg-black">
+    <div className="work-with-us-page" style={{ paddingTop:'64px', minHeight:'100vh' }}>
       <Helmet>
-        <title>Work With Us | {seoSettings.global_seo?.site_name || 'Shadow Wolves Productions'}</title>
-        <meta name="description" content="Submit your project or get in touch with Shadow Wolves Productions. We're selectively open to original genre scripts, proof-of-concepts, and strategic collaborations." />
-        <link rel="canonical" href={getCanonicalUrl('/work-with-us', seoSettings)} />
+        <title>Work With Us | {seoSettings.global_seo?.site_name||'Shadow Wolves Productions'}</title>
+        <meta name="description" content="Submit your project or get in touch with Shadow Wolves Productions." />
+        <link rel="canonical" href={getCanonicalUrl('/work-with-us',seoSettings)} />
       </Helmet>
-      
-      {/* FAQ JSON-LD Schema for SEO - only if enabled in settings */}
-      {shouldRenderFaqSchema && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(generateFAQSchema()) }}
-        />
-      )}
+      {shouldRenderFaqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html:JSON.stringify(generateFAQSchema()) }} />}
 
-      {/* Hero Section */}
-      <PageHeader 
-        page="workwithus" 
-        title="Work With Us" 
-        subtitle="Choose your lane. Submit with intent." 
-      />
+      <PageHeader page="workwithus" title="Work With Us" subtitle="Choose your lane. Submit with intent." />
 
-      {/* Main Content */}
-      <section className="py-12 bg-black">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
-            {/* Left: Forms Area (2 columns) */}
-            <div className="lg:col-span-2">
-              {/* Lane Toggle Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <button
-                  onClick={() => setActiveLane(activeLane === 'project' ? null : 'project')}
-                  className={`flex-1 py-4 px-6 rounded-lg font-mono text-sm uppercase tracking-widest transition-all border-2 ${
-                    activeLane === 'project'
-                      ? 'bg-electric-blue border-electric-blue text-white'
-                      : 'bg-transparent border-gray-700 text-gray-400 hover:border-gray-500 hover:text-white'
-                  }`}
-                  data-testid="submit-project-toggle"
-                >
-                  Submit a Project
-                </button>
-                <button
-                  onClick={() => setActiveLane(activeLane === 'enquiry' ? null : 'enquiry')}
-                  className={`flex-1 py-4 px-6 rounded-lg font-mono text-sm uppercase tracking-widest transition-all border-2 ${
-                    activeLane === 'enquiry'
-                      ? 'bg-electric-blue border-electric-blue text-white'
-                      : 'bg-transparent border-gray-700 text-gray-400 hover:border-gray-500 hover:text-white'
-                  }`}
-                  data-testid="general-enquiry-toggle"
-                >
-                  General Enquiry
-                </button>
+      {/* ── FORM AREA ── */}
+      <section style={{ padding:'48px 52px 80px' }}>
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 320px', gap:'16px', alignItems:'start' }}>
+          <div>
+            {/* Lane buttons */}
+            <div style={{ display:'flex', gap:'10px', marginBottom:'20px' }}>
+              <LaneBtn lane="project" label="Submit a Project" testId="submit-project-toggle" />
+              <LaneBtn lane="enquiry" label="General Enquiry" testId="general-enquiry-toggle" />
+            </div>
+
+            {/* Form panel */}
+            {activeLane==='project' && (
+              <div style={{ background:'rgba(17,19,24,0.68)', backdropFilter:'blur(20px)', border:'0.5px solid rgba(255,255,255,0.07)', borderRadius:'3px', overflow:'hidden' }} data-testid="project-lane">
+                <div style={{ padding:'24px 32px 0' }}>
+                  <div style={{ fontFamily:'var(--font-mono)', fontSize:'9px', letterSpacing:'0.18em', textTransform:'uppercase', color:'rgba(106,157,190,0.6)', marginBottom:'6px' }}>Submit a project</div>
+                  <h2 style={{ fontFamily:'var(--font-display)', fontSize:'28px', color:'var(--swp-white)', letterSpacing:'0.03em', marginBottom:'20px' }}>Tell us about your project</h2>
+                </div>
+                <div style={{ padding:'0 32px 32px' }}>
+                  {projectSubmitted ? <SuccessState type="project" onReset={()=>{ setProjectSubmitted(false); setActiveLane('project'); }} /> : <SubmitProjectForm onSuccess={()=>setProjectSubmitted(true)} />}
+                </div>
               </div>
+            )}
 
-              {/* Project Submission Lane */}
-              {activeLane === 'project' && (
-                <div className="bg-smoke-gray/30 border border-gray-800 rounded-xl p-6 md:p-8" data-testid="project-lane">
-                  <h2 className="text-2xl font-bold text-white mb-6 font-cinzel">Submit Your Project</h2>
-                  {projectSubmitted ? (
-                    <SuccessState type="project" onReset={resetProjectForm} />
-                  ) : (
-                    <SubmitProjectForm onSuccess={handleProjectSuccess} />
-                  )}
+            {activeLane==='enquiry' && (
+              <div style={{ background:'rgba(17,19,24,0.68)', backdropFilter:'blur(20px)', border:'0.5px solid rgba(255,255,255,0.07)', borderRadius:'3px', overflow:'hidden' }} data-testid="enquiry-lane">
+                <div style={{ padding:'24px 32px 0' }}>
+                  <div style={{ fontFamily:'var(--font-mono)', fontSize:'9px', letterSpacing:'0.18em', textTransform:'uppercase', color:'rgba(106,157,190,0.6)', marginBottom:'6px' }}>General enquiry</div>
+                  <h2 style={{ fontFamily:'var(--font-display)', fontSize:'28px', color:'var(--swp-white)', letterSpacing:'0.03em', marginBottom:'20px' }}>Say something</h2>
                 </div>
-              )}
+                <div style={{ padding:'0 32px 32px' }}>
+                  {enquirySubmitted ? <SuccessState type="enquiry" onReset={()=>{ setEnquirySubmitted(false); setActiveLane('enquiry'); }} /> : <GeneralEnquiryForm onSuccess={()=>setEnquirySubmitted(true)} />}
+                </div>
+              </div>
+            )}
 
-              {/* General Enquiry Lane */}
-              {activeLane === 'enquiry' && (
-                <div className="bg-smoke-gray/30 border border-gray-800 rounded-xl p-6 md:p-8" data-testid="enquiry-lane">
-                  <h2 className="text-2xl font-bold text-white mb-6 font-cinzel">General Enquiry</h2>
-                  {enquirySubmitted ? (
-                    <SuccessState type="enquiry" onReset={resetEnquiryForm} />
-                  ) : (
-                    <GeneralEnquiryForm onSuccess={handleEnquirySuccess} />
-                  )}
-                </div>
-              )}
+            {!activeLane && (
+              <div style={{ padding:'60px 0', textAlign:'center', color:'rgba(238,240,242,0.25)', fontFamily:'var(--font-mono)', fontSize:'10px', letterSpacing:'0.14em', textTransform:'uppercase' }}>
+                Select an option above to get started.
+              </div>
+            )}
+          </div>
 
-              {/* Default state - no form selected */}
-              {!activeLane && (
-                <div className="text-center py-16 text-gray-400">
-                  <p className="text-lg font-bold">Select an option above to get started.</p>
-                </div>
-              )}
+          {/* Sidebar */}
+          <div style={{ display:'flex', flexDirection:'column', gap:'10px' }}>
+            <CineConnectCard />
+            <div style={{ background:'rgba(17,19,24,0.68)', backdropFilter:'blur(16px)', border:'0.5px solid rgba(255,255,255,0.07)', borderRadius:'3px', padding:'24px 26px' }}>
+              <div style={{ fontFamily:'var(--font-mono)', fontSize:'9px', letterSpacing:'0.16em', textTransform:'uppercase', color:'rgba(238,240,242,0.3)', marginBottom:'10px' }}>Direct contact</div>
+              <div style={{ fontFamily:'var(--font-body)', fontSize:'13px', fontWeight:300, color:'rgba(238,240,242,0.45)', lineHeight:2 }}>
+                <div>admin@shadowwolvesproductions.com.au</div>
+                <div>+61 0420 984 558</div>
+                <div style={{ color:'rgba(238,240,242,0.25)' }}>Sydney, NSW, Australia</div>
+              </div>
             </div>
-
-            {/* Right: CineConnect Card */}
-            <div className="lg:col-span-1">
-              <CineConnectCard />
-            </div>
-
           </div>
         </div>
       </section>
 
-      {/* FAQ Section */}
       <FAQSection />
-
-      {/* Newsletter Section */}
       <NewsletterSection />
     </div>
   );

@@ -298,17 +298,17 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md overflow-y-auto">
-      <div className="relative bg-smoke-gray border border-gray-800 rounded-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto my-8">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-swp-black/90 backdrop-blur-md overflow-y-auto">
+      <div className="relative bg-swp-surface border border-swp-border rounded-swp max-w-3xl w-full max-h-[90vh] overflow-y-auto my-8">
         {/* Header */}
-        <div className="sticky top-0 bg-smoke-gray border-b border-gray-800 px-6 py-4 z-10">
+        <div className="sticky top-0 bg-swp-surface border-b border-swp-border px-6 py-4 z-10">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-bold text-white">
               {film ? 'Edit Film' : 'Add New Film'}
             </h2>
             <button
               onClick={onClose}
-              className="p-2 text-gray-400 hover:text-white transition-colors"
+              className="p-2 text-swp-white-ghost hover:text-swp-white transition-colors"
             >
               <X size={20} />
             </button>
@@ -320,10 +320,10 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-4 py-2 rounded-full text-sm font-mono uppercase tracking-widest transition-all whitespace-nowrap ${
+                className={`px-4 py-2 rounded-sm text-sm font-mono uppercase tracking-widest transition-all whitespace-nowrap ${
                   activeTab === tab.id
-                    ? 'bg-electric-blue text-white'
-                    : 'bg-black text-gray-400 hover:text-white border border-gray-700'
+                    ? 'bg-swp-ice text-white'
+                    : 'bg-swp-black text-swp-white-ghost hover:text-swp-white border border-swp-border'
                 }`}
                 data-testid={`tab-${tab.id}`}
               >
@@ -341,7 +341,7 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
             <>
               {/* Title */}
               <div>
-                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+                <label className="block text-swp-white-ghost text-sm font-mono uppercase tracking-widest mb-2">
                   Title *
                 </label>
                 <input
@@ -349,7 +349,7 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                   name="title"
                   value={formData.title}
                   onChange={handleChange}
-                  className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
+                  className="w-full bg-swp-black border border-swp-border rounded-swp px-4 py-3 text-white focus:border-swp-ice focus:outline-none transition-colors"
                   placeholder="Enter film title"
                   required
                   data-testid="film-title-input"
@@ -358,7 +358,7 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
 
               {/* Slug */}
               <div>
-                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+                <label className="block text-swp-white-ghost text-sm font-mono uppercase tracking-widest mb-2">
                   URL Slug
                 </label>
                 <div className="flex gap-2">
@@ -367,34 +367,34 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                     name="slug"
                     value={formData.slug}
                     onChange={handleChange}
-                    className="flex-1 bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
+                    className="flex-1 bg-swp-black border border-swp-border rounded-swp px-4 py-3 text-white focus:border-swp-ice focus:outline-none transition-colors"
                     placeholder="auto-generated-from-title"
                     data-testid="film-slug-input"
                   />
                   <button
                     type="button"
                     onClick={handleRegenerateSlug}
-                    className="px-4 py-3 bg-electric-blue/20 text-electric-blue rounded-lg hover:bg-electric-blue/30 transition-colors"
+                    className="px-4 py-3 bg-swp-ice/15 text-swp-ice rounded-swp hover:bg-swp-ice/30 transition-colors"
                     title="Regenerate slug from title"
                     data-testid="regenerate-slug-btn"
                   >
                     <RefreshCw size={18} />
                   </button>
                 </div>
-                <p className="text-gray-600 text-xs mt-1">URL: /films/{formData.slug || 'your-film-slug'}</p>
+                <p className="text-swp-white-ghost/50 text-xs mt-1">URL: /films/{formData.slug || 'your-film-slug'}</p>
               </div>
 
               {/* Format & Status Row */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+                  <label className="block text-swp-white-ghost text-sm font-mono uppercase tracking-widest mb-2">
                     Format
                   </label>
                   <select
                     name="format"
                     value={formData.format}
                     onChange={handleChange}
-                    className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
+                    className="w-full bg-swp-black border border-swp-border rounded-swp px-4 py-3 text-white focus:border-swp-ice focus:outline-none transition-colors"
                   >
                     <option value="">Select format...</option>
                     {FORMAT_OPTIONS.map(format => (
@@ -403,14 +403,14 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+                  <label className="block text-swp-white-ghost text-sm font-mono uppercase tracking-widest mb-2">
                     Status
                   </label>
                   <select
                     name="status"
                     value={formData.status}
                     onChange={handleChange}
-                    className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
+                    className="w-full bg-swp-black border border-swp-border rounded-swp px-4 py-3 text-white focus:border-swp-ice focus:outline-none transition-colors"
                   >
                     {STATUS_OPTIONS.map(status => (
                       <option key={status} value={status}>{status}</option>
@@ -421,13 +421,13 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
 
               {/* Featured */}
               <div>
-                <label className="flex items-center gap-3 bg-black border border-gray-700 rounded-lg px-4 py-3 cursor-pointer hover:border-gray-600 transition-colors">
+                <label className="flex items-center gap-3 bg-swp-black border border-swp-border rounded-swp px-4 py-3 cursor-pointer hover:border-gray-600 transition-colors">
                   <input
                     type="checkbox"
                     name="featured"
                     checked={formData.featured}
                     onChange={handleChange}
-                    className="w-5 h-5 rounded border-gray-600 text-electric-blue focus:ring-electric-blue focus:ring-offset-black"
+                    className="w-5 h-5 rounded border-gray-600 text-swp-ice focus:ring-swp-ice focus:ring-offset-black"
                   />
                   <span className="text-white">Show as featured film</span>
                 </label>
@@ -440,7 +440,7 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
             <>
               {/* Tagline */}
               <div>
-                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+                <label className="block text-swp-white-ghost text-sm font-mono uppercase tracking-widest mb-2">
                   Tagline
                 </label>
                 <input
@@ -448,7 +448,7 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                   name="tagline"
                   value={formData.tagline}
                   onChange={handleChange}
-                  className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
+                  className="w-full bg-swp-black border border-swp-border rounded-swp px-4 py-3 text-white focus:border-swp-ice focus:outline-none transition-colors"
                   placeholder="A punchy one-liner hook (e.g., 'Some secrets should stay buried.')"
                   data-testid="film-tagline-input"
                 />
@@ -456,15 +456,15 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
 
               {/* Logline */}
               <div>
-                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
-                  Logline <span className="text-gray-600">(single paragraph)</span>
+                <label className="block text-swp-white-ghost text-sm font-mono uppercase tracking-widest mb-2">
+                  Logline <span className="text-swp-white-ghost/50">(single paragraph)</span>
                 </label>
                 <textarea
                   name="logline"
                   value={formData.logline}
                   onChange={handleChange}
                   rows={3}
-                  className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors resize-none"
+                  className="w-full bg-swp-black border border-swp-border rounded-swp px-4 py-3 text-white focus:border-swp-ice focus:outline-none transition-colors resize-none"
                   placeholder="One paragraph describing the story premise..."
                   data-testid="film-logline-input"
                 />
@@ -472,8 +472,8 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
 
               {/* Genres */}
               <div>
-                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
-                  Genres <span className="text-gray-600">(max {MAX_GENRES})</span>
+                <label className="block text-swp-white-ghost text-sm font-mono uppercase tracking-widest mb-2">
+                  Genres <span className="text-swp-white-ghost/50">(max {MAX_GENRES})</span>
                 </label>
                 <div className="flex gap-2 mb-2">
                   <input
@@ -481,7 +481,7 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                     value={genreInput}
                     onChange={(e) => setGenreInput(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddGenre())}
-                    className="flex-1 bg-black border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-electric-blue focus:outline-none transition-colors text-sm"
+                    className="flex-1 bg-swp-black border border-swp-border rounded-swp px-4 py-2 text-white focus:border-swp-ice focus:outline-none transition-colors text-sm"
                     placeholder="Add a genre (e.g., Horror, Drama, Thriller)"
                     disabled={formData.genres.length >= MAX_GENRES}
                   />
@@ -489,7 +489,7 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                     type="button"
                     onClick={handleAddGenre}
                     disabled={formData.genres.length >= MAX_GENRES}
-                    className="px-4 py-2 bg-electric-blue/20 text-electric-blue rounded-lg hover:bg-electric-blue/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-4 py-2 bg-swp-ice/15 text-swp-ice rounded-swp hover:bg-swp-ice/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <Plus size={18} />
                   </button>
@@ -499,13 +499,13 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                     {formData.genres.map((genre, idx) => (
                       <span
                         key={idx}
-                        className="inline-flex items-center gap-1 px-3 py-1 bg-electric-blue/20 border border-electric-blue/40 rounded-full text-electric-blue text-sm"
+                        className="inline-flex items-center gap-1 px-3 py-1 bg-swp-ice/15 border border-swp-ice/25 rounded-sm text-swp-ice text-sm"
                       >
                         {genre}
                         <button
                           type="button"
                           onClick={() => handleRemoveGenre(genre)}
-                          className="text-electric-blue/60 hover:text-red-400 transition-colors"
+                          className="text-swp-ice/60 hover:text-red-400 transition-colors"
                         >
                           <X size={14} />
                         </button>
@@ -517,23 +517,23 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
 
               {/* IMDb URL */}
               <div>
-                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
-                  IMDb URL <span className="text-gray-600">(optional)</span>
+                <label className="block text-swp-white-ghost text-sm font-mono uppercase tracking-widest mb-2">
+                  IMDb URL <span className="text-swp-white-ghost/50">(optional)</span>
                 </label>
                 <input
                   type="url"
                   name="imdb_url"
                   value={formData.imdb_url}
                   onChange={handleChange}
-                  className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
+                  className="w-full bg-swp-black border border-swp-border rounded-swp px-4 py-3 text-white focus:border-swp-ice focus:outline-none transition-colors"
                   placeholder="https://www.imdb.com/title/tt..."
                 />
               </div>
 
               {/* External Link */}
               <div>
-                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
-                  External Link <span className="text-gray-600">(optional)</span>
+                <label className="block text-swp-white-ghost text-sm font-mono uppercase tracking-widest mb-2">
+                  External Link <span className="text-swp-white-ghost/50">(optional)</span>
                 </label>
                 <div className="grid grid-cols-3 gap-3">
                   <input
@@ -541,7 +541,7 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                     name="watch_url_title"
                     value={formData.watch_url_title}
                     onChange={handleChange}
-                    className="col-span-1 bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
+                    className="col-span-1 bg-swp-black border border-swp-border rounded-swp px-4 py-3 text-white focus:border-swp-ice focus:outline-none transition-colors"
                     placeholder="Title (e.g., Trailer)"
                   />
                   <input
@@ -549,7 +549,7 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                     name="watch_url"
                     value={formData.watch_url}
                     onChange={handleChange}
-                    className="col-span-2 bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
+                    className="col-span-2 bg-swp-black border border-swp-border rounded-swp px-4 py-3 text-white focus:border-swp-ice focus:outline-none transition-colors"
                     placeholder="https://..."
                   />
                 </div>
@@ -562,12 +562,12 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
             <>
               {/* Poster Image */}
               <div>
-                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
-                  Poster / Hero Image <span className="text-gray-600">(2:3 ratio recommended)</span>
+                <label className="block text-swp-white-ghost text-sm font-mono uppercase tracking-widest mb-2">
+                  Poster / Hero Image <span className="text-swp-white-ghost/50">(2:3 ratio recommended)</span>
                 </label>
                 <div className="flex gap-4">
                   {/* Preview */}
-                  <div className="w-28 h-40 rounded-lg overflow-hidden flex-shrink-0 border border-gray-700 bg-gray-900 flex items-center justify-center">
+                  <div className="w-28 h-40 rounded-swp overflow-hidden flex-shrink-0 border border-swp-border bg-gray-900 flex items-center justify-center">
                     {formData.poster_url ? (
                       <div className="relative w-full h-full group">
                         <img 
@@ -578,15 +578,15 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                         <button
                           type="button"
                           onClick={handleRemoveImage}
-                          className="absolute top-1 right-1 p-1 bg-black/70 rounded-full opacity-0 group-hover:opacity-100 transition-opacity text-red-400 hover:text-red-300"
+                          className="absolute top-1 right-1 p-1 bg-swp-black/70 rounded-sm opacity-0 group-hover:opacity-100 transition-opacity text-red-400 hover:text-red-300"
                         >
                           <X size={14} />
                         </button>
                       </div>
                     ) : (
                       <div className="text-center p-2">
-                        <Image size={24} className="mx-auto text-gray-600 mb-1" />
-                        <span className="text-gray-500 text-xs">No Poster</span>
+                        <Image size={24} className="mx-auto text-swp-white-ghost/50 mb-1" />
+                        <span className="text-swp-white-ghost/70 text-xs">No Poster</span>
                       </div>
                     )}
                   </div>
@@ -594,18 +594,18 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                   {/* Upload Zone */}
                   <div className="flex-1 flex flex-col gap-3">
                     <div
-                      className={`flex-1 border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-all ${
+                      className={`flex-1 border-2 border-dashed rounded-swp p-4 text-center cursor-pointer transition-all ${
                         isDragging 
-                          ? 'border-electric-blue bg-electric-blue/10' 
-                          : 'border-gray-700 hover:border-gray-500'
+                          ? 'border-swp-ice bg-swp-ice/10' 
+                          : 'border-swp-border hover:border-gray-500'
                       }`}
                       onDragOver={handleDragOver}
                       onDragLeave={handleDragLeave}
                       onDrop={handleDrop}
                       onClick={() => fileInputRef.current?.click()}
                     >
-                      <Upload size={20} className={`mx-auto mb-1 ${isDragging ? 'text-electric-blue' : 'text-gray-500'}`} />
-                      <p className={`text-xs ${isDragging ? 'text-electric-blue' : 'text-gray-400'}`}>
+                      <Upload size={20} className={`mx-auto mb-1 ${isDragging ? 'text-swp-ice' : 'text-swp-white-ghost/70'}`} />
+                      <p className={`text-xs ${isDragging ? 'text-swp-ice' : 'text-swp-white-ghost'}`}>
                         {uploading ? 'Uploading...' : 'Drag & Drop or Click'}
                       </p>
                       <input
@@ -620,7 +620,7 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                     <button
                       type="button"
                       onClick={() => { setAssetPickerTarget('poster'); setAssetPickerOpen(true); }}
-                      className="flex items-center justify-center gap-2 px-4 py-2 bg-electric-blue/10 border border-electric-blue/30 rounded-lg text-electric-blue text-sm hover:bg-electric-blue/20"
+                      className="flex items-center justify-center gap-2 px-4 py-2 bg-swp-ice/10 border border-swp-ice/30 rounded-swp text-swp-ice text-sm hover:bg-swp-ice/15"
                     >
                       <FolderOpen size={16} /> Browse Library
                     </button>
@@ -630,12 +630,12 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
 
               {/* Mood Images */}
               <div>
-                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
-                  Mood Images <span className="text-gray-600">(4-6 images for Tone & Style section)</span>
+                <label className="block text-swp-white-ghost text-sm font-mono uppercase tracking-widest mb-2">
+                  Mood Images <span className="text-swp-white-ghost/50">(4-6 images for Tone & Style section)</span>
                 </label>
                 <div className="grid grid-cols-3 gap-3 mb-3">
                   {formData.mood_images.map((url, idx) => (
-                    <div key={idx} className="relative aspect-video rounded-lg overflow-hidden border border-gray-700 group">
+                    <div key={idx} className="relative aspect-video rounded-swp overflow-hidden border border-swp-border group">
                       <img 
                         src={url.startsWith('http') ? url : `${process.env.REACT_APP_BACKEND_URL}${url}`}
                         alt={`Mood ${idx + 1}`} 
@@ -644,7 +644,7 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                       <button
                         type="button"
                         onClick={() => handleRemoveMoodImage(idx)}
-                        className="absolute top-1 right-1 p-1 bg-black/70 rounded-full opacity-0 group-hover:opacity-100 transition-opacity text-red-400 hover:text-red-300"
+                        className="absolute top-1 right-1 p-1 bg-swp-black/70 rounded-sm opacity-0 group-hover:opacity-100 transition-opacity text-red-400 hover:text-red-300"
                       >
                         <Trash2 size={14} />
                       </button>
@@ -654,7 +654,7 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                     <button
                       type="button"
                       onClick={() => { setAssetPickerTarget('mood'); setAssetPickerOpen(true); }}
-                      className="aspect-video flex flex-col items-center justify-center gap-2 border-2 border-dashed border-gray-700 rounded-lg text-gray-500 hover:border-gray-500 hover:text-gray-400 transition-colors"
+                      className="aspect-video flex flex-col items-center justify-center gap-2 border-2 border-dashed border-swp-border rounded-swp text-swp-white-ghost/70 hover:border-gray-500 hover:text-swp-white-ghost transition-colors"
                     >
                       <Plus size={20} />
                       <span className="text-xs">Add Image</span>
@@ -670,24 +670,24 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
             <>
               {/* Enable Studio Access */}
               <div>
-                <label className="flex items-center gap-3 bg-black border border-gray-700 rounded-lg px-4 py-3 cursor-pointer hover:border-gray-600 transition-colors">
+                <label className="flex items-center gap-3 bg-swp-black border border-swp-border rounded-swp px-4 py-3 cursor-pointer hover:border-gray-600 transition-colors">
                   <input
                     type="checkbox"
                     name="studio_access_enabled"
                     checked={formData.studio_access_enabled}
                     onChange={handleChange}
-                    className="w-5 h-5 rounded border-gray-600 text-electric-blue focus:ring-electric-blue focus:ring-offset-black"
+                    className="w-5 h-5 rounded border-gray-600 text-swp-ice focus:ring-swp-ice focus:ring-offset-black"
                   />
                   <div>
                     <span className="text-white">Enable Studio Access Page</span>
-                    <p className="text-gray-500 text-xs mt-1">Allow portal users to access confidential materials</p>
+                    <p className="text-swp-white-ghost/70 text-xs mt-1">Allow portal users to access confidential materials</p>
                   </div>
                 </label>
               </div>
 
               {/* Target Audience */}
               <div>
-                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+                <label className="block text-swp-white-ghost text-sm font-mono uppercase tracking-widest mb-2">
                   Target Audience
                 </label>
                 <input
@@ -695,14 +695,14 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                   name="target_audience"
                   value={formData.target_audience}
                   onChange={handleChange}
-                  className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
+                  className="w-full bg-swp-black border border-swp-border rounded-swp px-4 py-3 text-white focus:border-swp-ice focus:outline-none transition-colors"
                   placeholder="e.g., Adults 18-35, genre enthusiasts, festival audiences"
                 />
               </div>
 
               {/* Comparables */}
               <div>
-                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+                <label className="block text-swp-white-ghost text-sm font-mono uppercase tracking-widest mb-2">
                   Comparables
                 </label>
                 <input
@@ -710,14 +710,14 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                   name="comparables"
                   value={formData.comparables}
                   onChange={handleChange}
-                  className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
+                  className="w-full bg-swp-black border border-swp-border rounded-swp px-4 py-3 text-white focus:border-swp-ice focus:outline-none transition-colors"
                   placeholder="e.g., Get Out meets The Witch, A24 aesthetic"
                 />
               </div>
 
               {/* Looking For */}
               <div>
-                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+                <label className="block text-swp-white-ghost text-sm font-mono uppercase tracking-widest mb-2">
                   Currently Seeking
                 </label>
                 <div className="flex flex-wrap gap-2 mb-3">
@@ -727,10 +727,10 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                       type="button"
                       onClick={() => handleAddLookingFor(option)}
                       disabled={formData.looking_for.includes(option)}
-                      className={`px-3 py-1.5 rounded-full text-xs font-mono uppercase tracking-widest transition-all ${
+                      className={`px-3 py-1.5 rounded-sm text-xs font-mono uppercase tracking-widest transition-all ${
                         formData.looking_for.includes(option)
-                          ? 'bg-electric-blue text-white cursor-not-allowed'
-                          : 'bg-black text-gray-400 hover:bg-gray-800 hover:text-white border border-gray-700'
+                          ? 'bg-swp-ice text-white cursor-not-allowed'
+                          : 'bg-swp-black text-swp-white-ghost hover:bg-gray-800 hover:text-swp-white border border-swp-border'
                       }`}
                     >
                       {option}
@@ -738,18 +738,18 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                   ))}
                 </div>
                 {formData.looking_for.length > 0 && (
-                  <div className="flex flex-wrap gap-2 p-3 bg-black/50 rounded-lg border border-gray-800">
-                    <span className="text-gray-500 text-xs uppercase mr-2">Selected:</span>
+                  <div className="flex flex-wrap gap-2 p-3 bg-swp-deep/70 rounded-swp border border-swp-border">
+                    <span className="text-swp-white-ghost/70 text-xs uppercase mr-2">Selected:</span>
                     {formData.looking_for.map((item, idx) => (
                       <span
                         key={idx}
-                        className="inline-flex items-center gap-1 px-3 py-1 bg-electric-blue/20 border border-electric-blue/40 rounded-full text-electric-blue text-sm"
+                        className="inline-flex items-center gap-1 px-3 py-1 bg-swp-ice/15 border border-swp-ice/25 rounded-sm text-swp-ice text-sm"
                       >
                         {item}
                         <button
                           type="button"
                           onClick={() => handleRemoveLookingFor(item)}
-                          className="text-electric-blue/60 hover:text-red-400 transition-colors"
+                          className="text-swp-ice/60 hover:text-red-400 transition-colors"
                         >
                           <X size={14} />
                         </button>
@@ -761,15 +761,15 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
 
               {/* Tone & Style Text */}
               <div>
-                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
-                  Tone & Style <span className="text-gray-600">(3-5 paragraphs about vision)</span>
+                <label className="block text-swp-white-ghost text-sm font-mono uppercase tracking-widest mb-2">
+                  Tone & Style <span className="text-swp-white-ghost/50">(3-5 paragraphs about vision)</span>
                 </label>
                 <textarea
                   name="tone_style_text"
                   value={formData.tone_style_text}
                   onChange={handleChange}
                   rows={6}
-                  className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors resize-none"
+                  className="w-full bg-swp-black border border-swp-border rounded-swp px-4 py-3 text-white focus:border-swp-ice focus:outline-none transition-colors resize-none"
                   placeholder="Describe the visual tone, style references, atmosphere, influences..."
                   data-testid="film-tone-input"
                 />
@@ -777,15 +777,15 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
 
               {/* Extended Synopsis */}
               <div>
-                <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
-                  Extended Synopsis <span className="text-gray-600">(for studio portal)</span>
+                <label className="block text-swp-white-ghost text-sm font-mono uppercase tracking-widest mb-2">
+                  Extended Synopsis <span className="text-swp-white-ghost/50">(for studio portal)</span>
                 </label>
                 <textarea
                   name="extended_synopsis"
                   value={formData.extended_synopsis}
                   onChange={handleChange}
                   rows={6}
-                  className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors resize-none"
+                  className="w-full bg-swp-black border border-swp-border rounded-swp px-4 py-3 text-white focus:border-swp-ice focus:outline-none transition-colors resize-none"
                   placeholder="Full synopsis with paragraph breaks (use blank lines for breaks)..."
                   data-testid="film-synopsis-input"
                 />
@@ -795,7 +795,7 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                 <>
                   {/* Target Budget Range */}
                   <div>
-                    <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+                    <label className="block text-swp-white-ghost text-sm font-mono uppercase tracking-widest mb-2">
                       Target Budget Range
                     </label>
                     <input
@@ -803,29 +803,29 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                       name="target_budget_range"
                       value={formData.target_budget_range}
                       onChange={handleChange}
-                      className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
+                      className="w-full bg-swp-black border border-swp-border rounded-swp px-4 py-3 text-white focus:border-swp-ice focus:outline-none transition-colors"
                       placeholder="e.g., $2M - $5M AUD"
                     />
                   </div>
 
                   {/* Financing Structure */}
                   <div>
-                    <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
-                      Financing Structure <span className="text-gray-600">(high-level overview)</span>
+                    <label className="block text-swp-white-ghost text-sm font-mono uppercase tracking-widest mb-2">
+                      Financing Structure <span className="text-swp-white-ghost/50">(high-level overview)</span>
                     </label>
                     <textarea
                       name="financing_structure"
                       value={formData.financing_structure}
                       onChange={handleChange}
                       rows={3}
-                      className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors resize-none"
+                      className="w-full bg-swp-black border border-swp-border rounded-swp px-4 py-3 text-white focus:border-swp-ice focus:outline-none transition-colors resize-none"
                       placeholder="e.g., 40% pre-sales, 30% equity, 20% government incentives, 10% gap financing"
                     />
                   </div>
 
                   {/* Incentives */}
                   <div>
-                    <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+                    <label className="block text-swp-white-ghost text-sm font-mono uppercase tracking-widest mb-2">
                       Tax Incentives / Rebates
                     </label>
                     <textarea
@@ -833,14 +833,14 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                       value={formData.incentives}
                       onChange={handleChange}
                       rows={2}
-                      className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors resize-none"
+                      className="w-full bg-swp-black border border-swp-border rounded-swp px-4 py-3 text-white focus:border-swp-ice focus:outline-none transition-colors resize-none"
                       placeholder="e.g., Eligible for 40% Producer Offset (Australia), Location Incentive"
                     />
                   </div>
 
                   {/* Pitch Deck PDF */}
                   <div>
-                    <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+                    <label className="block text-swp-white-ghost text-sm font-mono uppercase tracking-widest mb-2">
                       Pitch Deck (PDF)
                     </label>
                     <div className="flex gap-3">
@@ -849,14 +849,14 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                         name="pitch_deck_url"
                         value={formData.pitch_deck_url}
                         onChange={handleChange}
-                        className="flex-1 bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
+                        className="flex-1 bg-swp-black border border-swp-border rounded-swp px-4 py-3 text-white focus:border-swp-ice focus:outline-none transition-colors"
                         placeholder="/uploads/documents/pitch-deck.pdf"
                         readOnly
                       />
                       <button
                         type="button"
                         onClick={() => { setAssetPickerTarget('pitch_deck_url'); setAssetPickerOpen(true); }}
-                        className="px-4 py-3 bg-electric-blue/20 text-electric-blue rounded-lg hover:bg-electric-blue/30 transition-colors"
+                        className="px-4 py-3 bg-swp-ice/15 text-swp-ice rounded-swp hover:bg-swp-ice/30 transition-colors"
                       >
                         <FolderOpen size={18} />
                       </button>
@@ -864,7 +864,7 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                         <button
                           type="button"
                           onClick={() => setFormData(prev => ({ ...prev, pitch_deck_url: '' }))}
-                          className="px-4 py-3 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors"
+                          className="px-4 py-3 bg-red-500/20 text-red-400 rounded-swp hover:bg-red-500/30 transition-colors"
                         >
                           <Trash2 size={18} />
                         </button>
@@ -874,8 +874,8 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
 
                   {/* Script PDF */}
                   <div>
-                    <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
-                      Script (PDF) <span className="text-gray-600">(NDA required for access)</span>
+                    <label className="block text-swp-white-ghost text-sm font-mono uppercase tracking-widest mb-2">
+                      Script (PDF) <span className="text-swp-white-ghost/50">(NDA required for access)</span>
                     </label>
                     <div className="flex gap-3">
                       <input
@@ -883,14 +883,14 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                         name="script_url"
                         value={formData.script_url}
                         onChange={handleChange}
-                        className="flex-1 bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
+                        className="flex-1 bg-swp-black border border-swp-border rounded-swp px-4 py-3 text-white focus:border-swp-ice focus:outline-none transition-colors"
                         placeholder="/uploads/documents/script.pdf"
                         readOnly
                       />
                       <button
                         type="button"
                         onClick={() => { setAssetPickerTarget('script_url'); setAssetPickerOpen(true); }}
-                        className="px-4 py-3 bg-electric-blue/20 text-electric-blue rounded-lg hover:bg-electric-blue/30 transition-colors"
+                        className="px-4 py-3 bg-swp-ice/15 text-swp-ice rounded-swp hover:bg-swp-ice/30 transition-colors"
                       >
                         <FolderOpen size={18} />
                       </button>
@@ -898,7 +898,7 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
                         <button
                           type="button"
                           onClick={() => setFormData(prev => ({ ...prev, script_url: '' }))}
-                          className="px-4 py-3 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors"
+                          className="px-4 py-3 bg-red-500/20 text-red-400 rounded-swp hover:bg-red-500/30 transition-colors"
                         >
                           <Trash2 size={18} />
                         </button>
@@ -911,18 +911,18 @@ const AdminFilmModal = ({ isOpen, onClose, onSave, film }) => {
           )}
 
           {/* Actions */}
-          <div className="flex gap-4 pt-4 border-t border-gray-800">
+          <div className="flex gap-4 pt-4 border-t border-swp-border">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-6 py-3 border border-gray-700 text-gray-400 rounded-full hover:bg-gray-800 transition-colors font-mono text-sm uppercase tracking-widest"
+              className="flex-1 px-6 py-3 border border-swp-border text-swp-white-ghost rounded-sm hover:bg-gray-800 transition-colors font-mono text-sm uppercase tracking-widest"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={saving}
-              className="flex-1 px-6 py-3 bg-electric-blue hover:bg-electric-blue/90 disabled:bg-gray-700 text-white rounded-full transition-colors font-mono text-sm uppercase tracking-widest"
+              className="flex-1 px-6 py-3 bg-swp-ice hover:bg-swp-ice disabled:bg-swp-muted text-white rounded-sm transition-colors font-mono text-sm uppercase tracking-widest"
               data-testid="save-film-btn"
             >
               {saving ? 'Saving...' : 'Save Film'}
