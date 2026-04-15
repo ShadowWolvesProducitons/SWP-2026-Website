@@ -53,7 +53,13 @@ const TheDen = () => {
   const getCount = (id) => id==='All' ? allItems.length : allItems.filter(i=>i.item_type===id).length;
 
   return (
-    <div className="the-armory-page" style={{ paddingTop:'64px', minHeight:'100vh' }}>
+    <div className="the-armory-page" style={{ paddingTop:'64px' }}>
+      {/* Fixed parallax background */}
+      <div style={{ position:'fixed', inset:0, zIndex:0, backgroundImage:'url("https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=1800&q=80&fm=jpg")', backgroundSize:'cover', backgroundPosition:'center', backgroundRepeat:'no-repeat', filter:'brightness(0.22) saturate(0.45)' }} />
+      <div style={{ position:'fixed', inset:0, zIndex:1, background:'rgba(5,6,8,0.55)', pointerEvents:'none' }} />
+      <div style={{ position:'fixed', inset:0, zIndex:2, background:'radial-gradient(ellipse 100% 100% at 50% 50%, transparent 20%, rgba(8,9,11,0.75) 100%)', pointerEvents:'none' }} />
+
+      <div style={{ position:'relative', zIndex:3 }}>
       <Helmet>
         <title>Resources | Shadow Wolves Productions</title>
         <meta name="description" content="Apps, templates, resources, and courses built for real-world filmmaking." />
@@ -120,6 +126,7 @@ const TheDen = () => {
           </>
         )}
       </section>
+      </div>
     </div>
   );
 };

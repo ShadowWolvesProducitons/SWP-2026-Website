@@ -59,7 +59,13 @@ const Home = () => {
   };
 
   return (
-    <div className="home-page">
+    <div className="home-page" style={{ minHeight: undefined }}>
+      {/* Fixed parallax background */}
+      <div style={{ position:'fixed', inset:0, zIndex:0, backgroundImage:'url("https://images.unsplash.com/photo-1536152470836-b943b246224c?w=1800&q=80&fm=jpg")', backgroundSize:'cover', backgroundPosition:'center', backgroundRepeat:'no-repeat', filter:'brightness(0.22) saturate(0.45)' }} />
+      <div style={{ position:'fixed', inset:0, zIndex:1, background:'rgba(5,6,8,0.55)', pointerEvents:'none' }} />
+      <div style={{ position:'fixed', inset:0, zIndex:2, background:'radial-gradient(ellipse 100% 100% at 50% 50%, transparent 20%, rgba(8,9,11,0.75) 100%)', pointerEvents:'none' }} />
+
+      <div style={{ position:'relative', zIndex:3 }}>
       <Helmet>
         <title>{seoSettings.global_seo?.site_name || 'Shadow Wolves Productions'}</title>
         <meta name="description" content={seoSettings.global_seo?.default_meta_description || 'Shadow Wolves Productions exists to create bold, genre-driven stories with teeth.'} />
@@ -140,15 +146,6 @@ const Home = () => {
       {/* ── SERVICES ── */}
       <section style={{ padding:'0 52px 100px' }}>
         <div style={{ ...T.glass, overflow:'hidden' }}>
-          <div style={{ padding:'44px 56px 36px', borderBottom:'0.5px solid rgba(255,255,255,0.07)' }}>
-            <div style={{ ...T.eyebrow, marginBottom:'14px' }}>
-              <span style={{ width:'24px', height:'0.5px', background:'rgba(106,157,190,0.5)', display:'block' }}/>
-              What we do
-            </div>
-            <h2 style={{ ...T.displayTitle, fontSize:'clamp(32px, 3.5vw, 48px)' }}>
-              Full pipeline. No hand-holding.
-            </h2>
-          </div>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)' }}>
             {[
               { key:'development',    num:'01', title:'Development' },
@@ -176,8 +173,8 @@ const Home = () => {
             ))}
           </div>
           {/* Additional support chips */}
-          <div style={{ padding:'24px 56px', borderTop:'0.5px solid rgba(255,255,255,0.07)', display:'flex', alignItems:'center', gap:'10px', flexWrap:'wrap' }}>
-            <span style={{ ...T.monoLabel, marginRight:'6px' }}>Additional support —</span>
+          <div style={{ padding:'24px 56px', borderTop:'0.5px solid rgba(255,255,255,0.07)', display:'flex', alignItems:'center', justifyContent:'center', gap:'10px', flexWrap:'wrap' }}>
+            <span style={{ ...T.monoLabel, marginRight:'6px', textAlign:'center' }}>Additional support —</span>
             {[
               { key:'script-coverage',     label:'Script Coverage' },
               { key:'development-notes',   label:'Development Notes' },
@@ -205,33 +202,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ── WHAT WE'RE BUILDING ── */}
-      <section style={{ padding:'0 52px 100px' }}>
-        <div style={{ ...T.glass, padding:'56px 64px' }}>
-          <div style={{ ...T.eyebrow, marginBottom:'14px' }}>
-            <span style={{ width:'24px', height:'0.5px', background:'rgba(106,157,190,0.5)', display:'block' }}/>
-            The slate
-          </div>
-          <h2 style={{ ...T.displayTitle, fontSize:'clamp(32px, 3.5vw, 48px)', marginBottom:'24px' }}>What We're Building</h2>
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'40px', alignItems:'end' }}>
-            <div>
-              <p style={{ ...T.body, fontSize:'15px', marginBottom:'16px' }}>
-                We're developing a slate of genre-driven projects across film, television, and emerging formats. Each project is selected for its creative ambition and commercial viability.
-              </p>
-              <p style={{ ...T.body, fontSize:'15px' }}>
-                Beyond production, we're building a studio ecosystem — films, tools, and resources designed to support independent creators who share our approach.
-              </p>
-            </div>
-            <div style={{ display:'flex', flexDirection:'column', gap:'12px', alignItems:'flex-start' }}>
-              <p style={{ ...T.body, fontSize:'14px' }}>This is long-term development, not a quick flip. We build what we believe in.</p>
-              <Link to="/request-access" data-testid="about-cta-invest" className="btn-swp btn-swp-primary">
-                Investor access →
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* ── NEWSLETTER ── */}
       <section style={{ padding:'0 52px 100px' }}>
         <div style={{ ...T.glass, padding:'56px 64px', display:'grid', gridTemplateColumns:'1fr 1fr', gap:'60px', alignItems:'center' }}>
@@ -252,7 +222,7 @@ const Home = () => {
               onChange={e => setNewsletterEmail(e.target.value)}
               placeholder="Enter your email"
               disabled={subscribing}
-              className="swp-input"
+              style={{ background:'rgba(255,255,255,0.04)', border:'0.5px solid rgba(255,255,255,0.1)', borderRadius:'2px', padding:'12px 14px', fontFamily:'var(--font-body)', fontSize:'14px', fontWeight:300, color:'var(--swp-white)', outline:'none', width:'100%', transition:'border-color 0.2s' }}
             />
             <button type="submit" disabled={subscribing} className="btn-swp btn-swp-primary" style={{ justifyContent:'center', opacity:subscribing?0.6:1 }}>
               {subscribing ? <><Loader2 size={14} className="animate-spin" /> Joining…</> : 'Subscribe'}
@@ -264,6 +234,7 @@ const Home = () => {
 
       <ServicesModal open={servicesModalOpen} onClose={closeServicesModal} serviceKey={activeServiceKey} />
       <SupportModal open={supportModalOpen} onClose={closeSupportModal} supportKey={activeSupportKey} />
+      </div>
     </div>
   );
 };

@@ -117,7 +117,13 @@ const Films = () => {
   );
 
   return (
-    <div className="films-page" style={{ paddingTop:'64px', minHeight:'100vh' }}>
+    <div className="films-page" style={{ paddingTop:'64px' }}>
+      {/* Fixed parallax background */}
+      <div style={{ position:'fixed', inset:0, zIndex:0, backgroundImage:'url("https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=1800&q=80&fm=jpg")', backgroundSize:'cover', backgroundPosition:'center', backgroundRepeat:'no-repeat', filter:'brightness(0.22) saturate(0.45)' }} />
+      <div style={{ position:'fixed', inset:0, zIndex:1, background:'rgba(5,6,8,0.55)', pointerEvents:'none' }} />
+      <div style={{ position:'fixed', inset:0, zIndex:2, background:'radial-gradient(ellipse 100% 100% at 50% 50%, transparent 20%, rgba(8,9,11,0.75) 100%)', pointerEvents:'none' }} />
+
+      <div style={{ position:'relative', zIndex:3 }}>
       {selectedFilm ? (
         <>
           <Helmet>
@@ -184,64 +190,40 @@ const Films = () => {
           </div>
         ) : (
           <>
-            <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(160px, 1fr))', gap:'10px' }}>
+            <div style={{ display:'grid', gridTemplateColumns:'repeat(5, 1fr)', gap:'12px' }}>
               {filteredFilms.map(film => {
-                const sc = statusColour(film.status);
+                const isFeatured = film.featured;
                 return (
                   <button
                     key={film.id}
                     onClick={() => handleFilmClick(film)}
                     data-testid="film-card"
-                    style={{ position:'relative', overflow:'hidden', borderRadius:'3px', aspectRatio:'2/3', cursor:'pointer', border:'0.5px solid rgba(255,255,255,0.07)', background:'var(--swp-surface)', transition:'border-color 0.3s, transform 0.3s' }}
-                    onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.16)'; e.currentTarget.style.transform='translateY(-3px)'; }}
-                    onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.07)'; e.currentTarget.style.transform='translateY(0)'; }}
+                    style={{ background:'rgba(17,19,24,0.55)', backdropFilter:'blur(12px)', border:`0.5px solid ${isFeatured ? 'rgba(106,157,190,0.4)' : 'rgba(255,255,255,0.08)'}`, borderRadius:'3px', overflow:'hidden', aspectRatio:'2/3', position:'relative', cursor:'pointer', transition:'border-color 0.35s, transform 0.3s' }}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(106,157,190,0.35)'; e.currentTarget.style.transform='translateY(-4px)'; const img = e.currentTarget.querySelector('.film-poster-img'); if(img) img.style.transform='scale(1.06)'; }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor=isFeatured ? 'rgba(106,157,190,0.4)' : 'rgba(255,255,255,0.08)'; e.currentTarget.style.transform='translateY(0)'; const img = e.currentTarget.querySelector('.film-poster-img'); if(img) img.style.transform='scale(1)'; }}
                   >
                     {/* Poster */}
-                    <div style={{ position:'absolute', inset:0, backgroundColor:film.poster_color||'#111318' }}>
-                      {film.poster_url ? (
-                        <img src={`${process.env.REACT_APP_BACKEND_URL}${film.poster_url}`} alt={film.title} style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover' }} />
-                      ) : (
-                        <div style={{ position:'absolute', inset:0, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', padding:'16px', background:'linear-gradient(135deg, rgba(17,19,24,1) 0%, rgba(28,32,40,1) 100%)' }}>
-                          <h4 style={{ fontFamily:'var(--font-display)', fontSize:'16px', color:'rgba(238,240,242,0.55)', textAlign:'center', letterSpacing:'0.04em', marginBottom:'10px' }}>{film.title}</h4>
-                          <span style={{ ...sc, ...T.mono, padding:'3px 9px', borderRadius:'1px', border:`0.5px solid ${sc.border}` }}>
-                            {film.status==='Development'?'In Dev':'Poster TBC'}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Featured badge */}
-                    {film.featured && (
-                      <div style={{ position:'absolute', top:'10px', right:'10px', zIndex:3, ...T.mono, background:'rgba(106,157,190,0.12)', color:T.ice, border:`0.5px solid rgba(106,157,190,0.3)`, padding:'3px 8px', borderRadius:'1px' }}>
-                        Featured
+                    {film.poster_url ? (
+                      <img className="film-poster-img" src={`${process.env.REACT_APP_BACKEND_URL}${film.poster_url}`} alt={film.title} style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', transition:'transform 0.5s ease' }} />
+                    ) : (
+                      <div style={{ position:'absolute', inset:0, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', padding:'16px', background:'linear-gradient(135deg, rgba(17,19,24,1) 0%, rgba(28,32,40,1) 100%)' }}>
+                        <h4 style={{ fontFamily:'var(--font-display)', fontSize:'20px', color:'rgba(238,240,242,0.55)', textAlign:'center', letterSpacing:'0.04em' }}>{film.title}</h4>
                       </div>
                     )}
 
-                    {/* Default overlay — title */}
-                    <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(8,9,11,0.9) 0%, rgba(8,9,11,0.15) 50%, transparent 100%)', zIndex:1 }}>
-                      <div style={{ position:'absolute', bottom:0, left:0, right:0, padding:'14px 12px' }}>
-                        <h3 style={{ fontFamily:'var(--font-display)', fontSize:'16px', color:'var(--swp-white)', letterSpacing:'0.03em', lineHeight:1.1 }}>{film.title}</h3>
-                      </div>
-                    </div>
+                    {/* Bottom gradient overlay */}
+                    <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(8,9,11,0.95) 0%, rgba(8,9,11,0.3) 45%, transparent 70%)', zIndex:1 }} />
 
-                    {/* Hover overlay */}
-                    <div className="film-hover-overlay" style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(8,9,11,0.97) 0%, rgba(8,9,11,0.75) 45%, rgba(8,9,11,0.2) 100%)', zIndex:2, opacity:0, transition:'opacity 0.3s', display:'flex', flexDirection:'column', justifyContent:'space-between', padding:'12px' }}
-                      onMouseEnter={e=>e.currentTarget.style.opacity='1'} onMouseLeave={e=>e.currentTarget.style.opacity='0'}>
-                      <div>
-                        <span style={{ ...T.mono, ...sc, padding:'3px 9px', borderRadius:'1px', border:`0.5px solid ${sc.border}`, display:'inline-block' }}>{film.status}</span>
-                      </div>
-                      <div>
-                        <h3 style={{ fontFamily:'var(--font-display)', fontSize:'17px', color:'var(--swp-white)', letterSpacing:'0.03em', marginBottom:'6px' }}>{film.title}</h3>
-                        {film.tagline && <p style={{ fontFamily:'var(--font-body)', fontSize:'11px', color:'rgba(238,240,242,0.45)', lineHeight:1.5, marginBottom:'8px' }}>{film.tagline}</p>}
-                        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:'8px' }}>
-                          <div style={{ display:'flex', flexWrap:'wrap', gap:'4px' }}>
-                            {film.genres?.slice(0,2).map((g,i) => (
-                              <span key={i} style={{ ...T.mono, fontSize:'8px', padding:'2px 7px', background:'rgba(255,255,255,0.06)', borderRadius:'1px', color:'rgba(238,240,242,0.5)' }}>{g}</span>
-                            ))}
-                          </div>
-                          <span style={{ ...T.mono, color:'rgba(106,157,190,0.7)' }}>View →</span>
+                    {/* Title + genre */}
+                    <div style={{ position:'absolute', bottom:0, left:0, right:0, padding:'14px', zIndex:2 }}>
+                      <h3 style={{ fontFamily:'var(--font-display)', fontSize:'16px', color:'var(--swp-white)', letterSpacing:'0.03em', lineHeight:1.1, marginBottom:'4px' }}>{film.title}</h3>
+                      {film.genres?.length > 0 && (
+                        <div style={{ display:'flex', flexWrap:'wrap', gap:'4px' }}>
+                          {film.genres.slice(0,2).map((g,i) => (
+                            <span key={i} style={{ ...T.mono, fontSize:'8px', color:'rgba(238,240,242,0.4)' }}>{g}{i < Math.min(film.genres.length, 2) - 1 ? ' /' : ''}</span>
+                          ))}
                         </div>
-                      </div>
+                      )}
                     </div>
                   </button>
                 );
@@ -264,6 +246,7 @@ const Films = () => {
       </section>
 
       <FilmModal film={selectedFilm} isOpen={!!selectedFilm} onClose={closeModal} />
+      </div>
     </div>
   );
 };

@@ -251,7 +251,7 @@ const NewsletterSection = () => {
             </div>
           ) : (
             <form onSubmit={handleSubmit} data-testid="newsletter-form" style={{ display:'flex', flexDirection:'column', gap:'10px' }}>
-              <input type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="Enter your email" required data-testid="newsletter-email-input" className="swp-input" />
+              <input type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="Enter your email" required data-testid="newsletter-email-input" style={{ background:'rgba(255,255,255,0.04)', border:'0.5px solid rgba(255,255,255,0.1)', borderRadius:'2px', padding:'12px 14px', fontFamily:'var(--font-body)', fontSize:'14px', fontWeight:300, color:'var(--swp-white)', outline:'none', width:'100%', transition:'border-color 0.2s' }} />
               <button type="submit" disabled={submitting} data-testid="newsletter-submit-btn" className="btn-swp btn-swp-primary" style={{ justifyContent:'center', opacity:submitting?0.6:1 }}>
                 {submitting ? 'Subscribing…' : 'Subscribe'}
               </button>
@@ -333,7 +333,13 @@ const WorkWithUs = () => {
   };
 
   return (
-    <div className="work-with-us-page" style={{ paddingTop:'64px', minHeight:'100vh' }}>
+    <div className="work-with-us-page" style={{ paddingTop:'64px' }}>
+      {/* Fixed parallax background */}
+      <div style={{ position:'fixed', inset:0, zIndex:0, backgroundImage:'url("https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=1800&q=80&fm=jpg")', backgroundSize:'cover', backgroundPosition:'center', backgroundRepeat:'no-repeat', filter:'brightness(0.22) saturate(0.45)' }} />
+      <div style={{ position:'fixed', inset:0, zIndex:1, background:'rgba(5,6,8,0.55)', pointerEvents:'none' }} />
+      <div style={{ position:'fixed', inset:0, zIndex:2, background:'radial-gradient(ellipse 100% 100% at 50% 50%, transparent 20%, rgba(8,9,11,0.75) 100%)', pointerEvents:'none' }} />
+
+      <div style={{ position:'relative', zIndex:3 }}>
       <Helmet>
         <title>Work With Us | {seoSettings.global_seo?.site_name||'Shadow Wolves Productions'}</title>
         <meta name="description" content="Submit your project or get in touch with Shadow Wolves Productions." />
@@ -402,6 +408,7 @@ const WorkWithUs = () => {
 
       <FAQSection />
       <NewsletterSection />
+      </div>
     </div>
   );
 };

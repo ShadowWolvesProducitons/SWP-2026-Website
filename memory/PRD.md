@@ -100,8 +100,18 @@ Build a comprehensive "Studio Access Portal" and modernize the public-facing web
 - Admin URL: `/admin` (triple-click footer copyright)
 - Admin Password: `Shadow_Wolves01!`
 
+#### Frontend UI Overhaul (Feb 15, 2026)
+- [x] Home: Removed "What We're Building" section, removed Services heading, centred Additional Support chips
+- [x] Home: Fixed newsletter email input (replaced broken swp-input class with inline styles)
+- [x] Films: Redesigned film cards — 5-column glass grid, poster zoom, FEATURED badge removed (brighter border instead)
+- [x] All public pages: Fixed parallax background (Home, Films, TheDen, WorkWithUs)
+- [x] All public pages: Removed bottom whitespace (minHeight removed)
+- [x] SupportModal: Removed emoji characters from headings
+- [x] WorkWithUs: Fixed newsletter email input
+
 ## Backlog (Prioritized)
 - [ ] P0: Dynamic Pages System with drag-and-drop reordering
+- [ ] P1: Rename "CineConnect" to "Spot'd" in frontend (WorkWithUs sidebar + FAQ)
 - [ ] P3: HTML Code Editor in Blog Posts
 - [ ] P1: E-commerce Integration (Stripe for The Armory)
 - [ ] P2: Spot'd Integration (www.getspotd.app - cast & crew database for indie filmmakers)

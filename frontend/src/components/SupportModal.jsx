@@ -128,7 +128,6 @@ const SupportModal = ({ open, onClose, supportKey }) => {
                 <h2 
                   className="text-xl md:text-2xl font-bold text-white flex items-center gap-3 font-display"
                 >
-                  <span className="text-2xl">{content.emoji}</span>
                   {content.title}
                 </h2>
                 <p className="text-swp-white-ghost text-sm mt-1 italic">
