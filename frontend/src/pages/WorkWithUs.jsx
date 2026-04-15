@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Send, CheckCircle, ChevronDown, Mail, Plus, Minus, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
@@ -18,7 +18,7 @@ const FAQ_ITEMS = [
   { question:"Do you accept unsolicited scripts or attachments?", answer:"Not upfront. We don't accept unsolicited attachments for legal and confidentiality reasons. If there's alignment, we'll request materials securely." },
   { question:"What should I submit first?", answer:"Start with a strong logline and a link to your pitch materials (deck, lookbook, or teaser). Keep it lean. If it hooks us, we'll ask for the next layer." },
   { question:"What formats do you work with?", answer:"Short films, feature films, series, and documentaries (selectively). Choose the format that best serves the story, not the one that feels easiest to \"get made.\"" },
-  { question:"I'm cast/crew. How do I get into your database?", answer:"CineConnect is our upcoming cast & crew network. Register your interest and we'll notify you when it opens.", link:{ text:"CineConnect", url:"https://www.cognitoforms.com/ShadowWolvesProductions/CastCrewHub" } },
+  { question:"I'm cast/crew. How do I get into your database?", answer:"Spot'd is our upcoming cast & crew network for indie filmmakers. Register your interest and we'll notify you when it opens.", link:{ text:"Spot'd", url:"https://www.getspotd.app" } },
   { question:"Do you work with investors and partners?", answer:"Yes, through our Studio Access Portal. If you're interested in investment, you can", link:{ text:"REQUEST ACCESS", url:"/request-access" } },
   { question:"How long does it take to hear back?", answer:"If it's a fit, you'll hear from us. If it's not, you probably won't. We keep our focus tight so we can actually build." },
   { question:"Can I submit multiple projects?", answer:"Submit your best one first. If it connects, we'll open the door to more." },
@@ -45,15 +45,15 @@ const T = {
 };
 
 // ── CINECONNECT CARD ──
-const CineConnectCard = () => (
-  <div style={{ ...T.glass, padding:'28px 30px' }} data-testid="cineconnect-section">
+const SpotdCard = () => (
+  <div style={{ ...T.glass, padding:'28px 30px' }} data-testid="spotd-section">
     <div style={{ ...T.mono, color:'rgba(106,157,190,0.6)', marginBottom:'10px' }}>Coming soon</div>
-    <h4 style={{ fontFamily:'var(--font-display)', fontSize:'22px', color:'var(--swp-white)', letterSpacing:'0.03em', marginBottom:'10px' }}>CineConnect</h4>
+    <h4 style={{ fontFamily:'var(--font-display)', fontSize:'22px', color:'var(--swp-white)', letterSpacing:'0.03em', marginBottom:'10px' }}>Spot'd</h4>
     <p style={{ fontFamily:'var(--font-body)', fontSize:'13px', fontWeight:300, color:'rgba(238,240,242,0.42)', lineHeight:1.65, marginBottom:'20px' }}>
-      Cast &amp; Crew Network launching soon. Fill out the form to join our talent database and you'll already be in the system when we go live.
+      Cast &amp; Crew database for indie filmmakers launching soon at <a href="https://www.getspotd.app" target="_blank" rel="noopener noreferrer" style={{ color:'rgba(106,157,190,0.7)', textDecoration:'none' }}>getspotd.app</a>. Fill out the form to join our talent database and you'll already be in the system when we go live.
     </p>
     <button onClick={() => window.open('https://www.cognitoforms.com/ShadowWolvesProductions/CastCrewHub','_blank')}
-      data-testid="cineconnect-register-btn"
+      data-testid="spotd-register-btn"
       className="btn-swp btn-swp-primary" style={{ width:'100%', justifyContent:'center' }}>
       Join the Database →
     </button>
@@ -319,7 +319,15 @@ const WorkWithUs = () => {
   const [activeLane, setActiveLane] = useState(null);
   const [projectSubmitted, setProjectSubmitted] = useState(false);
   const [enquirySubmitted, setEnquirySubmitted] = useState(false);
+  const parallaxRef = useRef(null);
   useEffect(() => { window.scrollTo(0,0); }, []);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (parallaxRef.current) parallaxRef.current.style.transform = `translateY(${window.scrollY * 0.12}px)`;
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
   const shouldRenderFaqSchema = seoSettings.organization_schema?.enable_faq_schema !== false;
 
   const LaneBtn = ({ lane, label, testId }) => {
@@ -335,7 +343,7 @@ const WorkWithUs = () => {
   return (
     <div className="work-with-us-page" style={{ paddingTop:'64px' }}>
       {/* Fixed parallax background */}
-      <div style={{ position:'fixed', inset:0, zIndex:0, backgroundImage:'url("https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=1800&q=80&fm=jpg")', backgroundSize:'cover', backgroundPosition:'center', backgroundRepeat:'no-repeat', filter:'brightness(0.22) saturate(0.45)' }} />
+      <div ref={parallaxRef} style={{ position:'fixed', inset:0, zIndex:0, backgroundImage:'url("https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=1800&q=80&fm=jpg")', backgroundSize:'cover', backgroundPosition:'center', backgroundRepeat:'no-repeat', filter:'brightness(0.22) saturate(0.45)', willChange:'transform' }} />
       <div style={{ position:'fixed', inset:0, zIndex:1, background:'rgba(5,6,8,0.55)', pointerEvents:'none' }} />
       <div style={{ position:'fixed', inset:0, zIndex:2, background:'radial-gradient(ellipse 100% 100% at 50% 50%, transparent 20%, rgba(8,9,11,0.75) 100%)', pointerEvents:'none' }} />
 
@@ -393,7 +401,7 @@ const WorkWithUs = () => {
 
           {/* Sidebar */}
           <div style={{ display:'flex', flexDirection:'column', gap:'10px' }}>
-            <CineConnectCard />
+            <SpotdCard />
             <div style={{ background:'rgba(17,19,24,0.68)', backdropFilter:'blur(16px)', border:'0.5px solid rgba(255,255,255,0.07)', borderRadius:'3px', padding:'24px 26px' }}>
               <div style={{ fontFamily:'var(--font-mono)', fontSize:'9px', letterSpacing:'0.16em', textTransform:'uppercase', color:'rgba(238,240,242,0.3)', marginBottom:'10px' }}>Direct contact</div>
               <div style={{ fontFamily:'var(--font-body)', fontSize:'13px', fontWeight:300, color:'rgba(238,240,242,0.45)', lineHeight:2 }}>

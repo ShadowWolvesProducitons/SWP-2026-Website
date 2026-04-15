@@ -109,6 +109,9 @@ Build a comprehensive "Studio Access Portal" and modernize the public-facing web
 - [x] SupportModal: Removed emoji characters from headings
 - [x] WorkWithUs: Fixed newsletter email input
 
+- [x] All public pages: Subtle parallax scroll depth effect (bg moves at 12% scroll speed, GPU-accelerated)
+- [x] WorkWithUs: Renamed CineConnect → Spot'd (sidebar card, FAQ answer, link to getspotd.app)
+
 ## Backlog (Prioritized)
 - [ ] P0: Dynamic Pages System with drag-and-drop reordering
 - [ ] P1: Rename "CineConnect" to "Spot'd" in frontend (WorkWithUs sidebar + FAQ)

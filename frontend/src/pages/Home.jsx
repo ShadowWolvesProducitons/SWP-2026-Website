@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Loader2 } from 'lucide-react';
@@ -25,8 +25,17 @@ const Home = () => {
   const [activeSupportKey, setActiveSupportKey] = useState(null);
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [subscribing, setSubscribing] = useState(false);
+  const parallaxRef = useRef(null);
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (parallaxRef.current) parallaxRef.current.style.transform = `translateY(${window.scrollY * 0.12}px)`;
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const openServicesModal = (key) => { setActiveServiceKey(key); setServicesModalOpen(true); };
   const closeServicesModal = () => { setServicesModalOpen(false); setTimeout(() => setActiveServiceKey(null), 200); };
@@ -61,7 +70,7 @@ const Home = () => {
   return (
     <div className="home-page" style={{ minHeight: undefined }}>
       {/* Fixed parallax background */}
-      <div style={{ position:'fixed', inset:0, zIndex:0, backgroundImage:'url("https://images.unsplash.com/photo-1536152470836-b943b246224c?w=1800&q=80&fm=jpg")', backgroundSize:'cover', backgroundPosition:'center', backgroundRepeat:'no-repeat', filter:'brightness(0.22) saturate(0.45)' }} />
+      <div ref={parallaxRef} style={{ position:'fixed', inset:0, zIndex:0, backgroundImage:'url("https://images.unsplash.com/photo-1536152470836-b943b246224c?w=1800&q=80&fm=jpg")', backgroundSize:'cover', backgroundPosition:'center', backgroundRepeat:'no-repeat', filter:'brightness(0.22) saturate(0.45)', willChange:'transform' }} />
       <div style={{ position:'fixed', inset:0, zIndex:1, background:'rgba(5,6,8,0.55)', pointerEvents:'none' }} />
       <div style={{ position:'fixed', inset:0, zIndex:2, background:'radial-gradient(ellipse 100% 100% at 50% 50%, transparent 20%, rgba(8,9,11,0.75) 100%)', pointerEvents:'none' }} />
 

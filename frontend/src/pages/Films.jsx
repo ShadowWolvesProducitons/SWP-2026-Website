@@ -39,8 +39,17 @@ const Films = () => {
   const genreDropdownRef = useRef(null);
   const statusDropdownRef = useRef(null);
   const scrollPositionRef = useRef(null);
+  const parallaxRef = useRef(null);
 
   useEffect(() => { if (!slug) window.scrollTo(0, 0); fetchFilms(); }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (parallaxRef.current) parallaxRef.current.style.transform = `translateY(${window.scrollY * 0.12}px)`;
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // ── URL-driven modal — preserved exactly ──
   useEffect(() => {
@@ -119,7 +128,7 @@ const Films = () => {
   return (
     <div className="films-page" style={{ paddingTop:'64px' }}>
       {/* Fixed parallax background */}
-      <div style={{ position:'fixed', inset:0, zIndex:0, backgroundImage:'url("https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=1800&q=80&fm=jpg")', backgroundSize:'cover', backgroundPosition:'center', backgroundRepeat:'no-repeat', filter:'brightness(0.22) saturate(0.45)' }} />
+      <div ref={parallaxRef} style={{ position:'fixed', inset:0, zIndex:0, backgroundImage:'url("https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=1800&q=80&fm=jpg")', backgroundSize:'cover', backgroundPosition:'center', backgroundRepeat:'no-repeat', filter:'brightness(0.22) saturate(0.45)', willChange:'transform' }} />
       <div style={{ position:'fixed', inset:0, zIndex:1, background:'rgba(5,6,8,0.55)', pointerEvents:'none' }} />
       <div style={{ position:'fixed', inset:0, zIndex:2, background:'radial-gradient(ellipse 100% 100% at 50% 50%, transparent 20%, rgba(8,9,11,0.75) 100%)', pointerEvents:'none' }} />
 

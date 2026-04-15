@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Smartphone, Download, FileText, BookOpen, GraduationCap, ExternalLink, RefreshCw, Star } from 'lucide-react';
 import { Helmet } from 'react-helmet';
@@ -23,8 +23,17 @@ const TheDen = () => {
   const [items, setItems]         = useState([]);
   const [loading, setLoading]     = useState(true);
   const [allItems, setAllItems]   = useState([]);
+  const parallaxRef = useRef(null);
 
   useEffect(() => { window.scrollTo(0, 0); fetchAllItems(); }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (parallaxRef.current) parallaxRef.current.style.transform = `translateY(${window.scrollY * 0.12}px)`;
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     setItems(activeTab === 'All' ? allItems : allItems.filter(i => i.item_type === activeTab));
@@ -55,7 +64,7 @@ const TheDen = () => {
   return (
     <div className="the-armory-page" style={{ paddingTop:'64px' }}>
       {/* Fixed parallax background */}
-      <div style={{ position:'fixed', inset:0, zIndex:0, backgroundImage:'url("https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=1800&q=80&fm=jpg")', backgroundSize:'cover', backgroundPosition:'center', backgroundRepeat:'no-repeat', filter:'brightness(0.22) saturate(0.45)' }} />
+      <div ref={parallaxRef} style={{ position:'fixed', inset:0, zIndex:0, backgroundImage:'url("https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=1800&q=80&fm=jpg")', backgroundSize:'cover', backgroundPosition:'center', backgroundRepeat:'no-repeat', filter:'brightness(0.22) saturate(0.45)', willChange:'transform' }} />
       <div style={{ position:'fixed', inset:0, zIndex:1, background:'rgba(5,6,8,0.55)', pointerEvents:'none' }} />
       <div style={{ position:'fixed', inset:0, zIndex:2, background:'radial-gradient(ellipse 100% 100% at 50% 50%, transparent 20%, rgba(8,9,11,0.75) 100%)', pointerEvents:'none' }} />
 
