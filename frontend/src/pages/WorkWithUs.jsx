@@ -23,8 +23,6 @@ const FAQ_ITEMS = [
   { question:"How long does it take to hear back?", answer:"If it's a fit, you'll hear from us. If it's not, you probably won't. We keep our focus tight so we can actually build." },
   { question:"Can I submit multiple projects?", answer:"Submit your best one first. If it connects, we'll open the door to more." },
   { question:"Aside from films, what else do you do?", answer:"We build more than projects. We're developing a studio ecosystem — tools, resources, and platforms designed to support independent creators." },
-  { question:"What is The Den?", answer:"The Den is our working studio journal. Casting calls, crew intel, production lessons, industry news, and tools we actually use." },
-  { question:"What is The Armory?", answer:"The Armory is our creative arsenal — premium apps, templates, and resources built from real-world production experience." },
   { question:"Is Shadow Wolves just horror?", answer:"No. Genre is our backbone, but not our limit. We prioritise bold, commercially viable stories across film and series." },
 ];
 
