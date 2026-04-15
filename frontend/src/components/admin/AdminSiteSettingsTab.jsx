@@ -29,17 +29,17 @@ const AdminSiteSettingsTab = () => {
   return (
     <div className="space-y-6">
       {/* Tab Navigation */}
-      <div className="flex gap-2 border-b border-gray-800 pb-4">
+      <div className="flex gap-2 border-b border-swp-border pb-4">
         {TABS.map((tab) => {
           const Icon = tab.icon;
           return (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition-all ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-swp text-sm transition-all ${
                 activeTab === tab.id
                   ? 'bg-white text-black'
-                  : 'bg-smoke-gray text-gray-400 border border-gray-700 hover:text-white hover:border-gray-500'
+                  : 'bg-swp-surface text-swp-white-ghost border border-swp-border hover:text-swp-white hover:border-gray-500'
               }`}
               data-testid={`settings-tab-${tab.id}`}
             >
@@ -171,7 +171,7 @@ const PageHeadersSection = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <RefreshCw className="w-8 h-8 text-electric-blue animate-spin" />
+        <RefreshCw className="w-8 h-8 text-swp-ice animate-spin" />
       </div>
     );
   }
@@ -185,7 +185,7 @@ const PageHeadersSection = () => {
         return (
           <div 
             key={page.id}
-            className="bg-smoke-gray border border-gray-800 rounded-xl overflow-hidden"
+            className="bg-swp-surface border border-swp-border rounded-swp overflow-hidden"
           >
             {/* Collapsed Header */}
             <button
@@ -205,21 +205,21 @@ const PageHeadersSection = () => {
                 <span className="text-white font-medium">{page.label}</span>
               </div>
               {isExpanded ? (
-                <ChevronUp size={20} className="text-gray-400" />
+                <ChevronUp size={20} className="text-swp-white-ghost" />
               ) : (
-                <ChevronDown size={20} className="text-gray-400" />
+                <ChevronDown size={20} className="text-swp-white-ghost" />
               )}
             </button>
 
             {/* Expanded Content */}
             {isExpanded && (
-              <div className="px-4 pb-4 border-t border-gray-800">
+              <div className="px-4 pb-4 border-t border-swp-border">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
                   {/* Preview */}
                   <div>
-                    <label className="text-sm text-gray-400 mb-2 block">Preview</label>
+                    <label className="text-sm text-swp-white-ghost mb-2 block">Preview</label>
                     <div 
-                      className="relative w-full h-48 rounded-lg overflow-hidden bg-gray-900"
+                      className="relative w-full h-48 rounded-swp overflow-hidden bg-gray-900"
                       style={{
                         backgroundImage: `url(${API}${getImageUrl(page.id)})`,
                         backgroundSize: 'cover',
@@ -232,15 +232,15 @@ const PageHeadersSection = () => {
                       />
                       <div className="absolute inset-0 flex items-center p-6">
                         <div>
-                          <h3 className="text-3xl font-bold text-white font-cinzel">
+                          <h3 className="text-3xl font-bold text-white font-display">
                             {pageSettings.title || page.label}
                           </h3>
                           {pageSettings.subtitle && (
-                            <p className="text-gray-300 mt-2">{pageSettings.subtitle}</p>
+                            <p className="text-swp-white-dim mt-2">{pageSettings.subtitle}</p>
                           )}
                         </div>
                       </div>
-                      <div className="absolute bottom-2 right-2 bg-black/70 px-2 py-1 rounded text-xs text-gray-300 flex items-center gap-1">
+                      <div className="absolute bottom-2 right-2 bg-swp-black/70 px-2 py-1 rounded text-xs text-swp-white-dim flex items-center gap-1">
                         <Move size={12} />
                         {pageSettings.position_x ?? 50}%, {pageSettings.position_y ?? 30}%
                       </div>
@@ -251,7 +251,7 @@ const PageHeadersSection = () => {
                   <div className="space-y-4">
                     {/* Image Upload */}
                     <div>
-                      <label className="text-sm text-gray-400 mb-2 block">Header Image</label>
+                      <label className="text-sm text-swp-white-ghost mb-2 block">Header Image</label>
                       <input
                         type="file"
                         accept="image/*"
@@ -262,7 +262,7 @@ const PageHeadersSection = () => {
                       <button
                         onClick={() => fileInputRefs.current[page.id]?.click()}
                         disabled={uploading[page.id]}
-                        className="w-full px-4 py-2.5 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg text-gray-300 text-sm flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+                        className="w-full px-4 py-2.5 bg-gray-800 hover:bg-gray-700 border border-swp-border rounded-swp text-swp-white-dim text-sm flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
                       >
                         {uploading[page.id] ? (
                           <>
@@ -276,14 +276,14 @@ const PageHeadersSection = () => {
                           </>
                         )}
                       </button>
-                      <p className="text-xs text-gray-500 mt-1">Recommended: 1920×600px or wider</p>
+                      <p className="text-xs text-swp-white-ghost/70 mt-1">Recommended: 1920×600px or wider</p>
                     </div>
 
                     {/* Position X */}
                     <div>
-                      <label className="text-sm text-gray-400 mb-2 flex items-center justify-between">
+                      <label className="text-sm text-swp-white-ghost mb-2 flex items-center justify-between">
                         <span>Horizontal Position</span>
-                        <span className="text-electric-blue">{pageSettings.position_x ?? 50}%</span>
+                        <span className="text-swp-ice">{pageSettings.position_x ?? 50}%</span>
                       </label>
                       <input
                         type="range"
@@ -297,9 +297,9 @@ const PageHeadersSection = () => {
 
                     {/* Position Y */}
                     <div>
-                      <label className="text-sm text-gray-400 mb-2 flex items-center justify-between">
+                      <label className="text-sm text-swp-white-ghost mb-2 flex items-center justify-between">
                         <span>Vertical Position</span>
-                        <span className="text-electric-blue">{pageSettings.position_y ?? 30}%</span>
+                        <span className="text-swp-ice">{pageSettings.position_y ?? 30}%</span>
                       </label>
                       <input
                         type="range"
@@ -313,9 +313,9 @@ const PageHeadersSection = () => {
 
                     {/* Overlay Opacity */}
                     <div>
-                      <label className="text-sm text-gray-400 mb-2 flex items-center justify-between">
+                      <label className="text-sm text-swp-white-ghost mb-2 flex items-center justify-between">
                         <span>Overlay Darkness</span>
-                        <span className="text-electric-blue">{pageSettings.overlay_opacity ?? 85}%</span>
+                        <span className="text-swp-ice">{pageSettings.overlay_opacity ?? 85}%</span>
                       </label>
                       <input
                         type="range"
@@ -331,7 +331,7 @@ const PageHeadersSection = () => {
                     <button
                       onClick={() => handleSave(page.id)}
                       disabled={saving}
-                      className="w-full px-4 py-2.5 bg-electric-blue hover:bg-electric-blue/90 text-white rounded-lg font-medium flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+                      className="w-full px-4 py-2.5 bg-swp-ice hover:bg-swp-ice text-white rounded-swp font-medium flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
                     >
                       {saving ? (
                         <>
@@ -351,7 +351,7 @@ const PageHeadersSection = () => {
                       href={`/${page.id === 'armory' ? 'services' : page.id === 'den' ? 'blog' : page.id === 'workwithus' ? 'work-with-us' : page.id}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full px-4 py-2 border border-gray-700 hover:border-gray-500 text-gray-400 hover:text-white rounded-lg text-sm flex items-center justify-center gap-2 transition-colors"
+                      className="w-full px-4 py-2 border border-swp-border hover:border-gray-500 text-swp-white-ghost hover:text-swp-white rounded-swp text-sm flex items-center justify-center gap-2 transition-colors"
                     >
                       <Eye size={16} />
                       Preview Page
@@ -503,7 +503,7 @@ const RedirectsSection = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <RefreshCw className="w-8 h-8 text-electric-blue animate-spin" />
+        <RefreshCw className="w-8 h-8 text-swp-ice animate-spin" />
       </div>
     );
   }
@@ -513,13 +513,13 @@ const RedirectsSection = () => {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <p className="text-gray-500 text-sm">
+          <p className="text-swp-white-ghost/70 text-sm">
             Manage URL redirects for your site. Redirects run server-side before page rendering.
           </p>
         </div>
         <button
           onClick={handleCreate}
-          className="flex items-center gap-2 px-4 py-2 bg-electric-blue hover:bg-electric-blue/90 text-white rounded-lg transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-swp-ice hover:bg-swp-ice text-white rounded-swp transition-colors"
           data-testid="create-redirect-btn"
         >
           <Plus size={18} />
@@ -529,38 +529,38 @@ const RedirectsSection = () => {
 
       {/* Rules List */}
       {rules.length === 0 ? (
-        <div className="text-center py-12 bg-smoke-gray border border-gray-800 rounded-lg">
+        <div className="text-center py-12 bg-swp-surface border border-swp-border rounded-swp">
           <ArrowRight className="w-12 h-12 text-gray-700 mx-auto mb-4" />
-          <p className="text-gray-400">No redirects configured</p>
-          <p className="text-gray-600 text-sm mt-2">Add a redirect to forward visitors from one URL to another.</p>
+          <p className="text-swp-white-ghost">No redirects configured</p>
+          <p className="text-swp-white-ghost/50 text-sm mt-2">Add a redirect to forward visitors from one URL to another.</p>
         </div>
       ) : (
-        <div className="bg-smoke-gray border border-gray-800 rounded-lg overflow-hidden">
+        <div className="bg-swp-surface border border-swp-border rounded-swp overflow-hidden">
           <table className="w-full">
-            <thead className="bg-black/30 border-b border-gray-800">
+            <thead className="bg-swp-deep/50 border-b border-swp-border">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-mono text-gray-500 uppercase">From</th>
-                <th className="px-4 py-3 text-left text-xs font-mono text-gray-500 uppercase">To</th>
-                <th className="px-4 py-3 text-center text-xs font-mono text-gray-500 uppercase">Type</th>
-                <th className="px-4 py-3 text-center text-xs font-mono text-gray-500 uppercase">Status</th>
-                <th className="px-4 py-3 text-center text-xs font-mono text-gray-500 uppercase">Enabled</th>
-                <th className="px-4 py-3 text-right text-xs font-mono text-gray-500 uppercase">Actions</th>
+                <th className="px-4 py-3 text-left text-xs font-mono text-swp-white-ghost/70 uppercase">From</th>
+                <th className="px-4 py-3 text-left text-xs font-mono text-swp-white-ghost/70 uppercase">To</th>
+                <th className="px-4 py-3 text-center text-xs font-mono text-swp-white-ghost/70 uppercase">Type</th>
+                <th className="px-4 py-3 text-center text-xs font-mono text-swp-white-ghost/70 uppercase">Status</th>
+                <th className="px-4 py-3 text-center text-xs font-mono text-swp-white-ghost/70 uppercase">Enabled</th>
+                <th className="px-4 py-3 text-right text-xs font-mono text-swp-white-ghost/70 uppercase">Actions</th>
               </tr>
             </thead>
             <tbody>
               {rules.map((rule) => (
-                <tr key={rule.id} className="border-b border-gray-800 last:border-0 hover:bg-black/20">
+                <tr key={rule.id} className="border-b border-swp-border last:border-0 hover:bg-swp-black/20">
                   <td className="px-4 py-3">
-                    <code className="text-sm text-electric-blue">{rule.from_path}</code>
+                    <code className="text-sm text-swp-ice">{rule.from_path}</code>
                     {rule.match_type === 'PREFIX' && (
-                      <span className="ml-2 text-xs text-gray-500">*</span>
+                      <span className="ml-2 text-xs text-swp-white-ghost/70">*</span>
                     )}
                   </td>
                   <td className="px-4 py-3">
-                    <code className="text-sm text-gray-300 truncate max-w-[200px] block">{rule.to_url}</code>
+                    <code className="text-sm text-swp-white-dim truncate max-w-[200px] block">{rule.to_url}</code>
                   </td>
                   <td className="px-4 py-3 text-center">
-                    <span className="px-2 py-1 text-xs rounded bg-gray-800 text-gray-400">
+                    <span className="px-2 py-1 text-xs rounded bg-gray-800 text-swp-white-ghost">
                       {rule.match_type}
                     </span>
                   </td>
@@ -579,7 +579,7 @@ const RedirectsSection = () => {
                       className={`p-1 rounded transition-colors ${
                         rule.is_enabled 
                           ? 'text-green-400 hover:bg-green-500/10' 
-                          : 'text-gray-500 hover:bg-gray-800'
+                          : 'text-swp-white-ghost/70 hover:bg-gray-800'
                       }`}
                     >
                       {rule.is_enabled ? <ToggleRight size={20} /> : <ToggleLeft size={20} />}
@@ -589,14 +589,14 @@ const RedirectsSection = () => {
                     <div className="flex items-center justify-end gap-1">
                       <button
                         onClick={() => handleEdit(rule)}
-                        className="p-1.5 text-gray-500 hover:text-electric-blue hover:bg-electric-blue/10 rounded transition-colors"
+                        className="p-1.5 text-swp-white-ghost/70 hover:text-swp-ice hover:bg-swp-ice/10 rounded transition-colors"
                         title="Edit"
                       >
                         <Edit2 size={16} />
                       </button>
                       <button
                         onClick={() => handleDelete(rule.id)}
-                        className="p-1.5 text-gray-500 hover:text-red-400 hover:bg-red-500/10 rounded transition-colors"
+                        className="p-1.5 text-swp-white-ghost/70 hover:text-red-400 hover:bg-red-500/10 rounded transition-colors"
                         title="Delete"
                       >
                         <Trash2 size={16} />
@@ -611,61 +611,61 @@ const RedirectsSection = () => {
       )}
 
       {/* Info */}
-      <div className="mt-4 bg-electric-blue/10 border border-electric-blue/30 rounded-lg p-4">
+      <div className="mt-4 bg-swp-ice/10 border border-swp-ice/30 rounded-swp p-4">
         <div className="flex items-start gap-3">
-          <AlertCircle size={18} className="text-electric-blue flex-shrink-0 mt-0.5" />
-          <div className="text-sm text-gray-300">
-            <p><strong className="text-electric-blue">301</strong> = Permanent redirect (cached by browsers)</p>
-            <p><strong className="text-electric-blue">302</strong> = Temporary redirect (not cached)</p>
-            <p className="mt-1 text-gray-500">PREFIX match redirects all URLs starting with the from path.</p>
+          <AlertCircle size={18} className="text-swp-ice flex-shrink-0 mt-0.5" />
+          <div className="text-sm text-swp-white-dim">
+            <p><strong className="text-swp-ice">301</strong> = Permanent redirect (cached by browsers)</p>
+            <p><strong className="text-swp-ice">302</strong> = Temporary redirect (not cached)</p>
+            <p className="mt-1 text-swp-white-ghost/70">PREFIX match redirects all URLs starting with the from path.</p>
           </div>
         </div>
       </div>
 
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80">
-          <div className="bg-smoke-gray border border-gray-800 rounded-xl w-full max-w-lg">
-            <div className="flex items-center justify-between p-4 border-b border-gray-800">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-swp-deep/90">
+          <div className="bg-swp-surface border border-swp-border rounded-swp w-full max-w-lg">
+            <div className="flex items-center justify-between p-4 border-b border-swp-border">
               <h3 className="text-lg font-bold text-white">
                 {editingRule ? 'Edit Redirect' : 'Add Redirect'}
               </h3>
-              <button onClick={() => setShowModal(false)} className="p-1 text-gray-400 hover:text-white">
+              <button onClick={() => setShowModal(false)} className="p-1 text-swp-white-ghost hover:text-swp-white">
                 ×
               </button>
             </div>
             
             <div className="p-4 space-y-4">
               <div>
-                <label className="block text-gray-400 text-sm mb-1">From Path *</label>
+                <label className="block text-swp-white-ghost text-sm mb-1">From Path *</label>
                 <input
                   type="text"
                   value={formData.from_path}
                   onChange={(e) => setFormData(prev => ({ ...prev, from_path: e.target.value }))}
                   placeholder="/old-path"
-                  className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:border-electric-blue focus:outline-none"
+                  className="w-full bg-swp-black border border-swp-border rounded-swp px-4 py-2.5 text-white focus:border-swp-ice focus:outline-none"
                 />
-                <p className="text-xs text-gray-500 mt-1">Must start with /</p>
+                <p className="text-xs text-swp-white-ghost/70 mt-1">Must start with /</p>
               </div>
               
               <div>
-                <label className="block text-gray-400 text-sm mb-1">To URL *</label>
+                <label className="block text-swp-white-ghost text-sm mb-1">To URL *</label>
                 <input
                   type="text"
                   value={formData.to_url}
                   onChange={(e) => setFormData(prev => ({ ...prev, to_url: e.target.value }))}
                   placeholder="https://example.com/new-path or /new-path"
-                  className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:border-electric-blue focus:outline-none"
+                  className="w-full bg-swp-black border border-swp-border rounded-swp px-4 py-2.5 text-white focus:border-swp-ice focus:outline-none"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-gray-400 text-sm mb-1">Status Code</label>
+                  <label className="block text-swp-white-ghost text-sm mb-1">Status Code</label>
                   <select
                     value={formData.status_code}
                     onChange={(e) => setFormData(prev => ({ ...prev, status_code: parseInt(e.target.value) }))}
-                    className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:border-electric-blue focus:outline-none"
+                    className="w-full bg-swp-black border border-swp-border rounded-swp px-4 py-2.5 text-white focus:border-swp-ice focus:outline-none"
                   >
                     <option value={301}>301 (Permanent)</option>
                     <option value={302}>302 (Temporary)</option>
@@ -673,11 +673,11 @@ const RedirectsSection = () => {
                 </div>
                 
                 <div>
-                  <label className="block text-gray-400 text-sm mb-1">Match Type</label>
+                  <label className="block text-swp-white-ghost text-sm mb-1">Match Type</label>
                   <select
                     value={formData.match_type}
                     onChange={(e) => setFormData(prev => ({ ...prev, match_type: e.target.value }))}
-                    className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:border-electric-blue focus:outline-none"
+                    className="w-full bg-swp-black border border-swp-border rounded-swp px-4 py-2.5 text-white focus:border-swp-ice focus:outline-none"
                   >
                     <option value="EXACT">Exact Match</option>
                     <option value="PREFIX">Prefix Match</option>
@@ -687,14 +687,14 @@ const RedirectsSection = () => {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-gray-400 text-sm mb-1">Priority</label>
+                  <label className="block text-swp-white-ghost text-sm mb-1">Priority</label>
                   <input
                     type="number"
                     value={formData.priority}
                     onChange={(e) => setFormData(prev => ({ ...prev, priority: parseInt(e.target.value) }))}
-                    className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:border-electric-blue focus:outline-none"
+                    className="w-full bg-swp-black border border-swp-border rounded-swp px-4 py-2.5 text-white focus:border-swp-ice focus:outline-none"
                   />
-                  <p className="text-xs text-gray-500 mt-1">Lower = higher priority</p>
+                  <p className="text-xs text-swp-white-ghost/70 mt-1">Lower = higher priority</p>
                 </div>
                 
                 <div className="flex items-center gap-4 pt-6">
@@ -703,9 +703,9 @@ const RedirectsSection = () => {
                       type="checkbox"
                       checked={formData.preserve_query}
                       onChange={(e) => setFormData(prev => ({ ...prev, preserve_query: e.target.checked }))}
-                      className="w-4 h-4 rounded border-gray-600 bg-black text-electric-blue focus:ring-electric-blue"
+                      className="w-4 h-4 rounded border-gray-600 bg-swp-black text-swp-ice focus:ring-swp-ice"
                     />
-                    <span className="text-gray-300 text-sm">Preserve Query</span>
+                    <span className="text-swp-white-dim text-sm">Preserve Query</span>
                   </label>
                   
                   <label className="flex items-center gap-2 cursor-pointer">
@@ -713,36 +713,36 @@ const RedirectsSection = () => {
                       type="checkbox"
                       checked={formData.is_enabled}
                       onChange={(e) => setFormData(prev => ({ ...prev, is_enabled: e.target.checked }))}
-                      className="w-4 h-4 rounded border-gray-600 bg-black text-electric-blue focus:ring-electric-blue"
+                      className="w-4 h-4 rounded border-gray-600 bg-swp-black text-swp-ice focus:ring-swp-ice"
                     />
-                    <span className="text-gray-300 text-sm">Enabled</span>
+                    <span className="text-swp-white-dim text-sm">Enabled</span>
                   </label>
                 </div>
               </div>
 
               <div>
-                <label className="block text-gray-400 text-sm mb-1">Note (optional)</label>
+                <label className="block text-swp-white-ghost text-sm mb-1">Note (optional)</label>
                 <input
                   type="text"
                   value={formData.note}
                   onChange={(e) => setFormData(prev => ({ ...prev, note: e.target.value }))}
                   placeholder="Internal note about this redirect"
-                  className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:border-electric-blue focus:outline-none"
+                  className="w-full bg-swp-black border border-swp-border rounded-swp px-4 py-2.5 text-white focus:border-swp-ice focus:outline-none"
                 />
               </div>
             </div>
 
-            <div className="flex justify-end gap-3 p-4 border-t border-gray-800">
+            <div className="flex justify-end gap-3 p-4 border-t border-swp-border">
               <button 
                 onClick={() => setShowModal(false)} 
-                className="px-4 py-2 border border-gray-700 text-gray-400 rounded-lg hover:text-white text-sm"
+                className="px-4 py-2 border border-swp-border text-swp-white-ghost rounded-swp hover:text-swp-white text-sm"
               >
                 Cancel
               </button>
               <button 
                 onClick={handleSave}
                 disabled={saving}
-                className="px-4 py-2 bg-electric-blue text-white rounded-lg text-sm disabled:opacity-50"
+                className="px-4 py-2 bg-swp-ice text-white rounded-swp text-sm disabled:opacity-50"
               >
                 {saving ? 'Saving...' : (editingRule ? 'Update' : 'Create')}
               </button>

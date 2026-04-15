@@ -39,7 +39,7 @@ const COLLECTIONS = [
 const VISIBILITY = [
   { id: 'public', label: 'Public', icon: Globe, color: 'text-green-400 bg-green-500/10 border-green-500/30' },
   { id: 'investor_only', label: 'Investor', icon: Shield, color: 'text-yellow-400 bg-yellow-500/10 border-yellow-500/30' },
-  { id: 'admin_only', label: 'Admin', icon: Lock, color: 'text-gray-400 bg-gray-500/10 border-gray-500/30' },
+  { id: 'admin_only', label: 'Admin', icon: Lock, color: 'text-swp-white-ghost bg-gray-500/10 border-gray-500/30' },
 ];
 
 const AdminAssetsTab = () => {
@@ -328,11 +328,11 @@ const AdminAssetsTab = () => {
       <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
         <div>
           <h2 className="text-2xl font-bold text-white" data-testid="assets-title">Asset Library</h2>
-          <p className="text-gray-500 text-sm">{assets.length} total assets</p>
+          <p className="text-swp-white-ghost/70 text-sm">{assets.length} total assets</p>
         </div>
         <button 
           onClick={() => setShowUpload(!showUpload)} 
-          className="flex items-center gap-2 px-4 py-2 bg-electric-blue text-white rounded-lg text-sm" 
+          className="flex items-center gap-2 px-4 py-2 bg-swp-ice text-white rounded-swp text-sm" 
           data-testid="upload-asset-btn"
         >
           <Upload size={16} /> Upload Asset
@@ -341,16 +341,16 @@ const AdminAssetsTab = () => {
 
       {/* Upload Panel */}
       {showUpload && (
-        <div className="bg-smoke-gray border border-gray-700 rounded-lg p-5 mb-6 space-y-4" data-testid="upload-panel">
+        <div className="bg-swp-surface border border-swp-border rounded-swp p-5 mb-6 space-y-4" data-testid="upload-panel">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Collection */}
             <div>
-              <label className="block text-gray-400 text-xs mb-1">Collection</label>
+              <label className="block text-swp-white-ghost text-xs mb-1">Collection</label>
               <select 
                 value={activeCollection !== 'all' ? activeCollection : uploadForm.collection} 
                 onChange={e => setUploadForm(s => ({ ...s, collection: e.target.value }))} 
                 disabled={activeCollection !== 'all'}
-                className="w-full bg-black border border-gray-700 rounded-lg px-3 py-2 text-white text-sm disabled:opacity-50"
+                className="w-full bg-swp-black border border-swp-border rounded-swp px-3 py-2 text-white text-sm disabled:opacity-50"
               >
                 {COLLECTIONS.slice(1).map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
               </select>
@@ -358,12 +358,12 @@ const AdminAssetsTab = () => {
             
             {/* Folder (Film/App) */}
             <div>
-              <label className="block text-gray-400 text-xs mb-1">Folder (Film/App)</label>
+              <label className="block text-swp-white-ghost text-xs mb-1">Folder (Film/App)</label>
               <select 
                 value={activeFolder || uploadForm.folder} 
                 onChange={e => setUploadForm(s => ({ ...s, folder: e.target.value }))} 
                 disabled={!!activeFolder}
-                className="w-full bg-black border border-gray-700 rounded-lg px-3 py-2 text-white text-sm disabled:opacity-50"
+                className="w-full bg-swp-black border border-swp-border rounded-swp px-3 py-2 text-white text-sm disabled:opacity-50"
               >
                 <option value="">No folder</option>
                 {films.map(f => <option key={f.id} value={f.id}>{f.title}</option>)}
@@ -372,7 +372,7 @@ const AdminAssetsTab = () => {
             
             {/* Categories (multi-select) */}
             <div>
-              <label className="block text-gray-400 text-xs mb-1">Categories</label>
+              <label className="block text-swp-white-ghost text-xs mb-1">Categories</label>
               <div className="flex flex-wrap gap-1">
                 {CATEGORY_FILTERS.slice(1).map(c => (
                   <button
@@ -388,8 +388,8 @@ const AdminAssetsTab = () => {
                     }}
                     className={`px-2 py-1 rounded text-xs transition-all ${
                       uploadForm.categories.includes(c.id)
-                        ? 'bg-electric-blue text-white'
-                        : 'bg-black border border-gray-700 text-gray-400 hover:text-white'
+                        ? 'bg-swp-ice text-white'
+                        : 'bg-swp-black border border-swp-border text-swp-white-ghost hover:text-swp-white'
                     }`}
                   >
                     {c.label}
@@ -400,11 +400,11 @@ const AdminAssetsTab = () => {
             
             {/* Visibility */}
             <div>
-              <label className="block text-gray-400 text-xs mb-1">Visibility</label>
+              <label className="block text-swp-white-ghost text-xs mb-1">Visibility</label>
               <select 
                 value={uploadForm.visibility} 
                 onChange={e => setUploadForm(s => ({ ...s, visibility: e.target.value }))} 
-                className="w-full bg-black border border-gray-700 rounded-lg px-3 py-2 text-white text-sm"
+                className="w-full bg-swp-black border border-swp-border rounded-swp px-3 py-2 text-white text-sm"
               >
                 {VISIBILITY.map(v => <option key={v.id} value={v.id}>{v.label}</option>)}
               </select>
@@ -413,20 +413,20 @@ const AdminAssetsTab = () => {
           
           {/* Tags */}
           <div>
-            <label className="block text-gray-400 text-xs mb-1">Tags (comma-separated)</label>
+            <label className="block text-swp-white-ghost text-xs mb-1">Tags (comma-separated)</label>
             <input 
               type="text" 
               value={uploadForm.tags} 
               onChange={e => setUploadForm(s => ({ ...s, tags: e.target.value }))} 
-              className="w-full bg-black border border-gray-700 rounded-lg px-3 py-2 text-white text-sm" 
+              className="w-full bg-swp-black border border-swp-border rounded-swp px-3 py-2 text-white text-sm" 
               placeholder="hero, promotional, behind-scenes" 
             />
           </div>
           
           {/* File Input */}
-          <label className="flex items-center justify-center gap-3 px-6 py-8 bg-black border-2 border-dashed border-gray-700 rounded-lg cursor-pointer hover:border-electric-blue/50 transition-colors">
-            <Upload size={24} className="text-gray-500" />
-            <span className="text-gray-400">{uploading ? 'Uploading...' : 'Click to select files (or drag & drop)'}</span>
+          <label className="flex items-center justify-center gap-3 px-6 py-8 bg-swp-black border-2 border-dashed border-swp-border rounded-swp cursor-pointer hover:border-swp-ice/30 transition-colors">
+            <Upload size={24} className="text-swp-white-ghost/70" />
+            <span className="text-swp-white-ghost">{uploading ? 'Uploading...' : 'Click to select files (or drag & drop)'}</span>
             <input type="file" multiple onChange={handleUpload} className="hidden" data-testid="file-input" />
           </label>
         </div>
@@ -442,10 +442,10 @@ const AdminAssetsTab = () => {
               setActiveFolder(null);
               setActiveFolderName('');
             }}
-            className={`px-4 py-2 rounded-full text-xs font-mono uppercase tracking-widest transition-all ${
+            className={`px-4 py-2 rounded-sm text-xs font-mono uppercase tracking-widest transition-all ${
               activeCollection === c.id
-                ? 'bg-electric-blue text-white'
-                : 'bg-smoke-gray text-gray-400 hover:text-white border border-gray-700'
+                ? 'bg-swp-ice text-white'
+                : 'bg-swp-surface text-swp-white-ghost hover:text-swp-white border border-swp-border'
             }`}
             data-testid={`collection-filter-${c.id}`}
           >
@@ -459,12 +459,12 @@ const AdminAssetsTab = () => {
         <div className="flex items-center gap-2 mb-4 text-sm">
           <button
             onClick={() => { setActiveFolder(null); setActiveFolderName(''); }}
-            className="text-electric-blue hover:underline flex items-center gap-1"
+            className="text-swp-ice hover:underline flex items-center gap-1"
           >
             <ArrowLeft size={14} />
             Back to {activeCollection}
           </button>
-          <ChevronRight size={14} className="text-gray-600" />
+          <ChevronRight size={14} className="text-swp-white-ghost/50" />
           <span className="text-white">{activeFolderName}</span>
         </div>
       )}
@@ -472,7 +472,7 @@ const AdminAssetsTab = () => {
       {/* Folder View (when in a collection with folders and no folder selected) */}
       {activeCollection !== 'all' && !activeFolder && folders.length > 0 && (
         <div className="mb-6">
-          <h3 className="text-gray-400 text-sm font-mono uppercase tracking-widest mb-3">
+          <h3 className="text-swp-white-ghost text-sm font-mono uppercase tracking-widest mb-3">
             {activeCollection === 'films' ? 'Film Folders' : 
              activeCollection === 'armory' ? 'Armory Product Folders' :
              activeCollection === 'den' ? 'Blog Post Folders' :
@@ -483,23 +483,23 @@ const AdminAssetsTab = () => {
               <button
                 key={folder.id}
                 onClick={() => { setActiveFolder(folder.id); setActiveFolderName(folder.name); }}
-                className="bg-smoke-gray border border-gray-800 rounded-lg p-4 hover:border-gray-700 transition-colors text-left group"
+                className="bg-swp-surface border border-swp-border rounded-swp p-4 hover:border-swp-border transition-colors text-left group"
                 data-testid={`folder-${folder.id}`}
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-electric-blue/10 flex items-center justify-center">
-                    <Folder size={20} className="text-electric-blue group-hover:hidden" />
-                    <FolderOpen size={20} className="text-electric-blue hidden group-hover:block" />
+                  <div className="w-10 h-10 rounded-swp bg-swp-ice/10 flex items-center justify-center">
+                    <Folder size={20} className="text-swp-ice group-hover:hidden" />
+                    <FolderOpen size={20} className="text-swp-ice hidden group-hover:block" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-white font-medium truncate">{folder.name}</p>
-                    <p className="text-gray-500 text-xs">{getFolderAssetCount(folder.id)} assets</p>
+                    <p className="text-swp-white-ghost/70 text-xs">{getFolderAssetCount(folder.id)} assets</p>
                   </div>
                 </div>
               </button>
             ))}
             {folders.length === 0 && (
-              <div className="col-span-full text-center py-8 text-gray-500">
+              <div className="col-span-full text-center py-8 text-swp-white-ghost/70">
                 No folders found.
               </div>
             )}
@@ -513,12 +513,12 @@ const AdminAssetsTab = () => {
           {/* Search */}
           <div className="flex flex-wrap gap-3 mb-4">
             <div className="relative flex-1 min-w-[200px] max-w-md">
-              <Search size={16} className="absolute left-3 top-2.5 text-gray-500" />
+              <Search size={16} className="absolute left-3 top-2.5 text-swp-white-ghost/70" />
               <input 
                 type="text" 
                 value={search} 
                 onChange={e => setSearch(e.target.value)} 
-                className="w-full bg-smoke-gray border border-gray-700 rounded-lg pl-9 pr-4 py-2 text-white text-sm focus:border-electric-blue focus:outline-none" 
+                className="w-full bg-swp-surface border border-swp-border rounded-swp pl-9 pr-4 py-2 text-white text-sm focus:border-swp-ice focus:outline-none" 
                 placeholder="Search assets..." 
                 data-testid="asset-search" 
               />
@@ -529,13 +529,13 @@ const AdminAssetsTab = () => {
           <div className="space-y-3 mb-6">
             {/* File Type Filters */}
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-gray-500 text-xs font-mono uppercase">File Type:</span>
+              <span className="text-swp-white-ghost/70 text-xs font-mono uppercase">File Type:</span>
               {FILE_TYPE_FILTERS.map(t => (
                 <button 
                   key={t.id} 
                   onClick={() => setFilterFileType(t.id)}
-                  className={`px-3 py-1.5 rounded-lg text-xs transition-all flex items-center gap-1.5 ${
-                    filterFileType === t.id ? 'bg-white text-black' : 'bg-smoke-gray text-gray-400 hover:text-white'
+                  className={`px-3 py-1.5 rounded-swp text-xs transition-all flex items-center gap-1.5 ${
+                    filterFileType === t.id ? 'bg-white text-black' : 'bg-swp-surface text-swp-white-ghost hover:text-swp-white'
                   }`}
                   data-testid={`filter-type-${t.id}`}
                 >
@@ -549,13 +549,13 @@ const AdminAssetsTab = () => {
             
             {/* Category Filters */}
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-gray-500 text-xs font-mono uppercase">Category:</span>
+              <span className="text-swp-white-ghost/70 text-xs font-mono uppercase">Category:</span>
               {CATEGORY_FILTERS.map(c => (
                 <button 
                   key={c.id} 
                   onClick={() => setFilterCategory(c.id)}
-                  className={`px-3 py-1.5 rounded-lg text-xs transition-all flex items-center gap-1.5 ${
-                    filterCategory === c.id ? 'bg-electric-blue text-white' : 'bg-smoke-gray text-gray-400 hover:text-white'
+                  className={`px-3 py-1.5 rounded-swp text-xs transition-all flex items-center gap-1.5 ${
+                    filterCategory === c.id ? 'bg-swp-ice text-white' : 'bg-swp-surface text-swp-white-ghost hover:text-swp-white'
                   }`}
                   data-testid={`filter-category-${c.id}`}
                 >
@@ -571,58 +571,58 @@ const AdminAssetsTab = () => {
           {/* Assets Grid */}
           {loading ? (
             <div className="text-center py-12">
-              <RefreshCw className="w-8 h-8 text-electric-blue animate-spin mx-auto" />
+              <RefreshCw className="w-8 h-8 text-swp-ice animate-spin mx-auto" />
             </div>
           ) : filteredAssets.length === 0 ? (
-            <div className="text-center py-16 bg-smoke-gray border border-gray-800 rounded-lg">
+            <div className="text-center py-16 bg-swp-surface border border-swp-border rounded-swp">
               <File className="w-12 h-12 text-gray-700 mx-auto mb-4" />
-              <p className="text-gray-400">No assets found</p>
-              <p className="text-gray-600 text-sm mt-1">Upload files to build your asset library</p>
+              <p className="text-swp-white-ghost">No assets found</p>
+              <p className="text-swp-white-ghost/50 text-sm mt-1">Upload files to build your asset library</p>
             </div>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
               {filteredAssets.map(asset => (
                 <div 
                   key={asset.id} 
-                  className="bg-smoke-gray border border-gray-800 rounded-lg overflow-hidden group hover:border-gray-700 transition-colors" 
+                  className="bg-swp-surface border border-swp-border rounded-swp overflow-hidden group hover:border-swp-border transition-colors" 
                   data-testid={`asset-${asset.id}`}
                 >
                   {/* Preview */}
-                  <div className="aspect-square bg-black/50 flex items-center justify-center relative overflow-hidden">
+                  <div className="aspect-square bg-swp-deep/70 flex items-center justify-center relative overflow-hidden">
                     {isImage(asset) ? (
                       <img src={imgUrl(asset.file_url)} alt={asset.original_name} className="w-full h-full object-cover" />
                     ) : (
                       <div className="text-center p-4">
-                        <FileText size={32} className="text-gray-600 mx-auto mb-2" />
-                        <p className="text-gray-500 text-xs truncate">{asset.original_name}</p>
+                        <FileText size={32} className="text-swp-white-ghost/50 mx-auto mb-2" />
+                        <p className="text-swp-white-ghost/70 text-xs truncate">{asset.original_name}</p>
                       </div>
                     )}
                     {/* Hover Actions */}
-                    <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                    <div className="absolute inset-0 bg-swp-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                       <button 
                         onClick={() => setPreview(asset)} 
-                        className="p-2 bg-white/10 rounded-lg hover:bg-white/20 text-white" 
+                        className="p-2 bg-white/10 rounded-swp hover:bg-white/20 text-white" 
                         title="Preview"
                       >
                         <Eye size={16} />
                       </button>
                       <button 
                         onClick={() => setEditingAsset(asset)} 
-                        className="p-2 bg-white/10 rounded-lg hover:bg-white/20 text-white" 
+                        className="p-2 bg-white/10 rounded-swp hover:bg-white/20 text-white" 
                         title="Edit"
                       >
                         <Edit2 size={16} />
                       </button>
                       <button 
                         onClick={() => copyUrl(asset)} 
-                        className="p-2 bg-white/10 rounded-lg hover:bg-white/20 text-white" 
+                        className="p-2 bg-white/10 rounded-swp hover:bg-white/20 text-white" 
                         title="Copy URL"
                       >
                         <Copy size={16} />
                       </button>
                       <button 
                         onClick={() => handleDelete(asset)} 
-                        className="p-2 bg-red-500/20 rounded-lg hover:bg-red-500/30 text-red-400" 
+                        className="p-2 bg-red-500/20 rounded-swp hover:bg-red-500/30 text-red-400" 
                         title="Delete"
                       >
                         <Trash2 size={16} />
@@ -634,7 +634,7 @@ const AdminAssetsTab = () => {
                   <div className="p-3">
                     <p className="text-white text-sm truncate font-medium">{asset.original_name}</p>
                     <div className="flex items-center justify-between mt-1.5">
-                      <span className="text-gray-500 text-xs">{formatSize(asset.file_size)}</span>
+                      <span className="text-swp-white-ghost/70 text-xs">{formatSize(asset.file_size)}</span>
                       <span className={`px-1.5 py-0.5 rounded text-[9px] font-mono uppercase border ${vis(asset.visibility).color}`}>
                         {vis(asset.visibility).label}
                       </span>
@@ -643,10 +643,10 @@ const AdminAssetsTab = () => {
                     {asset.categories?.length > 0 && (
                       <div className="flex flex-wrap gap-1 mt-2">
                         {asset.categories.slice(0, 2).map((cat, i) => (
-                          <span key={i} className="text-[10px] bg-electric-blue/10 text-electric-blue px-1.5 py-0.5 rounded">{cat}</span>
+                          <span key={i} className="text-[10px] bg-swp-ice/10 text-swp-ice px-1.5 py-0.5 rounded">{cat}</span>
                         ))}
                         {asset.categories.length > 2 && (
-                          <span className="text-[10px] text-gray-500">+{asset.categories.length - 2}</span>
+                          <span className="text-[10px] text-swp-white-ghost/70">+{asset.categories.length - 2}</span>
                         )}
                       </div>
                     )}
@@ -660,12 +660,12 @@ const AdminAssetsTab = () => {
 
       {/* Preview Modal */}
       {preview && (
-        <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4" onClick={() => setPreview(null)}>
+        <div className="fixed inset-0 z-50 bg-swp-black/90 flex items-center justify-center p-4" onClick={() => setPreview(null)}>
           <div className="max-w-4xl w-full max-h-[90vh] overflow-auto" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h3 className="text-white font-semibold">{preview.original_name}</h3>
-                <p className="text-gray-500 text-sm">{formatSize(preview.file_size)} · {getFileType(preview)}</p>
+                <p className="text-swp-white-ghost/70 text-sm">{formatSize(preview.file_size)} · {getFileType(preview)}</p>
               </div>
               <div className="flex items-center gap-2">
                 <button 
@@ -680,20 +680,20 @@ const AdminAssetsTab = () => {
                 >
                   <Copy size={14} /> Copy URL
                 </button>
-                <button onClick={() => setPreview(null)} className="p-2 text-gray-400 hover:text-white">
+                <button onClick={() => setPreview(null)} className="p-2 text-swp-white-ghost hover:text-swp-white">
                   <X size={20} />
                 </button>
               </div>
             </div>
             {isImage(preview) ? (
-              <img src={imgUrl(preview.file_url)} alt={preview.original_name} className="w-full rounded-lg" />
+              <img src={imgUrl(preview.file_url)} alt={preview.original_name} className="w-full rounded-swp" />
             ) : getFileType(preview) === 'pdf' ? (
-              <iframe src={imgUrl(preview.file_url)} title={preview.original_name} className="w-full h-[70vh] rounded-lg" />
+              <iframe src={imgUrl(preview.file_url)} title={preview.original_name} className="w-full h-[70vh] rounded-swp" />
             ) : (
-              <div className="bg-smoke-gray rounded-lg p-12 text-center">
-                <FileText size={64} className="text-gray-600 mx-auto mb-4" />
-                <p className="text-gray-400">Preview not available for this file type</p>
-                <a href={imgUrl(preview.file_url)} target="_blank" rel="noopener noreferrer" className="inline-block mt-4 px-4 py-2 bg-electric-blue text-white rounded-lg text-sm">
+              <div className="bg-swp-surface rounded-swp p-12 text-center">
+                <FileText size={64} className="text-swp-white-ghost/50 mx-auto mb-4" />
+                <p className="text-swp-white-ghost">Preview not available for this file type</p>
+                <a href={imgUrl(preview.file_url)} target="_blank" rel="noopener noreferrer" className="inline-block mt-4 px-4 py-2 bg-swp-ice text-white rounded-swp text-sm">
                   Download
                 </a>
               </div>
@@ -775,19 +775,19 @@ const EditAssetModal = ({ asset, films, armoryItems, blogPosts, onClose, onSave 
   }[formData.collection] || 'Folder';
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4" onClick={onClose}>
+    <div className="fixed inset-0 z-50 bg-swp-deep/90 flex items-center justify-center p-4" onClick={onClose}>
       <div 
-        className="bg-smoke-gray border border-gray-800 rounded-lg w-full max-w-lg max-h-[90vh] overflow-y-auto" 
+        className="bg-swp-surface border border-swp-border rounded-swp w-full max-w-lg max-h-[90vh] overflow-y-auto" 
         onClick={e => e.stopPropagation()}
         data-testid="edit-asset-modal"
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-800 sticky top-0 bg-smoke-gray z-10">
+        <div className="flex items-center justify-between p-4 border-b border-swp-border sticky top-0 bg-swp-surface z-10">
           <div>
             <h3 className="text-lg font-bold text-white">Edit Asset</h3>
-            <p className="text-gray-500 text-sm truncate max-w-[300px]">{asset.filename}</p>
+            <p className="text-swp-white-ghost/70 text-sm truncate max-w-[300px]">{asset.filename}</p>
           </div>
-          <button onClick={onClose} className="p-2 text-gray-400 hover:text-white">
+          <button onClick={onClose} className="p-2 text-swp-white-ghost hover:text-swp-white">
             <X size={20} />
           </button>
         </div>
@@ -796,24 +796,24 @@ const EditAssetModal = ({ asset, films, armoryItems, blogPosts, onClose, onSave 
         <div className="p-4 space-y-4">
           {/* File Name */}
           <div>
-            <label className="block text-gray-400 text-xs uppercase mb-2">Display Name</label>
+            <label className="block text-swp-white-ghost text-xs uppercase mb-2">Display Name</label>
             <input 
               type="text"
               value={formData.original_name} 
               onChange={e => setFormData(s => ({ ...s, original_name: e.target.value }))}
-              className="w-full bg-black border border-gray-700 rounded-lg px-3 py-2 text-white text-sm focus:border-electric-blue focus:outline-none"
+              className="w-full bg-swp-black border border-swp-border rounded-swp px-3 py-2 text-white text-sm focus:border-swp-ice focus:outline-none"
               placeholder="Enter display name for this file"
             />
-            <p className="text-gray-600 text-xs mt-1">This name is shown in the asset library</p>
+            <p className="text-swp-white-ghost/50 text-xs mt-1">This name is shown in the asset library</p>
           </div>
 
           {/* Collection */}
           <div>
-            <label className="block text-gray-400 text-xs uppercase mb-2">Collection</label>
+            <label className="block text-swp-white-ghost text-xs uppercase mb-2">Collection</label>
             <select 
               value={formData.collection} 
               onChange={e => handleCollectionChange(e.target.value)}
-              className="w-full bg-black border border-gray-700 rounded-lg px-3 py-2 text-white text-sm"
+              className="w-full bg-swp-black border border-swp-border rounded-swp px-3 py-2 text-white text-sm"
             >
               {COLLECTIONS.slice(1).map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
             </select>
@@ -821,16 +821,16 @@ const EditAssetModal = ({ asset, films, armoryItems, blogPosts, onClose, onSave 
 
           {/* Folder - Dynamic based on Collection */}
           <div>
-            <label className="block text-gray-400 text-xs uppercase mb-2">{folderLabel}</label>
+            <label className="block text-swp-white-ghost text-xs uppercase mb-2">{folderLabel}</label>
             <select 
               value={formData.folder} 
               onChange={e => setFormData(s => ({ ...s, folder: e.target.value }))}
-              className="w-full bg-black border border-gray-700 rounded-lg px-3 py-2 text-white text-sm"
+              className="w-full bg-swp-black border border-swp-border rounded-swp px-3 py-2 text-white text-sm"
             >
               <option value="">No {folderLabel.toLowerCase()} selected</option>
               {folderOptions.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
             </select>
-            <p className="text-gray-600 text-xs mt-1">
+            <p className="text-swp-white-ghost/50 text-xs mt-1">
               {formData.collection === 'films' && 'Select which film this asset belongs to'}
               {formData.collection === 'armory' && 'Select which Armory item this asset belongs to'}
               {formData.collection === 'den' && 'Select which blog post this asset belongs to'}
@@ -840,7 +840,7 @@ const EditAssetModal = ({ asset, films, armoryItems, blogPosts, onClose, onSave 
 
           {/* Categories */}
           <div>
-            <label className="block text-gray-400 text-xs uppercase mb-2">Categories</label>
+            <label className="block text-swp-white-ghost text-xs uppercase mb-2">Categories</label>
             <div className="flex flex-wrap gap-2">
               {CATEGORY_FILTERS.slice(1).map(c => (
                 <button
@@ -854,10 +854,10 @@ const EditAssetModal = ({ asset, films, armoryItems, blogPosts, onClose, onSave 
                         : [...s.categories, c.id]
                     }));
                   }}
-                  className={`px-3 py-1.5 rounded-lg text-xs transition-all ${
+                  className={`px-3 py-1.5 rounded-swp text-xs transition-all ${
                     formData.categories.includes(c.id)
-                      ? 'bg-electric-blue text-white'
-                      : 'bg-black border border-gray-700 text-gray-400 hover:text-white'
+                      ? 'bg-swp-ice text-white'
+                      : 'bg-swp-black border border-swp-border text-swp-white-ghost hover:text-swp-white'
                   }`}
                 >
                   {c.label}
@@ -868,29 +868,29 @@ const EditAssetModal = ({ asset, films, armoryItems, blogPosts, onClose, onSave 
 
           {/* Tags */}
           <div>
-            <label className="block text-gray-400 text-xs uppercase mb-2">Tags (comma-separated)</label>
+            <label className="block text-swp-white-ghost text-xs uppercase mb-2">Tags (comma-separated)</label>
             <input 
               type="text" 
               value={formData.tags} 
               onChange={e => setFormData(s => ({ ...s, tags: e.target.value }))}
-              className="w-full bg-black border border-gray-700 rounded-lg px-3 py-2 text-white text-sm"
+              className="w-full bg-swp-black border border-swp-border rounded-swp px-3 py-2 text-white text-sm"
               placeholder="hero, promotional, poster"
             />
           </div>
         </div>
 
         {/* Footer */}
-        <div className="flex justify-end gap-2 p-4 border-t border-gray-800 sticky bottom-0 bg-smoke-gray">
+        <div className="flex justify-end gap-2 p-4 border-t border-swp-border sticky bottom-0 bg-swp-surface">
           <button 
             onClick={onClose}
-            className="px-4 py-2 border border-gray-700 text-gray-400 rounded-lg text-sm hover:text-white"
+            className="px-4 py-2 border border-swp-border text-swp-white-ghost rounded-swp text-sm hover:text-swp-white"
           >
             Cancel
           </button>
           <button 
             onClick={handleSave}
             disabled={saving}
-            className="flex items-center gap-2 px-4 py-2 bg-electric-blue text-white rounded-lg text-sm disabled:opacity-50"
+            className="flex items-center gap-2 px-4 py-2 bg-swp-ice text-white rounded-swp text-sm disabled:opacity-50"
           >
             {saving ? <RefreshCw size={14} className="animate-spin" /> : <Check size={14} />}
             Save Changes

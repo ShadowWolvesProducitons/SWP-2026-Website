@@ -80,19 +80,19 @@ const AdminNewsletterTab = () => {
           <h2 className="text-2xl font-bold text-white flex items-center gap-3">
             Newsletter Subscribers
           </h2>
-          <p className="text-gray-500 text-sm mt-1">
+          <p className="text-swp-white-ghost/70 text-sm mt-1">
             {activeCount} active subscriber{activeCount !== 1 ? 's' : ''}
             {showInactive && ` (${subscribers.length - activeCount} unsubscribed)`}
           </p>
         </div>
         <div className="flex items-center gap-4">
           {/* Show Inactive Toggle */}
-          <label className="flex items-center gap-2 text-gray-400 text-sm cursor-pointer">
+          <label className="flex items-center gap-2 text-swp-white-ghost text-sm cursor-pointer">
             <input
               type="checkbox"
               checked={showInactive}
               onChange={(e) => setShowInactive(e.target.checked)}
-              className="rounded border-gray-600 bg-black text-electric-blue focus:ring-electric-blue"
+              className="rounded border-gray-600 bg-swp-black text-swp-ice focus:ring-swp-ice"
             />
             Show unsubscribed
           </label>
@@ -101,7 +101,7 @@ const AdminNewsletterTab = () => {
           <button
             onClick={() => setShowComposeModal(true)}
             disabled={activeCount === 0}
-            className="flex items-center gap-2 px-4 py-2 bg-electric-blue hover:bg-electric-blue/90 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+            className="flex items-center gap-2 px-4 py-2 bg-swp-ice hover:bg-swp-ice text-white rounded-swp disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
             data-testid="compose-email-btn"
           >
             <Send size={16} />
@@ -112,7 +112,7 @@ const AdminNewsletterTab = () => {
           <button
             onClick={handleExport}
             disabled={activeCount === 0}
-            className="flex items-center gap-2 px-4 py-2 bg-electric-blue/20 text-electric-blue rounded-lg hover:bg-electric-blue/30 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm"
+            className="flex items-center gap-2 px-4 py-2 bg-swp-ice/15 text-swp-ice rounded-swp hover:bg-swp-ice/30 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm"
           >
             <Download size={16} />
             Export
@@ -120,7 +120,7 @@ const AdminNewsletterTab = () => {
           
           <button 
             onClick={fetchSubscribers} 
-            className="p-2 text-gray-400 hover:text-white transition-colors" 
+            className="p-2 text-swp-white-ghost hover:text-swp-white transition-colors" 
             title="Refresh"
           >
             <RefreshCw size={20} />
@@ -131,61 +131,61 @@ const AdminNewsletterTab = () => {
       {/* Subscribers List */}
       {loading ? (
         <div className="text-center py-12">
-          <RefreshCw className="w-8 h-8 text-electric-blue animate-spin mx-auto mb-4" />
-          <p className="text-gray-500">Loading...</p>
+          <RefreshCw className="w-8 h-8 text-swp-ice animate-spin mx-auto mb-4" />
+          <p className="text-swp-white-ghost/70">Loading...</p>
         </div>
       ) : subscribers.length === 0 ? (
-        <div className="text-center py-12 bg-smoke-gray border border-gray-800 rounded-lg">
+        <div className="text-center py-12 bg-swp-surface border border-swp-border rounded-swp">
           <Users className="w-12 h-12 text-gray-700 mx-auto mb-4" />
-          <p className="text-gray-400">No subscribers yet</p>
-          <p className="text-gray-600 text-sm mt-2">Subscribers will appear here when they sign up via the website.</p>
+          <p className="text-swp-white-ghost">No subscribers yet</p>
+          <p className="text-swp-white-ghost/50 text-sm mt-2">Subscribers will appear here when they sign up via the website.</p>
         </div>
       ) : (
-        <div className="bg-smoke-gray border border-gray-800 rounded-lg overflow-hidden">
+        <div className="bg-swp-surface border border-swp-border rounded-swp overflow-hidden">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-gray-800">
-                <th className="text-left px-6 py-4 text-gray-400 font-mono text-xs uppercase tracking-widest">Email</th>
-                <th className="text-left px-6 py-4 text-gray-400 font-mono text-xs uppercase tracking-widest">Source</th>
-                <th className="text-left px-6 py-4 text-gray-400 font-mono text-xs uppercase tracking-widest">Status</th>
-                <th className="text-left px-6 py-4 text-gray-400 font-mono text-xs uppercase tracking-widest">Subscribed</th>
-                <th className="text-right px-6 py-4 text-gray-400 font-mono text-xs uppercase tracking-widest">Actions</th>
+              <tr className="border-b border-swp-border">
+                <th className="text-left px-6 py-4 text-swp-white-ghost font-mono text-xs uppercase tracking-widest">Email</th>
+                <th className="text-left px-6 py-4 text-swp-white-ghost font-mono text-xs uppercase tracking-widest">Source</th>
+                <th className="text-left px-6 py-4 text-swp-white-ghost font-mono text-xs uppercase tracking-widest">Status</th>
+                <th className="text-left px-6 py-4 text-swp-white-ghost font-mono text-xs uppercase tracking-widest">Subscribed</th>
+                <th className="text-right px-6 py-4 text-swp-white-ghost font-mono text-xs uppercase tracking-widest">Actions</th>
               </tr>
             </thead>
             <tbody>
               {subscribers.map((subscriber) => (
-                <tr key={subscriber.id} className="border-b border-gray-800/50 hover:bg-black/30 transition-colors">
+                <tr key={subscriber.id} className="border-b border-swp-border/50 hover:bg-swp-deep/50 transition-colors">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <Mail size={16} className="text-gray-600" />
-                      <a href={`mailto:${subscriber.email}`} className="text-white hover:text-electric-blue transition-colors">
+                      <Mail size={16} className="text-swp-white-ghost/50" />
+                      <a href={`mailto:${subscriber.email}`} className="text-white hover:text-swp-ice transition-colors">
                         {subscriber.email}
                       </a>
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-gray-400 text-sm capitalize">
+                  <td className="px-6 py-4 text-swp-white-ghost text-sm capitalize">
                     {subscriber.source?.replace('_', ' ') || 'Website'}
                   </td>
                   <td className="px-6 py-4">
                     {subscriber.is_active ? (
-                      <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-mono uppercase bg-green-500/20 text-green-400 border border-green-500/40">
+                      <span className="inline-flex items-center gap-1 px-3 py-1 rounded-sm text-xs font-mono uppercase bg-green-500/20 text-green-400 border border-green-500/40">
                         <CheckCircle size={12} />
                         Active
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-mono uppercase bg-gray-500/20 text-gray-400 border border-gray-500/40">
+                      <span className="inline-flex items-center gap-1 px-3 py-1 rounded-sm text-xs font-mono uppercase bg-gray-500/20 text-swp-white-ghost border border-gray-500/40">
                         <XCircle size={12} />
                         Unsubscribed
                       </span>
                     )}
                   </td>
-                  <td className="px-6 py-4 text-gray-400 text-sm">{formatDate(subscriber.subscribed_at)}</td>
+                  <td className="px-6 py-4 text-swp-white-ghost text-sm">{formatDate(subscriber.subscribed_at)}</td>
                   <td className="px-6 py-4">
                     <div className="flex items-center justify-end">
                       {subscriber.is_active && (
                         <button
                           onClick={() => handleUnsubscribe(subscriber.email)}
-                          className="p-2 text-gray-400 hover:text-red-400 transition-colors"
+                          className="p-2 text-swp-white-ghost hover:text-red-400 transition-colors"
                           title="Unsubscribe"
                         >
                           <Trash2 size={18} />
@@ -280,20 +280,20 @@ const ComposeEmailModal = ({ isOpen, onClose, subscriberCount }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md">
-      <div className="relative bg-smoke-gray border border-gray-800 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-swp-black/90 backdrop-blur-md">
+      <div className="relative bg-swp-surface border border-swp-border rounded-swp max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="sticky top-0 bg-smoke-gray border-b border-gray-800 px-6 py-4 flex items-center justify-between z-10">
+        <div className="sticky top-0 bg-swp-surface border-b border-swp-border px-6 py-4 flex items-center justify-between z-10">
           <div>
             <h2 className="text-xl font-bold text-white flex items-center gap-2">
-              <Send size={20} className="text-electric-blue" />
+              <Send size={20} className="text-swp-ice" />
               Compose Newsletter
             </h2>
-            <p className="text-gray-500 text-sm mt-1">
+            <p className="text-swp-white-ghost/70 text-sm mt-1">
               Send to {subscriberCount} active subscriber{subscriberCount !== 1 ? 's' : ''}
             </p>
           </div>
-          <button onClick={handleClose} className="p-2 text-gray-400 hover:text-white transition-colors">
+          <button onClick={handleClose} className="p-2 text-swp-white-ghost hover:text-swp-white transition-colors">
             <X size={20} />
           </button>
         </div>
@@ -301,7 +301,7 @@ const ComposeEmailModal = ({ isOpen, onClose, subscriberCount }) => {
         <div className="p-6 space-y-6">
           {/* Subject */}
           <div>
-            <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+            <label className="block text-swp-white-ghost text-sm font-mono uppercase tracking-widest mb-2">
               Subject *
             </label>
             <input
@@ -309,14 +309,14 @@ const ComposeEmailModal = ({ isOpen, onClose, subscriberCount }) => {
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
               placeholder="Your email subject line..."
-              className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none"
+              className="w-full bg-swp-black border border-swp-border rounded-swp px-4 py-3 text-white focus:border-swp-ice focus:outline-none"
               data-testid="email-subject-input"
             />
           </div>
 
           {/* Content */}
           <div>
-            <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+            <label className="block text-swp-white-ghost text-sm font-mono uppercase tracking-widest mb-2">
               Message *
             </label>
             <textarea
@@ -326,10 +326,10 @@ const ComposeEmailModal = ({ isOpen, onClose, subscriberCount }) => {
 
 Use blank lines to separate paragraphs."
               rows={10}
-              className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-electric-blue focus:outline-none resize-none font-sans"
+              className="w-full bg-swp-black border border-swp-border rounded-swp px-4 py-3 text-white focus:border-swp-ice focus:outline-none resize-none font-sans"
               data-testid="email-content-input"
             />
-            <p className="text-gray-600 text-xs mt-2">
+            <p className="text-swp-white-ghost/50 text-xs mt-2">
               Plain text will be converted to styled HTML. Use blank lines to create paragraphs.
             </p>
           </div>
@@ -341,22 +341,22 @@ Use blank lines to separate paragraphs."
               id="testMode"
               checked={testMode}
               onChange={(e) => setTestMode(e.target.checked)}
-              className="w-4 h-4 rounded border-gray-600 bg-black text-electric-blue focus:ring-electric-blue"
+              className="w-4 h-4 rounded border-gray-600 bg-swp-black text-swp-ice focus:ring-swp-ice"
             />
-            <label htmlFor="testMode" className="text-gray-400 text-sm cursor-pointer">
+            <label htmlFor="testMode" className="text-swp-white-ghost text-sm cursor-pointer">
               <span className="text-white">Test Mode</span> — Send to only one subscriber first
             </label>
           </div>
 
           {/* Result Display */}
           {result && (
-            <div className={`rounded-lg p-4 border ${
+            <div className={`rounded-swp p-4 border ${
               result.failed === 0 
                 ? 'bg-green-500/10 border-green-500/30' 
                 : 'bg-red-500/10 border-red-500/30'
             }`}>
               <div className="flex items-center gap-4 text-sm">
-                <span className="text-gray-400">Total: {result.total}</span>
+                <span className="text-swp-white-ghost">Total: {result.total}</span>
                 <span className="text-green-400">Sent: {result.sent}</span>
                 {result.failed > 0 && <span className="text-red-400">Failed: {result.failed}</span>}
               </div>
@@ -373,17 +373,17 @@ Use blank lines to separate paragraphs."
         </div>
 
         {/* Footer */}
-        <div className="sticky bottom-0 bg-smoke-gray border-t border-gray-800 px-6 py-4 flex gap-4">
+        <div className="sticky bottom-0 bg-swp-surface border-t border-swp-border px-6 py-4 flex gap-4">
           <button
             onClick={handleClose}
-            className="flex-1 px-6 py-3 border border-gray-700 text-gray-400 rounded-full hover:bg-gray-800 transition-colors font-mono text-sm uppercase tracking-widest"
+            className="flex-1 px-6 py-3 border border-swp-border text-swp-white-ghost rounded-sm hover:bg-gray-800 transition-colors font-mono text-sm uppercase tracking-widest"
           >
             Cancel
           </button>
           <button
             onClick={handleSend}
             disabled={sending || !subject.trim() || !content.trim()}
-            className="flex-1 px-6 py-3 bg-electric-blue hover:bg-electric-blue/90 disabled:bg-gray-700 disabled:cursor-not-allowed text-white rounded-full transition-colors font-mono text-sm uppercase tracking-widest flex items-center justify-center gap-2"
+            className="flex-1 px-6 py-3 bg-swp-ice hover:bg-swp-ice disabled:bg-swp-muted disabled:cursor-not-allowed text-white rounded-sm transition-colors font-mono text-sm uppercase tracking-widest flex items-center justify-center gap-2"
             data-testid="send-email-btn"
           >
             {sending ? (

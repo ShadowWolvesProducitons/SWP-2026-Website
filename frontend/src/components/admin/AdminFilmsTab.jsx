@@ -112,19 +112,19 @@ const AdminFilmsTab = () => {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h2 className="text-2xl font-bold text-white">Films</h2>
-          <p className="text-gray-500 text-sm mt-1">{films.length} total films</p>
+          <p className="text-swp-white-ghost/70 text-sm mt-1">{films.length} total films</p>
         </div>
         <div className="flex items-center gap-4">
           <button
             onClick={fetchFilms}
-            className="p-2 text-gray-400 hover:text-white transition-colors"
+            className="p-2 text-swp-white-ghost hover:text-swp-white transition-colors"
             title="Refresh"
           >
             <RefreshCw size={20} />
           </button>
           <button
             onClick={handleAddFilm}
-            className="flex items-center gap-2 bg-electric-blue hover:bg-electric-blue/90 text-white px-6 py-3 rounded-full font-mono text-sm uppercase tracking-widest transition-all"
+            className="flex items-center gap-2 bg-swp-ice hover:bg-swp-ice text-white px-6 py-3 rounded-sm font-mono text-sm uppercase tracking-widest transition-all"
           >
             <Plus size={18} />
             Add Film
@@ -135,30 +135,30 @@ const AdminFilmsTab = () => {
       {/* Films Table */}
       {loading ? (
         <div className="text-center py-12">
-          <RefreshCw className="w-8 h-8 text-electric-blue animate-spin mx-auto mb-4" />
-          <p className="text-gray-500">Loading films...</p>
+          <RefreshCw className="w-8 h-8 text-swp-ice animate-spin mx-auto mb-4" />
+          <p className="text-swp-white-ghost/70">Loading films...</p>
         </div>
       ) : films.length === 0 ? (
-        <div className="text-center py-12 bg-smoke-gray border border-gray-800 rounded-lg">
-          <p className="text-gray-400 mb-4">No films yet</p>
-          <button onClick={handleAddFilm} className="text-electric-blue hover:underline">
+        <div className="text-center py-12 bg-swp-surface border border-swp-border rounded-swp">
+          <p className="text-swp-white-ghost mb-4">No films yet</p>
+          <button onClick={handleAddFilm} className="text-swp-ice hover:underline">
             Add your first film
           </button>
         </div>
       ) : (
-        <div className="bg-smoke-gray border border-gray-800 rounded-lg overflow-hidden">
+        <div className="bg-swp-surface border border-swp-border rounded-swp overflow-hidden">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-gray-800">
-                <th className="text-left px-6 py-4 text-gray-400 font-mono text-xs uppercase tracking-widest">Film</th>
-                <th className="text-left px-6 py-4 text-gray-400 font-mono text-xs uppercase tracking-widest">Status</th>
-                <th className="text-center px-6 py-4 text-gray-400 font-mono text-xs uppercase tracking-widest">Featured</th>
-                <th className="text-right px-6 py-4 text-gray-400 font-mono text-xs uppercase tracking-widest">Actions</th>
+              <tr className="border-b border-swp-border">
+                <th className="text-left px-6 py-4 text-swp-white-ghost font-mono text-xs uppercase tracking-widest">Film</th>
+                <th className="text-left px-6 py-4 text-swp-white-ghost font-mono text-xs uppercase tracking-widest">Status</th>
+                <th className="text-center px-6 py-4 text-swp-white-ghost font-mono text-xs uppercase tracking-widest">Featured</th>
+                <th className="text-right px-6 py-4 text-swp-white-ghost font-mono text-xs uppercase tracking-widest">Actions</th>
               </tr>
             </thead>
             <tbody>
               {films.map((film) => (
-                <tr key={film.id} className="border-b border-gray-800/50 hover:bg-black/30 transition-colors">
+                <tr key={film.id} className="border-b border-swp-border/50 hover:bg-swp-deep/50 transition-colors">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-4">
                       <div
@@ -171,19 +171,19 @@ const AdminFilmsTab = () => {
                       </div>
                       <div>
                         <h3 className="text-white font-semibold">{film.title}</h3>
-                        <p className="text-gray-500 text-sm line-clamp-1">{film.tagline}</p>
+                        <p className="text-swp-white-ghost/70 text-sm line-clamp-1">{film.tagline}</p>
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-mono uppercase border ${getStatusColor(film.status)}`}>
+                    <span className={`px-3 py-1 rounded-sm text-xs font-mono uppercase border ${getStatusColor(film.status)}`}>
                       {film.status}
                     </span>
                   </td>
                   <td className="px-6 py-4 text-center">
                     <button
                       onClick={() => handleToggleFeatured(film)}
-                      className={`p-2 rounded-full transition-colors ${film.featured ? 'text-yellow-400 bg-yellow-400/10' : 'text-gray-600 hover:text-gray-400'}`}
+                      className={`p-2 rounded-sm transition-colors ${film.featured ? 'text-yellow-400 bg-yellow-400/10' : 'text-swp-white-ghost/50 hover:text-swp-white-ghost'}`}
                       title={film.featured ? 'Remove from featured' : 'Add to featured'}
                     >
                       {film.featured ? <Star size={20} fill="currentColor" /> : <StarOff size={20} />}
@@ -193,14 +193,14 @@ const AdminFilmsTab = () => {
                     <div className="flex items-center justify-end gap-2">
                       <button
                         onClick={() => handleEditFilm(film)}
-                        className="p-2 text-gray-400 hover:text-electric-blue transition-colors"
+                        className="p-2 text-swp-white-ghost hover:text-swp-ice transition-colors"
                         title="Edit"
                       >
                         <Edit2 size={18} />
                       </button>
                       <button
                         onClick={() => handleDeleteFilm(film)}
-                        className="p-2 text-gray-400 hover:text-red-400 transition-colors"
+                        className="p-2 text-swp-white-ghost hover:text-red-400 transition-colors"
                         title="Delete"
                       >
                         <Trash2 size={18} />

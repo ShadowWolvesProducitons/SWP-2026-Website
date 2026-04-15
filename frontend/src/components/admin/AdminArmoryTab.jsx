@@ -40,51 +40,51 @@ const AdminArmoryTab = () => {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-white">The Armory</h2>
-        <button onClick={() => { setEditingItem(null); setShowModal(true); }} className="flex items-center gap-2 bg-electric-blue hover:bg-electric-blue/90 text-white px-4 py-2 rounded-lg text-sm" data-testid="add-product-btn">
+        <button onClick={() => { setEditingItem(null); setShowModal(true); }} className="flex items-center gap-2 bg-swp-ice hover:bg-swp-ice text-white px-4 py-2 rounded-swp text-sm" data-testid="add-product-btn">
           <Plus size={18} /> Add Product
         </button>
       </div>
       <div className="flex gap-2 mb-6 flex-wrap">
         {['All', ...ITEM_TYPES].map((type) => (
-          <button key={type} onClick={() => setFilterType(type)} className={`px-4 py-2 rounded-full text-sm transition-all ${filterType === type ? 'bg-white text-black' : 'bg-smoke-gray text-gray-400 hover:text-white'}`} data-testid={`filter-tab-${type.toLowerCase()}`}>{type}</button>
+          <button key={type} onClick={() => setFilterType(type)} className={`px-4 py-2 rounded-sm text-sm transition-all ${filterType === type ? 'bg-white text-black' : 'bg-swp-surface text-swp-white-ghost hover:text-swp-white'}`} data-testid={`filter-tab-${type.toLowerCase()}`}>{type}</button>
         ))}
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 mb-6">
         {ITEM_TYPES.map((type) => (
-          <div key={type} className="bg-smoke-gray border border-gray-800 rounded-lg p-3 text-center">
+          <div key={type} className="bg-swp-surface border border-swp-border rounded-swp p-3 text-center">
             <p className="text-2xl font-bold text-white">{items.filter(i => i.item_type === type).length}</p>
-            <p className="text-gray-500 text-xs">{type}</p>
+            <p className="text-swp-white-ghost/70 text-xs">{type}</p>
           </div>
         ))}
       </div>
       {loading ? (
-        <div className="text-center py-12"><RefreshCw className="w-8 h-8 text-electric-blue animate-spin mx-auto" /></div>
+        <div className="text-center py-12"><RefreshCw className="w-8 h-8 text-swp-ice animate-spin mx-auto" /></div>
       ) : filteredItems.length === 0 ? (
-        <div className="text-center py-12 bg-smoke-gray border border-gray-800 rounded-lg"><p className="text-gray-500">No products found</p></div>
+        <div className="text-center py-12 bg-swp-surface border border-swp-border rounded-swp"><p className="text-swp-white-ghost/70">No products found</p></div>
       ) : (
         <div className="space-y-3">
           {filteredItems.map((item) => (
-            <div key={item.id} className={`bg-smoke-gray border rounded-lg p-4 flex items-center gap-4 ${item.is_archived ? 'border-red-900/50 opacity-60' : 'border-gray-800'}`}>
-              <div className="w-16 h-16 rounded-lg overflow-hidden bg-gray-900 flex-shrink-0">
+            <div key={item.id} className={`bg-swp-surface border rounded-swp p-4 flex items-center gap-4 ${item.is_archived ? 'border-red-900/50 opacity-60' : 'border-swp-border'}`}>
+              <div className="w-16 h-16 rounded-swp overflow-hidden bg-gray-900 flex-shrink-0">
                 {item.thumbnail_url ? <img src={`${API}${item.thumbnail_url}`} alt="" className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-gray-700"><Image size={24} /></div>}
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
-                  {item.featured && <Star size={14} className="text-electric-blue" fill="currentColor" />}
+                  {item.featured && <Star size={14} className="text-swp-ice" fill="currentColor" />}
                   <h4 className="text-white font-medium truncate">{item.title}</h4>
                   {item.is_archived && <span className="text-red-400 text-xs">(Archived)</span>}
                 </div>
                 <div className="flex items-center gap-3 text-sm">
-                  <span className="text-gray-500">{item.item_type}</span>
-                  {item.slug && <span className="text-electric-blue text-xs font-mono">/armory/{item.slug}</span>}
+                  <span className="text-swp-white-ghost/70">{item.item_type}</span>
+                  {item.slug && <span className="text-swp-ice text-xs font-mono">/armory/{item.slug}</span>}
                   {item.is_free ? <span className="text-green-400">Free</span> : item.price ? <span className="text-white">{item.price}</span> : null}
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                {item.slug && <a href={`/armory/${item.slug}`} target="_blank" rel="noopener noreferrer" className="p-2 text-gray-400 hover:text-electric-blue" title="View"><Eye size={18} /></a>}
-                {item.primary_link_url && <a href={item.primary_link_url} target="_blank" rel="noopener noreferrer" className="p-2 text-gray-400 hover:text-white" title="External"><ExternalLink size={18} /></a>}
-                <button onClick={() => { setEditingItem(item); setShowModal(true); }} className="p-2 text-gray-400 hover:text-electric-blue"><Edit2 size={18} /></button>
-                <button onClick={() => handleDelete(item)} className="p-2 text-gray-400 hover:text-red-400"><Trash2 size={18} /></button>
+                {item.slug && <a href={`/armory/${item.slug}`} target="_blank" rel="noopener noreferrer" className="p-2 text-swp-white-ghost hover:text-swp-ice" title="View"><Eye size={18} /></a>}
+                {item.primary_link_url && <a href={item.primary_link_url} target="_blank" rel="noopener noreferrer" className="p-2 text-swp-white-ghost hover:text-swp-white" title="External"><ExternalLink size={18} /></a>}
+                <button onClick={() => { setEditingItem(item); setShowModal(true); }} className="p-2 text-swp-white-ghost hover:text-swp-ice"><Edit2 size={18} /></button>
+                <button onClick={() => handleDelete(item)} className="p-2 text-swp-white-ghost hover:text-red-400"><Trash2 size={18} /></button>
               </div>
             </div>
           ))}
@@ -269,18 +269,18 @@ const ProductModal = ({ item, onClose, onSave }) => {
   const imgUrl = (u) => u && (u.startsWith('http') ? u : `${API}${u}`);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 overflow-y-auto">
-      <div className="bg-smoke-gray border border-gray-800 rounded-lg w-full max-w-3xl my-8 max-h-[90vh] overflow-hidden flex flex-col" data-testid="product-modal">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-swp-deep/90 overflow-y-auto">
+      <div className="bg-swp-surface border border-swp-border rounded-swp w-full max-w-3xl my-8 max-h-[90vh] overflow-hidden flex flex-col" data-testid="product-modal">
         {/* Header */}
         <div className="flex items-center justify-between px-6 pt-5 pb-0 flex-shrink-0">
-          <div><h3 className="text-lg font-bold text-white">{item ? 'Edit' : 'New'} Product</h3><p className="text-gray-600 text-xs">Product Page Builder</p></div>
-          <button onClick={onClose} className="p-2 text-gray-400 hover:text-white"><X size={20} /></button>
+          <div><h3 className="text-lg font-bold text-white">{item ? 'Edit' : 'New'} Product</h3><p className="text-swp-white-ghost/50 text-xs">Product Page Builder</p></div>
+          <button onClick={onClose} className="p-2 text-swp-white-ghost hover:text-swp-white"><X size={20} /></button>
         </div>
         {/* Tabs */}
         <div className="flex gap-2 px-6 pt-4 pb-4 overflow-x-auto flex-shrink-0">
           {MODAL_TABS.map(tab => (
             <button key={tab.id} type="button" onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-2 text-sm whitespace-nowrap rounded-full transition-colors ${activeTab === tab.id ? 'bg-electric-blue text-white' : 'bg-smoke-gray text-gray-400 hover:text-white'}`}
+              className={`px-4 py-2 text-sm whitespace-nowrap rounded-sm transition-colors ${activeTab === tab.id ? 'bg-swp-ice text-white' : 'bg-swp-surface text-swp-white-ghost hover:text-swp-white'}`}
               data-testid={`tab-${tab.id}`}>{tab.label}</button>
           ))}
         </div>
@@ -297,15 +297,15 @@ const ProductModal = ({ item, onClose, onSave }) => {
               <Fl label="URL Slug" helper="Auto-generated from title. Edit to customize.">
                 <div className="flex gap-2">
                   <div className="flex-1 flex items-center">
-                    <span className="text-gray-500 bg-black px-3 py-2 border border-r-0 border-gray-700 rounded-l-lg text-xs font-mono">/armory/</span>
+                    <span className="text-swp-white-ghost/70 bg-swp-black px-3 py-2 border border-r-0 border-swp-border rounded-l-lg text-xs font-mono">/armory/</span>
                     <input type="text" value={formData.slug} onChange={e => { setSlugManuallyEdited(true); set('slug', e.target.value); }}
-                      className="flex-1 bg-black border border-gray-700 rounded-r-lg px-3 py-2 text-white font-mono text-sm focus:border-electric-blue focus:outline-none" placeholder="house-heroes" data-testid="input-slug" />
+                      className="flex-1 bg-swp-black border border-swp-border rounded-r-lg px-3 py-2 text-white font-mono text-sm focus:border-swp-ice focus:outline-none" placeholder="house-heroes" data-testid="input-slug" />
                   </div>
                 </div>
               </Fl>
               <div className="grid grid-cols-2 gap-4">
                 <Fl label="Product Type *" helper="Determines content sections shown">
-                  <select value={formData.item_type} onChange={e => set('item_type', e.target.value)} className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2 text-white text-sm" data-testid="select-type">
+                  <select value={formData.item_type} onChange={e => set('item_type', e.target.value)} className="w-full bg-swp-black border border-swp-border rounded-swp px-4 py-2 text-white text-sm" data-testid="select-type">
                     {ITEM_TYPES.map(t => <option key={t} value={t}>{t.replace(/s$/, '')}</option>)}
                   </select>
                 </Fl>
@@ -315,7 +315,7 @@ const ProductModal = ({ item, onClose, onSave }) => {
               </div>
               <div className="flex flex-wrap gap-5 pt-1">
                 {[{ k: 'featured', l: 'Featured' }, { k: 'is_published', l: 'Published' }, { k: 'is_archived', l: 'Archived' }].map(({ k, l }) => (
-                  <label key={k} className="flex items-center gap-2 text-gray-400 text-sm cursor-pointer">
+                  <label key={k} className="flex items-center gap-2 text-swp-white-ghost text-sm cursor-pointer">
                     <input type="checkbox" checked={formData[k]} onChange={e => set(k, e.target.checked)} className="rounded" /> {l}
                   </label>
                 ))}
@@ -327,14 +327,14 @@ const ProductModal = ({ item, onClose, onSave }) => {
           {activeTab === 'pricing' && (
             <div className="space-y-5">
               <Fl label="Pricing Model *" helper="Determines what pricing fields are shown">
-                <select value={formData.pricing_model} onChange={e => set('pricing_model', e.target.value)} className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2 text-white text-sm" data-testid="select-pricing-model">
+                <select value={formData.pricing_model} onChange={e => set('pricing_model', e.target.value)} className="w-full bg-swp-black border border-swp-border rounded-swp px-4 py-2 text-white text-sm" data-testid="select-pricing-model">
                   <option value="free">Free</option>
                   <option value="one_time">One-time Purchase</option>
                   <option value="subscription">Subscription</option>
                 </select>
               </Fl>
               {formData.pricing_model === 'one_time' && (
-                <div className="grid grid-cols-2 gap-4 bg-black/30 rounded-lg p-4 border border-gray-800/50">
+                <div className="grid grid-cols-2 gap-4 bg-swp-deep/50 rounded-swp p-4 border border-swp-border/50">
                   <Fl label="Price *" helper="e.g. A$29, $99">
                     <TI value={formData.price} onChange={e => set('price', e.target.value)} placeholder="A$29" data-testid="input-price" />
                   </Fl>
@@ -344,7 +344,7 @@ const ProductModal = ({ item, onClose, onSave }) => {
                 </div>
               )}
               {formData.pricing_model === 'subscription' && (
-                <div className="bg-black/30 rounded-lg p-4 border border-gray-800/50 space-y-4">
+                <div className="bg-swp-deep/50 rounded-swp p-4 border border-swp-border/50 space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <Fl label="Monthly Price" helper="e.g. A$9/mo">
                       <TI value={formData.monthly_price} onChange={e => set('monthly_price', e.target.value)} placeholder="A$9/mo" />
@@ -357,7 +357,7 @@ const ProductModal = ({ item, onClose, onSave }) => {
                     <TI value={formData.billing_note} onChange={e => set('billing_note', e.target.value)} placeholder="Cancel anytime" />
                   </Fl>
                   <div>
-                    <label className="flex items-center gap-2 text-gray-400 text-sm cursor-pointer">
+                    <label className="flex items-center gap-2 text-swp-white-ghost text-sm cursor-pointer">
                       <input type="checkbox" checked={formData.includes_trial} onChange={e => set('includes_trial', e.target.checked)} className="rounded" /> Includes Trial?
                     </label>
                     {formData.includes_trial && (
@@ -370,7 +370,7 @@ const ProductModal = ({ item, onClose, onSave }) => {
                   </div>
                 </div>
               )}
-              <hr className="border-gray-800" />
+              <hr className="border-swp-border" />
               <Fl label="Primary Access URL *" helper="App store, checkout page, or external link">
                 <TI type="url" value={formData.primary_link_url} onChange={e => set('primary_link_url', e.target.value)} placeholder="https://apps.apple.com/..." data-testid="input-primary-url" />
               </Fl>
@@ -378,32 +378,32 @@ const ProductModal = ({ item, onClose, onSave }) => {
                 <TI type="url" value={formData.demo_url} onChange={e => set('demo_url', e.target.value)} placeholder="https://demo.example.com" />
               </Fl>
               {(formData.item_type === 'Downloads' || formData.item_type === 'eBooks' || formData.item_type === 'Courses') && (
-                <div className="bg-black/30 rounded-lg p-4 border border-gray-800/50 space-y-4">
-                  <p className="text-gray-500 text-[10px] font-mono uppercase tracking-widest">Downloadable File</p>
+                <div className="bg-swp-deep/50 rounded-swp p-4 border border-swp-border/50 space-y-4">
+                  <p className="text-swp-white-ghost/70 text-[10px] font-mono uppercase tracking-widest">Downloadable File</p>
                   <Fl label="Upload File" helper="Upload a file for users to download (PDF, ZIP, etc.)">
                     <div className="space-y-3">
                       {formData.file_url && (
-                        <div className="flex items-center gap-3 bg-green-500/10 border border-green-500/30 rounded-lg p-3">
+                        <div className="flex items-center gap-3 bg-green-500/10 border border-green-500/30 rounded-swp p-3">
                           <Check size={16} className="text-green-400" />
                           <span className="text-green-400 text-sm flex-1 truncate">{formData.file_url.split('/').pop()}</span>
-                          <button type="button" onClick={() => set('file_url', '')} className="text-gray-400 hover:text-red-400">
+                          <button type="button" onClick={() => set('file_url', '')} className="text-swp-white-ghost hover:text-red-400">
                             <X size={16} />
                           </button>
                         </div>
                       )}
                       <div className="flex gap-2">
-                        <label className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-smoke-gray border border-gray-700 rounded-lg text-gray-400 hover:text-white hover:border-gray-600 cursor-pointer transition-all">
+                        <label className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-swp-surface border border-swp-border rounded-swp text-swp-white-ghost hover:text-swp-white hover:border-gray-600 cursor-pointer transition-all">
                           <Upload size={16} />
                           <span className="text-sm">{uploading ? 'Uploading...' : 'Upload File'}</span>
                           <input type="file" className="hidden" onChange={e => uploadDownloadFile(e)} disabled={uploading} data-testid="upload-download-file" />
                         </label>
-                        <button type="button" onClick={() => openAssetPicker('file_url')} className="flex items-center gap-2 px-4 py-3 bg-smoke-gray border border-gray-700 rounded-lg text-gray-400 hover:text-white hover:border-gray-600 transition-all">
+                        <button type="button" onClick={() => openAssetPicker('file_url')} className="flex items-center gap-2 px-4 py-3 bg-swp-surface border border-swp-border rounded-swp text-swp-white-ghost hover:text-swp-white hover:border-gray-600 transition-all">
                           <FolderOpen size={16} />
                           <span className="text-sm">Asset Library</span>
                         </button>
                       </div>
                       <div className="relative">
-                        <span className="text-gray-500 text-xs absolute left-0 -top-5">Or enter URL manually:</span>
+                        <span className="text-swp-white-ghost/70 text-xs absolute left-0 -top-5">Or enter URL manually:</span>
                         <TI value={formData.file_url} onChange={e => set('file_url', e.target.value)} placeholder="/api/upload/files/document.pdf" />
                       </div>
                     </div>
@@ -418,14 +418,14 @@ const ProductModal = ({ item, onClose, onSave }) => {
             <div className="space-y-5">
               {/* AI Generate Button */}
               <button type="button" onClick={() => setAiOverlayOpen(true)}
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-electric-blue/10 to-purple-500/10 border border-electric-blue/30 rounded-lg text-electric-blue text-sm hover:from-electric-blue/20 hover:to-purple-500/20 transition-all"
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-electric-blue/10 to-purple-500/10 border border-swp-ice/30 rounded-swp text-swp-ice text-sm hover:from-electric-blue/20 hover:to-purple-500/20 transition-all"
                 data-testid="ai-generate-content-btn">
                 <Sparkles size={16} /> Generate Product Page Content
               </button>
 
               {/* Hero Section */}
-              <div className="bg-black/30 rounded-lg p-4 space-y-4 border border-gray-800/50">
-                <p className="text-gray-500 text-[10px] font-mono uppercase tracking-widest">Hero / Above the Fold</p>
+              <div className="bg-swp-deep/50 rounded-swp p-4 space-y-4 border border-swp-border/50">
+                <p className="text-swp-white-ghost/70 text-[10px] font-mono uppercase tracking-widest">Hero / Above the Fold</p>
                 <FieldWithRegen label="Positioning Line" helper="One punchy line under the product name" section="positioning_line" sectionRegen={sectionRegen} onRegen={regenSection} onApply={applySectionResult} onDismiss={() => setSectionRegen({ loading: null, section: null, result: null })}>
                   <TI value={formData.short_description} onChange={e => set('short_description', e.target.value)} placeholder="One-line positioning statement" data-testid="input-positioning" />
                 </FieldWithRegen>
@@ -434,7 +434,7 @@ const ProductModal = ({ item, onClose, onSave }) => {
               {/* What This Is */}
               <FieldWithRegen label="What This Is" helper="What it is, who it's for, what it solves. 1-2 paragraphs (max 600 chars)." section="what_this_is" sectionRegen={sectionRegen} onRegen={regenSection} onApply={applySectionResult} onDismiss={() => setSectionRegen({ loading: null, section: null, result: null })}>
                 <TexA value={formData.what_it_is} onChange={e => set('what_it_is', e.target.value)} placeholder="[Product] is a [tool/app/course] designed to help [who] [achieve outcome]..." rows={3} />
-                <p className="text-gray-600 text-xs mt-1">{(formData.what_it_is || '').length}/600</p>
+                <p className="text-swp-white-ghost/50 text-xs mt-1">{(formData.what_it_is || '').length}/600</p>
               </FieldWithRegen>
 
               {/* Who It's For */}
@@ -464,12 +464,12 @@ const ProductModal = ({ item, onClose, onSave }) => {
               </Fl>
               <Fl label="Why It Works" helper="Optional. Max 300 characters.">
                 <TexA value={formData.why_it_works} onChange={e => set('why_it_works', e.target.value)} placeholder="Built by practitioners, not theorists..." rows={2} />
-                <p className="text-gray-600 text-xs mt-1">{(formData.why_it_works || '').length}/300</p>
+                <p className="text-swp-white-ghost/50 text-xs mt-1">{(formData.why_it_works || '').length}/300</p>
               </Fl>
 
               {/* Final CTA */}
-              <div className="bg-black/30 rounded-lg p-4 space-y-4 border border-gray-800/50">
-                <p className="text-gray-500 text-[10px] font-mono uppercase tracking-widest">Final CTA</p>
+              <div className="bg-swp-deep/50 rounded-swp p-4 space-y-4 border border-swp-border/50">
+                <p className="text-swp-white-ghost/70 text-[10px] font-mono uppercase tracking-widest">Final CTA</p>
                 <FieldWithRegen label="CTA Text" helper="Reinforce action at the bottom of the page" section="cta" sectionRegen={sectionRegen} onRegen={regenSection} onApply={applySectionResult} onDismiss={() => setSectionRegen({ loading: null, section: null, result: null })}>
                   <TI value={formData.final_cta_text} onChange={e => set('final_cta_text', e.target.value)} placeholder="[Product] is ready when you are." />
                 </FieldWithRegen>
@@ -489,16 +489,16 @@ const ProductModal = ({ item, onClose, onSave }) => {
                 <div className="flex items-start gap-4 flex-wrap">
                   {formData.hero_image_url && (
                     <div className="relative">
-                      <img src={imgUrl(formData.hero_image_url)} alt="" className="w-48 h-28 object-cover rounded-lg" />
-                      <button type="button" onClick={() => set('hero_image_url', '')} className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center"><X size={12} /></button>
+                      <img src={imgUrl(formData.hero_image_url)} alt="" className="w-48 h-28 object-cover rounded-swp" />
+                      <button type="button" onClick={() => set('hero_image_url', '')} className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-sm flex items-center justify-center"><X size={12} /></button>
                     </div>
                   )}
                   <div className="flex gap-2">
-                    <label className="flex items-center gap-2 px-4 py-2 bg-black border border-gray-700 rounded-lg cursor-pointer hover:bg-gray-900 text-sm">
-                      <Upload size={16} className="text-gray-400" /><span className="text-gray-400">{uploading ? 'Uploading...' : 'Upload'}</span>
+                    <label className="flex items-center gap-2 px-4 py-2 bg-swp-black border border-swp-border rounded-swp cursor-pointer hover:bg-gray-900 text-sm">
+                      <Upload size={16} className="text-swp-white-ghost" /><span className="text-swp-white-ghost">{uploading ? 'Uploading...' : 'Upload'}</span>
                       <input type="file" accept="image/*" onChange={e => uploadFile(e, 'hero_image_url')} className="hidden" />
                     </label>
-                    <button type="button" onClick={() => openAssetPicker('hero_image_url')} className="flex items-center gap-2 px-4 py-2 bg-electric-blue/10 border border-electric-blue/30 rounded-lg text-electric-blue text-sm hover:bg-electric-blue/20">
+                    <button type="button" onClick={() => openAssetPicker('hero_image_url')} className="flex items-center gap-2 px-4 py-2 bg-swp-ice/10 border border-swp-ice/30 rounded-swp text-swp-ice text-sm hover:bg-swp-ice/15">
                       <FolderOpen size={16} /> Browse Library
                     </button>
                   </div>
@@ -508,17 +508,17 @@ const ProductModal = ({ item, onClose, onSave }) => {
                 <div className="flex flex-wrap gap-3 mb-3">
                   {formData.screenshots.map((s, i) => (
                     <div key={i} className="relative">
-                      <img src={imgUrl(s)} alt="" className="w-24 h-16 object-cover rounded-lg" />
-                      <button type="button" onClick={() => set('screenshots', formData.screenshots.filter((_, j) => j !== i))} className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center"><X size={12} /></button>
+                      <img src={imgUrl(s)} alt="" className="w-24 h-16 object-cover rounded-swp" />
+                      <button type="button" onClick={() => set('screenshots', formData.screenshots.filter((_, j) => j !== i))} className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-sm flex items-center justify-center"><X size={12} /></button>
                     </div>
                   ))}
                 </div>
                 <div className="flex gap-2">
-                  <label className="inline-flex items-center gap-2 px-4 py-2 bg-black border border-gray-700 rounded-lg cursor-pointer hover:bg-gray-900 text-sm">
-                    <Upload size={16} className="text-gray-400" /><span className="text-gray-400">{uploading ? 'Uploading...' : 'Add Screenshot'}</span>
+                  <label className="inline-flex items-center gap-2 px-4 py-2 bg-swp-black border border-swp-border rounded-swp cursor-pointer hover:bg-gray-900 text-sm">
+                    <Upload size={16} className="text-swp-white-ghost" /><span className="text-swp-white-ghost">{uploading ? 'Uploading...' : 'Add Screenshot'}</span>
                     <input type="file" accept="image/*" onChange={uploadScreenshot} className="hidden" />
                   </label>
-                  <button type="button" onClick={() => openAssetPicker('screenshot')} className="flex items-center gap-2 px-4 py-2 bg-electric-blue/10 border border-electric-blue/30 rounded-lg text-electric-blue text-sm hover:bg-electric-blue/20">
+                  <button type="button" onClick={() => openAssetPicker('screenshot')} className="flex items-center gap-2 px-4 py-2 bg-swp-ice/10 border border-swp-ice/30 rounded-swp text-swp-ice text-sm hover:bg-swp-ice/15">
                     <FolderOpen size={16} /> Browse Library
                   </button>
                 </div>
@@ -538,29 +538,29 @@ const ProductModal = ({ item, onClose, onSave }) => {
 
               <FieldWithRegen label="SEO Title" helper={`${(formData.seo_title || '').length}/60 chars`} section="seo_title" sectionRegen={sectionRegen} onRegen={regenSection} onApply={applySectionResult} onDismiss={() => setSectionRegen({ loading: null, section: null, result: null })}>
                 <TI value={formData.seo_title} onChange={e => set('seo_title', e.target.value)} placeholder="Override page title for search engines..." data-testid="input-seo-title" />
-                <div className="w-full bg-gray-800 rounded-full h-1 mt-2">
-                  <div className={`h-1 rounded-full ${(formData.seo_title||'').length>60?'bg-red-500':(formData.seo_title||'').length>=30?'bg-green-500':'bg-yellow-500'}`} style={{width:`${Math.min(((formData.seo_title||'').length/60)*100,100)}%`}} />
+                <div className="w-full bg-gray-800 rounded-sm h-1 mt-2">
+                  <div className={`h-1 rounded-sm ${(formData.seo_title||'').length>60?'bg-red-500':(formData.seo_title||'').length>=30?'bg-green-500':'bg-yellow-500'}`} style={{width:`${Math.min(((formData.seo_title||'').length/60)*100,100)}%`}} />
                 </div>
               </FieldWithRegen>
 
               <FieldWithRegen label="SEO Description" helper={`${(formData.seo_description || '').length}/160 chars`} section="seo_description" sectionRegen={sectionRegen} onRegen={regenSection} onApply={applySectionResult} onDismiss={() => setSectionRegen({ loading: null, section: null, result: null })}>
                 <TexA value={formData.seo_description} onChange={e => set('seo_description', e.target.value)} placeholder="Meta description..." rows={3} />
-                <div className="w-full bg-gray-800 rounded-full h-1 mt-2">
-                  <div className={`h-1 rounded-full ${(formData.seo_description||'').length>160?'bg-red-500':(formData.seo_description||'').length>=100?'bg-green-500':'bg-yellow-500'}`} style={{width:`${Math.min(((formData.seo_description||'').length/160)*100,100)}%`}} />
+                <div className="w-full bg-gray-800 rounded-sm h-1 mt-2">
+                  <div className={`h-1 rounded-sm ${(formData.seo_description||'').length>160?'bg-red-500':(formData.seo_description||'').length>=100?'bg-green-500':'bg-yellow-500'}`} style={{width:`${Math.min(((formData.seo_description||'').length/160)*100,100)}%`}} />
                 </div>
               </FieldWithRegen>
 
               {/* Google Preview */}
-              <div className="bg-black/50 rounded-lg p-4 border border-gray-800">
-                <p className="text-gray-600 text-[10px] font-mono uppercase tracking-widest mb-3">Google Preview</p>
+              <div className="bg-swp-deep/70 rounded-swp p-4 border border-swp-border">
+                <p className="text-swp-white-ghost/50 text-[10px] font-mono uppercase tracking-widest mb-3">Google Preview</p>
                 <p className="text-[#8ab4f8] text-base font-medium truncate">{formData.seo_title || formData.title || 'Product Title'} | Shadow Wolves</p>
                 <p className="text-[#bdc1c6] text-xs truncate">shadowwolvesproductions.com.au /armory/{formData.slug || 'product-slug'}</p>
                 <p className="text-[#969ba1] text-sm line-clamp-2 mt-0.5">{formData.seo_description || formData.short_description || formData.what_it_is || 'Description...'}</p>
               </div>
 
               {/* SEO Checklist */}
-              <div className="bg-black/30 rounded-lg p-4 border border-gray-800/50 space-y-2">
-                <p className="text-gray-500 text-[10px] font-mono uppercase tracking-widest mb-2">SEO Checklist</p>
+              <div className="bg-swp-deep/50 rounded-swp p-4 border border-swp-border/50 space-y-2">
+                <p className="text-swp-white-ghost/70 text-[10px] font-mono uppercase tracking-widest mb-2">SEO Checklist</p>
                 <SeoCheck ok={(formData.seo_title||'').length>=30&&(formData.seo_title||'').length<=60} label="Title length optimal (30-60)" />
                 <SeoCheck ok={(formData.seo_description||'').length>=100&&(formData.seo_description||'').length<=160} label="Description length optimal (100-160)" />
                 <SeoCheck ok={!!formData.slug} label="Slug set" />
@@ -570,7 +570,7 @@ const ProductModal = ({ item, onClose, onSave }) => {
 
               {/* Generate SEO from Content */}
               <button type="button" onClick={generateSeo} disabled={seoGenerating}
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-electric-blue/10 to-purple-500/10 border border-electric-blue/30 rounded-lg text-electric-blue text-sm hover:from-electric-blue/20 hover:to-purple-500/20 transition-all disabled:opacity-50"
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-electric-blue/10 to-purple-500/10 border border-swp-ice/30 rounded-swp text-swp-ice text-sm hover:from-electric-blue/20 hover:to-purple-500/20 transition-all disabled:opacity-50"
                 data-testid="ai-seo-generate-btn">
                 {seoGenerating ? <Loader2 size={16} className="animate-spin" /> : <Sparkles size={16} />}
                 {seoGenerating ? 'Generating...' : 'Generate SEO from Content'}
@@ -578,14 +578,14 @@ const ProductModal = ({ item, onClose, onSave }) => {
 
               {/* SEO AI Result Preview */}
               {seoResult && (
-                <div className="bg-electric-blue/5 border border-electric-blue/20 rounded-lg p-4 space-y-3" data-testid="seo-result-preview">
-                  <p className="text-white text-sm font-medium flex items-center gap-2"><Sparkles size={14} className="text-electric-blue" /> AI-Generated SEO</p>
+                <div className="bg-swp-ice/5 border border-swp-ice/15 rounded-swp p-4 space-y-3" data-testid="seo-result-preview">
+                  <p className="text-white text-sm font-medium flex items-center gap-2"><Sparkles size={14} className="text-swp-ice" /> AI-Generated SEO</p>
                   <SeoPreviewItem label="Focus Keyword" value={seoResult.focus_keyword} onApply={() => applySeoResult(['focus_keyword'])} />
                   <SeoPreviewItem label="SEO Title" value={seoResult.seo_title} onApply={() => applySeoResult(['seo_title'])} />
                   <SeoPreviewItem label="SEO Description" value={seoResult.seo_description} onApply={() => applySeoResult(['seo_description'])} />
                   <div className="flex gap-2 pt-2">
-                    <button type="button" onClick={() => applySeoResult(['all'])} className="flex-1 px-4 py-2 bg-electric-blue text-white rounded-lg text-sm hover:bg-electric-blue/90">Apply All</button>
-                    <button type="button" onClick={() => setSeoResult(null)} className="px-4 py-2 border border-gray-700 text-gray-400 rounded-lg text-sm hover:text-white">Cancel</button>
+                    <button type="button" onClick={() => applySeoResult(['all'])} className="flex-1 px-4 py-2 bg-swp-ice text-white rounded-swp text-sm hover:bg-swp-ice">Apply All</button>
+                    <button type="button" onClick={() => setSeoResult(null)} className="px-4 py-2 border border-swp-border text-swp-white-ghost rounded-swp text-sm hover:text-swp-white">Cancel</button>
                   </div>
                 </div>
               )}
@@ -594,9 +594,9 @@ const ProductModal = ({ item, onClose, onSave }) => {
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between p-5 border-t border-gray-800 bg-black/30 flex-shrink-0">
-          <button type="button" onClick={onClose} className="px-5 py-2 border border-gray-700 text-gray-400 rounded-lg hover:text-white text-sm">Cancel</button>
-          <button onClick={save} disabled={saving} className="px-6 py-2 bg-electric-blue hover:bg-electric-blue/90 disabled:bg-gray-700 text-white rounded-lg text-sm" data-testid="product-save-btn">
+        <div className="flex items-center justify-between p-5 border-t border-swp-border bg-swp-deep/50 flex-shrink-0">
+          <button type="button" onClick={onClose} className="px-5 py-2 border border-swp-border text-swp-white-ghost rounded-swp hover:text-swp-white text-sm">Cancel</button>
+          <button onClick={save} disabled={saving} className="px-6 py-2 bg-swp-ice hover:bg-swp-ice disabled:bg-swp-muted text-white rounded-swp text-sm" data-testid="product-save-btn">
             {saving ? 'Saving...' : (item ? 'Update Product' : 'Create Product')}
           </button>
         </div>
@@ -682,30 +682,30 @@ const AIOverlay = ({ formData, onClose, aiResult, setAiResult, onApply }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/90" data-testid="ai-overlay">
-      <div className="bg-[#111] border border-gray-700 rounded-xl w-full max-w-xl max-h-[85vh] overflow-hidden flex flex-col">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-800">
-          <h3 className="text-white font-bold flex items-center gap-2"><Sparkles size={18} className="text-electric-blue" /> {aiResult ? 'Generated Content' : 'Generate Product Page Content'}</h3>
-          <button onClick={onClose} className="p-1 text-gray-400 hover:text-white"><X size={20} /></button>
+    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-swp-black/90" data-testid="ai-overlay">
+      <div className="bg-[#111] border border-swp-border rounded-swp w-full max-w-xl max-h-[85vh] overflow-hidden flex flex-col">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-swp-border">
+          <h3 className="text-white font-bold flex items-center gap-2"><Sparkles size={18} className="text-swp-ice" /> {aiResult ? 'Generated Content' : 'Generate Product Page Content'}</h3>
+          <button onClick={onClose} className="p-1 text-swp-white-ghost hover:text-swp-white"><X size={20} /></button>
         </div>
 
         <div className="flex-1 overflow-y-auto p-6">
           {!aiResult ? (
             <div className="space-y-4">
-              <p className="text-gray-500 text-xs mb-4">Fill in the required fields below. AI will generate all content sections.</p>
+              <p className="text-swp-white-ghost/70 text-xs mb-4">Fill in the required fields below. AI will generate all content sections.</p>
               <div className="space-y-3">
-                <p className="text-gray-400 text-xs font-mono uppercase tracking-wider">Required</p>
+                <p className="text-swp-white-ghost text-xs font-mono uppercase tracking-wider">Required</p>
                 <AIInput label="Product Name" value={inputs.product_name} onChange={v => setInputs(s => ({ ...s, product_name: v }))} required />
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-gray-400 text-xs mb-1">Product Type</label>
-                    <select value={inputs.product_type} onChange={e => setInputs(s => ({ ...s, product_type: e.target.value }))} className="w-full bg-black border border-gray-700 rounded-lg px-3 py-2 text-white text-sm">
+                    <label className="block text-swp-white-ghost text-xs mb-1">Product Type</label>
+                    <select value={inputs.product_type} onChange={e => setInputs(s => ({ ...s, product_type: e.target.value }))} className="w-full bg-swp-black border border-swp-border rounded-swp px-3 py-2 text-white text-sm">
                       {ITEM_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
                     </select>
                   </div>
                   <div>
-                    <label className="block text-gray-400 text-xs mb-1">Pricing Model</label>
-                    <select value={inputs.pricing_model} onChange={e => setInputs(s => ({ ...s, pricing_model: e.target.value }))} className="w-full bg-black border border-gray-700 rounded-lg px-3 py-2 text-white text-sm">
+                    <label className="block text-swp-white-ghost text-xs mb-1">Pricing Model</label>
+                    <select value={inputs.pricing_model} onChange={e => setInputs(s => ({ ...s, pricing_model: e.target.value }))} className="w-full bg-swp-black border border-swp-border rounded-swp px-3 py-2 text-white text-sm">
                       <option value="free">Free</option><option value="one_time">One-time</option><option value="subscription">Subscription</option>
                     </select>
                   </div>
@@ -713,12 +713,12 @@ const AIOverlay = ({ formData, onClose, aiResult, setAiResult, onApply }) => {
                 {inputs.pricing_model !== 'free' && <AIInput label="Price" value={inputs.price} onChange={v => setInputs(s => ({ ...s, price: v }))} placeholder="A$29" />}
                 <AIInput label="Primary Access URL" value={inputs.primary_url} onChange={v => setInputs(s => ({ ...s, primary_url: v }))} placeholder="https://..." />
                 <div>
-                  <label className="block text-gray-400 text-xs mb-1">Short Description *</label>
-                  <textarea value={inputs.short_description} onChange={e => setInputs(s => ({ ...s, short_description: e.target.value }))} rows={2} placeholder="1-2 sentences about what this product does..." className="w-full bg-black border border-gray-700 rounded-lg px-3 py-2 text-white text-sm resize-none focus:border-electric-blue focus:outline-none" />
+                  <label className="block text-swp-white-ghost text-xs mb-1">Short Description *</label>
+                  <textarea value={inputs.short_description} onChange={e => setInputs(s => ({ ...s, short_description: e.target.value }))} rows={2} placeholder="1-2 sentences about what this product does..." className="w-full bg-swp-black border border-swp-border rounded-swp px-3 py-2 text-white text-sm resize-none focus:border-swp-ice focus:outline-none" />
                 </div>
               </div>
               <div className="space-y-3 pt-2">
-                <p className="text-gray-400 text-xs font-mono uppercase tracking-wider">Optional</p>
+                <p className="text-swp-white-ghost text-xs font-mono uppercase tracking-wider">Optional</p>
                 <AIInput label="Who it's for" value={inputs.who_its_for} onChange={v => setInputs(s => ({ ...s, who_its_for: v }))} placeholder="e.g. Indie filmmakers, content creators" />
                 <AIInput label="Key outcomes" value={inputs.key_outcomes} onChange={v => setInputs(s => ({ ...s, key_outcomes: v }))} placeholder="What users achieve..." />
                 <AIInput label="Tone" value={inputs.tone} onChange={v => setInputs(s => ({ ...s, tone: v }))} />
@@ -727,18 +727,18 @@ const AIOverlay = ({ formData, onClose, aiResult, setAiResult, onApply }) => {
             </div>
           ) : (
             <div className="space-y-3">
-              <p className="text-gray-500 text-xs mb-3">Review generated content. Toggle sections to include/exclude, then apply.</p>
+              <p className="text-swp-white-ghost/70 text-xs mb-3">Review generated content. Toggle sections to include/exclude, then apply.</p>
               {Object.entries(aiResult).map(([key, value]) => {
                 if (!sectionLabels[key]) return null;
                 const isChecked = selected[key] ?? true;
                 return (
-                  <div key={key} className={`rounded-lg border p-3 transition-colors cursor-pointer ${isChecked ? 'border-electric-blue/40 bg-electric-blue/5' : 'border-gray-800 bg-black/30 opacity-60'}`}
+                  <div key={key} className={`rounded-swp border p-3 transition-colors cursor-pointer ${isChecked ? 'border-swp-ice/25 bg-swp-ice/5' : 'border-swp-border bg-swp-deep/50 opacity-60'}`}
                     onClick={() => toggleSection(key)} data-testid={`ai-section-${key}`}>
                     <div className="flex items-center gap-2 mb-1">
-                      <div className={`w-4 h-4 rounded border flex items-center justify-center ${isChecked ? 'bg-electric-blue border-electric-blue' : 'border-gray-600'}`}>
+                      <div className={`w-4 h-4 rounded border flex items-center justify-center ${isChecked ? 'bg-swp-ice border-swp-ice' : 'border-gray-600'}`}>
                         {isChecked && <Check size={10} className="text-white" />}
                       </div>
-                      <span className="text-gray-300 text-xs font-mono uppercase tracking-wider">{sectionLabels[key]}</span>
+                      <span className="text-swp-white-dim text-xs font-mono uppercase tracking-wider">{sectionLabels[key]}</span>
                     </div>
                     <p className="text-white text-sm ml-6 line-clamp-2">{Array.isArray(value) ? value.join(' / ') : String(value)}</p>
                   </div>
@@ -748,20 +748,20 @@ const AIOverlay = ({ formData, onClose, aiResult, setAiResult, onApply }) => {
           )}
         </div>
 
-        <div className="flex items-center gap-2 p-4 border-t border-gray-800">
+        <div className="flex items-center gap-2 p-4 border-t border-swp-border">
           {!aiResult ? (
             <>
-              <button type="button" onClick={onClose} className="px-4 py-2 border border-gray-700 text-gray-400 rounded-lg text-sm hover:text-white">Cancel</button>
-              <button type="button" onClick={generate} disabled={generating} className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-electric-blue text-white rounded-lg text-sm hover:bg-electric-blue/90 disabled:opacity-50" data-testid="ai-generate-btn">
+              <button type="button" onClick={onClose} className="px-4 py-2 border border-swp-border text-swp-white-ghost rounded-swp text-sm hover:text-swp-white">Cancel</button>
+              <button type="button" onClick={generate} disabled={generating} className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-swp-ice text-white rounded-swp text-sm hover:bg-swp-ice disabled:opacity-50" data-testid="ai-generate-btn">
                 {generating ? <><Loader2 size={16} className="animate-spin" /> Generating...</> : <><Sparkles size={16} /> Generate</>}
               </button>
             </>
           ) : (
             <>
-              <button type="button" onClick={() => setAiResult(null)} className="px-4 py-2 border border-gray-700 text-gray-400 rounded-lg text-sm hover:text-white">Back</button>
-              <button type="button" onClick={onClose} className="px-4 py-2 border border-gray-700 text-gray-400 rounded-lg text-sm hover:text-white">Cancel</button>
+              <button type="button" onClick={() => setAiResult(null)} className="px-4 py-2 border border-swp-border text-swp-white-ghost rounded-swp text-sm hover:text-swp-white">Back</button>
+              <button type="button" onClick={onClose} className="px-4 py-2 border border-swp-border text-swp-white-ghost rounded-swp text-sm hover:text-swp-white">Cancel</button>
               <button type="button" onClick={() => onApply(aiResult, Object.keys(selected).filter(k => selected[k]))}
-                className="flex-1 px-4 py-2 bg-electric-blue text-white rounded-lg text-sm hover:bg-electric-blue/90" data-testid="ai-apply-btn">
+                className="flex-1 px-4 py-2 bg-swp-ice text-white rounded-swp text-sm hover:bg-swp-ice" data-testid="ai-apply-btn">
                 Apply Selected ({Object.values(selected).filter(Boolean).length})
               </button>
             </>
@@ -775,38 +775,38 @@ const AIOverlay = ({ formData, onClose, aiResult, setAiResult, onApply }) => {
 /* ═══ Shared UI Components ═══ */
 
 const Fl = ({ label, helper, children }) => (
-  <div><label className="block text-gray-400 text-sm mb-1">{label}</label>{children}{helper && <p className="text-gray-600 text-xs mt-1">{helper}</p>}</div>
+  <div><label className="block text-swp-white-ghost text-sm mb-1">{label}</label>{children}{helper && <p className="text-swp-white-ghost/50 text-xs mt-1">{helper}</p>}</div>
 );
 
 const TI = ({ value, onChange, placeholder, ...p }) => (
-  <input type="text" value={value} onChange={onChange} placeholder={placeholder} className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2 text-white text-sm focus:border-electric-blue focus:outline-none" {...p} />
+  <input type="text" value={value} onChange={onChange} placeholder={placeholder} className="w-full bg-swp-black border border-swp-border rounded-swp px-4 py-2 text-white text-sm focus:border-swp-ice focus:outline-none" {...p} />
 );
 
 const TexA = ({ value, onChange, placeholder, rows = 3 }) => (
-  <textarea value={value} onChange={onChange} placeholder={placeholder} rows={rows} className="w-full bg-black border border-gray-700 rounded-lg px-4 py-2 text-white text-sm resize-none focus:border-electric-blue focus:outline-none" />
+  <textarea value={value} onChange={onChange} placeholder={placeholder} rows={rows} className="w-full bg-swp-black border border-swp-border rounded-swp px-4 py-2 text-white text-sm resize-none focus:border-swp-ice focus:outline-none" />
 );
 
 const SeoCheck = ({ ok, label }) => (
   <div className="flex items-center gap-2 text-sm">
-    <span className={`w-4 h-4 rounded-full flex items-center justify-center text-xs ${ok ? 'bg-green-500/20 text-green-400' : 'bg-gray-700/50 text-gray-500'}`}>{ok ? '\u2713' : '\u2013'}</span>
-    <span className={ok ? 'text-gray-300' : 'text-gray-500'}>{label}</span>
+    <span className={`w-4 h-4 rounded-sm flex items-center justify-center text-xs ${ok ? 'bg-green-500/20 text-green-400' : 'bg-gray-700/50 text-swp-white-ghost/70'}`}>{ok ? '\u2713' : '\u2013'}</span>
+    <span className={ok ? 'text-swp-white-dim' : 'text-swp-white-ghost/70'}>{label}</span>
   </div>
 );
 
 const AIInput = ({ label, value, onChange, placeholder, required }) => (
   <div>
-    <label className="block text-gray-400 text-xs mb-1">{label}{required && ' *'}</label>
-    <input type="text" value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder} className="w-full bg-black border border-gray-700 rounded-lg px-3 py-2 text-white text-sm focus:border-electric-blue focus:outline-none" />
+    <label className="block text-swp-white-ghost text-xs mb-1">{label}{required && ' *'}</label>
+    <input type="text" value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder} className="w-full bg-swp-black border border-swp-border rounded-swp px-3 py-2 text-white text-sm focus:border-swp-ice focus:outline-none" />
   </div>
 );
 
 const SeoPreviewItem = ({ label, value, onApply }) => (
   <div className="flex items-center gap-2">
     <div className="flex-1 min-w-0">
-      <p className="text-gray-500 text-xs">{label}</p>
+      <p className="text-swp-white-ghost/70 text-xs">{label}</p>
       <p className="text-white text-sm truncate">{value}</p>
     </div>
-    <button type="button" onClick={onApply} className="px-3 py-1 text-electric-blue text-xs border border-electric-blue/30 rounded hover:bg-electric-blue/10">Apply</button>
+    <button type="button" onClick={onApply} className="px-3 py-1 text-swp-ice text-xs border border-swp-ice/30 rounded hover:bg-swp-ice/10">Apply</button>
   </div>
 );
 
@@ -818,25 +818,25 @@ const FieldWithRegen = ({ label, helper, section, sectionRegen, onRegen, onApply
   return (
     <div>
       <div className="flex items-center gap-2 mb-1">
-        <label className="block text-gray-400 text-sm">{label}</label>
+        <label className="block text-swp-white-ghost text-sm">{label}</label>
         <button type="button" onClick={() => onRegen(section)} disabled={isLoading}
-          className="p-0.5 text-gray-600 hover:text-electric-blue transition-colors disabled:opacity-50" title="Regenerate with AI" data-testid={`regen-${section}`}>
-          {isLoading ? <Loader2 size={13} className="animate-spin text-electric-blue" /> : <Sparkles size={13} />}
+          className="p-0.5 text-swp-white-ghost/50 hover:text-swp-ice transition-colors disabled:opacity-50" title="Regenerate with AI" data-testid={`regen-${section}`}>
+          {isLoading ? <Loader2 size={13} className="animate-spin text-swp-ice" /> : <Sparkles size={13} />}
         </button>
       </div>
       {children}
-      {helper && !isList && <p className="text-gray-600 text-xs mt-1">{helper}</p>}
+      {helper && !isList && <p className="text-swp-white-ghost/50 text-xs mt-1">{helper}</p>}
       {hasResult && (
-        <div className="mt-2 bg-electric-blue/5 border border-electric-blue/20 rounded-lg p-3" data-testid={`regen-preview-${section}`}>
-          <p className="text-gray-500 text-[10px] font-mono uppercase tracking-wider mb-1">AI Suggestion</p>
+        <div className="mt-2 bg-swp-ice/5 border border-swp-ice/15 rounded-swp p-3" data-testid={`regen-preview-${section}`}>
+          <p className="text-swp-white-ghost/70 text-[10px] font-mono uppercase tracking-wider mb-1">AI Suggestion</p>
           <p className="text-white text-sm mb-2">
             {section === 'cta'
               ? `${sectionRegen.result.cta_text || ''} / ${sectionRegen.result.cta_microcopy || ''}`
               : Array.isArray(sectionRegen.result.value) ? sectionRegen.result.value.join(' / ') : sectionRegen.result.value}
           </p>
           <div className="flex gap-2">
-            <button type="button" onClick={() => onApply(section)} className="px-3 py-1 bg-electric-blue text-white text-xs rounded hover:bg-electric-blue/90">Apply</button>
-            <button type="button" onClick={onDismiss} className="px-3 py-1 border border-gray-700 text-gray-400 text-xs rounded hover:text-white">Cancel</button>
+            <button type="button" onClick={() => onApply(section)} className="px-3 py-1 bg-swp-ice text-white text-xs rounded hover:bg-swp-ice">Apply</button>
+            <button type="button" onClick={onDismiss} className="px-3 py-1 border border-swp-border text-swp-white-ghost text-xs rounded hover:text-swp-white">Cancel</button>
           </div>
         </div>
       )}
@@ -853,24 +853,24 @@ const ListEditor = ({ label, helper, items, onChange, placeholder }) => {
   const saveEdit = () => { if (editVal.trim()) { const next = [...items]; next[editIdx] = editVal.trim(); onChange(next); } setEditIdx(-1); };
   return (
     <div>
-      {label && <label className="block text-gray-400 text-sm mb-1">{label}</label>}
-      {helper && <p className="text-gray-600 text-xs mb-2">{helper}</p>}
+      {label && <label className="block text-swp-white-ghost text-sm mb-1">{label}</label>}
+      {helper && <p className="text-swp-white-ghost/50 text-xs mb-2">{helper}</p>}
       <div className="space-y-1.5 mb-2">
         {items.map((item, i) => (
-          <div key={i} className="flex items-center gap-2 bg-black border border-gray-700 rounded-lg px-3 py-1.5 text-sm">
-            <span className="text-gray-500 font-mono w-5">{i+1}.</span>
+          <div key={i} className="flex items-center gap-2 bg-swp-black border border-swp-border rounded-swp px-3 py-1.5 text-sm">
+            <span className="text-swp-white-ghost/70 font-mono w-5">{i+1}.</span>
             {editIdx === i ? (
               <input type="text" value={editVal} onChange={e => setEditVal(e.target.value)} onKeyDown={e => e.key === 'Enter' && saveEdit()} onBlur={saveEdit} autoFocus className="flex-1 bg-transparent text-white outline-none" />
             ) : (
               <span className="text-white flex-1 cursor-pointer" onClick={() => startEdit(i)}>{item}</span>
             )}
-            <button type="button" onClick={() => onChange(items.filter((_,j)=>j!==i))} className="text-gray-400 hover:text-red-400"><X size={14} /></button>
+            <button type="button" onClick={() => onChange(items.filter((_,j)=>j!==i))} className="text-swp-white-ghost hover:text-red-400"><X size={14} /></button>
           </div>
         ))}
       </div>
       <div className="flex gap-2">
-        <input type="text" value={val} onChange={e => setVal(e.target.value)} onKeyDown={e => e.key==='Enter'&&(e.preventDefault(),add())} className="flex-1 bg-black border border-gray-700 rounded-lg px-3 py-1.5 text-white text-sm focus:border-electric-blue focus:outline-none" placeholder={placeholder} />
-        <button type="button" onClick={add} className="px-3 py-1.5 bg-electric-blue text-white rounded-lg text-sm">Add</button>
+        <input type="text" value={val} onChange={e => setVal(e.target.value)} onKeyDown={e => e.key==='Enter'&&(e.preventDefault(),add())} className="flex-1 bg-swp-black border border-swp-border rounded-swp px-3 py-1.5 text-white text-sm focus:border-swp-ice focus:outline-none" placeholder={placeholder} />
+        <button type="button" onClick={add} className="px-3 py-1.5 bg-swp-ice text-white rounded-swp text-sm">Add</button>
       </div>
     </div>
   );
@@ -881,18 +881,18 @@ const TagEditor = ({ label, helper, tags, onChange }) => {
   const add = () => { if (val.trim() && !tags.includes(val.trim())) { onChange([...tags, val.trim()]); setVal(''); } };
   return (
     <div>
-      <label className="block text-gray-400 text-sm mb-1">{label}</label>
-      {helper && <p className="text-gray-600 text-xs mb-2">{helper}</p>}
+      <label className="block text-swp-white-ghost text-sm mb-1">{label}</label>
+      {helper && <p className="text-swp-white-ghost/50 text-xs mb-2">{helper}</p>}
       <div className="flex flex-wrap gap-2 mb-2">
         {tags.map((tag, i) => (
-          <span key={i} className="flex items-center gap-1 bg-white/5 border border-gray-700 px-3 py-1 rounded-full text-sm text-gray-300">
-            {tag}<button type="button" onClick={() => onChange(tags.filter((_,j)=>j!==i))} className="text-gray-400 hover:text-red-400"><X size={12} /></button>
+          <span key={i} className="flex items-center gap-1 bg-white/5 border border-swp-border px-3 py-1 rounded-sm text-sm text-swp-white-dim">
+            {tag}<button type="button" onClick={() => onChange(tags.filter((_,j)=>j!==i))} className="text-swp-white-ghost hover:text-red-400"><X size={12} /></button>
           </span>
         ))}
       </div>
       <div className="flex gap-2">
-        <input type="text" value={val} onChange={e => setVal(e.target.value)} onKeyDown={e => e.key==='Enter'&&(e.preventDefault(),add())} className="flex-1 bg-black border border-gray-700 rounded-lg px-3 py-1.5 text-white text-sm focus:border-electric-blue focus:outline-none" placeholder="Add a tag..." />
-        <button type="button" onClick={add} className="px-3 py-1.5 bg-gray-700 text-white rounded-lg text-sm">Add</button>
+        <input type="text" value={val} onChange={e => setVal(e.target.value)} onKeyDown={e => e.key==='Enter'&&(e.preventDefault(),add())} className="flex-1 bg-swp-black border border-swp-border rounded-swp px-3 py-1.5 text-white text-sm focus:border-swp-ice focus:outline-none" placeholder="Add a tag..." />
+        <button type="button" onClick={add} className="px-3 py-1.5 bg-gray-700 text-white rounded-swp text-sm">Add</button>
       </div>
     </div>
   );
