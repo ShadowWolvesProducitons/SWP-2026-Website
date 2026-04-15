@@ -116,7 +116,7 @@ const StudioAccount = () => {
   };
 
   return (
-    <div className="p-6 lg:p-8 max-w-3xl" data-testid="studio-account">
+    <div className="p-6 lg:p-8" data-testid="studio-account">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
