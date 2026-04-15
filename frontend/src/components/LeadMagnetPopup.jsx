@@ -181,13 +181,13 @@ const LeadMagnetPopup = () => {
         >
           {/* Overlay */}
           <div 
-            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            className="absolute inset-0 bg-swp-deep/90 backdrop-blur-sm"
             onClick={handleDismiss}
           />
 
           {/* Modal */}
           <motion.div
-            className="relative w-full max-w-md bg-[#0a0a0a] border border-gray-800 rounded-2xl shadow-2xl overflow-hidden"
+            className="relative w-full max-w-md bg-[#0a0a0a] border border-swp-border rounded-2xl shadow-2xl overflow-hidden"
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -196,7 +196,7 @@ const LeadMagnetPopup = () => {
             {/* Close Button */}
             <button
               onClick={handleDismiss}
-              className="absolute top-4 right-4 p-2 text-gray-500 hover:text-white transition-colors rounded-lg hover:bg-white/5 z-10"
+              className="absolute top-4 right-4 p-2 text-swp-white-ghost/70 hover:text-swp-white transition-colors rounded-swp hover:bg-white/5 z-10"
               aria-label="Close"
             >
               <X size={20} />
@@ -215,16 +215,16 @@ const LeadMagnetPopup = () => {
 
               {/* Heading */}
               <h2 
-                className="text-2xl font-bold text-white text-center mb-2 font-cinzel"
+                className="text-2xl font-bold text-white text-center mb-2 font-display"
               >
                 Get The Producer's Playbook
               </h2>
-              <p className="text-electric-blue text-sm text-center mb-4 font-mono uppercase tracking-widest">
+              <p className="text-swp-ice text-sm text-center mb-4 font-mono uppercase tracking-widest">
                 Free
               </p>
 
               {/* Description */}
-              <p className="text-gray-400 text-center text-sm mb-6 leading-relaxed">
+              <p className="text-swp-white-ghost text-center text-sm mb-6 leading-relaxed">
                 Practical tools we actually use. No fluff.
               </p>
 
@@ -235,13 +235,13 @@ const LeadMagnetPopup = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
-                  className="w-full px-5 py-4 rounded-xl bg-black border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-electric-blue transition-colors"
+                  className="w-full px-5 py-4 rounded-swp bg-swp-black border border-swp-border text-white placeholder-gray-500 focus:outline-none focus:border-swp-ice transition-colors"
                   disabled={submitting}
                 />
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full px-6 py-4 bg-electric-blue hover:bg-electric-blue/90 disabled:bg-electric-blue/50 text-white rounded-xl font-mono text-sm uppercase tracking-widest transition-all flex items-center justify-center gap-2"
+                  className="w-full px-6 py-4 bg-swp-ice hover:bg-swp-ice disabled:bg-swp-ice/50 text-white rounded-swp font-mono text-sm uppercase tracking-widest transition-all flex items-center justify-center gap-2"
                 >
                   {submitting ? (
                     <>
@@ -255,7 +255,7 @@ const LeadMagnetPopup = () => {
               </form>
 
               {/* Footer - Newsletter mention */}
-              <p className="text-gray-600 text-xs text-center mt-4">
+              <p className="text-swp-white-ghost/50 text-xs text-center mt-4">
                 You'll also join our newsletter for industry updates. Unsubscribe anytime.
               </p>
             </div>
