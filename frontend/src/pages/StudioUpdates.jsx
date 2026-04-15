@@ -50,7 +50,7 @@ const StudioUpdates = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <RefreshCw className="w-8 h-8 text-electric-blue animate-spin" />
+        <RefreshCw className="w-8 h-8 text-swp-ice animate-spin" />
       </div>
     );
   }
@@ -63,8 +63,8 @@ const StudioUpdates = () => {
         animate={{ opacity: 1, y: 0 }}
         className="mb-8"
       >
-        <h1 className="text-3xl font-bold text-white font-cinzel mb-2">Updates</h1>
-        <p className="text-gray-400">Stay informed with the latest news and announcements</p>
+        <h1 className="text-3xl font-bold text-white font-display mb-2">Updates</h1>
+        <p className="text-swp-white-ghost">Stay informed with the latest news and announcements</p>
       </motion.div>
 
       {/* Tag Filter */}
@@ -76,13 +76,13 @@ const StudioUpdates = () => {
           className="mb-6"
         >
           <div className="flex items-center gap-2 flex-wrap">
-            <Filter size={16} className="text-gray-500" />
+            <Filter size={16} className="text-swp-white-ghost/70" />
             <button
               onClick={() => setSelectedTag('')}
-              className={`px-3 py-1.5 text-sm rounded-full transition-colors ${
+              className={`px-3 py-1.5 text-sm rounded-sm transition-colors ${
                 !selectedTag 
-                  ? 'bg-electric-blue text-white' 
-                  : 'bg-smoke-gray text-gray-400 hover:text-white'
+                  ? 'bg-swp-ice text-white' 
+                  : 'bg-swp-surface text-swp-white-ghost hover:text-swp-white'
               }`}
             >
               All
@@ -91,10 +91,10 @@ const StudioUpdates = () => {
               <button
                 key={tag}
                 onClick={() => setSelectedTag(tag)}
-                className={`px-3 py-1.5 text-sm rounded-full transition-colors capitalize ${
+                className={`px-3 py-1.5 text-sm rounded-sm transition-colors capitalize ${
                   selectedTag === tag 
-                    ? 'bg-electric-blue text-white' 
-                    : 'bg-smoke-gray text-gray-400 hover:text-white'
+                    ? 'bg-swp-ice text-white' 
+                    : 'bg-swp-surface text-swp-white-ghost hover:text-swp-white'
                 }`}
               >
                 {tag.replace('_', ' ')}
@@ -113,11 +113,11 @@ const StudioUpdates = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.05 }}
-              className="bg-smoke-gray border border-gray-800 rounded-lg p-6 hover:border-gray-700 transition-colors"
+              className="bg-swp-surface border border-swp-border rounded-swp p-6 hover:border-swp-border transition-colors"
             >
               <div className="flex items-start justify-between gap-4 mb-3">
                 <h2 className="text-xl text-white font-semibold">{update.title}</h2>
-                <div className="flex items-center gap-2 text-gray-500 text-sm whitespace-nowrap">
+                <div className="flex items-center gap-2 text-swp-white-ghost/70 text-sm whitespace-nowrap">
                   <Calendar size={14} />
                   {formatDate(update.created_at)}
                 </div>
@@ -129,7 +129,7 @@ const StudioUpdates = () => {
                   {update.tags.map((tag, tIdx) => (
                     <span 
                       key={tIdx} 
-                      className="px-2 py-0.5 bg-electric-blue/10 text-electric-blue text-xs font-mono uppercase rounded"
+                      className="px-2 py-0.5 bg-swp-ice/10 text-swp-ice text-xs font-mono uppercase rounded"
                     >
                       {tag.replace('_', ' ')}
                     </span>
@@ -139,7 +139,7 @@ const StudioUpdates = () => {
               
               {/* Body */}
               <div 
-                className="text-gray-400 prose prose-invert prose-sm max-w-none"
+                className="text-swp-white-ghost prose prose-invert prose-sm max-w-none"
                 dangerouslySetInnerHTML={{ __html: update.body }}
               />
             </motion.article>
@@ -149,11 +149,11 @@ const StudioUpdates = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-smoke-gray border border-gray-800 rounded-lg p-12 text-center"
+          className="bg-swp-surface border border-swp-border rounded-swp p-12 text-center"
         >
-          <Bell size={48} className="text-gray-600 mx-auto mb-4" />
+          <Bell size={48} className="text-swp-white-ghost/50 mx-auto mb-4" />
           <h2 className="text-xl text-white mb-2">No Updates Yet</h2>
-          <p className="text-gray-500">
+          <p className="text-swp-white-ghost/70">
             {selectedTag 
               ? `No updates found with the "${selectedTag}" tag.`
               : "Check back later for news and announcements about your projects."}

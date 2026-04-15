@@ -114,7 +114,7 @@ const StudioAssets = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <RefreshCw className="w-8 h-8 text-electric-blue animate-spin" />
+        <RefreshCw className="w-8 h-8 text-swp-ice animate-spin" />
       </div>
     );
   }
@@ -127,8 +127,8 @@ const StudioAssets = () => {
         animate={{ opacity: 1, y: 0 }}
         className="mb-8"
       >
-        <h1 className="text-3xl font-bold text-white font-cinzel mb-2">Assets</h1>
-        <p className="text-gray-400">Download project materials and documents</p>
+        <h1 className="text-3xl font-bold text-white font-display mb-2">Assets</h1>
+        <p className="text-swp-white-ghost">Download project materials and documents</p>
       </motion.div>
 
       {/* Type Filter */}
@@ -139,15 +139,15 @@ const StudioAssets = () => {
         className="mb-6"
       >
         <div className="flex items-center gap-2 flex-wrap">
-          <Filter size={16} className="text-gray-500" />
+          <Filter size={16} className="text-swp-white-ghost/70" />
           {ASSET_TYPES.map((type) => (
             <button
               key={type.value}
               onClick={() => setSelectedType(type.value)}
-              className={`px-3 py-1.5 text-sm rounded-full transition-colors ${
+              className={`px-3 py-1.5 text-sm rounded-sm transition-colors ${
                 selectedType === type.value 
-                  ? 'bg-electric-blue text-white' 
-                  : 'bg-smoke-gray text-gray-400 hover:text-white'
+                  ? 'bg-swp-ice text-white' 
+                  : 'bg-swp-surface text-swp-white-ghost hover:text-swp-white'
               }`}
             >
               {type.label}
@@ -161,9 +161,9 @@ const StudioAssets = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.15 }}
-        className="bg-smoke-gray border border-gray-800 rounded-lg p-4 mb-6"
+        className="bg-swp-surface border border-swp-border rounded-swp p-4 mb-6"
       >
-        <p className="text-gray-400 text-sm">
+        <p className="text-swp-white-ghost text-sm">
           <strong className="text-white">Notice:</strong> All downloaded documents are watermarked with your 
           information for tracking and security purposes.
         </p>
@@ -181,14 +181,14 @@ const StudioAssets = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.03 }}
-                className="bg-smoke-gray border border-gray-800 rounded-lg p-4 hover:border-gray-700 transition-colors"
+                className="bg-swp-surface border border-swp-border rounded-swp p-4 hover:border-swp-border transition-colors"
               >
                 {/* Icon & Type */}
                 <div className="flex items-start justify-between mb-3">
-                  <div className="w-12 h-12 bg-electric-blue/10 rounded-lg flex items-center justify-center">
-                    <Icon size={24} className="text-electric-blue" />
+                  <div className="w-12 h-12 bg-swp-ice/10 rounded-swp flex items-center justify-center">
+                    <Icon size={24} className="text-swp-ice" />
                   </div>
-                  <span className="px-2 py-1 bg-gray-800 text-gray-400 text-xs font-mono uppercase rounded">
+                  <span className="px-2 py-1 bg-gray-800 text-swp-white-ghost text-xs font-mono uppercase rounded">
                     {asset.asset_type?.replace('_', ' ')}
                   </span>
                 </div>
@@ -196,20 +196,20 @@ const StudioAssets = () => {
                 {/* Name & Description */}
                 <h3 className="text-white font-medium mb-1 line-clamp-2">{asset.name}</h3>
                 {asset.description && (
-                  <p className="text-gray-500 text-sm line-clamp-2 mb-3">{asset.description}</p>
+                  <p className="text-swp-white-ghost/70 text-sm line-clamp-2 mb-3">{asset.description}</p>
                 )}
 
                 {/* File Size */}
                 {asset.file_size > 0 && (
-                  <p className="text-gray-600 text-xs mb-3">{formatFileSize(asset.file_size)}</p>
+                  <p className="text-swp-white-ghost/50 text-xs mb-3">{formatFileSize(asset.file_size)}</p>
                 )}
 
                 {/* Download Button */}
                 <button
                   onClick={() => handleDownload(asset)}
                   disabled={downloading === asset.id}
-                  className="w-full flex items-center justify-center gap-2 bg-electric-blue/10 hover:bg-electric-blue/20 
-                             text-electric-blue px-4 py-2 rounded-lg text-sm transition-colors disabled:opacity-50"
+                  className="w-full flex items-center justify-center gap-2 bg-swp-ice/10 hover:bg-swp-ice/15 
+                             text-swp-ice px-4 py-2 rounded-swp text-sm transition-colors disabled:opacity-50"
                 >
                   {downloading === asset.id ? (
                     <>
@@ -231,11 +231,11 @@ const StudioAssets = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-smoke-gray border border-gray-800 rounded-lg p-12 text-center"
+          className="bg-swp-surface border border-swp-border rounded-swp p-12 text-center"
         >
-          <FolderOpen size={48} className="text-gray-600 mx-auto mb-4" />
+          <FolderOpen size={48} className="text-swp-white-ghost/50 mx-auto mb-4" />
           <h2 className="text-xl text-white mb-2">No Assets Available</h2>
-          <p className="text-gray-500">
+          <p className="text-swp-white-ghost/70">
             {selectedType 
               ? `No ${selectedType.replace('_', ' ')}s found.`
               : "No downloadable assets are available for your projects yet."}

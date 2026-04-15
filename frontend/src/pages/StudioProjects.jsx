@@ -41,7 +41,7 @@ const StudioProjects = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <RefreshCw className="w-8 h-8 text-electric-blue animate-spin" />
+        <RefreshCw className="w-8 h-8 text-swp-ice animate-spin" />
       </div>
     );
   }
@@ -54,21 +54,21 @@ const StudioProjects = () => {
         animate={{ opacity: 1, y: 0 }}
         className="mb-8"
       >
-        <h1 className="text-3xl font-bold text-white font-cinzel mb-2">Projects</h1>
-        <p className="text-gray-400">Access your assigned project materials</p>
+        <h1 className="text-3xl font-bold text-white font-display mb-2">Projects</h1>
+        <p className="text-swp-white-ghost">Access your assigned project materials</p>
       </motion.div>
 
       {projects.length > 0 ? (
         <>
           {/* Search */}
           <div className="relative mb-6 max-w-md">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={20} />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-swp-white-ghost/70" size={20} />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search projects..."
-              className="w-full bg-smoke-gray border border-gray-700 rounded-lg pl-12 pr-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
+              className="w-full bg-swp-surface border border-swp-border rounded-swp pl-12 pr-4 py-3 text-white focus:border-swp-ice focus:outline-none transition-colors"
             />
           </div>
 
@@ -83,7 +83,7 @@ const StudioProjects = () => {
               >
                 <Link
                   to={`/studio-access/projects/${project.slug}`}
-                  className="block bg-smoke-gray border border-gray-800 rounded-lg overflow-hidden hover:border-electric-blue/50 transition-all group"
+                  className="block bg-swp-surface border border-swp-border rounded-swp overflow-hidden hover:border-swp-ice/30 transition-all group"
                 >
                   {/* Poster - 2:3 ratio */}
                   <div className="aspect-[2/3] bg-gray-900 relative overflow-hidden">
@@ -91,7 +91,7 @@ const StudioProjects = () => {
                       <img
                         src={`${process.env.REACT_APP_BACKEND_URL}${project.poster_url}`}
                         alt={project.title}
-                        className="w-full h-full object-contain bg-black group-hover:scale-105 transition-transform duration-500"
+                        className="w-full h-full object-contain bg-swp-black group-hover:scale-105 transition-transform duration-500"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-900 to-black">
@@ -103,17 +103,17 @@ const StudioProjects = () => {
                   {/* Info */}
                   <div className="p-4">
                     <div className="flex items-start justify-between gap-2 mb-1">
-                      <h3 className="text-white font-semibold text-lg group-hover:text-electric-blue transition-colors">
+                      <h3 className="text-white font-semibold text-lg group-hover:text-swp-ice transition-colors">
                         {project.title}
                       </h3>
-                      <span className="px-2 py-1 bg-electric-blue text-white text-xs font-bold uppercase rounded shrink-0">
+                      <span className="px-2 py-1 bg-swp-ice text-white text-xs font-bold uppercase rounded shrink-0">
                         {project.status}
                       </span>
                     </div>
                     {project.genres?.length > 0 && (
                       <div className="flex flex-wrap gap-1">
                         {project.genres.map((genre, gIdx) => (
-                          <span key={gIdx} className="text-gray-500 text-sm">
+                          <span key={gIdx} className="text-swp-white-ghost/70 text-sm">
                             {genre}{gIdx < project.genres.length - 1 ? ' •' : ''}
                           </span>
                         ))}
@@ -126,14 +126,14 @@ const StudioProjects = () => {
           </div>
 
           {filteredProjects.length === 0 && search && (
-            <p className="text-gray-500 text-center py-8">No projects match your search.</p>
+            <p className="text-swp-white-ghost/70 text-center py-8">No projects match your search.</p>
           )}
         </>
       ) : (
-        <div className="bg-smoke-gray border border-gray-800 rounded-lg p-12 text-center">
-          <Film size={48} className="text-gray-600 mx-auto mb-4" />
+        <div className="bg-swp-surface border border-swp-border rounded-swp p-12 text-center">
+          <Film size={48} className="text-swp-white-ghost/50 mx-auto mb-4" />
           <h2 className="text-xl text-white mb-2">No Projects Assigned</h2>
-          <p className="text-gray-500">
+          <p className="text-swp-white-ghost/70">
             You don't have access to any projects yet. Contact admin to request project access.
           </p>
         </div>

@@ -3,172 +3,100 @@ import { Link, useOutletContext } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Bell, FolderOpen, ChevronRight, RefreshCw, FileText } from 'lucide-react';
 
+const ROLE_LABELS = { admin:'Admin', investor:'Investor', sales_agent:'Sales Agent', director:'Director', producer:'Producer', executive_producer:'Executive Producer', cast:'Cast', crew:'Crew', talent_manager:'Talent Manager', other:'Other' };
+
 const StudioDashboard = () => {
   const { user } = useOutletContext();
-  const [data, setData] = useState(null);
+  const [data, setData]     = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchDashboard();
-  }, []);
+  useEffect(() => { fetchDashboard(); }, []);
 
+  // ── API call preserved exactly ──
   const fetchDashboard = async () => {
     const token = localStorage.getItem('studio_token');
-    
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/studio-portal/dashboard`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      
-      if (response.ok) {
-        const result = await response.json();
-        setData(result);
-      }
-    } catch (err) {
-      console.error('Failed to fetch dashboard:', err);
-    } finally {
-      setLoading(false);
-    }
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/studio-portal/dashboard`, { headers:{ 'Authorization':`Bearer ${token}` } });
+      if (res.ok) setData(await res.json());
+    } catch { console.error('Failed to fetch dashboard'); }
+    finally { setLoading(false); }
   };
 
-  const getRoleLabel = (role) => {
-    const labels = {
-      admin: 'Admin',
-      investor: 'Investor',
-      sales_agent: 'Sales Agent',
-      director: 'Director',
-      producer: 'Producer',
-      executive_producer: 'Executive Producer',
-      cast: 'Cast',
-      crew: 'Crew',
-      talent_manager: 'Talent Manager',
-      other: 'Other'
-    };
-    return labels[role] || role;
-  };
+  if (loading) return <div style={{ display:'flex', alignItems:'center', justifyContent:'center', height:'64px' }}><RefreshCw style={{ width:'22px', height:'22px', color:'var(--swp-ice)', animation:'spin 1s linear infinite' }} /></div>;
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <RefreshCw className="w-8 h-8 text-electric-blue animate-spin" />
-      </div>
-    );
-  }
+  const Card = ({ children }) => (
+    <div style={{ background:'rgba(17,19,24,0.68)', backdropFilter:'blur(16px)', border:'0.5px solid rgba(255,255,255,0.07)', borderRadius:'3px', padding:'20px 24px', transition:'border-color 0.2s' }}
+      onMouseEnter={e=>e.currentTarget.style.borderColor='rgba(255,255,255,0.12)'} onMouseLeave={e=>e.currentTarget.style.borderColor='rgba(255,255,255,0.07)'}>
+      {children}
+    </div>
+  );
 
   return (
-    <div className="p-6 lg:p-8" data-testid="studio-dashboard">
-      {/* Welcome Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="mb-8"
-      >
-        <h1 className="text-3xl font-bold text-white font-cinzel mb-2">
-          Welcome, {data?.user?.full_name}
+    <div data-testid="studio-dashboard" style={{ padding:'40px 44px' }}>
+      {/* Welcome */}
+      <motion.div initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} style={{ marginBottom:'40px' }}>
+        <div style={{ fontFamily:'var(--font-mono)', fontSize:'9px', letterSpacing:'0.2em', textTransform:'uppercase', color:'rgba(106,157,190,0.6)', marginBottom:'10px', display:'flex', alignItems:'center', gap:'10px' }}>
+          <span style={{ width:'24px', height:'0.5px', background:'rgba(106,157,190,0.4)', display:'block' }}/>
+          {ROLE_LABELS[data?.user?.role] || data?.user?.role}
+        </div>
+        <h1 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(32px, 4vw, 52px)', color:'var(--swp-white)', letterSpacing:'0.02em', lineHeight:1.0 }}>
+          Welcome,<br />{data?.user?.full_name}
         </h1>
-        <p className="text-gray-400">
-          <span className="px-2 py-1 bg-electric-blue/20 text-electric-blue text-xs font-mono rounded mr-2">
-            {getRoleLabel(data?.user?.role)}
-          </span>
-          Your Studio Portal Dashboard
-        </p>
       </motion.div>
 
-      {/* Updates & Assets Grid */}
-      <div className="grid lg:grid-cols-2 gap-8">
+      {/* Content grid */}
+      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'16px' }}>
         {/* Recent Updates */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xs font-mono uppercase tracking-widest text-electric-blue flex items-center gap-2">
-              <Bell size={16} />
-              Recent Updates
-            </h2>
+        <motion.section initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.1 }}>
+          <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:'16px' }}>
+            <div style={{ fontFamily:'var(--font-mono)', fontSize:'9px', letterSpacing:'0.18em', textTransform:'uppercase', color:'rgba(106,157,190,0.65)', display:'flex', alignItems:'center', gap:'8px' }}>
+              <Bell size={13} /> Recent Updates
+            </div>
             {data?.recent_updates?.length > 0 && (
-              <Link 
-                to="/studio-access/updates" 
-                className="text-gray-500 hover:text-white text-sm flex items-center gap-1 transition-colors"
-              >
-                View All <ChevronRight size={16} />
+              <Link to="/studio-access/updates" style={{ fontFamily:'var(--font-mono)', fontSize:'9px', letterSpacing:'0.1em', textTransform:'uppercase', color:'rgba(238,240,242,0.3)', textDecoration:'none', display:'flex', alignItems:'center', gap:'4px', transition:'color 0.2s' }}
+                onMouseEnter={e=>e.currentTarget.style.color='var(--swp-ice)'} onMouseLeave={e=>e.currentTarget.style.color='rgba(238,240,242,0.3)'}>
+                View All <ChevronRight size={12} />
               </Link>
             )}
           </div>
-
-          {data?.recent_updates?.length > 0 ? (
-            <div className="space-y-3">
-              {data.recent_updates.slice(0, 4).map((update) => (
-                <div
-                  key={update.id}
-                  className="bg-smoke-gray border border-gray-800 rounded-lg p-4 hover:border-gray-700 transition-colors"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex-1">
-                      <h3 className="text-white font-medium mb-1">{update.title}</h3>
-                      <p className="text-gray-500 text-sm line-clamp-2">
-                        {update.body?.replace(/<[^>]*>/g, '').substring(0, 100)}...
-                      </p>
-                    </div>
-                    <span className="text-gray-600 text-xs whitespace-nowrap">
-                      {new Date(update.created_at).toLocaleDateString()}
-                    </span>
+          <div style={{ display:'flex', flexDirection:'column', gap:'8px' }}>
+            {data?.recent_updates?.length > 0 ? data.recent_updates.slice(0,4).map(u => (
+              <Card key={u.id}>
+                <div style={{ display:'flex', justifyContent:'space-between', gap:'12px' }}>
+                  <div style={{ flex:1, minWidth:0 }}>
+                    <h3 style={{ fontFamily:'var(--font-body)', fontSize:'14px', fontWeight:400, color:'var(--swp-white)', marginBottom:'4px' }}>{u.title}</h3>
+                    <p style={{ fontFamily:'var(--font-body)', fontSize:'12px', fontWeight:300, color:'rgba(238,240,242,0.38)', lineHeight:1.5, overflow:'hidden', display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical' }}>
+                      {u.body?.replace(/<[^>]*>/g,'').substring(0,100)}…
+                    </p>
                   </div>
-                  {update.tags?.length > 0 && (
-                    <div className="flex gap-2 mt-2">
-                      {update.tags.slice(0, 2).map((tag, idx) => (
-                        <span key={idx} className="px-2 py-0.5 bg-gray-800 text-gray-400 text-xs rounded">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
+                  <span style={{ fontFamily:'var(--font-mono)', fontSize:'8px', color:'rgba(238,240,242,0.25)', whiteSpace:'nowrap' }}>{new Date(u.created_at).toLocaleDateString('en-AU',{day:'numeric',month:'short'})}</span>
                 </div>
-              ))}
-            </div>
-          ) : (
-            <div className="bg-smoke-gray border border-gray-800 rounded-lg p-6 text-center">
-              <Bell size={24} className="text-gray-600 mx-auto mb-2" />
-              <p className="text-gray-500 text-sm">No updates yet</p>
-            </div>
-          )}
+                {u.tags?.length>0 && <div style={{ display:'flex', gap:'6px', marginTop:'10px' }}>{u.tags.slice(0,2).map((t,i)=><span key={i} style={{ fontFamily:'var(--font-mono)', fontSize:'8px', letterSpacing:'0.1em', textTransform:'uppercase', background:'rgba(255,255,255,0.05)', color:'rgba(238,240,242,0.35)', padding:'3px 8px', borderRadius:'1px' }}>{t}</span>)}</div>}
+              </Card>
+            )) : (
+              <Card><div style={{ textAlign:'center', padding:'20px 0' }}><Bell size={22} style={{ color:'rgba(238,240,242,0.15)', margin:'0 auto 8px' }} /><p style={{ fontFamily:'var(--font-mono)', fontSize:'9px', letterSpacing:'0.12em', color:'rgba(238,240,242,0.2)' }}>No updates yet</p></div></Card>
+            )}
+          </div>
         </motion.section>
 
         {/* Recent Assets */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xs font-mono uppercase tracking-widest text-electric-blue flex items-center gap-2">
-              <FolderOpen size={16} />
-              Recent Assets
-            </h2>
+        <motion.section initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.2 }}>
+          <div style={{ fontFamily:'var(--font-mono)', fontSize:'9px', letterSpacing:'0.18em', textTransform:'uppercase', color:'rgba(106,157,190,0.65)', display:'flex', alignItems:'center', gap:'8px', marginBottom:'16px' }}>
+            <FolderOpen size={13} /> Recent Assets
           </div>
-
-          {data?.recent_assets?.length > 0 ? (
-            <div className="grid grid-cols-2 gap-3">
-              {data.recent_assets.slice(0, 4).map((asset) => (
-                <div
-                  key={asset.id}
-                  className="bg-smoke-gray border border-gray-800 rounded-lg p-4 hover:border-gray-700 transition-colors"
-                >
-                  <FileText size={24} className="text-electric-blue mb-2" />
-                  <h3 className="text-white text-sm font-medium line-clamp-1">{asset.name}</h3>
-                  <p className="text-gray-600 text-xs capitalize">{asset.asset_type?.replace('_', ' ')}</p>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="bg-smoke-gray border border-gray-800 rounded-lg p-6 text-center">
-              <FolderOpen size={24} className="text-gray-600 mx-auto mb-2" />
-              <p className="text-gray-500 text-sm">No assets available</p>
-            </div>
-          )}
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px' }}>
+            {data?.recent_assets?.length > 0 ? data.recent_assets.slice(0,4).map(a => (
+              <Card key={a.id}>
+                <FileText size={20} style={{ color:'var(--swp-ice)', marginBottom:'10px', opacity:0.7 }} />
+                <h3 style={{ fontFamily:'var(--font-body)', fontSize:'13px', fontWeight:400, color:'var(--swp-white)', marginBottom:'4px', overflow:'hidden', whiteSpace:'nowrap', textOverflow:'ellipsis' }}>{a.name}</h3>
+                <p style={{ fontFamily:'var(--font-mono)', fontSize:'8px', letterSpacing:'0.1em', textTransform:'uppercase', color:'rgba(238,240,242,0.3)' }}>{a.asset_type?.replace('_',' ')}</p>
+              </Card>
+            )) : (
+              <div style={{ gridColumn:'1/-1' }}>
+                <Card><div style={{ textAlign:'center', padding:'20px 0' }}><FolderOpen size={22} style={{ color:'rgba(238,240,242,0.15)', margin:'0 auto 8px' }} /><p style={{ fontFamily:'var(--font-mono)', fontSize:'9px', letterSpacing:'0.12em', color:'rgba(238,240,242,0.2)' }}>No assets available</p></div></Card>
+              </div>
+            )}
+          </div>
         </motion.section>
       </div>
     </div>

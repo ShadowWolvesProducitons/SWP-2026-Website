@@ -123,8 +123,8 @@ const StudioAccount = () => {
         animate={{ opacity: 1, y: 0 }}
         className="mb-8"
       >
-        <h1 className="text-3xl font-bold text-white font-cinzel mb-2">Account Settings</h1>
-        <p className="text-gray-400">Manage your profile and security settings</p>
+        <h1 className="text-3xl font-bold text-white font-display mb-2">Account Settings</h1>
+        <p className="text-swp-white-ghost">Manage your profile and security settings</p>
       </motion.div>
 
       {/* Profile Section */}
@@ -132,9 +132,9 @@ const StudioAccount = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="bg-smoke-gray border border-gray-800 rounded-lg p-6 mb-6"
+        className="bg-swp-surface border border-swp-border rounded-swp p-6 mb-6"
       >
-        <h2 className="text-xs font-mono uppercase tracking-widest text-electric-blue mb-4 flex items-center gap-2">
+        <h2 className="text-xs font-mono uppercase tracking-widest text-swp-ice mb-4 flex items-center gap-2">
           <User size={16} />
           Profile Information
         </h2>
@@ -142,44 +142,44 @@ const StudioAccount = () => {
         <form onSubmit={handleSaveProfile} className="space-y-4">
           {/* Email (read-only) */}
           <div>
-            <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+            <label className="block text-swp-white-ghost text-sm font-mono uppercase tracking-widest mb-2">
               Email
             </label>
             <div className="relative">
-              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-swp-white-ghost/70" size={18} />
               <input
                 type="email"
                 value={user?.email || ''}
                 disabled
-                className="w-full bg-gray-900 border border-gray-700 rounded-lg pl-11 pr-4 py-3 text-gray-500 cursor-not-allowed"
+                className="w-full bg-gray-900 border border-swp-border rounded-swp pl-11 pr-4 py-3 text-swp-white-ghost/70 cursor-not-allowed"
               />
             </div>
-            <p className="text-gray-600 text-xs mt-1">Email cannot be changed</p>
+            <p className="text-swp-white-ghost/50 text-xs mt-1">Email cannot be changed</p>
           </div>
 
           {/* Role (read-only) */}
           <div>
-            <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+            <label className="block text-swp-white-ghost text-sm font-mono uppercase tracking-widest mb-2">
               Role
             </label>
-            <div className="px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg">
+            <div className="px-4 py-3 bg-gray-900 border border-swp-border rounded-swp">
               <span className="text-white">{getRoleLabel(user?.role)}</span>
             </div>
-            <p className="text-gray-600 text-xs mt-1">Contact admin to change your role</p>
+            <p className="text-swp-white-ghost/50 text-xs mt-1">Contact admin to change your role</p>
           </div>
 
           {/* Full Name */}
           <div>
-            <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+            <label className="block text-swp-white-ghost text-sm font-mono uppercase tracking-widest mb-2">
               Full Name
             </label>
             <div className="relative">
-              <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+              <User className="absolute left-4 top-1/2 -translate-y-1/2 text-swp-white-ghost/70" size={18} />
               <input
                 type="text"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="w-full bg-black border border-gray-700 rounded-lg pl-11 pr-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
+                className="w-full bg-swp-black border border-swp-border rounded-swp pl-11 pr-4 py-3 text-white focus:border-swp-ice focus:outline-none transition-colors"
                 placeholder="Your full name"
               />
             </div>
@@ -187,16 +187,16 @@ const StudioAccount = () => {
 
           {/* Company */}
           <div>
-            <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+            <label className="block text-swp-white-ghost text-sm font-mono uppercase tracking-widest mb-2">
               Company
             </label>
             <div className="relative">
-              <Building className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+              <Building className="absolute left-4 top-1/2 -translate-y-1/2 text-swp-white-ghost/70" size={18} />
               <input
                 type="text"
                 value={company}
                 onChange={(e) => setCompany(e.target.value)}
-                className="w-full bg-black border border-gray-700 rounded-lg pl-11 pr-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
+                className="w-full bg-swp-black border border-swp-border rounded-swp pl-11 pr-4 py-3 text-white focus:border-swp-ice focus:outline-none transition-colors"
                 placeholder="Your company (optional)"
               />
             </div>
@@ -206,8 +206,8 @@ const StudioAccount = () => {
           <button
             type="submit"
             disabled={savingProfile}
-            className="flex items-center gap-2 bg-electric-blue hover:bg-electric-blue/90 disabled:bg-gray-700 
-                       text-white px-6 py-3 rounded-full font-mono text-sm uppercase tracking-widest transition-all"
+            className="flex items-center gap-2 bg-swp-ice hover:bg-swp-ice disabled:bg-swp-muted 
+                       text-white px-6 py-3 rounded-sm font-mono text-sm uppercase tracking-widest transition-all"
           >
             {savingProfile ? (
               <>
@@ -229,9 +229,9 @@ const StudioAccount = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="bg-smoke-gray border border-gray-800 rounded-lg p-6"
+        className="bg-swp-surface border border-swp-border rounded-swp p-6"
       >
-        <h2 className="text-xs font-mono uppercase tracking-widest text-electric-blue mb-4 flex items-center gap-2">
+        <h2 className="text-xs font-mono uppercase tracking-widest text-swp-ice mb-4 flex items-center gap-2">
           <Lock size={16} />
           Change Password
         </h2>
@@ -239,23 +239,23 @@ const StudioAccount = () => {
         <form onSubmit={handleChangePassword} className="space-y-4">
           {/* Current Password */}
           <div>
-            <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+            <label className="block text-swp-white-ghost text-sm font-mono uppercase tracking-widest mb-2">
               Current Password
             </label>
             <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-swp-white-ghost/70" size={18} />
               <input
                 type={showCurrentPassword ? 'text' : 'password'}
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
-                className="w-full bg-black border border-gray-700 rounded-lg pl-11 pr-11 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
+                className="w-full bg-swp-black border border-swp-border rounded-swp pl-11 pr-11 py-3 text-white focus:border-swp-ice focus:outline-none transition-colors"
                 placeholder="Enter current password"
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-swp-white-ghost/70 hover:text-swp-white"
               >
                 {showCurrentPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
@@ -264,16 +264,16 @@ const StudioAccount = () => {
 
           {/* New Password */}
           <div>
-            <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+            <label className="block text-swp-white-ghost text-sm font-mono uppercase tracking-widest mb-2">
               New Password
             </label>
             <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-swp-white-ghost/70" size={18} />
               <input
                 type={showNewPassword ? 'text' : 'password'}
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                className="w-full bg-black border border-gray-700 rounded-lg pl-11 pr-11 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
+                className="w-full bg-swp-black border border-swp-border rounded-swp pl-11 pr-11 py-3 text-white focus:border-swp-ice focus:outline-none transition-colors"
                 placeholder="Enter new password"
                 required
                 minLength={8}
@@ -281,26 +281,26 @@ const StudioAccount = () => {
               <button
                 type="button"
                 onClick={() => setShowNewPassword(!showNewPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-swp-white-ghost/70 hover:text-swp-white"
               >
                 {showNewPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
-            <p className="text-gray-600 text-xs mt-1">Minimum 8 characters</p>
+            <p className="text-swp-white-ghost/50 text-xs mt-1">Minimum 8 characters</p>
           </div>
 
           {/* Confirm Password */}
           <div>
-            <label className="block text-gray-400 text-sm font-mono uppercase tracking-widest mb-2">
+            <label className="block text-swp-white-ghost text-sm font-mono uppercase tracking-widest mb-2">
               Confirm New Password
             </label>
             <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-swp-white-ghost/70" size={18} />
               <input
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full bg-black border border-gray-700 rounded-lg pl-11 pr-4 py-3 text-white focus:border-electric-blue focus:outline-none transition-colors"
+                className="w-full bg-swp-black border border-swp-border rounded-swp pl-11 pr-4 py-3 text-white focus:border-swp-ice focus:outline-none transition-colors"
                 placeholder="Confirm new password"
                 required
               />
@@ -311,8 +311,8 @@ const StudioAccount = () => {
           <button
             type="submit"
             disabled={savingPassword}
-            className="flex items-center gap-2 bg-electric-blue hover:bg-electric-blue/90 disabled:bg-gray-700 
-                       text-white px-6 py-3 rounded-full font-mono text-sm uppercase tracking-widest transition-all"
+            className="flex items-center gap-2 bg-swp-ice hover:bg-swp-ice disabled:bg-swp-muted 
+                       text-white px-6 py-3 rounded-sm font-mono text-sm uppercase tracking-widest transition-all"
           >
             {savingPassword ? (
               <>
