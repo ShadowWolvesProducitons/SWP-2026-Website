@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 
-const LOGO_URL = "https://customer-assets.emergentagent.com/job_wolfmedia/artifacts/bifyh7bv_Black%20Logo%20Only.png";
+const LOGO_URL = "https://customer-assets.emergentagent.com/job_d237abdd-72c8-4f34-8f42-33e3f6f9671f/artifacts/l717rfyj_SWP_Transparent_Logo_Only_2026.png";
 
 const NAV_LINKS = [
   { name: 'About',        path: '/' },

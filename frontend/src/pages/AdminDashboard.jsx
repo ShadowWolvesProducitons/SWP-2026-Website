@@ -9,7 +9,7 @@ import AdminAssetsTab      from '../components/admin/AdminAssetsTab';
 import AdminStudioTab      from '../components/admin/AdminStudioTab';
 import AdminDashboardTab   from '../components/admin/AdminDashboardTab';
 
-const LOGO_URL = "https://customer-assets.emergentagent.com/job_wolfmedia/artifacts/bifyh7bv_Black%20Logo%20Only.png";
+const LOGO_URL = "https://customer-assets.emergentagent.com/job_d237abdd-72c8-4f34-8f42-33e3f6f9671f/artifacts/l717rfyj_SWP_Transparent_Logo_Only_2026.png";
 
 const TABS = [
   { id: 'dashboard', label: 'Dashboard',  Icon: BarChart3  },

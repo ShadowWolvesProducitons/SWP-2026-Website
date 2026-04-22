@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Youtube, Instagram, Facebook } from 'lucide-react';
 
-const LOGO_URL = "https://customer-assets.emergentagent.com/job_wolfmedia/artifacts/bifyh7bv_Black%20Logo%20Only.png";
+const LOGO_URL = "https://customer-assets.emergentagent.com/job_d237abdd-72c8-4f34-8f42-33e3f6f9671f/artifacts/duqz4qct_SWP_Full_Transparent_Logo_2026.png";
 
 const LINKS = [
   { name: 'About',         path: '/' },
