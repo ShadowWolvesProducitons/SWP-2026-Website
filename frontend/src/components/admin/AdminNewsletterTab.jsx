@@ -91,7 +91,10 @@ const AdminNewsletterTab = () => {
   const sortedSubscribers = useMemo(() => {
     return [...subscribers].sort((a, b) => {
       let valA, valB;
-      if (sortField === 'email') {
+      if (sortField === 'name') {
+        valA = (a.name || '').toLowerCase();
+        valB = (b.name || '').toLowerCase();
+      } else if (sortField === 'email') {
         valA = (a.email || '').toLowerCase();
         valB = (b.email || '').toLowerCase();
       } else if (sortField === 'source') {
@@ -180,6 +183,11 @@ const AdminNewsletterTab = () => {
           <table className="w-full">
             <thead>
               <tr className="border-b border-swp-border">
+                <th className="text-left px-6 py-4 cursor-pointer select-none" onClick={() => toggleSort('name')} data-testid="sort-name">
+                  <span className="flex items-center gap-2 text-swp-white-ghost font-mono text-xs uppercase tracking-widest hover:text-swp-ice transition-colors">
+                    Name <SortIcon field="name" />
+                  </span>
+                </th>
                 <th className="text-left px-6 py-4 cursor-pointer select-none" onClick={() => toggleSort('email')} data-testid="sort-email">
                   <span className="flex items-center gap-2 text-swp-white-ghost font-mono text-xs uppercase tracking-widest hover:text-swp-ice transition-colors">
                     Email <SortIcon field="email" />
@@ -202,6 +210,9 @@ const AdminNewsletterTab = () => {
             <tbody>
               {sortedSubscribers.map((subscriber) => (
                 <tr key={subscriber.id} className="border-b border-swp-border/50 hover:bg-swp-deep/50 transition-colors">
+                  <td className="px-6 py-4">
+                    <span className="text-white text-sm">{subscriber.name || '-'}</span>
+                  </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <Mail size={16} className="text-swp-white-ghost/50" />

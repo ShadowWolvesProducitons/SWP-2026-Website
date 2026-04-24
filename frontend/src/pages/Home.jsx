@@ -24,6 +24,7 @@ const Home = () => {
   const [supportModalOpen, setSupportModalOpen] = useState(false);
   const [activeSupportKey, setActiveSupportKey] = useState(null);
   const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterName, setNewsletterName] = useState('');
   const [subscribing, setSubscribing] = useState(false);
   const parallaxRef = useRef(null);
 
@@ -53,11 +54,12 @@ const Home = () => {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/newsletter`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: newsletterEmail, source: 'homepage' })
+        body: JSON.stringify({ email: newsletterEmail, name: newsletterName, source: 'homepage' })
       });
       if (response.ok) {
         toast.success('Welcome to the pack! Check your email.');
         setNewsletterEmail('');
+        setNewsletterName('');
         localStorage.setItem('swp_subscribed', 'true');
       } else {
         const error = await response.json();
@@ -225,6 +227,14 @@ const Home = () => {
             </p>
           </div>
           <form onSubmit={handleNewsletterSubmit} style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
+            <input
+              type="text"
+              value={newsletterName}
+              onChange={e => setNewsletterName(e.target.value)}
+              placeholder="Your name"
+              disabled={subscribing}
+              style={{ background:'rgba(255,255,255,0.04)', border:'0.5px solid rgba(255,255,255,0.1)', borderRadius:'2px', padding:'12px 14px', fontFamily:'var(--font-body)', fontSize:'14px', fontWeight:300, color:'var(--swp-white)', outline:'none', width:'100%', transition:'border-color 0.2s' }}
+            />
             <input
               type="email"
               value={newsletterEmail}

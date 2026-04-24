@@ -6,8 +6,9 @@ import uuid
 
 class NewsletterSubscriberBase(BaseModel):
     email: EmailStr
-    source: Optional[str] = "website"  # Where they signed up (website, footer, contact page)
-    lead_magnet: Optional[str] = None  # Which lead magnet they signed up for
+    name: Optional[str] = None
+    source: Optional[str] = "website"
+    lead_magnet: Optional[str] = None
 
 
 class NewsletterSubscriberCreate(NewsletterSubscriberBase):

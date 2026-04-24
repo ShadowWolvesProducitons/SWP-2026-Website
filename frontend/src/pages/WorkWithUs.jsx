@@ -249,6 +249,7 @@ const NewsletterSection = () => {
             </div>
           ) : (
             <form onSubmit={handleSubmit} data-testid="newsletter-form" style={{ display:'flex', flexDirection:'column', gap:'10px' }}>
+              <input type="text" value={name} onChange={e=>setName(e.target.value)} placeholder="Your name" data-testid="newsletter-name-input" style={{ background:'rgba(255,255,255,0.04)', border:'0.5px solid rgba(255,255,255,0.1)', borderRadius:'2px', padding:'12px 14px', fontFamily:'var(--font-body)', fontSize:'14px', fontWeight:300, color:'var(--swp-white)', outline:'none', width:'100%', transition:'border-color 0.2s' }} />
               <input type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="Enter your email" required data-testid="newsletter-email-input" style={{ background:'rgba(255,255,255,0.04)', border:'0.5px solid rgba(255,255,255,0.1)', borderRadius:'2px', padding:'12px 14px', fontFamily:'var(--font-body)', fontSize:'14px', fontWeight:300, color:'var(--swp-white)', outline:'none', width:'100%', transition:'border-color 0.2s' }} />
               <button type="submit" disabled={submitting} data-testid="newsletter-submit-btn" className="btn-swp btn-swp-primary" style={{ justifyContent:'center', opacity:submitting?0.6:1 }}>
                 {submitting ? 'Subscribing…' : 'Subscribe'}

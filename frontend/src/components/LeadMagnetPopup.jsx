@@ -8,6 +8,7 @@ const API = process.env.REACT_APP_BACKEND_URL;
 const LeadMagnetPopup = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [playbookAssets, setPlaybookAssets] = useState({ mockup: null, pdf: null });
 
@@ -132,6 +133,7 @@ const LeadMagnetPopup = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           email,
+          name,
           source: 'lead_magnet_popup',
           lead_magnet: 'producers_playbook'
         })
@@ -230,6 +232,14 @@ const LeadMagnetPopup = () => {
 
               {/* Form */}
               <form onSubmit={handleSubmit} className="space-y-4">
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Your name"
+                  className="w-full px-5 py-4 rounded-swp bg-swp-black border border-swp-border text-white placeholder-gray-500 focus:outline-none focus:border-swp-ice transition-colors"
+                  disabled={submitting}
+                />
                 <input
                   type="email"
                   value={email}
