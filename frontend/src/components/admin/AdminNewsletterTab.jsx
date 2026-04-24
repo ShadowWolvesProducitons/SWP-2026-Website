@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { RefreshCw, Trash2, Download, Users, Mail, CheckCircle, XCircle, Send, X } from 'lucide-react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { RefreshCw, Trash2, Download, Users, Mail, CheckCircle, XCircle, Send, X, ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react';
 import { toast } from 'sonner';
 
 const AdminNewsletterTab = () => {
@@ -7,6 +7,8 @@ const AdminNewsletterTab = () => {
   const [loading, setLoading] = useState(true);
   const [showInactive, setShowInactive] = useState(false);
   const [showComposeModal, setShowComposeModal] = useState(false);
+  const [sortField, setSortField] = useState('subscribed_at');
+  const [sortDir, setSortDir] = useState('desc');
 
   const fetchSubscribers = async () => {
     setLoading(true);
@@ -71,6 +73,39 @@ const AdminNewsletterTab = () => {
   };
 
   const activeCount = subscribers.filter(s => s.is_active).length;
+
+  const toggleSort = (field) => {
+    if (sortField === field) {
+      setSortDir(prev => prev === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortDir(field === 'subscribed_at' ? 'desc' : 'asc');
+    }
+  };
+
+  const SortIcon = ({ field }) => {
+    if (sortField !== field) return <ArrowUpDown size={12} className="opacity-30" />;
+    return sortDir === 'asc' ? <ArrowUp size={12} className="text-swp-ice" /> : <ArrowDown size={12} className="text-swp-ice" />;
+  };
+
+  const sortedSubscribers = useMemo(() => {
+    return [...subscribers].sort((a, b) => {
+      let valA, valB;
+      if (sortField === 'email') {
+        valA = (a.email || '').toLowerCase();
+        valB = (b.email || '').toLowerCase();
+      } else if (sortField === 'source') {
+        valA = (a.source || '').toLowerCase();
+        valB = (b.source || '').toLowerCase();
+      } else {
+        valA = a.subscribed_at || '';
+        valB = b.subscribed_at || '';
+      }
+      if (valA < valB) return sortDir === 'asc' ? -1 : 1;
+      if (valA > valB) return sortDir === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }, [subscribers, sortField, sortDir]);
 
   return (
     <div>
@@ -145,15 +180,27 @@ const AdminNewsletterTab = () => {
           <table className="w-full">
             <thead>
               <tr className="border-b border-swp-border">
-                <th className="text-left px-6 py-4 text-swp-white-ghost font-mono text-xs uppercase tracking-widest">Email</th>
-                <th className="text-left px-6 py-4 text-swp-white-ghost font-mono text-xs uppercase tracking-widest">Source</th>
+                <th className="text-left px-6 py-4 cursor-pointer select-none" onClick={() => toggleSort('email')} data-testid="sort-email">
+                  <span className="flex items-center gap-2 text-swp-white-ghost font-mono text-xs uppercase tracking-widest hover:text-swp-ice transition-colors">
+                    Email <SortIcon field="email" />
+                  </span>
+                </th>
+                <th className="text-left px-6 py-4 cursor-pointer select-none" onClick={() => toggleSort('source')} data-testid="sort-source">
+                  <span className="flex items-center gap-2 text-swp-white-ghost font-mono text-xs uppercase tracking-widest hover:text-swp-ice transition-colors">
+                    Source <SortIcon field="source" />
+                  </span>
+                </th>
                 <th className="text-left px-6 py-4 text-swp-white-ghost font-mono text-xs uppercase tracking-widest">Status</th>
-                <th className="text-left px-6 py-4 text-swp-white-ghost font-mono text-xs uppercase tracking-widest">Subscribed</th>
+                <th className="text-left px-6 py-4 cursor-pointer select-none" onClick={() => toggleSort('subscribed_at')} data-testid="sort-date">
+                  <span className="flex items-center gap-2 text-swp-white-ghost font-mono text-xs uppercase tracking-widest hover:text-swp-ice transition-colors">
+                    Subscribed <SortIcon field="subscribed_at" />
+                  </span>
+                </th>
                 <th className="text-right px-6 py-4 text-swp-white-ghost font-mono text-xs uppercase tracking-widest">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {subscribers.map((subscriber) => (
+              {sortedSubscribers.map((subscriber) => (
                 <tr key={subscriber.id} className="border-b border-swp-border/50 hover:bg-swp-deep/50 transition-colors">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
