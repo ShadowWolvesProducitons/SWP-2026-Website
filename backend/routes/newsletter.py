@@ -296,7 +296,7 @@ async def send_bulk_email(request: BulkEmailRequest):
 
 @router.post("/import-csv")
 async def import_subscribers_csv(file: UploadFile = File(...)):
-    """Import subscribers from a CSV file. Expects columns: email (required), name (optional)"""
+    """Import subscribers from a CSV file. Handles: email, name, first_name, last_name columns. Merges duplicates."""
     if not file.filename.endswith('.csv'):
         raise HTTPException(status_code=400, detail="File must be a .csv")
     
@@ -304,37 +304,66 @@ async def import_subscribers_csv(file: UploadFile = File(...)):
     text = content.decode('utf-8-sig')  # handle BOM
     reader = csv.DictReader(io.StringIO(text))
     
-    # Normalize column headers (case-insensitive)
     if not reader.fieldnames:
         raise HTTPException(status_code=400, detail="CSV file is empty or has no headers")
     
-    fields_lower = {f.strip().lower(): f for f in reader.fieldnames}
+    # Build a case-insensitive lookup: strip whitespace and underscores for flexibility
+    fields_lower = {}
+    for f in reader.fieldnames:
+        key = f.strip().lower().replace(' ', '_')
+        fields_lower[key] = f
     
-    email_col = fields_lower.get('email') or fields_lower.get('e-mail') or fields_lower.get('email address')
-    name_col = fields_lower.get('name') or fields_lower.get('full name') or fields_lower.get('first name')
+    email_col = fields_lower.get('email') or fields_lower.get('e-mail') or fields_lower.get('email_address')
+    name_col = fields_lower.get('name') or fields_lower.get('full_name')
+    first_name_col = fields_lower.get('first_name') or fields_lower.get('firstname')
+    last_name_col = fields_lower.get('last_name') or fields_lower.get('lastname') or fields_lower.get('surname')
+    created_col = fields_lower.get('created_at') or fields_lower.get('date') or fields_lower.get('subscribed_at')
     
     if not email_col:
         raise HTTPException(status_code=400, detail="CSV must have an 'email' column. Found columns: " + ", ".join(reader.fieldnames))
     
     imported = 0
+    updated = 0
     skipped = 0
     errors = []
     
     for i, row in enumerate(reader):
         email = (row.get(email_col) or '').strip().lower()
-        name = (row.get(name_col) or '').strip() if name_col else ''
         
         if not email or '@' not in email:
             skipped += 1
             continue
         
-        # Check if already exists
+        # Build name from available columns
+        name = ''
+        if name_col:
+            name = (row.get(name_col) or '').strip()
+        if not name and (first_name_col or last_name_col):
+            first = (row.get(first_name_col) or '').strip() if first_name_col else ''
+            last = (row.get(last_name_col) or '').strip() if last_name_col else ''
+            name = f"{first} {last}".strip()
+        
+        # Parse original created_at if available
+        original_date = None
+        if created_col:
+            raw_date = (row.get(created_col) or '').strip()
+            if raw_date:
+                original_date = raw_date
+        
+        # Check if already exists — merge/update if so
         existing = await db.newsletter.find_one({"email": email})
         if existing:
-            # Update name if we have one and existing doesn't
+            update_fields = {}
             if name and not existing.get('name'):
-                await db.newsletter.update_one({"email": email}, {"$set": {"name": name}})
-            skipped += 1
+                update_fields['name'] = name
+            if original_date and not existing.get('original_subscribed_at'):
+                update_fields['original_subscribed_at'] = original_date
+            
+            if update_fields:
+                await db.newsletter.update_one({"email": email}, {"$set": update_fields})
+                updated += 1
+            else:
+                skipped += 1
             continue
         
         try:
@@ -346,6 +375,7 @@ async def import_subscribers_csv(file: UploadFile = File(...)):
                 "lead_magnet": None,
                 "is_active": True,
                 "subscribed_at": datetime.now(timezone.utc).isoformat(),
+                "original_subscribed_at": original_date,
                 "unsubscribed_at": None
             }
             await db.newsletter.insert_one(doc)
@@ -355,7 +385,8 @@ async def import_subscribers_csv(file: UploadFile = File(...)):
     
     return {
         "imported": imported,
+        "updated": updated,
         "skipped": skipped,
         "errors": errors[:10],
-        "message": f"Imported {imported} new subscribers. {skipped} skipped (duplicates or invalid)."
+        "message": f"Imported {imported} new, updated {updated} existing, {skipped} unchanged."
     }
