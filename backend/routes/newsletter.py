@@ -1,10 +1,13 @@
-from fastapi import APIRouter, HTTPException, BackgroundTasks
+from fastapi import APIRouter, HTTPException, BackgroundTasks, UploadFile, File
 from typing import List, Optional
 from models.newsletter import NewsletterSubscriber, NewsletterSubscriberCreate
 from pydantic import BaseModel
 from datetime import datetime, timezone
 import os
 import asyncio
+import csv
+import io
+import uuid
 
 router = APIRouter(prefix="/newsletter", tags=["newsletter"])
 
@@ -288,3 +291,71 @@ async def send_bulk_email(request: BulkEmailRequest):
         failed=failed,
         errors=errors[:10]  # Limit errors returned
     )
+
+
+
+@router.post("/import-csv")
+async def import_subscribers_csv(file: UploadFile = File(...)):
+    """Import subscribers from a CSV file. Expects columns: email (required), name (optional)"""
+    if not file.filename.endswith('.csv'):
+        raise HTTPException(status_code=400, detail="File must be a .csv")
+    
+    content = await file.read()
+    text = content.decode('utf-8-sig')  # handle BOM
+    reader = csv.DictReader(io.StringIO(text))
+    
+    # Normalize column headers (case-insensitive)
+    if not reader.fieldnames:
+        raise HTTPException(status_code=400, detail="CSV file is empty or has no headers")
+    
+    fields_lower = {f.strip().lower(): f for f in reader.fieldnames}
+    
+    email_col = fields_lower.get('email') or fields_lower.get('e-mail') or fields_lower.get('email address')
+    name_col = fields_lower.get('name') or fields_lower.get('full name') or fields_lower.get('first name')
+    
+    if not email_col:
+        raise HTTPException(status_code=400, detail="CSV must have an 'email' column. Found columns: " + ", ".join(reader.fieldnames))
+    
+    imported = 0
+    skipped = 0
+    errors = []
+    
+    for i, row in enumerate(reader):
+        email = (row.get(email_col) or '').strip().lower()
+        name = (row.get(name_col) or '').strip() if name_col else ''
+        
+        if not email or '@' not in email:
+            skipped += 1
+            continue
+        
+        # Check if already exists
+        existing = await db.newsletter.find_one({"email": email})
+        if existing:
+            # Update name if we have one and existing doesn't
+            if name and not existing.get('name'):
+                await db.newsletter.update_one({"email": email}, {"$set": {"name": name}})
+            skipped += 1
+            continue
+        
+        try:
+            doc = {
+                "id": str(uuid.uuid4()),
+                "email": email,
+                "name": name or None,
+                "source": "csv_import",
+                "lead_magnet": None,
+                "is_active": True,
+                "subscribed_at": datetime.now(timezone.utc).isoformat(),
+                "unsubscribed_at": None
+            }
+            await db.newsletter.insert_one(doc)
+            imported += 1
+        except Exception as e:
+            errors.append(f"Row {i+2}: {str(e)}")
+    
+    return {
+        "imported": imported,
+        "skipped": skipped,
+        "errors": errors[:10],
+        "message": f"Imported {imported} new subscribers. {skipped} skipped (duplicates or invalid)."
+    }

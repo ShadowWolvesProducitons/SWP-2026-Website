@@ -266,3 +266,55 @@ async def check_admin_exists():
     """Check if any admin users exist"""
     count = await db.admin_users.count_documents({"status": "active"})
     return {"has_admins": count > 0}
+
+
+class ForgotPasswordInput(BaseModel):
+    email: EmailStr
+
+
+@router.post("/forgot-password")
+async def forgot_password(data: ForgotPasswordInput, background_tasks: BackgroundTasks):
+    """Send a password reset link to admin email"""
+    email = data.email.lower()
+    user = await db.admin_users.find_one({"email": email, "status": "active"}, {"_id": 0})
+    
+    # Always return success to prevent email enumeration
+    if not user:
+        return {"message": "If an account exists with that email, a reset link has been sent."}
+    
+    token = generate_token()
+    expires = (datetime.now(timezone.utc) + timedelta(hours=24)).isoformat()
+    
+    await db.admin_users.update_one(
+        {"email": email},
+        {"$set": {
+            "access_token": token,
+            "token_expires": expires,
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }}
+    )
+    
+    async def send_reset_email():
+        try:
+            from services.email_service import send_email as send_email_svc
+            frontend_url = os.environ.get('FRONTEND_URL', os.environ.get('SITE_URL', 'https://www.shadowwolvesproductions.com.au'))
+            reset_url = f"{frontend_url}/admin/setup-password?token={token}"
+            
+            html = f"""
+            <h2 style="color: #ffffff; font-size: 20px; margin-bottom: 20px;">Reset Your Admin Password</h2>
+            <p style="color: #9ca3af; line-height: 1.6;">Hi {user.get('name', 'Admin')},</p>
+            <p style="color: #9ca3af; line-height: 1.6;">Click the button below to reset your password.</p>
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="{reset_url}" style="display: inline-block; background: #6a9dbe; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 2px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">
+                    Reset Password
+                </a>
+            </div>
+            <p style="color: #666; font-size: 12px; margin-top: 20px;">This link expires in 24 hours.</p>
+            """
+            await send_email_svc(email, "Password Reset - Shadow Wolves Admin", html)
+            print(f"Reset email sent to {email}")
+        except Exception as e:
+            print(f"Failed to send reset email: {e}")
+    
+    background_tasks.add_task(send_reset_email)
+    return {"message": "If an account exists with that email, a reset link has been sent."}

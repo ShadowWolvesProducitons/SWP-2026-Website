@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { RefreshCw, Trash2, Download, Users, Mail, CheckCircle, XCircle, Send, X, ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { RefreshCw, Trash2, Download, Upload, Users, Mail, CheckCircle, XCircle, Send, X, ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react';
 import { toast } from 'sonner';
 
 const AdminNewsletterTab = () => {
@@ -9,6 +9,8 @@ const AdminNewsletterTab = () => {
   const [showComposeModal, setShowComposeModal] = useState(false);
   const [sortField, setSortField] = useState('subscribed_at');
   const [sortDir, setSortDir] = useState('desc');
+  const [importing, setImporting] = useState(false);
+  const csvInputRef = useRef(null);
 
   const fetchSubscribers = async () => {
     setLoading(true);
@@ -61,6 +63,32 @@ const AdminNewsletterTab = () => {
     window.URL.revokeObjectURL(url);
     
     toast.success(`Exported ${activeSubscribers.length} emails`);
+  };
+
+  const handleCsvImport = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setImporting(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/newsletter/import-csv`, {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+      if (res.ok) {
+        toast.success(data.message);
+        fetchSubscribers();
+      } else {
+        toast.error(data.detail || 'Import failed');
+      }
+    } catch {
+      toast.error('Failed to import CSV');
+    } finally {
+      setImporting(false);
+      if (csvInputRef.current) csvInputRef.current.value = '';
+    }
   };
 
   const formatDate = (dateStr) => {
@@ -144,6 +172,18 @@ const AdminNewsletterTab = () => {
           >
             <Send size={16} />
             Compose Email
+          </button>
+          
+          {/* Import CSV */}
+          <input type="file" accept=".csv" ref={csvInputRef} onChange={handleCsvImport} className="hidden" data-testid="csv-import-input" />
+          <button
+            onClick={() => csvInputRef.current?.click()}
+            disabled={importing}
+            className="flex items-center gap-2 px-4 py-2 bg-swp-ice/15 text-swp-ice rounded-swp hover:bg-swp-ice/30 disabled:opacity-50 transition-colors text-sm"
+            data-testid="import-csv-btn"
+          >
+            {importing ? <RefreshCw size={16} className="animate-spin" /> : <Upload size={16} />}
+            {importing ? 'Importing...' : 'Import CSV'}
           </button>
           
           {/* Export Button */}

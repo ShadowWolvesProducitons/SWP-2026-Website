@@ -171,3 +171,28 @@ logger = logging.getLogger(__name__)
 @app.on_event("shutdown")
 async def shutdown_db_client():
     client.close()
+
+
+@app.on_event("startup")
+async def seed_admin_user():
+    """Auto-seed the default admin account if it doesn't exist"""
+    import hashlib
+    email = "brendan@shadowwolvesproductions.com.au"
+    existing = await db.admin_users.find_one({"email": email})
+    if not existing:
+        salt = os.environ.get("PASSWORD_SALT", "admin_salt_2024")
+        password_hash = hashlib.sha256(f"Shadow_Wolves01!{salt}".encode()).hexdigest()
+        await db.admin_users.insert_one({
+            "id": str(uuid.uuid4()),
+            "name": "Brendan",
+            "email": email,
+            "password_hash": password_hash,
+            "status": "active",
+            "access_token": None,
+            "token_expires": None,
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        })
+        logger.info(f"Seeded admin user: {email}")
+    else:
+        logger.info(f"Admin user already exists: {email}")
