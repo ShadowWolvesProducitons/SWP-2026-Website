@@ -33,42 +33,24 @@ def set_db(database):
 async def send_inquiry_notification(inquiry: dict):
     """Send email notification for new investor inquiry"""
     try:
-        resend_api_key = os.environ.get('RESEND_API_KEY')
-        if not resend_api_key:
-            print("RESEND_API_KEY not set, skipping inquiry notification")
-            return
-        
-        import resend
-        resend.api_key = resend_api_key
+        from services.email_service import send_email as send_email_svc
         
         html_content = f"""
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #ffffff; padding: 40px;">
-            <h1 style="color: #ffffff; font-size: 24px; margin-bottom: 20px;">New Investor Inquiry</h1>
-            <p style="color: #9ca3af; line-height: 1.6;">
-                A new expression of interest has been submitted through the Investor Portal.
-            </p>
-            
-            <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 20px; margin: 20px 0;">
-                <p style="color: #ffffff; margin: 8px 0;"><strong>Name:</strong> {inquiry.get('name', 'N/A')}</p>
-                <p style="color: #ffffff; margin: 8px 0;"><strong>Email:</strong> {inquiry.get('email', 'N/A')}</p>
-                <p style="color: #ffffff; margin: 8px 0;"><strong>Investor Type:</strong> {inquiry.get('investor_type', 'N/A')}</p>
-                <p style="color: #ffffff; margin: 8px 0;"><strong>Area of Interest:</strong> {inquiry.get('area_of_interest', 'N/A')}</p>
-                {f'<p style="color: #9ca3af; margin: 16px 0 8px 0;"><strong>Message:</strong></p><p style="color: #ffffff; white-space: pre-wrap;">{inquiry.get("message")}</p>' if inquiry.get('message') else ''}
-            </div>
-            
-            <p style="color: #233dff; margin-top: 30px;">— Shadow Wolves Productions</p>
+        <h1 style="color: #ffffff; font-size: 24px; margin-bottom: 20px;">New Investor Inquiry</h1>
+        <p style="color: #9ca3af; line-height: 1.6;">
+            A new expression of interest has been submitted through the Investor Portal.
+        </p>
+        <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 20px; margin: 20px 0;">
+            <p style="color: #ffffff; margin: 8px 0;"><strong>Name:</strong> {inquiry.get('name', 'N/A')}</p>
+            <p style="color: #ffffff; margin: 8px 0;"><strong>Email:</strong> {inquiry.get('email', 'N/A')}</p>
+            <p style="color: #ffffff; margin: 8px 0;"><strong>Investor Type:</strong> {inquiry.get('investor_type', 'N/A')}</p>
+            <p style="color: #ffffff; margin: 8px 0;"><strong>Area of Interest:</strong> {inquiry.get('area_of_interest', 'N/A')}</p>
+            {f'<p style="color: #9ca3af; margin: 16px 0 8px 0;"><strong>Message:</strong></p><p style="color: #ffffff; white-space: pre-wrap;">{inquiry.get("message")}</p>' if inquiry.get('message') else ''}
         </div>
         """
         
-        from_email = os.environ.get('FROM_EMAIL', 'onboarding@resend.dev')
         admin_email = os.environ.get('ADMIN_EMAIL', 'Brendan@shadowwolvesproductions.com.au')
-        
-        await asyncio.to_thread(resend.Emails.send, {
-            "from": from_email,
-            "to": admin_email,
-            "subject": f"New Investor Inquiry: {inquiry.get('name', 'Unknown')}",
-            "html": html_content
-        })
+        await send_email_svc(admin_email, f"New Investor Inquiry: {inquiry.get('name', 'Unknown')}", html_content)
         
         print(f"Inquiry notification sent for {inquiry.get('name')}")
         
@@ -237,44 +219,26 @@ async def log_document_download(doc_id: str, request: Request, investor_id: Opti
 async def send_document_request_notification(request_data: dict):
     """Send email notification for document request"""
     try:
-        resend_api_key = os.environ.get('RESEND_API_KEY')
-        if not resend_api_key:
-            print("RESEND_API_KEY not set, skipping document request notification")
-            return
-        
-        import resend
-        resend.api_key = resend_api_key
+        from services.email_service import send_email as send_email_svc
         
         html_content = f"""
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #ffffff; padding: 40px;">
-            <h1 style="color: #ffffff; font-size: 24px; margin-bottom: 20px;">New Document Request</h1>
-            <p style="color: #9ca3af; line-height: 1.6;">
-                An investor has requested access to project materials.
-            </p>
-            
-            <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 20px; margin: 20px 0;">
-                <p style="color: #ffffff; margin: 8px 0;"><strong>Project:</strong> {request_data.get('project_title', 'N/A')}</p>
-                <p style="color: #ffffff; margin: 8px 0;"><strong>Document Type:</strong> {request_data.get('doc_type', 'N/A')}</p>
-                <hr style="border: none; border-top: 1px solid #333; margin: 16px 0;" />
-                <p style="color: #ffffff; margin: 8px 0;"><strong>Name:</strong> {request_data.get('name', 'N/A')}</p>
-                <p style="color: #ffffff; margin: 8px 0;"><strong>Email:</strong> {request_data.get('email', 'N/A')}</p>
-                {f'<p style="color: #ffffff; margin: 8px 0;"><strong>Company:</strong> {request_data.get("company")}</p>' if request_data.get('company') else ''}
-                {f'<p style="color: #ffffff; margin: 8px 0;"><strong>Phone:</strong> {request_data.get("phone")}</p>' if request_data.get('phone') else ''}
-            </div>
-            
-            <p style="color: #233dff; margin-top: 30px;">— Shadow Wolves Productions</p>
+        <h1 style="color: #ffffff; font-size: 24px; margin-bottom: 20px;">New Document Request</h1>
+        <p style="color: #9ca3af; line-height: 1.6;">
+            An investor has requested access to project materials.
+        </p>
+        <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 20px; margin: 20px 0;">
+            <p style="color: #ffffff; margin: 8px 0;"><strong>Project:</strong> {request_data.get('project_title', 'N/A')}</p>
+            <p style="color: #ffffff; margin: 8px 0;"><strong>Document Type:</strong> {request_data.get('doc_type', 'N/A')}</p>
+            <hr style="border: none; border-top: 1px solid #333; margin: 16px 0;" />
+            <p style="color: #ffffff; margin: 8px 0;"><strong>Name:</strong> {request_data.get('name', 'N/A')}</p>
+            <p style="color: #ffffff; margin: 8px 0;"><strong>Email:</strong> {request_data.get('email', 'N/A')}</p>
+            {f'<p style="color: #ffffff; margin: 8px 0;"><strong>Company:</strong> {request_data.get("company")}</p>' if request_data.get('company') else ''}
+            {f'<p style="color: #ffffff; margin: 8px 0;"><strong>Phone:</strong> {request_data.get("phone")}</p>' if request_data.get('phone') else ''}
         </div>
         """
         
-        from_email = os.environ.get('FROM_EMAIL', 'onboarding@resend.dev')
         admin_email = os.environ.get('ADMIN_EMAIL', 'Brendan@shadowwolvesproductions.com.au')
-        
-        await asyncio.to_thread(resend.Emails.send, {
-            "from": from_email,
-            "to": admin_email,
-            "subject": f"Document Request: {request_data.get('doc_type', 'Unknown')} for {request_data.get('project_title', 'Unknown')}",
-            "html": html_content
-        })
+        await send_email_svc(admin_email, f"Document Request: {request_data.get('doc_type', 'Unknown')} for {request_data.get('project_title', 'Unknown')}", html_content)
         
         print(f"Document request notification sent for {request_data.get('name')}")
         
@@ -926,57 +890,34 @@ async def request_investor_access(data: AccessRequestData, background_tasks: Bac
     # Email investor
     async def send_invite_email():
         try:
-            resend_api_key = os.environ.get('RESEND_API_KEY')
-            if not resend_api_key:
-                print("No RESEND_API_KEY, skipping invite email")
-                return
-            import resend
-            resend.api_key = resend_api_key
-            from_email = os.environ.get('FROM_EMAIL', 'onboarding@resend.dev')
-            await asyncio.to_thread(resend.Emails.send, {
-                "from": from_email,
-                "to": data.email,
-                "subject": "Shadow Wolves — Investor Portal Access",
-                "html": f"""<div style="font-family:Georgia,serif;max-width:580px;margin:0 auto;padding:40px 20px;">
-                    <p style="color:#333;font-size:16px;line-height:1.7;">Dear {data.name},</p>
-                    <p style="color:#333;font-size:16px;line-height:1.7;">Thank you for your interest in Shadow Wolves Productions. We have created a personal investor portal account for you.</p>
-                    <p style="color:#333;font-size:16px;line-height:1.7;">To set up your account, please visit:</p>
-                    <p style="margin:24px 0;"><a href="{invite_link}" style="color:#233dff;font-size:16px;word-break:break-all;">{invite_link}</a></p>
-                    <p style="color:#666;font-size:14px;">This link is valid for 7 days. Please use the email address {data.email} when creating your account.</p>
-                    <p style="color:#333;font-size:16px;line-height:1.7;margin-top:24px;">Kind regards,<br/>Shadow Wolves Productions</p>
-                </div>"""
-            })
+            from services.email_service import send_email as send_email_svc
+            html = f"""<p style="color:#9ca3af;line-height:1.7;">Dear {data.name},</p>
+                <p style="color:#9ca3af;line-height:1.7;">Thank you for your interest in Shadow Wolves Productions. We have created a personal investor portal account for you.</p>
+                <p style="color:#9ca3af;line-height:1.7;">To set up your account, please visit:</p>
+                <p style="margin:24px 0;"><a href="{invite_link}" style="color:#6a9dbe;word-break:break-all;">{invite_link}</a></p>
+                <p style="color:#666;font-size:14px;">This link is valid for 7 days. Please use the email address {data.email} when creating your account.</p>"""
+            await send_email_svc(data.email, "Shadow Wolves — Investor Portal Access", html)
         except Exception as e:
             print(f"Failed to send invite email: {e}")
 
     # Notify admin
     async def notify_admin():
         try:
-            resend_api_key = os.environ.get('RESEND_API_KEY')
-            if not resend_api_key:
-                return
-            import resend
-            resend.api_key = resend_api_key
+            from services.email_service import send_email as send_email_svc
             admin_email = os.environ.get('ADMIN_EMAIL', 'Brendan@shadowwolvesproductions.com.au')
-            from_email = os.environ.get('FROM_EMAIL', 'onboarding@resend.dev')
-            await asyncio.to_thread(resend.Emails.send, {
-                "from": from_email,
-                "to": admin_email,
-                "subject": f"New Investor Request: {data.name}",
-                "html": f"""<div style="font-family:Arial;max-width:600px;margin:0 auto;background:#0a0a0a;color:#fff;padding:40px;">
-                    <h1 style="color:#fff;font-size:20px;">New Investor Access Request</h1>
-                    <p style="color:#9ca3af;">Invite link was automatically generated and emailed.</p>
-                    <table style="width:100%;margin:20px 0;color:#d1d5db;">
-                        <tr><td style="padding:8px 0;color:#6b7280;">Name</td><td>{data.name}</td></tr>
-                        <tr><td style="padding:8px 0;color:#6b7280;">Email</td><td>{data.email}</td></tr>
-                        <tr><td style="padding:8px 0;color:#6b7280;">Type</td><td>{data.investor_type}</td></tr>
-                        <tr><td style="padding:8px 0;color:#6b7280;">Interest</td><td>{data.area_of_interest}</td></tr>
-                        <tr><td style="padding:8px 0;color:#6b7280;">Status</td><td>Invite Sent</td></tr>
-                        <tr><td style="padding:8px 0;color:#6b7280;">Time</td><td>{datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}</td></tr>
-                    </table>
-                    {f'<p style="color:#9ca3af;">Message: {data.message}</p>' if data.message else ''}
-                </div>"""
-            })
+            await send_email_svc(admin_email, f"New Investor Request: {data.name}",
+                f"""<h2 style="color:#fff;font-size:20px;">New Investor Access Request</h2>
+                <p style="color:#9ca3af;">Invite link was automatically generated and emailed.</p>
+                <table style="width:100%;margin:20px 0;color:#d1d5db;">
+                    <tr><td style="padding:8px 0;color:#6b7280;">Name</td><td>{data.name}</td></tr>
+                    <tr><td style="padding:8px 0;color:#6b7280;">Email</td><td>{data.email}</td></tr>
+                    <tr><td style="padding:8px 0;color:#6b7280;">Type</td><td>{data.investor_type}</td></tr>
+                    <tr><td style="padding:8px 0;color:#6b7280;">Interest</td><td>{data.area_of_interest}</td></tr>
+                    <tr><td style="padding:8px 0;color:#6b7280;">Status</td><td>Invite Sent</td></tr>
+                    <tr><td style="padding:8px 0;color:#6b7280;">Time</td><td>{datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}</td></tr>
+                </table>
+                {f'<p style="color:#9ca3af;">Message: {data.message}</p>' if data.message else ''}"""
+            )
         except Exception as e:
             print(f"Failed to send admin notification: {e}")
 

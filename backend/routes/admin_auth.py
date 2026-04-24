@@ -68,51 +68,29 @@ class AdminUser(BaseModel):
 async def send_admin_access_email(email: str, name: str, token: str):
     """Send admin access setup email"""
     try:
-        resend_api_key = os.environ.get('RESEND_API_KEY')
-        if not resend_api_key:
-            print("RESEND_API_KEY not set, skipping email")
-            return False
-        
-        import resend
-        resend.api_key = resend_api_key
+        from services.email_service import send_email as send_email_svc
         
         frontend_url = os.environ.get('FRONTEND_URL', os.environ.get('SITE_URL', 'https://www.shadowwolvesproductions.com.au'))
         setup_url = f"{frontend_url}/admin/setup-password?token={token}"
-        from_email = os.environ.get('FROM_EMAIL', 'onboarding@resend.dev')
         
         html_content = f"""
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #ffffff; padding: 40px;">
-            <h1 style="color: #ffffff; font-size: 24px; margin-bottom: 20px;">Admin Access Request</h1>
-            <p style="color: #9ca3af; line-height: 1.6;">
-                Hi {name},
-            </p>
-            <p style="color: #9ca3af; line-height: 1.6;">
-                Your request for admin access to Shadow Wolves Productions has been received.
-                Click the button below to set up your password and activate your admin account.
-            </p>
-            
-            <div style="text-align: center; margin: 30px 0;">
-                <a href="{setup_url}" style="display: inline-block; background: #233dff; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 50px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">
-                    Set Up Password
-                </a>
-            </div>
-            
-            <p style="color: #666; font-size: 12px; margin-top: 30px;">
-                This link will expire in 24 hours. If you didn't request admin access, please ignore this email.
-            </p>
-            
-            <hr style="border: none; border-top: 1px solid #333; margin: 30px 0;" />
-            
-            <p style="color: #233dff; margin-top: 30px;">— Shadow Wolves Productions</p>
+        <h1 style="color: #ffffff; font-size: 24px; margin-bottom: 20px;">Admin Access Request</h1>
+        <p style="color: #9ca3af; line-height: 1.6;">Hi {name},</p>
+        <p style="color: #9ca3af; line-height: 1.6;">
+            Your request for admin access to Shadow Wolves Productions has been received.
+            Click the button below to set up your password and activate your admin account.
+        </p>
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="{setup_url}" style="display: inline-block; background: #6a9dbe; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 2px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">
+                Set Up Password
+            </a>
         </div>
+        <p style="color: #666; font-size: 12px; margin-top: 30px;">
+            This link will expire in 24 hours. If you didn't request admin access, please ignore this email.
+        </p>
         """
         
-        await asyncio.to_thread(resend.Emails.send, {
-            "from": from_email,
-            "to": email,
-            "subject": "Admin Access - Set Up Your Password",
-            "html": html_content
-        })
+        await send_email_svc(email, "Admin Access - Set Up Your Password", html_content)
         
         print(f"Admin access email sent to {email}")
         return True

@@ -16,48 +16,28 @@ def set_db(database):
 async def send_contact_notification(message: dict):
     """Send email notification for new contact message"""
     try:
-        resend_api_key = os.environ.get('RESEND_API_KEY')
-        if not resend_api_key:
-            print("RESEND_API_KEY not set, skipping email notification")
-            return
-        
-        import resend
-        import asyncio
-        resend.api_key = resend_api_key
+        from services.email_service import send_email as send_email_svc
         
         html_content = f"""
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #ffffff; padding: 40px;">
-            <h1 style="color: #ffffff; font-size: 24px; margin-bottom: 20px;">New Contact Message</h1>
-            <p style="color: #9ca3af; line-height: 1.6;">
-                A new message has been received through the website contact form.
-            </p>
-            
-            <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 20px; margin: 20px 0;">
-                <p style="color: #ffffff; margin: 8px 0;"><strong>Name:</strong> {message['name']}</p>
-                <p style="color: #ffffff; margin: 8px 0;"><strong>Email:</strong> <a href="mailto:{message['email']}" style="color: #233dff;">{message['email']}</a></p>
-                {f"<p style='color: #ffffff; margin: 8px 0;'><strong>Phone:</strong> {message['phone']}</p>" if message.get('phone') else ""}
-                {f"<p style='color: #ffffff; margin: 8px 0;'><strong>Project Type:</strong> {message['service']}</p>" if message.get('service') else ""}
-            </div>
-            
-            <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 20px; margin: 20px 0;">
-                <p style="color: #9ca3af; margin-bottom: 8px;"><strong>Message:</strong></p>
-                <p style="color: #ffffff; white-space: pre-wrap;">{message['message']}</p>
-            </div>
-            
-            <p style="color: #233dff; margin-top: 30px;">— Shadow Wolves Productions</p>
+        <h1 style="color: #ffffff; font-size: 24px; margin-bottom: 20px;">New Contact Message</h1>
+        <p style="color: #9ca3af; line-height: 1.6;">
+            A new message has been received through the website contact form.
+        </p>
+        <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 20px; margin: 20px 0;">
+            <p style="color: #ffffff; margin: 8px 0;"><strong>Name:</strong> {message['name']}</p>
+            <p style="color: #ffffff; margin: 8px 0;"><strong>Email:</strong> <a href="mailto:{message['email']}" style="color: #6a9dbe;">{message['email']}</a></p>
+            {f"<p style='color: #ffffff; margin: 8px 0;'><strong>Phone:</strong> {message['phone']}</p>" if message.get('phone') else ""}
+            {f"<p style='color: #ffffff; margin: 8px 0;'><strong>Project Type:</strong> {message['service']}</p>" if message.get('service') else ""}
+        </div>
+        <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 20px; margin: 20px 0;">
+            <p style="color: #9ca3af; margin-bottom: 8px;"><strong>Message:</strong></p>
+            <p style="color: #ffffff; white-space: pre-wrap;">{message['message']}</p>
         </div>
         """
         
         admin_email = os.environ.get('ADMIN_EMAIL', 'Brendan@shadowwolvesproductions.com.au')
-        from_email = os.environ.get('FROM_EMAIL', 'onboarding@resend.dev')
         
-        await asyncio.to_thread(resend.Emails.send, {
-            "from": from_email,
-            "to": admin_email,
-            "reply_to": message['email'],
-            "subject": f"Contact: {message['name']} - {message.get('service', 'General Inquiry')}",
-            "html": html_content
-        })
+        await send_email_svc(admin_email, f"Contact: {message['name']} - {message.get('service', 'General Inquiry')}", html_content)
         
         print(f"Contact notification sent for message from {message['name']}")
         
@@ -127,26 +107,13 @@ async def register_cineconnect_interest(data: dict, background_tasks: Background
     # Notify admin in background
     async def notify_admin():
         try:
-            resend_api_key = os.environ.get('RESEND_API_KEY')
-            if not resend_api_key:
-                return
-            import resend
-            import asyncio
-            resend.api_key = resend_api_key
+            from services.email_service import send_email as send_email_svc
             admin_email = os.environ.get('ADMIN_EMAIL', 'Brendan@shadowwolvesproductions.com.au')
-            from_email = os.environ.get('FROM_EMAIL', 'onboarding@resend.dev')
-            await asyncio.to_thread(resend.Emails.send, {
-                "from": from_email,
-                "to": admin_email,
-                "subject": f"CineConnect Interest: {interest['name']}",
-                "html": f"""<div style="font-family:Arial;max-width:600px;margin:0 auto;background:#0a0a0a;color:#fff;padding:40px;">
-                    <h1 style="color:#fff;">New CineConnect Interest</h1>
-                    <p style="color:#9ca3af;">{interest['name']} ({interest['email']}) has registered interest in CineConnect.</p>
-                    <p style="color:#233dff;margin-top:30px;">— Shadow Wolves Productions</p>
-                </div>"""
-            })
+            await send_email_svc(admin_email, f"Spot'd Interest: {interest['name']}",
+                f"<p style='color:#9ca3af;'>{interest['name']} ({interest['email']}) has registered interest in Spot'd.</p>"
+            )
         except Exception as e:
-            print(f"Failed to send CineConnect notification: {e}")
+            print(f"Failed to send notification: {e}")
 
     background_tasks.add_task(notify_admin)
     return {"message": "Interest registered successfully"}

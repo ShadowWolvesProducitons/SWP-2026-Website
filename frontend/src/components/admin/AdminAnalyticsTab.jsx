@@ -281,10 +281,10 @@ const AdminAnalyticsTab = () => {
               <div>
                 <p className="text-yellow-200 text-sm font-medium">Enable Email Tracking</p>
                 <p className="text-gray-400 text-xs mt-1">
-                  To track opens and clicks, set up a webhook in your Resend dashboard pointing to:
+                  To track opens and clicks, set up a webhook in your Postmark dashboard pointing to:
                 </p>
                 <code className="block mt-2 text-xs bg-black px-3 py-2 rounded text-electric-blue">
-                  https://www.shadowwolvesproductions.com.au/api/webhooks/resend
+                  https://www.shadowwolvesproductions.com.au/api/webhooks/postmark
                 </code>
                 <p className="text-gray-500 text-xs mt-2">
                   Select events: email.delivered, email.opened, email.clicked, email.bounced

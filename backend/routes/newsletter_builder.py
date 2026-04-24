@@ -511,12 +511,12 @@ async def send_newsletter(issue_id: str, test_email: str = None):
         raise HTTPException(status_code=404, detail="Newsletter issue not found")
     
     resend_api_key = os.environ.get('RESEND_API_KEY')
-    if not resend_api_key:
-        raise HTTPException(status_code=500, detail="RESEND_API_KEY not configured")
+    postmark_token = os.environ.get('POSTMARK_SERVER_TOKEN')
+    if not postmark_token and not resend_api_key:
+        raise HTTPException(status_code=500, detail="Email service not configured")
     
-    import resend
-    resend.api_key = resend_api_key
-    from_email = os.environ.get('FROM_EMAIL', 'onboarding@resend.dev')
+    from services.email_service import send_email as send_email_svc
+    from_email = os.environ.get('FROM_EMAIL', 'admin@shadowwolvesproductions.com.au')
     
     # Get recipients
     if test_email:
@@ -543,13 +543,12 @@ async def send_newsletter(issue_id: str, test_email: str = None):
             email_addr = recipient.get('email')
             html = render_newsletter_html(issue, email_addr)
             
-            await asyncio.to_thread(resend.Emails.send, {
-                "from": from_email,
-                "to": email_addr,
-                "subject": issue.get('subject', 'Newsletter'),
-                "html": html
-            })
-            sent += 1
+            success = await send_email_svc(email_addr, issue.get('subject', 'Newsletter'), html, wrap=False)
+            if success:
+                sent += 1
+            else:
+                failed += 1
+                errors.append(f"{email_addr}: send failed")
             # Small delay to avoid rate limiting
             await asyncio.sleep(0.1)
         except Exception as e:

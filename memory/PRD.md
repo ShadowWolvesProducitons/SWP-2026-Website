@@ -112,6 +112,8 @@ Build a comprehensive "Studio Access Portal" and modernize the public-facing web
 - [x] All public pages: Subtle parallax scroll depth effect (bg moves at 12% scroll speed, GPU-accelerated)
 - [x] WorkWithUs: Renamed CineConnect → Spot'd (sidebar card, FAQ answer, link to getspotd.app)
 
+- [x] Email service migrated from Resend → Postmark (all 7 route files + webhook + frontend references)
+
 ## Backlog (Prioritized)
 - [ ] P0: Dynamic Pages System with drag-and-drop reordering
 - [ ] P1: Rename "CineConnect" to "Spot'd" in frontend (WorkWithUs sidebar + FAQ)

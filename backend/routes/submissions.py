@@ -16,55 +16,33 @@ def set_db(database):
 async def send_notification_email(submission: dict):
     """Send email notification for new submission"""
     try:
-        # Check if Resend API key is available
-        resend_api_key = os.environ.get('RESEND_API_KEY')
-        if not resend_api_key:
-            print("RESEND_API_KEY not set, skipping email notification")
-            return
-        
-        import resend
+        from services.email_service import send_email as send_email_svc
         import asyncio
-        resend.api_key = resend_api_key
         
-        # Format the email content with Shadow Wolves branding
         html_content = f"""
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #ffffff; padding: 40px;">
-            <h1 style="color: #ffffff; font-size: 24px; margin-bottom: 20px;">New Submission Received</h1>
-            <p style="color: #9ca3af; line-height: 1.6;">
-                A new project submission has been received through the Work With Us form.
-            </p>
-            
-            <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 20px; margin: 20px 0;">
-                <p style="color: #ffffff; margin: 8px 0;"><strong>Name:</strong> {submission['name']}</p>
-                <p style="color: #ffffff; margin: 8px 0;"><strong>Email:</strong> {submission['email']}</p>
-                <p style="color: #ffffff; margin: 8px 0;"><strong>Role:</strong> {submission['role']}</p>
-                <p style="color: #ffffff; margin: 8px 0;"><strong>Type:</strong> {submission['submission_type']}</p>
-                <p style="color: #ffffff; margin: 8px 0;"><strong>Genres:</strong> {', '.join(submission['genres'])}</p>
-                <p style="color: #ffffff; margin: 8px 0;"><strong>Stage:</strong> {submission['project_stage']}</p>
-            </div>
-            
-            <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 20px; margin: 20px 0;">
-                <p style="color: #233dff; font-weight: bold; margin-bottom: 8px;">Logline:</p>
-                <p style="color: #ffffff; font-style: italic;">"{submission['logline']}"</p>
-            </div>
-            
-            {f'<p style="color: #9ca3af;"><strong>Link:</strong> <a href="{submission["external_link"]}" style="color: #233dff;">{submission["external_link"]}</a></p>' if submission.get('external_link') else ''}
-            {f'<div style="background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 20px; margin: 20px 0;"><p style="color: #9ca3af; margin-bottom: 8px;"><strong>Message:</strong></p><p style="color: #ffffff; white-space: pre-wrap;">{submission["message"]}</p></div>' if submission.get('message') else ''}
-            
-            <p style="color: #233dff; margin-top: 30px;">— Shadow Wolves Productions</p>
+        <h1 style="color: #ffffff; font-size: 24px; margin-bottom: 20px;">New Submission Received</h1>
+        <p style="color: #9ca3af; line-height: 1.6;">
+            A new project submission has been received through the Work With Us form.
+        </p>
+        <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 20px; margin: 20px 0;">
+            <p style="color: #ffffff; margin: 8px 0;"><strong>Name:</strong> {submission['name']}</p>
+            <p style="color: #ffffff; margin: 8px 0;"><strong>Email:</strong> {submission['email']}</p>
+            <p style="color: #ffffff; margin: 8px 0;"><strong>Role:</strong> {submission['role']}</p>
+            <p style="color: #ffffff; margin: 8px 0;"><strong>Type:</strong> {submission['submission_type']}</p>
+            <p style="color: #ffffff; margin: 8px 0;"><strong>Genres:</strong> {', '.join(submission['genres'])}</p>
+            <p style="color: #ffffff; margin: 8px 0;"><strong>Stage:</strong> {submission['project_stage']}</p>
         </div>
+        <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 20px; margin: 20px 0;">
+            <p style="color: #6a9dbe; font-weight: bold; margin-bottom: 8px;">Logline:</p>
+            <p style="color: #ffffff; font-style: italic;">"{submission['logline']}"</p>
+        </div>
+        {f'<p style="color: #9ca3af;"><strong>Link:</strong> <a href="{submission["external_link"]}" style="color: #6a9dbe;">{submission["external_link"]}</a></p>' if submission.get('external_link') else ''}
+        {f'<div style="background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 20px; margin: 20px 0;"><p style="color: #9ca3af; margin-bottom: 8px;"><strong>Message:</strong></p><p style="color: #ffffff; white-space: pre-wrap;">{submission["message"]}</p></div>' if submission.get('message') else ''}
         """
         
-        # Get admin email from env or use default
         admin_email = os.environ.get('ADMIN_EMAIL', 'Brendan@shadowwolvesproductions.com.au')
-        from_email = os.environ.get('FROM_EMAIL', 'onboarding@resend.dev')
         
-        await asyncio.to_thread(resend.Emails.send, {
-            "from": from_email,
-            "to": admin_email,
-            "subject": f"New Submission: {submission['submission_type']} from {submission['name']}",
-            "html": html_content
-        })
+        await send_email_svc(admin_email, f"New Submission: {submission['submission_type']} from {submission['name']}", html_content)
         
         print(f"Email notification sent for submission from {submission['name']}")
         

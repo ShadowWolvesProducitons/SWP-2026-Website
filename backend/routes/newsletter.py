@@ -31,13 +31,7 @@ class BulkEmailResponse(BaseModel):
 async def send_welcome_email(email: str, lead_magnet: str = None):
     """Send welcome email to new subscriber, optionally with lead magnet"""
     try:
-        resend_api_key = os.environ.get('RESEND_API_KEY')
-        if not resend_api_key:
-            print("RESEND_API_KEY not set, skipping welcome email")
-            return
-        
-        import resend
-        resend.api_key = resend_api_key
+        from services.email_service import send_email as send_email_svc
         
         # Different content based on lead magnet
         logo_url = os.environ.get('SITE_URL', 'https://www.shadowwolvesproductions.com.au')
@@ -120,14 +114,9 @@ async def send_welcome_email(email: str, lead_magnet: str = None):
             """
             subject = "Welcome to Shadow Wolves Productions"
         
-        from_email = os.environ.get('FROM_EMAIL', 'onboarding@resend.dev')
+        from_email = os.environ.get('FROM_EMAIL', 'admin@shadowwolvesproductions.com.au')
         
-        await asyncio.to_thread(resend.Emails.send, {
-            "from": from_email,
-            "to": email,
-            "subject": subject,
-            "html": html_content
-        })
+        await send_email_svc(email, subject, html_content, wrap=False)
         
         print(f"Welcome email sent to {email} (lead_magnet: {lead_magnet})")
         
@@ -208,13 +197,12 @@ async def get_subscribers(active_only: bool = True):
 @router.post("/send-bulk", response_model=BulkEmailResponse)
 async def send_bulk_email(request: BulkEmailRequest):
     """Send bulk email to all active subscribers"""
-    resend_api_key = os.environ.get('RESEND_API_KEY')
-    if not resend_api_key:
-        raise HTTPException(status_code=500, detail="RESEND_API_KEY not configured")
+    from services.email_service import send_email as send_email_svc
+    postmark_token = os.environ.get('POSTMARK_SERVER_TOKEN')
+    if not postmark_token:
+        raise HTTPException(status_code=500, detail="Email service not configured")
     
-    import resend
-    resend.api_key = resend_api_key
-    from_email = os.environ.get('FROM_EMAIL', 'onboarding@resend.dev')
+    from_email = os.environ.get('FROM_EMAIL', 'admin@shadowwolvesproductions.com.au')
     
     # Get active subscribers
     subscribers = await db.newsletter.find({"is_active": True}, {"_id": 0}).to_list(1000)
@@ -265,13 +253,11 @@ async def send_bulk_email(request: BulkEmailRequest):
     for subscriber in subscribers:
         try:
             per_sub_html = make_html_for(subscriber['email'])
-            result = await asyncio.to_thread(resend.Emails.send, {
-                "from": from_email,
-                "to": subscriber['email'],
-                "subject": request.subject,
-                "html": per_sub_html
-            })
-            sent += 1
+            success = await send_email_svc(subscriber['email'], request.subject, per_sub_html, wrap=False)
+            if success:
+                sent += 1
+            else:
+                failed += 1
             # Track email ID for analytics
             if result and hasattr(result, 'id'):
                 email_ids.append({'email_id': result.id, 'recipient': subscriber['email']})

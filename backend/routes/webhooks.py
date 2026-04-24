@@ -1,9 +1,6 @@
 from fastapi import APIRouter, Request, HTTPException
 from datetime import datetime, timezone
 import uuid
-import hashlib
-import hmac
-import os
 
 router = APIRouter(prefix="/webhooks", tags=["webhooks"])
 
@@ -14,62 +11,64 @@ def set_db(database):
     db = database
 
 
-@router.post("/resend")
-async def resend_webhook(request: Request):
+@router.post("/postmark")
+async def postmark_webhook(request: Request):
     """
-    Handle Resend webhook events for email tracking.
-    Events: email.sent, email.delivered, email.opened, email.clicked, email.bounced, email.complained
+    Handle Postmark webhook events for email tracking.
+    Events: Delivery, Bounce, SpamComplaint, Open, Click, SubscriptionChange
     """
     try:
         payload = await request.json()
-    except:
+    except Exception:
         raise HTTPException(status_code=400, detail="Invalid JSON payload")
     
-    # Extract event data
-    event_type = payload.get('type')
-    data = payload.get('data', {})
+    record_type = payload.get('RecordType', '')
+    if not record_type:
+        raise HTTPException(status_code=400, detail="Missing RecordType")
     
-    if not event_type or not data:
-        raise HTTPException(status_code=400, detail="Missing event type or data")
+    # Map Postmark event types to our internal event names
+    event_map = {
+        'Delivery': 'email.delivered',
+        'Bounce': 'email.bounced',
+        'SpamComplaint': 'email.complained',
+        'Open': 'email.opened',
+        'Click': 'email.clicked',
+    }
     
-    # Extract relevant fields
-    email_id = data.get('email_id', '')
-    recipient = data.get('to', [''])[0] if isinstance(data.get('to'), list) else data.get('to', '')
+    event_type = event_map.get(record_type, f'email.{record_type.lower()}')
     
-    # For click events, get the clicked URL
-    link_url = data.get('click', {}).get('link') if event_type == 'email.clicked' else None
+    recipient = payload.get('Recipient', '')
+    message_id = payload.get('MessageID', '')
+    link_url = payload.get('OriginalLink') if record_type == 'Click' else None
     
     # Try to find the campaign this email belongs to
-    # We'll match by looking at recent campaigns and the recipient
     campaign_id = None
     recent_campaigns = await db.newsletter_campaigns.find({}).sort("sent_at", -1).to_list(10)
     for campaign in recent_campaigns:
-        # This is a simple match - in production you'd track email_id -> campaign_id mapping
         campaign_id = campaign.get('id') or str(campaign.get('_id', ''))
         break
     
-    # Store the event
     event_doc = {
         'id': str(uuid.uuid4()),
-        'email_id': email_id,
+        'email_id': message_id,
         'campaign_id': campaign_id,
         'recipient': recipient,
         'event_type': event_type,
         'link_url': link_url,
-        'user_agent': data.get('user_agent'),
-        'ip_address': data.get('ip'),
+        'user_agent': payload.get('UserAgent'),
+        'ip_address': payload.get('Geo', {}).get('IP') if isinstance(payload.get('Geo'), dict) else None,
         'timestamp': datetime.now(timezone.utc).isoformat(),
         'raw_data': payload
     }
     
     await db.email_events.insert_one(event_doc)
     
-    print(f"Recorded email event: {event_type} for {recipient}")
+    print(f"Recorded Postmark event: {event_type} for {recipient}")
     
     return {"status": "ok", "event": event_type}
 
 
-@router.get("/resend/test")
-async def test_webhook():
-    """Test endpoint to verify webhook is accessible"""
-    return {"status": "ok", "message": "Resend webhook endpoint is active"}
+@router.get("/postmark/test")
+async def test_postmark_webhook():
+    """Test endpoint to verify Postmark webhook is accessible"""
+    return {"status": "ok", "message": "Postmark webhook endpoint is active"}

@@ -1,16 +1,23 @@
 """
 Email Service for Shadow Wolves Productions
-Uses Resend API for sending emails
+Uses Postmark API for sending emails
 """
 import os
 import asyncio
-import resend
+from postmarker.core import PostmarkClient
 
-# Configure Resend
-RESEND_API_KEY = os.environ.get('RESEND_API_KEY')
-FROM_EMAIL = os.environ.get('FROM_EMAIL', 'onboarding@resend.dev')
+# Configure Postmark
+POSTMARK_SERVER_TOKEN = os.environ.get('POSTMARK_SERVER_TOKEN')
+FROM_EMAIL = os.environ.get('FROM_EMAIL', 'admin@shadowwolvesproductions.com.au')
 ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL', 'admin@shadowwolvesproductions.com.au')
 FRONTEND_URL = os.environ.get('FRONTEND_URL', 'https://www.shadowwolvesproductions.com.au')
+
+
+def _get_postmark_client():
+    """Get a Postmark client instance"""
+    if not POSTMARK_SERVER_TOKEN:
+        return None
+    return PostmarkClient(server_token=POSTMARK_SERVER_TOKEN)
 
 
 def get_email_wrapper(content: str) -> str:
@@ -46,7 +53,7 @@ def get_email_wrapper(content: str) -> str:
                     <tr>
                         <td align="center" style="padding-top: 30px;">
                             <p style="color: #666; font-size: 12px; margin: 0;">
-                                © 2024 Shadow Wolves Productions Pty Ltd. All rights reserved.
+                                &copy; 2026 Shadow Wolves Productions Pty Ltd. All rights reserved.
                             </p>
                         </td>
                     </tr>
@@ -58,29 +65,68 @@ def get_email_wrapper(content: str) -> str:
 </html>"""
 
 
-async def send_email(to_email: str, subject: str, html_content: str) -> bool:
-    """Send an email using Resend"""
-    if not RESEND_API_KEY:
-        print("Warning: RESEND_API_KEY not configured")
+async def send_email(to_email: str, subject: str, html_content: str, wrap: bool = True) -> bool:
+    """Send an email using Postmark"""
+    if not POSTMARK_SERVER_TOKEN:
+        print("Warning: POSTMARK_SERVER_TOKEN not configured")
         return False
     
     try:
-        resend.api_key = RESEND_API_KEY
+        client = _get_postmark_client()
+        final_html = get_email_wrapper(html_content) if wrap else html_content
+
+        await asyncio.to_thread(client.emails.send,
+            From=FROM_EMAIL,
+            To=to_email,
+            Subject=subject,
+            HtmlBody=final_html,
+            MessageStream="outbound"
+        )
         
-        wrapped_content = get_email_wrapper(html_content)
-        
-        await asyncio.to_thread(resend.Emails.send, {
-            "from": FROM_EMAIL,
-            "to": to_email,
-            "subject": subject,
-            "html": wrapped_content
-        })
-        
-        print(f"Email sent successfully to {to_email}")
+        print(f"Email sent successfully to {to_email} via Postmark")
         return True
     except Exception as e:
         print(f"Failed to send email to {to_email}: {e}")
         return False
+
+
+async def send_email_batch(to_emails: list, subject: str, html_content: str, wrap: bool = True) -> dict:
+    """Send the same email to multiple recipients via Postmark batch"""
+    if not POSTMARK_SERVER_TOKEN:
+        print("Warning: POSTMARK_SERVER_TOKEN not configured")
+        return {"sent": 0, "failed": len(to_emails)}
+    
+    sent = 0
+    failed = 0
+    final_html = get_email_wrapper(html_content) if wrap else html_content
+
+    try:
+        client = _get_postmark_client()
+        messages = [
+            {
+                "From": FROM_EMAIL,
+                "To": email,
+                "Subject": subject,
+                "HtmlBody": final_html,
+                "MessageStream": "outbound"
+            }
+            for email in to_emails
+        ]
+
+        # Postmark batch send supports up to 500 per call
+        for i in range(0, len(messages), 500):
+            batch = messages[i:i+500]
+            results = await asyncio.to_thread(client.emails.send_batch, *batch)
+            for r in results:
+                if hasattr(r, 'error_code') and r.error_code != 0:
+                    failed += 1
+                else:
+                    sent += 1
+    except Exception as e:
+        print(f"Batch send error: {e}")
+        failed = len(to_emails) - sent
+
+    return {"sent": sent, "failed": failed}
 
 
 async def send_verification_email(to_email: str, full_name: str, verification_url: str) -> bool:
@@ -101,19 +147,15 @@ async def send_verification_email(to_email: str, full_name: str, verification_ur
     
     <div style="text-align: center; margin: 30px 0;">
         <a href="{verification_url}" 
-           style="display: inline-block; background-color: #233dff; color: #ffffff; 
-                  text-decoration: none; padding: 14px 30px; border-radius: 50px; 
+           style="display: inline-block; background-color: #6a9dbe; color: #ffffff; 
+                  text-decoration: none; padding: 14px 30px; border-radius: 2px; 
                   font-weight: bold; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">
-            Verify Email & Set Password
+            Verify Email &amp; Set Password
         </a>
     </div>
     
     <p style="color: #666; font-size: 12px; margin-top: 20px;">
         This link will expire in 72 hours. If you didn't request access, you can safely ignore this email.
-    </p>
-    
-    <p style="color: #233dff; margin-top: 30px;">
-        — Shadow Wolves Productions
     </p>
     """
     
@@ -138,8 +180,8 @@ async def send_password_reset_email(to_email: str, full_name: str, reset_url: st
     
     <div style="text-align: center; margin: 30px 0;">
         <a href="{reset_url}" 
-           style="display: inline-block; background-color: #233dff; color: #ffffff; 
-                  text-decoration: none; padding: 14px 30px; border-radius: 50px; 
+           style="display: inline-block; background-color: #6a9dbe; color: #ffffff; 
+                  text-decoration: none; padding: 14px 30px; border-radius: 2px; 
                   font-weight: bold; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">
             Reset Password
         </a>
@@ -147,10 +189,6 @@ async def send_password_reset_email(to_email: str, full_name: str, reset_url: st
     
     <p style="color: #666; font-size: 12px; margin-top: 20px;">
         This link will expire in 24 hours. If you didn't request a password reset, you can safely ignore this email.
-    </p>
-    
-    <p style="color: #233dff; margin-top: 30px;">
-        — Shadow Wolves Productions
     </p>
     """
     
@@ -191,16 +229,12 @@ async def send_access_granted_email(to_email: str, full_name: str, role: str, pr
     
     <div style="text-align: center; margin: 30px 0;">
         <a href="{FRONTEND_URL.rstrip('/')}/studio-access" 
-           style="display: inline-block; background-color: #233dff; color: #ffffff; 
-                  text-decoration: none; padding: 14px 30px; border-radius: 50px; 
+           style="display: inline-block; background-color: #6a9dbe; color: #ffffff; 
+                  text-decoration: none; padding: 14px 30px; border-radius: 2px; 
                   font-weight: bold; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">
             Go to Portal
         </a>
     </div>
-    
-    <p style="color: #233dff; margin-top: 30px;">
-        — Shadow Wolves Productions
-    </p>
     """
     
     return await send_email(to_email, subject, content)
@@ -223,11 +257,7 @@ async def send_access_revoked_email(to_email: str, full_name: str) -> bool:
     
     <p style="color: #9ca3af; line-height: 1.6; margin-bottom: 20px;">
         If you believe this is an error, please contact us at 
-        <a href="mailto:{ADMIN_EMAIL}" style="color: #233dff;">{ADMIN_EMAIL}</a>
-    </p>
-    
-    <p style="color: #233dff; margin-top: 30px;">
-        — Shadow Wolves Productions
+        <a href="mailto:{ADMIN_EMAIL}" style="color: #6a9dbe;">{ADMIN_EMAIL}</a>
     </p>
     """
     
