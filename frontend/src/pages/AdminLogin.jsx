@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 
 const LOGO_URL = "https://customer-assets.emergentagent.com/job_d237abdd-72c8-4f34-8f42-33e3f6f9671f/artifacts/duqz4qct_SWP_Full_Transparent_Logo_2026.png";
@@ -69,6 +70,7 @@ const AdminLogin = ({ onLogin }) => {
                 required
                 className="swp-input"
                 placeholder="••••••••••••"
+                style={{ background:'rgba(255,255,255,0.04)', border:'0.5px solid rgba(255,255,255,0.1)', borderRadius:'2px', padding:'13px 16px', fontFamily:'var(--font-body)', fontSize:'14px', fontWeight:300, color:'var(--swp-white)', outline:'none', width:'100%', transition:'border-color 0.2s' }}
               />
             </div>
             <button
@@ -82,7 +84,14 @@ const AdminLogin = ({ onLogin }) => {
           </form>
         </div>
 
-        <div style={{ textAlign: 'center', marginTop: '24px', fontFamily: 'var(--font-mono)', fontSize: '9px', letterSpacing: '0.12em', color: 'rgba(238,240,242,0.15)' }}>
+        <div style={{ textAlign: 'center', marginTop: '24px' }}>
+          <Link to="/" style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(238,240,242,0.3)', textDecoration: 'none', transition: 'color 0.2s' }}
+            onMouseEnter={e=>e.target.style.color='rgba(106,157,190,0.7)'} onMouseLeave={e=>e.target.style.color='rgba(238,240,242,0.3)'}>
+            ← Back to Site
+          </Link>
+        </div>
+
+        <div style={{ textAlign: 'center', marginTop: '16px', fontFamily: 'var(--font-mono)', fontSize: '9px', letterSpacing: '0.12em', color: 'rgba(238,240,242,0.15)' }}>
           Shadow Wolves Productions · Restricted
         </div>
       </div>
