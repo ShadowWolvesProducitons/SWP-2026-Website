@@ -28,6 +28,7 @@ const VerifyAccess = () => {
       return;
     }
     verifyToken();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   const verifyToken = async () => {

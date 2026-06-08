@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Bell, RefreshCw, Filter, Calendar, Tag } from 'lucide-react';
+import DOMPurify from 'dompurify';
 
 const StudioUpdates = () => {
   const [updates, setUpdates] = useState([]);
@@ -140,7 +141,7 @@ const StudioUpdates = () => {
               {/* Body */}
               <div 
                 className="text-swp-white-ghost prose prose-invert prose-sm max-w-none"
-                dangerouslySetInnerHTML={{ __html: update.body }}
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(update.body) }}
               />
             </motion.article>
           ))}

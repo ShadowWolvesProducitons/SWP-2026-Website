@@ -18,11 +18,10 @@ from models.studio_user import (
 
 router = APIRouter(prefix="/studio-portal", tags=["studio-portal"])
 
-# JWT Configuration - use environment variable with secure fallback for development
+# JWT Configuration - must be set in environment
 JWT_SECRET = os.environ.get("JWT_SECRET")
 if not JWT_SECRET:
-    print("WARNING: JWT_SECRET not set in environment. Using fallback for development only!")
-    JWT_SECRET = "dev-fallback-jwt-secret-change-in-production-" + str(uuid.uuid4())
+    raise RuntimeError("JWT_SECRET must be set in environment variables")
 JWT_ALGORITHM = "HS256"
 JWT_EXPIRY_DAYS = 30
 

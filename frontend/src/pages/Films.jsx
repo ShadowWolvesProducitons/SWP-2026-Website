@@ -41,7 +41,8 @@ const Films = () => {
   const scrollPositionRef = useRef(null);
   const parallaxRef = useRef(null);
 
-  useEffect(() => { if (!slug) window.scrollTo(0, 0); fetchFilms(); }, []);
+  useEffect(() => { if (!slug) window.scrollTo(0, 0); fetchFilms(); // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {

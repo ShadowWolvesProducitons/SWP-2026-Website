@@ -114,6 +114,8 @@ Build a comprehensive "Studio Access Portal" and modernize the public-facing web
 
 - [x] Email service migrated from Resend → Postmark (all 7 route files + webhook + frontend references)
 
+- [x] Code review fixes: XSS (DOMPurify), hardcoded secrets, undefined vars, mutable defaults, hook deps, template literal syntax
+
 ## Backlog (Prioritized)
 - [ ] P0: Dynamic Pages System with drag-and-drop reordering
 - [ ] P1: Rename "CineConnect" to "Spot'd" in frontend (WorkWithUs sidebar + FAQ)

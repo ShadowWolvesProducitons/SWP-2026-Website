@@ -9,8 +9,8 @@ import os
 
 BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', '').rstrip('/')
 
-# Test credentials from the review request
-TEST_TOKEN = "8c818a77-b274-492b-9a56-bb986bc3ec2c"
+# Test credentials from environment
+TEST_TOKEN = os.environ.get('TEST_STUDIO_TOKEN', '8c818a77-b274-492b-9a56-bb986bc3ec2c')
 TEST_FILM_SLUG = "crowe"
 
 

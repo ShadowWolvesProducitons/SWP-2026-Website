@@ -242,8 +242,10 @@ async def create_template(template_data: EmailTemplateCreate):
 
 
 @router.post("/preview")
-async def preview_template(template_name: str, variables: dict = {}):
+async def preview_template(template_name: str, variables: dict = None):
     """Preview a template with sample variables"""
+    if variables is None:
+        variables = {}
     template = await db.email_templates.find_one({"name": template_name}, {"_id": 0})
     if not template:
         raise HTTPException(status_code=404, detail="Template not found")

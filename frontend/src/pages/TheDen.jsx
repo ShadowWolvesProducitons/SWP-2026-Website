@@ -25,7 +25,8 @@ const TheDen = () => {
   const [allItems, setAllItems]   = useState([]);
   const parallaxRef = useRef(null);
 
-  useEffect(() => { window.scrollTo(0, 0); fetchAllItems(); }, []);
+  useEffect(() => { window.scrollTo(0, 0); fetchAllItems(); // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {

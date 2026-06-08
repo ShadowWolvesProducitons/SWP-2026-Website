@@ -126,7 +126,7 @@ export const A = {
       borderRadius: '1px',
       background: t.bg,
       color: t.color,
-      border: \`0.5px solid \${t.border}\`,
+      border: `0.5px solid ${t.border}`,
       display: 'inline-flex',
       alignItems: 'center',
       whiteSpace: 'nowrap',

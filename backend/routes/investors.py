@@ -992,7 +992,7 @@ class InvestorLoginData(BaseModel):
 
 
 @router.post("/login")
-async def investor_login(data: InvestorLoginData):
+async def investor_login_email(data: InvestorLoginData):
     """Login with email/password for registered investors."""
     account = await db.investor_accounts.find_one({"email": data.email.lower()}, {"_id": 0})
     if not account:

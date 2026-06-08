@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, RefreshCw } from 'lucide-react';
 import { Helmet } from 'react-helmet';
 import { useSeoSettings } from '../contexts/SeoContext';
+import DOMPurify from 'dompurify';
 
 const BlogPost = () => {
   const { slug } = useParams();
@@ -59,7 +60,7 @@ const BlogPost = () => {
       return (
         <div 
           className="prose-content"
-          dangerouslySetInnerHTML={{ __html: content }}
+          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content) }}
         />
       );
     }
@@ -108,7 +109,7 @@ const BlogPost = () => {
     // Process links
     result = result.replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" class="text-electric-blue hover:underline" target="_blank" rel="noopener noreferrer">$1</a>');
     
-    return <span dangerouslySetInnerHTML={{ __html: result }} />;
+    return <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(result) }} />;
   };
 
   const getMetaDescription = () => {

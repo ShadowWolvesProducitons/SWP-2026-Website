@@ -117,8 +117,6 @@ async def send_welcome_email(email: str, lead_magnet: str = None):
             """
             subject = "Welcome to Shadow Wolves Productions"
         
-        from_email = os.environ.get('FROM_EMAIL', 'admin@shadowwolvesproductions.com.au')
-        
         await send_email_svc(email, subject, html_content, wrap=False)
         
         print(f"Welcome email sent to {email} (lead_magnet: {lead_magnet})")
@@ -205,8 +203,6 @@ async def send_bulk_email(request: BulkEmailRequest):
     if not postmark_token:
         raise HTTPException(status_code=500, detail="Email service not configured")
     
-    from_email = os.environ.get('FROM_EMAIL', 'admin@shadowwolvesproductions.com.au')
-    
     # Get active subscribers
     subscribers = await db.newsletter.find({"is_active": True}, {"_id": 0}).to_list(1000)
     
@@ -261,9 +257,6 @@ async def send_bulk_email(request: BulkEmailRequest):
                 sent += 1
             else:
                 failed += 1
-            # Track email ID for analytics
-            if result and hasattr(result, 'id'):
-                email_ids.append({'email_id': result.id, 'recipient': subscriber['email']})
             # Small delay to avoid rate limiting
             await asyncio.sleep(0.1)
         except Exception as e:

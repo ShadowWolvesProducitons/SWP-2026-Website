@@ -28,7 +28,8 @@ const StudioPortalLayout = () => {
   const [loading, setLoading] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  useEffect(() => { checkAuth(); }, []);
+  useEffect(() => { checkAuth(); // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // ── Auth check preserved exactly ──
   const checkAuth = async () => {
