@@ -36,7 +36,7 @@ const Header = () => {
         backdropFilter: 'blur(18px) saturate(1.2)',
         borderBottom: '0.5px solid rgba(255,255,255,0.07)',
         display: 'flex', alignItems: 'center',
-        padding: '0 52px',
+        padding: '0 clamp(20px, 4vw, 52px)',
         justifyContent: 'space-between',
         transition: 'background 0.3s ease',
       }}
@@ -51,7 +51,7 @@ const Header = () => {
       </Link>
 
       {/* Desktop nav */}
-      <nav style={{ display: 'flex', alignItems: 'center', gap: '40px' }} className="hidden lg:flex">
+      <nav style={{ alignItems: 'center', gap: '40px' }} className="hidden lg:flex">
         {NAV_LINKS.map(link => (
           <Link
             key={link.path}

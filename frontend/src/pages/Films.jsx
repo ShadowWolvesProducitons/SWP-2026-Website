@@ -200,7 +200,7 @@ const Films = () => {
           </div>
         ) : (
           <>
-            <div style={{ display:'grid', gridTemplateColumns:'repeat(5, 1fr)', gap:'12px' }}>
+            <div className="swp-films-grid" style={{ display:'grid', gridTemplateColumns:'repeat(5, 1fr)', gap:'12px' }}>
               {filteredFilms.map(film => {
                 const isFeatured = film.featured;
                 return (

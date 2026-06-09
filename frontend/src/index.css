@@ -340,3 +340,81 @@
     border-top-color: inherit; border-bottom-color: inherit;
   }
 }
+
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE RESPONSIVE OVERRIDES
+   ═══════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  /* ── Home page ── */
+  .home-page section {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
+  .swp-manifesto-grid {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+    padding: 32px 24px !important;
+  }
+
+  .swp-services-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .swp-services-grid > button {
+    border-right: none !important;
+    border-bottom: 0.5px solid rgba(255,255,255,0.07) !important;
+    padding: 28px 24px !important;
+  }
+
+  .swp-newsletter-grid {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+    padding: 32px 24px !important;
+  }
+
+  /* ── Films page ── */
+  .films-page section {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  .swp-films-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  /* ── Work With Us page ── */
+  .work-with-us-page section {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  .swp-wwu-layout {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+
+  .swp-faq-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ── Resources page ── */
+  .the-armory-page section {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  /* ── Quote section ── */
+  .home-page blockquote {
+    font-size: clamp(18px, 5vw, 28px) !important;
+  }
+
+  /* ── Footer ── */
+  footer {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+}

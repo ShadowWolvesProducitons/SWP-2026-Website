@@ -131,7 +131,7 @@ const Home = () => {
 
       {/* ── MANIFESTO ── */}
       <section style={{ padding:'100px 52px' }}>
-        <div style={{ ...T.glass, padding:'56px 64px', display:'grid', gridTemplateColumns:'1fr 1fr', gap:'72px', alignItems:'center' }}>
+        <div className="swp-manifesto-grid" style={{ ...T.glass, padding:'56px 64px', display:'grid', gridTemplateColumns:'1fr 1fr', gap:'72px', alignItems:'center' }}>
           <div>
             <div style={{ ...T.eyebrow, marginBottom:'20px' }}>
               <span style={{ width:'24px', height:'0.5px', background:'rgba(106,157,190,0.5)', display:'block' }}/>
@@ -157,7 +157,7 @@ const Home = () => {
       {/* ── SERVICES ── */}
       <section style={{ padding:'0 52px 100px' }}>
         <div style={{ ...T.glass, overflow:'hidden' }}>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)' }}>
+          <div className="swp-services-grid" style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)' }}>
             {[
               { key:'development',    num:'01', title:'Development' },
               { key:'preproduction',  num:'02', title:'Pre-Production' },
@@ -215,7 +215,7 @@ const Home = () => {
 
       {/* ── NEWSLETTER ── */}
       <section style={{ padding:'0 52px 100px' }}>
-        <div style={{ ...T.glass, padding:'56px 64px', display:'grid', gridTemplateColumns:'1fr 1fr', gap:'60px', alignItems:'center' }}>
+        <div className="swp-newsletter-grid" style={{ ...T.glass, padding:'56px 64px', display:'grid', gridTemplateColumns:'1fr 1fr', gap:'60px', alignItems:'center' }}>
           <div>
             <div style={{ ...T.eyebrow, marginBottom:'14px' }}>
               <span style={{ width:'24px', height:'0.5px', background:'rgba(106,157,190,0.5)', display:'block' }}/>

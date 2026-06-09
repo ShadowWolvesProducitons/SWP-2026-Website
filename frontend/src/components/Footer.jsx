@@ -51,7 +51,7 @@ const Footer = () => {
       borderTop: '0.5px solid rgba(255,255,255,0.07)',
       background: 'rgba(8,9,11,0.9)',
       backdropFilter: 'blur(16px)',
-      padding: '48px 52px 40px',
+      padding: 'clamp(32px, 4vw, 48px) clamp(20px, 4vw, 52px) 40px',
       position: 'relative',
       zIndex: 10,
     }}>

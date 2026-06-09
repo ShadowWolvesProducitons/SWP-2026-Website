@@ -233,7 +233,7 @@ const NewsletterSection = () => {
 
   return (
     <section style={{ padding:'0 52px 100px' }}>
-      <div style={{ background:'rgba(17,19,24,0.68)', backdropFilter:'blur(20px)', border:'0.5px solid rgba(255,255,255,0.07)', borderRadius:'3px', padding:'56px 64px', display:'grid', gridTemplateColumns:'1fr 1fr', gap:'60px', alignItems:'center' }}>
+      <div className="swp-newsletter-grid" style={{ background:'rgba(17,19,24,0.68)', backdropFilter:'blur(20px)', border:'0.5px solid rgba(255,255,255,0.07)', borderRadius:'3px', padding:'56px 64px', display:'grid', gridTemplateColumns:'1fr 1fr', gap:'60px', alignItems:'center' }}>
         <div>
           <div style={{ fontFamily:'var(--font-mono)', fontSize:'9px', letterSpacing:'0.2em', textTransform:'uppercase', color:'rgba(106,157,190,0.65)', display:'flex', alignItems:'center', gap:'10px', marginBottom:'14px' }}>
             <span style={{ width:'24px', height:'0.5px', background:'rgba(106,157,190,0.4)', display:'block' }}/>Stay in the loop
@@ -273,7 +273,7 @@ const FAQSection = () => {
         <span style={{ width:'24px', height:'0.5px', background:'rgba(106,157,190,0.4)', display:'block' }}/>Frequently asked
         <div style={{ flex:1, height:'0.5px', background:'rgba(255,255,255,0.07)' }}/>
       </div>
-      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'1px', background:'rgba(255,255,255,0.07)', border:'0.5px solid rgba(255,255,255,0.07)', borderRadius:'3px', overflow:'hidden' }}>
+      <div className="swp-faq-grid" style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'1px', background:'rgba(255,255,255,0.07)', border:'0.5px solid rgba(255,255,255,0.07)', borderRadius:'3px', overflow:'hidden' }}>
         {FAQ_ITEMS.map((item,i)=>(
           <div key={i} data-testid={`faq-item-${i}`} style={{ background:'rgba(13,15,20,0.75)', cursor:'pointer' }} onClick={()=>toggle(i)}>
             <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', gap:'16px', padding:'22px 26px' }}>
@@ -358,7 +358,7 @@ const WorkWithUs = () => {
 
       {/* ── FORM AREA ── */}
       <section style={{ padding:'48px 52px 80px' }}>
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 320px', gap:'16px', alignItems:'start' }}>
+        <div className="swp-wwu-layout" style={{ display:'grid', gridTemplateColumns:'1fr 320px', gap:'16px', alignItems:'start' }}>
           <div>
             {/* Lane buttons */}
             <div style={{ display:'flex', gap:'10px', marginBottom:'20px' }}>
