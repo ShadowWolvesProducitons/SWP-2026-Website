@@ -108,3 +108,6 @@ credentials.json
 .credentials
 frontend/node_modules/.cache/default-development/14.pack
 memory/test_credentials.md
+.env
+.env.*
+*.env
