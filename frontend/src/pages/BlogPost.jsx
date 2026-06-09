@@ -71,22 +71,22 @@ const BlogPost = () => {
     return paragraphs.map((para, idx) => {
       // Check for headers
       if (para.startsWith('# ')) {
-        return <h2 key={idx} className="text-2xl font-bold text-white mt-8 mb-4">{para.slice(2)}</h2>;
+        return <h2 key={`h2-${idx}-${para?.slice(2,20)}`} className="text-2xl font-bold text-white mt-8 mb-4">{para.slice(2)}</h2>;
       }
       if (para.startsWith('## ')) {
-        return <h3 key={idx} className="text-xl font-bold text-white mt-6 mb-3">{para.slice(3)}</h3>;
+        return <h3 key={`h3-${idx}-${para?.slice(3,20)}`} className="text-xl font-bold text-white mt-6 mb-3">{para.slice(3)}</h3>;
       }
       if (para.startsWith('### ')) {
-        return <h4 key={idx} className="text-lg font-bold text-white mt-4 mb-2">{para.slice(4)}</h4>;
+        return <h4 key={`h4-${idx}-${para?.slice(4,20)}`} className="text-lg font-bold text-white mt-4 mb-2">{para.slice(4)}</h4>;
       }
       
       // Check for list
       if (para.startsWith('- ')) {
         const items = para.split('\n').filter(line => line.startsWith('- '));
         return (
-          <ul key={idx} className="list-disc list-inside space-y-2 my-4 text-gray-300">
+          <ul key={`ul-${idx}`} className="list-disc list-inside space-y-2 my-4 text-gray-300">
             {items.map((item, i) => (
-              <li key={i}>{processInlineFormatting(item.slice(2))}</li>
+              <li key={`li-${i}-${item?.slice(2,20)}`}>{processInlineFormatting(item.slice(2))}</li>
             ))}
           </ul>
         );
@@ -94,7 +94,7 @@ const BlogPost = () => {
       
       // Regular paragraph with inline formatting
       return (
-        <p key={idx} className="text-gray-300 leading-relaxed mb-4">
+        <p key={`p-${idx}`} className="text-gray-300 leading-relaxed mb-4">
           {processInlineFormatting(para)}
         </p>
       );
@@ -197,7 +197,7 @@ const BlogPost = () => {
               <div className="flex flex-wrap gap-2">
                 {post.tags.map((tag, idx) => (
                   <span 
-                    key={idx}
+                    key={`tag-${tag}`}
                     className="px-3 py-1 bg-electric-blue/10 text-electric-blue border border-electric-blue/30 rounded-full text-xs font-mono uppercase tracking-wide"
                   >
                     {tag}

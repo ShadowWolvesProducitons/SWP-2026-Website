@@ -102,7 +102,7 @@ const ProductPage = () => {
               <ContentSection title="Core Actions" testId="section-core-actions">
                 <div className="space-y-3">
                   {product.core_actions.map((action, i) => (
-                    <div key={i} className="flex items-start gap-4">
+                    <div key={`action-${i}-${action?.slice(0,20)}`} className="flex items-start gap-4">
                       <span className="w-7 h-7 rounded-full bg-electric-blue/10 border border-electric-blue/30 text-electric-blue text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">{i + 1}</span>
                       <p className="text-gray-300">{action}</p>
                     </div>
@@ -116,7 +116,7 @@ const ProductPage = () => {
               <ContentSection title="What You Get" testId="section-experiences">
                 <ul className="space-y-2.5">
                   {product.experiences.map((exp, i) => (
-                    <li key={i} className="flex items-start gap-3 text-gray-300">
+                    <li key={`exp-${i}-${exp?.slice(0,20)}`} className="flex items-start gap-3 text-gray-300">
                       <span className="w-1.5 h-1.5 rounded-full bg-electric-blue mt-2 flex-shrink-0" />
                       <span>{exp}</span>
                     </li>
@@ -130,7 +130,7 @@ const ProductPage = () => {
               <ContentSection title="Features" testId="section-features">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {product.features.map((f, i) => (
-                    <div key={i} className="flex items-start gap-3 p-3 bg-smoke-gray/50 rounded-lg border border-gray-800/50">
+                    <div key={`insight-${i}`} className="flex items-start gap-3 p-3 bg-smoke-gray/50 rounded-lg border border-gray-800/50">
                       <Check className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
                       <span className="text-gray-300 text-sm">{f}</span>
                     </div>
@@ -144,7 +144,7 @@ const ProductPage = () => {
               <ContentSection title="How It Works" testId="section-how-it-works">
                 <div className="space-y-3">
                   {product.how_it_works.map((step, i) => (
-                    <div key={i} className="flex items-start gap-4">
+                    <div key={`action-${i}-${action?.slice(0,20)}`} className="flex items-start gap-4">
                       <span className="w-7 h-7 rounded-lg bg-white/5 border border-gray-700 text-gray-400 text-xs font-mono flex items-center justify-center flex-shrink-0 mt-0.5">{i + 1}</span>
                       <p className="text-gray-300">{step}</p>
                     </div>
@@ -159,7 +159,7 @@ const ProductPage = () => {
               <ContentSection title="Who It's For" testId="section-who-its-for">
                 <ul className="space-y-2.5">
                   {product.who_its_for.map((item, i) => (
-                    <li key={i} className="flex items-start gap-3 text-gray-300">
+                    <li key={`exp-${i}-${exp?.slice(0,20)}`} className="flex items-start gap-3 text-gray-300">
                       <span className="w-1.5 h-1.5 rounded-full bg-electric-blue mt-2 flex-shrink-0" />
                       <span>{item}</span>
                     </li>
@@ -189,7 +189,7 @@ const ProductPage = () => {
               <ContentSection title="Screenshots" testId="section-screenshots">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {product.screenshots.map((s, i) => (
-                    <div key={i} className="aspect-video rounded-lg overflow-hidden bg-smoke-gray border border-gray-800">
+                    <div key={`screenshot-${i}`} className="aspect-video rounded-lg overflow-hidden bg-smoke-gray border border-gray-800">
                       <img 
                         src={imgSrc(s)} 
                         alt={`${product.title} screenshot ${i + 1}`} 
@@ -214,7 +214,7 @@ const ProductPage = () => {
               <div className="py-6 border-t border-gray-800/50" data-testid="section-tags">
                 <div className="flex flex-wrap gap-2">
                   {product.tags.map((tag, i) => (
-                    <span key={i} className="px-4 py-1.5 bg-white/5 border border-gray-800 rounded-full text-gray-400 text-sm">{tag}</span>
+                    <span key={`tag-${tag}`} className="px-4 py-1.5 bg-white/5 border border-gray-800 rounded-full text-gray-400 text-sm">{tag}</span>
                   ))}
                 </div>
               </div>

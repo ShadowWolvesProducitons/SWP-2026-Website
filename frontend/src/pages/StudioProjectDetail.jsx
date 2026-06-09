@@ -159,7 +159,7 @@ const StudioProjectDetail = () => {
           {p?.genres?.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-4">
               {p.genres.map((genre, idx) => (
-                <span key={idx} className="px-3 py-1 bg-white/10 text-white/80 text-sm rounded-full">
+                <span key={`genre-${genre}`} className="px-3 py-1 bg-white/10 text-white/80 text-sm rounded-full">
                   {genre}
                 </span>
               ))}
@@ -225,7 +225,7 @@ const StudioProjectDetail = () => {
               {synopsisExpanded && (
                 <div className="text-gray-400 leading-relaxed space-y-4 pt-2 border-t border-gray-700">
                   {p.extended_synopsis.split('\n\n').map((para, idx) => (
-                    <p key={idx}>{para}</p>
+                    <p key={`para-${idx}`}>{para}</p>
                   ))}
                 </div>
               )}

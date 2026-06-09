@@ -6,6 +6,7 @@ import {
   Heading1, Heading2, Heading3, Undo, Redo, Code
 } from 'lucide-react';
 import { toast } from 'sonner';
+import DOMPurify from 'dompurify';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import TiptapLink from '@tiptap/extension-link';
@@ -221,7 +222,7 @@ const AdminEmailTemplatesTab = () => {
             </div>
             <div 
               className="p-0"
-              dangerouslySetInnerHTML={{ __html: previewHtml }}
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(previewHtml) }}
             />
           </div>
         </div>
