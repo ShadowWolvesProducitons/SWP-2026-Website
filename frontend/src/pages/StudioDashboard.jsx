@@ -14,9 +14,9 @@ const StudioDashboard = () => {
 
   // ── API call preserved exactly ──
   const fetchDashboard = async () => {
-    const token = localStorage.getItem('studio_token');
+    
     try {
-      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/studio-portal/dashboard`, { headers:{ 'Authorization':`Bearer ${token}` } });
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/studio-portal/dashboard`, { credentials:'include' });
       if (res.ok) setData(await res.json());
     } catch { console.error('Failed to fetch dashboard'); }
     finally { setLoading(false); }

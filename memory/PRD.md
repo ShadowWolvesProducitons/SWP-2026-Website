@@ -116,6 +116,9 @@ Build a comprehensive "Studio Access Portal" and modernize the public-facing web
 
 - [x] Code review fixes: XSS (DOMPurify), hardcoded secrets, undefined vars, mutable defaults, hook deps, template literal syntax
 
+- [x] AdminFilmModal split into 5 sub-components (947 → 120 lines parent)
+- [x] Studio Portal auth migrated from localStorage to httpOnly cookies
+
 ## Backlog (Prioritized)
 - [ ] P0: Dynamic Pages System with drag-and-drop reordering
 - [ ] P1: Rename "CineConnect" to "Spot'd" in frontend (WorkWithUs sidebar + FAQ)

@@ -14,7 +14,7 @@ const StudioUpdates = () => {
   }, [selectedTag]);
 
   const fetchUpdates = async () => {
-    const token = localStorage.getItem('studio_token');
+    
     
     try {
       let url = `${process.env.REACT_APP_BACKEND_URL}/api/studio-portal/updates`;
@@ -23,9 +23,7 @@ const StudioUpdates = () => {
       }
       
       const response = await fetch(url, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+        credentials: 'include'
       });
       
       if (response.ok) {

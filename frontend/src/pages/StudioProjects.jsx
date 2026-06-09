@@ -13,13 +13,11 @@ const StudioProjects = () => {
   }, []);
 
   const fetchProjects = async () => {
-    const token = localStorage.getItem('studio_token');
+    
     
     try {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/studio-portal/projects`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+        credentials: 'include'
       });
       
       if (response.ok) {

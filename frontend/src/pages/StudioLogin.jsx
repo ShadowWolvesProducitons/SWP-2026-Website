@@ -28,9 +28,9 @@ const StudioLogin = () => {
     if (!email || !password) { toast.error('Please fill in all fields'); return; }
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/studio-portal/login`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ email, password }) });
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/studio-portal/login`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ email, password }), credentials:'include' });
       const data = await res.json();
-      if (res.ok) { localStorage.setItem('studio_token', data.token); localStorage.setItem('studio_user', JSON.stringify(data.user)); toast.success('Welcome back!'); navigate('/studio-access'); }
+      if (res.ok) { localStorage.setItem('studio_user', JSON.stringify(data.user)); toast.success('Welcome back!'); navigate('/studio-access'); }
       else { toast.error(data.detail || 'Login failed'); }
     } catch { toast.error('An error occurred. Please try again.'); }
     finally { setLoading(false); }

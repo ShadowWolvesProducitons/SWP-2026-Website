@@ -22,13 +22,11 @@ const StudioProjectDetail = () => {
   }, [slug]);
 
   const fetchProject = async () => {
-    const token = localStorage.getItem('studio_token');
+    
     
     try {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/studio-portal/projects/${slug}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+        credentials: 'include'
       });
       
       if (response.ok) {
@@ -46,7 +44,7 @@ const StudioProjectDetail = () => {
   };
 
   const handleDownload = async (docType) => {
-    const token = localStorage.getItem('studio_token');
+    
     const setDownloading = docType === 'pitch_deck' ? setDownloadingDeck : setDownloadingScript;
     
     setDownloading(true);
@@ -56,9 +54,7 @@ const StudioProjectDetail = () => {
         `${process.env.REACT_APP_BACKEND_URL}/api/studio-portal/projects/${slug}/download/${docType}`,
         {
           method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
+          credentials: 'include'
         }
       );
       

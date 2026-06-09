@@ -26,7 +26,7 @@ const StudioAssets = () => {
   }, [selectedType]);
 
   const fetchAssets = async () => {
-    const token = localStorage.getItem('studio_token');
+    
     
     try {
       let url = `${process.env.REACT_APP_BACKEND_URL}/api/studio-portal/assets`;
@@ -35,9 +35,7 @@ const StudioAssets = () => {
       }
       
       const response = await fetch(url, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+        credentials: 'include'
       });
       
       if (response.ok) {
@@ -52,7 +50,7 @@ const StudioAssets = () => {
   };
 
   const handleDownload = async (asset) => {
-    const token = localStorage.getItem('studio_token');
+    
     setDownloading(asset.id);
     
     try {
@@ -60,9 +58,7 @@ const StudioAssets = () => {
         `${process.env.REACT_APP_BACKEND_URL}/api/studio-portal/assets/${asset.id}/download`,
         {
           method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
+          credentials: 'include'
         }
       );
       

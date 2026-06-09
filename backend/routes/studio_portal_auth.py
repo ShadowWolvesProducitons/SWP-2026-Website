@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Query, Depends, Request
+from fastapi import APIRouter, HTTPException, Query, Depends, Request, Response
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel, EmailStr
 from datetime import datetime, timezone, timedelta
@@ -83,12 +83,22 @@ def decode_jwt_token(token: str) -> dict:
         raise HTTPException(status_code=401, detail="Invalid token")
 
 
-async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)) -> dict:
-    """Get current authenticated user from JWT token"""
-    if not credentials:
+async def get_current_user(request: Request, credentials: HTTPAuthorizationCredentials = Depends(security)) -> dict:
+    """Get current authenticated user from JWT token (header or httpOnly cookie)"""
+    token = None
+    
+    # Try Authorization header first
+    if credentials and credentials.credentials:
+        token = credentials.credentials
+    
+    # Fallback to httpOnly cookie
+    if not token:
+        token = request.cookies.get("studio_token")
+    
+    if not token:
         raise HTTPException(status_code=401, detail="Authentication required")
     
-    payload = decode_jwt_token(credentials.credentials)
+    payload = decode_jwt_token(token)
     
     # Verify user still exists and is active
     user = await db.studio_users.find_one(
@@ -368,7 +378,7 @@ class LoginInput(BaseModel):
 
 
 @router.post("/login")
-async def login(data: LoginInput, request: Request):
+async def login(data: LoginInput, request: Request, response: Response):
     """Login with email and password"""
     user = await db.studio_users.find_one({"email": data.email.lower()})
     
@@ -404,6 +414,17 @@ async def login(data: LoginInput, request: Request):
     # Create JWT token
     token = create_jwt_token(user["id"], user["email"], user["role"])
     
+    # Set httpOnly cookie
+    response.set_cookie(
+        key="studio_token",
+        value=token,
+        httponly=True,
+        secure=True,
+        samesite="lax",
+        max_age=JWT_EXPIRY_DAYS * 86400,
+        path="/"
+    )
+    
     return {
         "token": token,
         "user": {
@@ -414,6 +435,14 @@ async def login(data: LoginInput, request: Request):
             "has_all_projects_access": user.get("has_all_projects_access", False)
         }
     }
+
+
+@router.post("/logout")
+async def logout(response: Response):
+    """Clear the studio auth cookie"""
+    response.delete_cookie(key="studio_token", path="/")
+    return {"message": "Logged out"}
+
 
 
 # ============ MASTER ACCESS (ADMIN DEMO) ============

@@ -80,7 +80,6 @@ const VerifyAccess = () => {
       
       if (response.ok) {
         // Store token and redirect
-        localStorage.setItem('studio_token', data.token);
         localStorage.setItem('studio_user', JSON.stringify(data.user));
         toast.success('Account activated successfully!');
         navigate('/studio-access');

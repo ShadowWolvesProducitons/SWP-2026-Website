@@ -33,18 +33,17 @@ const StudioPortalLayout = () => {
 
   // ── Auth check preserved exactly ──
   const checkAuth = async () => {
-    const token = localStorage.getItem('studio_token');
-    if (!token) { navigate('/studio-access/login'); return; }
     try {
-      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/studio-portal/me`, { headers:{ 'Authorization':`Bearer ${token}` } });
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/studio-portal/me`, { credentials:'include' });
       if (res.ok) { const d = await res.json(); setUser(d.user); localStorage.setItem('studio_user', JSON.stringify(d.user)); }
-      else { localStorage.removeItem('studio_token'); localStorage.removeItem('studio_user'); navigate('/studio-access/login'); }
+      else { localStorage.removeItem('studio_user'); navigate('/studio-access/login'); }
     } catch { navigate('/studio-access/login'); }
     finally { setLoading(false); }
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('studio_token'); localStorage.removeItem('studio_user');
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/api/studio-portal/logout`, { method:'POST', credentials:'include' }).catch(() => {});
+    localStorage.removeItem('studio_user');
     toast.success('Logged out successfully'); navigate('/studio-access/login');
   };
 

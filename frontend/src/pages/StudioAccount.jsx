@@ -38,7 +38,7 @@ const StudioAccount = () => {
 
   const handleSaveProfile = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem('studio_token');
+    
     setSavingProfile(true);
     
     try {
@@ -46,9 +46,7 @@ const StudioAccount = () => {
         `${process.env.REACT_APP_BACKEND_URL}/api/studio-portal/me?full_name=${encodeURIComponent(fullName)}&company=${encodeURIComponent(company)}`,
         {
           method: 'PUT',
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
+          credentials: 'include'
         }
       );
       
@@ -79,7 +77,7 @@ const StudioAccount = () => {
       return;
     }
     
-    const token = localStorage.getItem('studio_token');
+    
     setSavingPassword(true);
     
     try {
@@ -88,9 +86,9 @@ const StudioAccount = () => {
         {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
           },
+          credentials: 'include',
           body: JSON.stringify({
             current_password: currentPassword,
             new_password: newPassword,
